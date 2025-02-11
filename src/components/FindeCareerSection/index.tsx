@@ -1,0 +1,59 @@
+'use client'
+import React from 'react'
+import Select from 'react-select'
+import GallerySlider from '../JobDetail/Slider/GallarySlider'
+import CareerRoleCard from './CareerRoleCard'
+
+export default function FindCareerSection() {
+    const roles = [
+        {icon: '/new-assets/banners/image.png', title: "General Duty Assistant"},
+        {icon: '/new-assets/banners/image-1.png', title: "Packers"},
+        {icon: '/new-assets/banners/image-2.png', title: "Data Entry Operator"},
+        {icon: '/new-assets/banners/image-3.png', title: "Assistant Teacher"},
+        {icon: '/new-assets/banners/image-4.png', title: "Customer Service"},
+        {icon: '/new-assets/banners/image-5.png', title: "Packers"},
+        {icon: '/new-assets/banners/image-6.png', title: "Beautician"},
+        {icon: '/new-assets/banners/image-5.png', title: "Beautician"},
+        {icon: '/new-assets/banners/image-5.png', title: "Beautician"},
+        {icon: '/new-assets/banners/image-5.png', title: "Beautician"},
+    ]
+    const inputSlides = roles.map((role, index) => (
+            <CareerRoleCard key={index} {...role} />
+        ));
+  return (
+    <div className="grid grid-cols-2 relative">
+        <div className="section-heading mb-5 xl:mb-8 col-span-1">
+            <h2 className='text-black text-start text-2xl md:text-3xl xl:text-4xl 2xl:text-[40px] 2xl:leading-[64px] font-medium mb-2'>Not sure what  <span className="font-kalam text-red">job </span>suits you?</h2>
+            <p className="font-normal xl:text-lg 2xl:text-xl 2xl:leading-9">Find career paths that match your skills and strengths.</p>
+            <p className="font-semibold text-lg 2xl:text-xl mt-7 xl:mt-8 2xl:mt-10 mb-3 2xl:mb-4">Answer a few simple questions and we’ll help you discover the right careers!</p>
+            <div className="flex flex-col items-end">
+                <Select
+                className='w-full'
+                options={[
+                    { value: 'IT', label: 'IT' },
+                    { value: 'Finance', label: 'Finance' },
+                    { value: 'Healthcare', label: 'Healthcare' },
+                    { value: 'Education', label: 'Education' },
+                ]}
+                />
+                <button className='w-[220px] mt-3 2xl:mt-4'>Next</button>
+            </div>
+        </div>
+        <div className="col-span-1">
+            <img src='/new-assets/banners/find-career-banner.png' alt='find-career' className='w-full max-w-[450px] mx-auto' />
+        </div>
+        <div className="absolute bottom-0 left-0 w-full">
+            <div className="">
+                
+                <GallerySlider
+                    speed={2000}
+                    slides={inputSlides}
+                    spaceBetween={20}
+                    loop={true}
+                    autoplay={true}
+                    />
+            </div>
+        </div>
+    </div>
+  )
+}

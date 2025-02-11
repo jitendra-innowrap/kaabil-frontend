@@ -1,0 +1,24 @@
+[
+    {
+      "profile": "/assets/icons/profile.png",
+      "description": "Priya, a 12th-grade graduate, secured a Sales Associate job at a local retail chain via Kaabil. She’s now thriving and plans to pursue further studies in business management.",
+      "name": "Priya Sharma",
+      "designation": "Retail Associate",
+      "location": "Kota, Rajasthan"
+    },
+    {
+      "profile": "/assets/icons/profile.png",
+      "description": "Rohan, a computer science graduate, landed a Software Developer role at a tech company after completing a coding bootcamp. He’s now working on several impactful projects.",
+      "name": "Rohan Verma",
+      "designation": "Software Developer",
+      "location": "Noida, Uttar Pradesh"
+    },
+    {
+      "profile": "/assets/icons/profile.png",
+      "description": "Sonia, a fresh graduate in marketing, found a marketing role at a top agency through Kaabil. She is now managing digital campaigns for several global brands.",
+      "name": "Sonia Gupta",
+      "designation": "Marketing Manager",
+      "location": "Delhi, India"
+    }
+  ]
+  

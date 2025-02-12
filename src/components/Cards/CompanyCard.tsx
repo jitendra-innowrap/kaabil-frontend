@@ -4,8 +4,8 @@ import React from 'react'
 export interface jobcardtype{icon:string, title:string, jobUrl:string}
 export default function CompanyCard({icon, title, jobUrl}:jobcardtype) {
   return (
-    <div className="rounded-2xl overflow-hidden">
-      <div className="size-[200px] shadow-default 2xl:size-[263px] flex flex-col justify-between bg-white p-4 2xl:p-6 text-center">
+    <div className="rounded-2xl shadow-default overflow-hidden">
+      <div className="size-[200px] 2xl:size-[263px] flex flex-col justify-between bg-white p-4 2xl:p-6 text-center">
         <div className="block">
             <Image
             className="size-[60px] 2xl:size-[90px] cursor-pointer mx-auto"

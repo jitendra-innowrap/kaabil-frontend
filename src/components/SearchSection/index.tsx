@@ -9,12 +9,12 @@ export default function SearchSection() {
   return (
     <div className="flex flex-col lg:flex-row gap-3 lg:gap-0 mx-auto rounded-[20px] lg:shadow-default max-w-[1313px] lg:bg-white xl:h-[100px] items-center">
           <input type="text" id='searchbar_input' placeholder="Job Title or Company" className="placeholder:truncate w-full col-span-12 md:col-span-6 placeholder:text-[#808080]  px-6 py-2 xl:px-8 xl:py-4" />
-          <div className="relative w-full">
+          <div className="relative w-full xl:w-[250px] rounded-[40px]">
             <Select
               // value={null}
               options={[{value: 1, label:'Mumbai'}, {value: 2, label: 'Banglore'}, {value: 3, label: 'delhi'}, {value: 4, label: 'Hyderabad'}]}
               placeholder="Select Location"
-              className='w-full xl:w-[250px] rounded-[40px]'
+              className=''
               components={{
                   IndicatorSeparator: () => null, // Remove the separator
               }}
@@ -30,7 +30,7 @@ export default function SearchSection() {
                 IndicatorSeparator: () => null, // Remove the separator
             }}
           />
-          <button className="md:text-lg font-semibold px-6 flex xl:px-8 w-full lg:h-[100px] whitespace-nowrap bg-[#E41C3B] text-white"> <HiMagnifyingGlass className='size-7 mr-3'/> Search Jobs</button>
+          <button className="md:text-lg font-semibold px-6 flex xl:px-8 lg:h-[100px] whitespace-nowrap bg-[#E41C3B] text-white"> <HiMagnifyingGlass className='size-7 mr-3'/> Search Jobs</button>
         </div>
   )
 }

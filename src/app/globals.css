@@ -125,6 +125,10 @@ button.btn-border{
   color: #4D4D4F;
   background: #9BEDC6;
 }
+.label.lightgreen{
+  color: #313131;
+  background: #C9FFE4;
+}
 .label.greylight{
   background: #F9F9F9;
   color: #4C4C4C;
@@ -342,4 +346,63 @@ css-10wo9uf-option:hover, .css-d7l1ni-option:hover{
 }
 .swiper .job-card .action-btns button{
   flex: 1;
+}
+.gm-style .place-desc-large{
+  width: fit-content;
+}
+
+
+
+/* Filters styles */
+.filters-sidebar .filter-accordian {
+  padding: 0;
+  border: none;
+}
+.filters-sidebar .filter-accordian button {
+  font-weight: 900;
+  font-size: 16px;
+  padding: 0;
+  background: none;
+  color: #2C2C2C;
+}
+.filters-sidebar .filter-accordian button.show-more {
+  border: 1px solid var(--primary-red);
+  width: 100%;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--primary-red);
+}
+.pagination{
+  gap: 8px;
+}
+.pagination li{
+  border: 1px solid #DFE3E8;
+  background: #fff;
+  border-radius: 4px;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+}
+.pagination button{
+ color: #212B36;
+ font-size: 14px;
+ font-weight: 900;
+ padding: 0;
+ background: none;
+}
+.pagination li.active{
+  border: 1px solid var(--primary-red);
+}
+.pagination li.active button{
+  color: var(--primary-red);
+}
+.pagination li.page-item.disabled{
+  background-color: #000000;
+}
+.range-slider__thumb{
+  background: var(--primary-red) !important;
+}
+.range-slider .range-slider__range{
+  background: #FFA7A7 !important;
 }

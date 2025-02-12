@@ -1,5 +1,6 @@
 import React from "react";
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 // import "./styles.css";
 
 interface PaginationProps {
@@ -18,12 +19,12 @@ const Pagination: React.FC<PaginationProps> = ({
     return (
         <>
             {pages > 1 && (
-                <ul className="flex w-full justify-center items-center">
+                <ul className="pagination flex w-full justify-center items-center">
                     {/* Previous Button */}
-                    {currentPage > 1 && (
-                        <li onClick={() => handleActive(currentPage - 1)} className="page-item">
-                            <button className="grid rounded-s-lg place-items-center size-7 w-6 md:size-8 md:w-9 border border-[#CFD6DC]">
-                            <BsArrowLeft color="#4E5D78"/>
+                    {  (
+                        <li onClick={() => handleActive(currentPage - 1)} className={currentPage == 1?"page-item disabled":"page-item"}>
+                            <button disabled={currentPage == 1} >
+                            <MdKeyboardArrowLeft color="#4E5D78"/>
                             </button>
                         </li>
                     )}
@@ -33,17 +34,17 @@ const Pagination: React.FC<PaginationProps> = ({
                         <li
                             onClick={() => handleActive(item)}
                             key={item} // Use item as key if it's unique
-                            className={currentPage === item ? "text-white grid place-items-center bg-[#E41C3B] rounded-full size-8 md:size-9" : " grid place-items-center border border-[#CFD6DC] size-7 md:size-8 text-[#4E5D78]"}
+                            className={currentPage === item ? "active" : ""}
                         >
                             <button className="page-link">{item}</button>
                         </li>
                     ))}
 
                     {/* Next Button */}
-                    {currentPage < pages && (
-                        <li onClick={() => handleActive(currentPage + 1)} className="page-item">
-                            <button className="grid rounded-e-lg place-items-center size-7 w-6 md:size-8 md:w-9 border border-[#CFD6DC]">
-                                <BsArrowRight color="#4E5D78"/>
+                    {(
+                        <li onClick={() => handleActive(currentPage + 1)} className={currentPage == pages?"page-item disabled":"page-item "}>
+                            <button disabled={currentPage == pages}>
+                                <MdKeyboardArrowRight color="#4E5D78"/>
                             </button>
                         </li>
                     )}

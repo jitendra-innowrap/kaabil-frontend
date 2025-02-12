@@ -24,6 +24,7 @@
     "swiper": "^11.1.14"
   },
   "devDependencies": {
+    "@types/google-map-react": "^2.1.10",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

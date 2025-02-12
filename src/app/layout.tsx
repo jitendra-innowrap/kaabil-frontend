@@ -3,6 +3,8 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Poppins, Kalam } from 'next/font/google';
 import './globals.css';
+import 'reactjs-popup/dist/index.css';
+import ReduxProvider from "@/providers/ReduxProvider";
 
 // Configure Poppins
 const poppins = Poppins({
@@ -35,9 +37,11 @@ export default function RootLayout({
       <body
         className={`${kalam.variable} ${poppins.className} antialiased`}
       >
+        <ReduxProvider>
         <Header />
         {children}
         <Footer/>
+        </ReduxProvider>
       </body>
     </html>
   );

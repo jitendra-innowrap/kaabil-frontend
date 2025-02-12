@@ -1,10 +1,10 @@
 import Image from 'next/image'
 import React from 'react'
-import Hamburger from 'hamburger-react'
-import { SlGlobe, SlMagnifier } from 'react-icons/sl'
+import { SlGlobe } from 'react-icons/sl'
 import BurgerMenu from './BurgerMenu'
 import Link from 'next/link'
 import { BiChevronDown } from 'react-icons/bi'
+import SignInButton from './SignInButton'
 
 export default function Header() {
 
@@ -12,7 +12,9 @@ export default function Header() {
     <header className='border-b-[1px] shadow-default flex justify-center'>
         <div className='flex container py-4 md:py-3 justify-between lg:justify-start items-center'>
             <Link href="/" className="flex relative pr-4 md:pr-8 xl:pr-14 items-center">
-                <img
+                <Image
+                    height={70}
+                    width={141}
                     src="/assets/logos/Kaabil logo.svg"
                     className='w-auto max-w-fit h-[40px] xl:h-[50px] 2xl:h-[70px]'
                     alt='kaabil logo'
@@ -70,9 +72,7 @@ export default function Header() {
                             </Link>
                         </li>
                         <li>
-                            <button className='bg-red text-white text-sm w-[120px] h-[38px] grid place-items-center rounded-[9px]'>
-                                Sign In
-                            </button>
+                            <SignInButton/>
                         </li>
                     </ul>
                 </div>

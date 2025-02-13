@@ -1,6 +1,7 @@
 'use client'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setProgress } from '@/redux/progressSlice';
+import { updateNumber } from '@/redux/userSlice';
 import React, { useState } from 'react'
 
 export default function MobileInputForm() {
@@ -9,6 +10,7 @@ export default function MobileInputForm() {
     const [mobile, setMobile] = useState("")
     const handleSubmit =()=>{
       dispatch(setProgress(2));
+      dispatch(updateNumber(mobile));
     }
     const handleChange =(e:any)=>{
       setMobile(e.target.value)

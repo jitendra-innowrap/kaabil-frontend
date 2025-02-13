@@ -1,13 +1,32 @@
 'use client'
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import Popup from 'reactjs-popup'
 import 'reactjs-popup/dist/index.css';
 import SignIn from '@/components/Auth/SignIn';
-
-export default function SignInButton() {
+interface prop{
+  closeSideMenu?: () => void;  
+}
+export default function SignInButton({closeSideMenu}: prop) {
+  const popupRef = useRef<any>(null);
+  const [open, setOpen] = useState(false)
+  const closePopup = () => {
+    setOpen(false);
+    console.log('closePopup')
+    if (popupRef.current) {
+      popupRef.current.close(); // Manually close the popup
+    }
+  };
+  const openPopup = () => {
+    setOpen(true)
+    if(closeSideMenu){
+      closeSideMenu();
+    }
+  };
   return (
     <Popup 
-    trigger={<button className='bg-red text-white text-sm w-[120px] h-[38px] grid place-items-center rounded-[9px]'>
+    ref={popupRef}
+    onOpen={openPopup}
+    trigger={<button onClick={openPopup} className='bg-red text-white text-sm w-[120px] h-[38px] grid place-items-center rounded-[9px]'>
         Sign In
     </button>} 
     modal
@@ -18,7 +37,7 @@ export default function SignInButton() {
         overflow: 'hidden',
     }}
     >
-        <SignIn/>
+        {false && <SignIn onClose={closePopup} />}
     </Popup>
   )
 }

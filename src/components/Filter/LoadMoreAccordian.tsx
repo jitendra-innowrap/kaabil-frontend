@@ -75,16 +75,16 @@ function LoadMoreAccordion({
     };
 
     return (
-        <Accordion className='border bg-white px-7 border-[#A7A7A7] rounded-[20px]' transition={{ duration: '300ms', timingFunction: 'cubic-bezier(0, 0, 0.2, 1)' }}>
+        <Accordion alwaysOpen className='filter-accordian border bg-white px-7 border-[#A7A7A7] rounded-[20px]' transition={{ duration: '300ms', timingFunction: 'cubic-bezier(0, 0, 0.2, 1)' }}>
             <AccordionItem isActive={true}>
-                {({ open }: any) => (
+                {({ open=true }: any) => (
                     <>
                         <AccordionHeader className="w-full flex justify-between items-center text-black py-4">
-                            <span className="font-normal text-base">{header}</span>
+                            <span className="font-semibold mb-4 xl:mb-5 text-base">{header}</span>
                             {open ? (
-                                <BiChevronUp className="text-slate-500 font-bold text-xl" />
+                                <BiChevronUp className="hidden text-slate-500 font-bold text-xl" />
                             ) : (
-                                <BiChevronDown className="text-slate-500 font-bold text-xl" />
+                                <BiChevronDown className="hidden text-slate-500 font-bold text-xl" />
                             )}
                         </AccordionHeader>
                         <AccordionBody>
@@ -94,30 +94,32 @@ function LoadMoreAccordion({
                                         type="text"
                                         value={search}
                                         onChange={(e) => setSearch(e.target.value)}
-                                        className="py-2 px-4 w-full font-medium text-sm rounded-[100px] z-0 focus:shadow focus:outline-none border border-[#8C8C8C] placeholder:text-black placeholder:font-normal"
+                                        className="py-2 pl-8 2xl:pl-10 h-[40px] px-4 w-full font-medium text-sm rounded-[12px] z-0 focus:shadow focus:outline-none bg-[#F6F6F6] placeholder:text-[#6C757D] placeholder:font-normal"
                                         placeholder={`Search ${header}`}
                                     />
-                                    <div className="absolute top-1/2 right-1 -translate-y-1/2">
-                                        <button className="mr-4 h-full">
-                                            <BiSearch />
-                                        </button>
+                                    <div className="absolute top-[32px] left-[10px] -translate-y-1/2">
+                                        <span className="mr-4 h-full">
+                                            <BiSearch className='size-4 xl:size-5 text-[#6C757D]' />
+                                        </span>
                                     </div>
                                 </div>
                             ) : null}
-                            <ul className='mb-4 grid gap-4 max-h-[210px] overflow-y-auto custom-scrollbar'>
+                            <ul className='mb-4 grid gap-3 max-h-[210px] overflow-y-auto custom-scrollbar'>
                                 {list.map((item) => (
                                     isRadio ? (
-                                        <li key={item.id} onClick={() => handleRadio(item)}>
+                                        <li key={item.id} className='flex justify-between' onClick={() => handleRadio(item)}>
                                             <Radio item={item.name} checked={selected === item.name} />
+                                            <span className='mr-3 text-end'>{item.id}</span>
                                         </li>
                                     ) : (
-                                        <li key={item.id} onClick={() => handleCheck(item)}>
+                                        <li key={item.id} className='flex justify-between' onClick={() => handleCheck(item)}>
                                             <Check item={item.name} checked={selected.split('|').includes(item.name)} />
+                                            <span className='mr-3 text-end'>{item.id}</span>
                                         </li>
                                     )
                                 ))}
                             </ul>
-                            {fetchMoreItems && <button className='text-[#e41c3b] underline mb-5'>View all</button>}
+                            {fetchMoreItems && <button className='show-more !py-2'>show more</button>}
                         </AccordionBody>
                     </>
                 )}

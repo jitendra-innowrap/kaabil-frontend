@@ -30,7 +30,7 @@ export default function SearchSection() {
                 IndicatorSeparator: () => null, // Remove the separator
             }}
           />
-          <button className="md:text-lg font-semibold px-6 flex xl:px-8 lg:h-[100px] whitespace-nowrap bg-[#E41C3B] text-white"> <HiMagnifyingGlass className='size-7 mr-3'/> Search Jobs</button>
+          <button className="md:text-lg justify-center w-full lg:w-fit font-semibold px-6 flex xl:px-8 lg:h-[100px] whitespace-nowrap bg-[#E41C3B] text-white"> <HiMagnifyingGlass className='size-7 mr-3'/> Search Jobs</button>
         </div>
   )
 }

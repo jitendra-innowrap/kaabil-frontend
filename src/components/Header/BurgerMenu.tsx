@@ -1,13 +1,25 @@
 'use client'
 import React, { useState } from 'react';
 import { Twirl as Hamburger } from 'hamburger-react'
-import { SlMagnifier } from 'react-icons/sl';
+import { SlGlobe, SlMagnifier } from 'react-icons/sl';
+import Link from 'next/link';
+import { BiChevronDown } from 'react-icons/bi';
+import SignInButton from './SignInButton';
 
 export default function BurgerMenu() {
     const [isOpen, setOpen] = useState(false);
-
+    const closeSideMenu = ()=>{
+        setOpen(false);
+    }
     return (
         <div className="relative">
+            
+            {isOpen && (
+                <div 
+                    className="fixed inset-0 z-10 bg-black opacity-50" 
+                    onClick={() => setOpen(false)}
+                />
+            )}
             <div className=" relative z-[11]"><Hamburger toggled={isOpen} toggle={setOpen} /></div>
             <div 
                 className={`fixed z-10 top-0 right-0 h-full w-[100vw] max-w-[380px] bg-white shadow-lg transform transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
@@ -19,35 +31,49 @@ export default function BurgerMenu() {
                         alt='kaabil logo'
                         />
                 </div>
-                <div className="flex gap-3 px-6 py-2 border rounded-full mb-6 mx-6">
+                {/* <div className="flex gap-3 px-6 py-2 border rounded-full mb-6 mx-6">
                     <SlMagnifier  className='size-5' color='#959595' />
                     <input type="text" className='outline-none focus:outline-none placeholder:text-[#959595] w-[300px] text-sm' placeholder='Search Jobs, Companies & More' />
-                </div>
-                <ul className="px-6 text-xl font-bold">
-                    <li className='mb-3'>Home</li>
-                    <li className='mb-3'>Pathfinder</li>
-                    <li className='mb-3'>Community Forum</li>
-                    <li className='mb-3'>LMS</li>
-                    <li className='mb-3'>About</li>
+                </div> */}
+                <ul className="flex flex-col px-6 gap-4 xl:gap-8">
+                    <li className='flex'>
+                        <Link href={"/jobs"} className='text-Grey hover:text-black font-medium hover:font-semibold relative after:w-full after:h-1 after:rounded-[4px] hover:after:bg-red after:absolute after:bottom-[-12px] after:left-0'>
+                        Jobs
+                        </Link>
+                    </li>
+                    <li className='relative group/menu flex'>
+                        <Link href={"/"} className='text-Grey hover:text-black font-medium group-hover/menu:font-semibold relative after:w-full after:h-1 after:rounded-[4px] group-hover/menu:after:bg-red after:absolute after:bottom-[-12px] after:left-0'>
+                        Career Tools
+                        </Link>
+                    </li>
+                    <li className='flex'>
+                        <Link href={"/"} className='text-Grey hover:text-black font-medium hover:font-semibold relative after:w-full after:h-1 after:rounded-[4px] hover:after:bg-red after:absolute after:bottom-[-12px] after:left-0'>
+                        Skill Centre
+                        </Link>
+                    </li>
+                    <li className='flex'>
+                        <Link href={"/"} className='text-Grey hover:text-black font-medium hover:font-semibold relative after:w-full after:h-1 after:rounded-[4px] hover:after:bg-red after:absolute after:bottom-[-12px] after:left-0'>
+                        About Us
+                        </Link>
+                    </li>
                 </ul>
-                <div className="flex px-6 justify-end my-5">
-                    <img
-                        src="/assets/logos/Google Play light.svg"
-                        className='w-auto h-[44px]'
-                        alt='Google Play Logo'
-                    />
-                </div>
-                <div className="flex flex-col gap-4 px-6">
-                    <a href="#" target="_blank" className='px-6 py-2 font-bold text-white bg-[#E41C3B] rounded-3xl' rel="noopener noreferrer">Job Exchange</a>
-                    <a href="#" target="_blank" className='px-6 py-2 font-bold text-white bg-[#4D4D4F] rounded-3xl' rel="noopener noreferrer">Employer Portal</a>
-                </div>
+                <ul className='flex flex-col px-6 gap-7 mt-5'>
+                    <li className='relative group/menu flex'>
+                        <Link href={"/"} className='text-Grey hover:text-black font-medium group-hover/menu:font-semibold relative after:w-full after:h-1 after:rounded-[4px] group-hover/menu:after:bg-red after:absolute after:bottom-[-12px] after:left-0'>
+                        Employer Corner
+                        </Link>
+                    </li>
+                    <li className='relative group/menu text-Grey font-medium flex'>
+                        <Link href={"/"} className='relative text-black flex items-center p-2 border border-[#e3e3e3] rounded-lg'>
+                        <SlGlobe className='text-black font-medium mr-1'/> English
+                        <BiChevronDown className='font-medium text-2xl text-black'/>
+                        </Link>
+                    </li>
+                    <li>
+                        <SignInButton closeSideMenu={closeSideMenu}/>
+                    </li>
+                </ul>
             </div>
-            {isOpen && (
-                <div 
-                    className="fixed inset-0 bg-black opacity-50" 
-                    onClick={() => setOpen(false)}
-                />
-            )}
         </div>
     );
 }

@@ -43,27 +43,23 @@ import { formatSalary } from '../utils';
 
     return (
         <Accordion
-            className='border bg-white px-7 border-[#A7A7A7] rounded-[20px]'
+            className='filter-accordian border bg-white px-7 border-[#A7A7A7] rounded-[20px]'
             transition={{ duration: '300ms', timingFunction: 'cubic-bezier(0, 0, 0.2, 1)' }}
         >
             <AccordionItem isActive={true}>
                 {({ open }: any) => (
                     <>
                         <AccordionHeader className="w-full flex justify-between items-center text-black py-4">
-                            <span className="font-normal text-base">{"Salary"}</span>
+                            <h5 className="font-semibold mb-4 xl:mb-5 text-base">{"Salary"} <span className='text-xs font-normal'>per year</span></h5>
                             {open ? (
-                                <BiChevronUp className="text-slate-500 font-bold text-xl" />
+                                <BiChevronUp className="hidden text-slate-500 font-bold text-xl" />
                             ) : (
-                                <BiChevronDown className="text-slate-500 font-bold text-xl" />
+                                <BiChevronDown className="hidden text-slate-500 font-bold text-xl" />
                             )}
                         </AccordionHeader>
                         <AccordionBody>
-                            <div className="block mb-10">
+                            <div className="block mb-6 mt-2">
                                 {/* Display the formatted salary range */}
-                                <div className="flex justify-between mb-5">
-                                    <div className="text-lg">{formatSalary(value.min)}</div>
-                                    <div className="text-lg">{formatSalary(value.max)}</div>
-                                </div>
                                 
                                 {/* Salary range slider */}
                                 <RangeSlider
@@ -76,6 +72,31 @@ import { formatSalary } from '../utils';
                                     
                                 />
                             </div>
+                                <form className="mb-5">
+                                    <div className="form-group relative mb-2">
+                                        <label htmlFor="min-salary" className="absolute block text-base font-medium top-[14px] left-3 mb-1">Min ₹</label>
+                                        <input
+                                            type="text"
+                                            className='w-full text-sm p-[14px] pl-[65px] rounded-lg bg-[#F6F6F6] '
+                                            id="min-salary"
+                                            name="min-salary"
+                                            value={value.min}
+                                            onChange={(e) => setValue({...value, min: Number(e.target.value) })}
+                                        />
+                                    </div>
+                                    <div className="form-group relative mb-2">
+                                        <label htmlFor="min-salary" className="absolute block text-base font-medium top-[14px] left-3 mb-1">Max ₹</label>
+                                        <input
+                                            type="text"
+                                            className='w-full text-sm p-[14px] pl-[65px] rounded-lg bg-[#F6F6F6] '
+                                            id="max-salary"
+                                            name="max-salary"
+                                            value={value.max}
+                                            onChange={(e) => setValue({...value, max: Number(e.target.value) })}
+                                        />
+                                    </div>
+                                    <button className='w-full !bg-black !p-[14px] !text-white'>Apply</button>
+                                </form>
                         </AccordionBody>
                     </>
                 )}

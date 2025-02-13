@@ -30,7 +30,9 @@ const config: Config = {
       },
       boxShadow:{
         default: "0px 4px 22px 0px #00000029",
-        secondary: "0px 0px 17px -3px #bdbdbd"
+        secondary: "0px 0px 17px -3px #bdbdbd",
+        tertiary: "0px 12px 32px 0px #CFDAEC4D",
+
 
       },
       keyframes: {

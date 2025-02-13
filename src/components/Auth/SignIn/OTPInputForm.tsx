@@ -1,11 +1,13 @@
 'use client'
-import { useAppSelector } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { setProgress } from '@/redux/progressSlice';
 import Image from 'next/image'
 import React, { useEffect, useRef, useState } from 'react'
 
 export default function OTPInputForm() {
     const [otp, setOtp] = useState(['', '', '', '']);
-    const progress = useAppSelector((state) => state.progress.value); // Access progress state
+    const progress = useAppSelector((state) => state.progress.value); 
+    const user = useAppSelector((state) => state.user);
     const [timer, setTimer] = useState(60); // Timer for 1 minute
     const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
@@ -50,25 +52,31 @@ export default function OTPInputForm() {
           inputRefs.current[index - 1]?.focus();
         }
       };
+      const dispatch = useAppDispatch();
+      
+      const handleSubmit =()=>{
+        dispatch(setProgress(3))
+      }
   return (
     <div>
         <h2 className='text-center font-semibold text-lg md:text-xl 2xl:text-[28px] 2xl:leading-[36px]'>OTP Verification</h2>
         <p className='text-center mt-2'>We have sent the code verification to your number</p>
         <Image
-        src="/new-assets/icons/otp-notification.png"
+        src="/new-assets/icons/otp-icon.png"
         alt="OTP verification form"
         width={60}
         className='mx-auto mt-5'
         height={60}
         />
-        <form className="block mt-8 md:mt-10 ">
+        <form className="block mt-8 md:mt-10" onSubmit={handleSubmit}>
             <label htmlFor="mobile">Mobile Number</label>
-            <input type="tel" id="mobile" name="mobile" placeholder="Enter your mobile number to receive OTP" required />
-            <div className="flex gap-5 md:gap-8 xl:gap-10 mt-2 xl:mt-[10px] justify-center">
+            <input type="tel" id="mobile" name="mobile" value={user?.number} placeholder="Enter your mobile number to receive OTP" required />
+            <div className="flex gap-6 sm:gap-10 mt-2 xl:mt-[10px] justify-between">
                 {otp.map((digit, index) => (
-                <input
+                <div className="relative">
+                  <input
                     key={index}
-                    className="border border-borderBlue text-center p-2.5 h-10 md:h-16 2xl:h-20 text-lg md:text-xl font-semibold "
+                    className="otp-input w-full border border-borderBlue text-center text-lg md:text-xl font-semibold "
                     name={`otp${index}`}
                     type="tel"
                     maxLength={1}
@@ -78,9 +86,11 @@ export default function OTPInputForm() {
                     onKeyDown={(e) => handleKeyDown(index, e)}
                     ref={(ref) => { inputRefs.current[index] = ref; }}                   
                     />
+                    {index<3 && <span className='text-[#98A2B3] top-3 -right-5 sm:-right-7 text-3xl absolute'>-</span>}
+                </div>
                 ))}
             </div>
-            <button className='disable' type="submit">
+            <button className={``} type="submit">
                 next
             </button>
         </form>

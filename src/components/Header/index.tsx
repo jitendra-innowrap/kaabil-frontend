@@ -24,7 +24,7 @@ export default function Header() {
                 <div className="flex h-full justify-between items-center">
                     <ul className="flex py-4 gap-4 xl:gap-8">
                         <li className='flex'>
-                            <Link href={"/"} className='text-Grey hover:text-black font-medium hover:font-semibold relative after:w-full after:h-1 after:rounded-[4px] hover:after:bg-red after:absolute after:bottom-[-12px] after:left-0'>
+                            <Link href={"/jobs"} className='text-Grey hover:text-black font-medium hover:font-semibold relative after:w-full after:h-1 after:rounded-[4px] hover:after:bg-red after:absolute after:bottom-[-12px] after:left-0'>
                             Jobs
                             </Link>
                         </li>

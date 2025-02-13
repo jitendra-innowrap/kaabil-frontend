@@ -201,7 +201,7 @@ export default function Home() {
             </section>
             <section className="bg-[#F5F5F5]">
                 <div className="container py-5 md:py-8 xl:py-14 2xl:py-16">
-                    <div className="bg-[#FEF5E4] rounded-[24px] p-6 2xl:p-9 flex gap-4 xl:gap-6">
+                    <div className="bg-[#FEF5E4] rounded-[24px] p-6 2xl:p-9 flex flex-col lg:flex-row gap-4 xl:gap-6">
                         <div className="w-full flex items-center">
                         <h2 className="mx-auto max-w-[400px] 2xl:max-w-[500px] text-xl md:text-3xl xl:text-4xl 2xl:text-[40px] 2xl:leading-[52px] font-medium">Kaabil helps you create resumes, practice for interviews, and get jobs!</h2>
                         </div>
@@ -224,9 +224,9 @@ export default function Home() {
             </section>
             <section className="py-5 xl:py-6 bg-[#F5F5F5]">
                 <div className="w-full flex flex-col items-center my-5 md:my-8 xl:my-14 2xl:my-16  mx-auto">
-                <div className="section-heading mb-5 xl:mb-8 ">
+                <div className="section-heading mb-5 xl:mb-8 container">
                     <h2 className='text-black text-center text-2xl md:text-3xl xl:text-4xl 2xl:text-[40px] 2xl:leading-[64px] font-medium mb-2'>Learn key <span className="font-kalam text-red">skills</span> for career success</h2>
-                    <p className="font-normal xl:text-lg 2xl:text-xl 2xl:leading-9">Access all the tools and skills to transform your professional journey from where you are to where you want to be.</p>
+                    <p className="font-normal text-center xl:text-lg 2xl:text-xl 2xl:leading-9">Access all the tools and skills to transform your professional journey from where you are to where you want to be.</p>
                 </div>
                 <div className="container">                        
                     <div className="block">
@@ -236,7 +236,24 @@ export default function Home() {
                         showNavigation
                         loop={false}
                         autoplay={false}
-                        slidesPerView={3}
+                        slidesPerView={1}
+                        breakpoints={{
+                            480:{
+                                slidesPerView: 1.3,
+                            },
+                            768: {
+                              slidesPerView: 2.5,
+                            },
+                            1024: {
+                              slidesPerView: 3,
+                            },
+                            1200: {
+                              slidesPerView: 4,
+                            },
+                            1500: {
+                              slidesPerView: 5,
+                            },
+                          }}
                         />
                     </div>
                 </div>
@@ -314,8 +331,11 @@ export default function Home() {
                             showNavigation
                             loop={false}
                             autoplay={false}
-                            slidesPerView={2}
+                            slidesPerView={1.4}
                             breakpoints={{
+                                480:{
+                                    slidesPerView: 2,
+                                },
                                 768: {
                                   slidesPerView: 2.5,
                                 },
@@ -338,7 +358,7 @@ export default function Home() {
             <section className="py-5 xl:py-6 bg-[#F8F8F8]">
                 <div className="w-full flex flex-col my-5 md:my-8 xl:my-14 2xl:my-16  mx-auto">
                     <div className="container">                        
-                        <div className="section-heading ml-[70px]">
+                        <div className="section-heading md:ml-[70px]">
                             <h2 className='text-black text-start text-2xl md:text-3xl xl:text-4xl 2xl:text-[48px] 2xl:leading-[54px]  font-medium'>Articles</h2>
                             <p className="mb-5 xl:mb-8">Register  to receive weekly articles, tips and more from our team</p>
                         </div>

@@ -3,15 +3,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 interface ProgressState {
   value: number;
 }
-interface UserState {
-  user: {
-    name?: string;
-    number?: string;
-    skills?: string[],
-    type?: string;
-    experiences?: experience[];
-  };
-}
 interface experience {
   role: string;
   company: string;

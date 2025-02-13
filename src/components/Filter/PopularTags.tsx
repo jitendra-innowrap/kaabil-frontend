@@ -50,18 +50,18 @@ function PopularTags() {
 
     return (
         <Accordion
-            className='border bg-white px-7 border-[#A7A7A7] rounded-[20px]'
+            className='filter-accordian border bg-white px-7 border-[#A7A7A7] rounded-[20px]'
             transition={{ duration: '300ms', timingFunction: 'cubic-bezier(0, 0, 0.2, 1)' }}
         >
             <AccordionItem isActive={true}>
                 {({ open }: any) => (
                     <>
                         <AccordionHeader className="w-full flex justify-between items-center text-black py-4">
-                            <span className="font-normal text-base">Popular Tags</span>
+                            <span className="font-semibold mb-4 xl:mb-5 text-base">Popular Tags</span>
                             {open ? (
-                                <BiChevronUp className="text-slate-500 font-bold text-xl" />
+                                <BiChevronUp className="hidden text-slate-500 font-bold text-xl" />
                             ) : (
-                                <BiChevronDown className="text-slate-500 font-bold text-xl" />
+                                <BiChevronDown className="hidden text-slate-500 font-bold text-xl" />
                             )}
                         </AccordionHeader>
                         <AccordionBody>

@@ -21,7 +21,7 @@ export default function FindCareerSection() {
             <CareerRoleCard key={index} {...role} />
         ));
   return (
-    <div className="grid grid-cols-2 relative">
+    <div className="grid md:grid-cols-2 relative">
         <div className="section-heading mb-5 xl:mb-8 col-span-1">
             <h2 className='text-black text-start text-2xl md:text-3xl xl:text-4xl 2xl:text-[40px] 2xl:leading-[64px] font-medium mb-2'>Not sure what  <span className="font-kalam text-red">job </span>suits you?</h2>
             <p className="font-normal xl:text-lg 2xl:text-xl 2xl:leading-9">Find career paths that match your skills and strengths.</p>

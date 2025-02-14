@@ -39,7 +39,7 @@ export default function JobListingCard() {
       <div className="flex flex-wrap gap-4 min-h-16 justify-between">
         <ul className='flex flex-wrap gap-2 mt-3'>
           <li className='label'>Problem Solving</li>
-          <li className='label'>time management</li>
+          <li className='label green'>time management</li>
           <li className='label'>adaptability</li>
         </ul>
         <div className="flex action-btns gap-4 flex-wrap justify-end items-end">

@@ -197,7 +197,7 @@ button{
   flex-shrink: 0;
 }
 .popup-content {
-  max-width: 400px;
+  max-width: 550px;
   max-height: 95vh;
   overflow: auto;
   width: 90%;
@@ -388,7 +388,7 @@ css-10wo9uf-option:hover, .css-d7l1ni-option:hover{
 }
 @media (width>=1280){
   .popup-content{
-    max-width: 500px;
+    max-width: 600px;
   }
   .seach-section .css-13cymwt-control, .seach-section .css-t3ipsp-control{
     padding-left: 1.5rem; 

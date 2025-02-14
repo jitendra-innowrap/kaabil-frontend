@@ -11,6 +11,8 @@ import CareerSkill from "@/components/Cards/CareerSkill";
 import FindCareerSection from "@/components/FindeCareerSection";
 import SuccessCard from "@/components/Cards/SuccessCard";
 import ArticleCard from "@/components/Cards/ArticleCard";
+import Interviewlaptop from "@/components/Nudges/Home/Interviewlaptop";
+import ResumeBuilder from "@/components/Nudges/Home/ResumeBuilder";
 export default function Home() {
     const jobsList = [
         {
@@ -63,6 +65,11 @@ export default function Home() {
     const successSlides = successList.map((job, index) => (
         <SuccessCard key={index} {...job} />
       ));
+
+    const nudges = [
+        <Interviewlaptop/>,
+        <ResumeBuilder/>
+    ]
     
       const slides = jobsList.map((job, index) => (
         <CompanyCard key={index} {...job} />
@@ -203,21 +210,18 @@ export default function Home() {
                 <div className="container py-5 md:py-8 xl:py-14 2xl:py-16">
                     <div className="bg-[#FEF5E4] rounded-[24px] p-6 2xl:p-9 flex flex-col lg:flex-row gap-4 xl:gap-6">
                         <div className="w-full flex items-center">
-                        <h2 className="mx-auto max-w-[400px] 2xl:max-w-[500px] text-xl md:text-3xl xl:text-4xl 2xl:text-[40px] 2xl:leading-[52px] font-medium">Kaabil helps you create resumes, practice for interviews, and get jobs!</h2>
+                        <h2 className="mx-auto max-w-[400px] flex-shrink-0 2xl:max-w-[500px] text-xl md:text-3xl xl:text-4xl 2xl:text-[40px] 2xl:leading-[52px] font-medium">Kaabil helps you create resumes, practice for interviews, and get jobs!</h2>
                         </div>
-                        <div className="flex bg-white rounded-lg py-8 xl:py-10 2xl:py-11 px-9 xl:px-12 2xl:px-14 !pb-0">
-                            <div className="block pb-8 xl:pb-10 2xl:pb-11">
-                                <h3 className="text-2xl 2xl:text-3xl font-medium">Need help with creating your resume? 
-                                Use our <span className="text-red font-kalam">resume builder</span> to make it easy!</h3>
-                                <button className="mt-3 md:mt-4">Start Building Your Resume</button>
-                            </div>
-                            <Image
-                                className="cursor-pointer mx-auto w-[150px] 2xl:w-[287px] h-auto"
-                                src={'/new-assets/nudges/resume-builder.png'}
-                                width={287}
-                                height={253}
-                                alt="resume-builder"
-                                /> 
+                        <div className="lg:w-1/2">
+                        <GallerySlider
+                        slides={nudges}
+                        arrowOut={false}
+                        spaceBetween={20}
+                        showNavigation
+                        loop={false}
+                        autoplay={false}
+                        slidesPerView={1}
+                        />
                         </div>
                     </div>
                 </div>

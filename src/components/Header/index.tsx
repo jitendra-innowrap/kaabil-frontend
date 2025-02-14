@@ -22,57 +22,67 @@ export default function Header() {
             </Link>
             <div className="hidden lg:flex h-full flex-col w-[-webkit-fill-available]">
                 <div className="flex h-full justify-between items-center">
-                    <ul className="flex py-4 gap-4 xl:gap-8">
+                    <ul className="flex py-4 gap-3 xl:gap-4 2xl:gap-8">
                         <li className='flex'>
-                            <Link href={"/jobs"} className='text-Grey hover:text-black font-medium hover:font-semibold relative after:w-full after:h-1 after:rounded-[4px] hover:after:bg-red after:absolute after:bottom-[-12px] after:left-0'>
+                            <Link href={"/jobs"} className='text-Grey hover:text-black font-medium hover:font-semibold text-sm 2xl:text-base relative after:w-full after:h-1 after:rounded-[4px] hover:after:bg-red after:absolute after:bottom-[-12px] after:left-0'>
                             Jobs
                             </Link>
                         </li>
                         <li className='relative group/menu flex'>
-                            <Link href={"/"} className='text-Grey hover:text-black font-medium group-hover/menu:font-semibold relative after:w-full after:h-1 after:rounded-[4px] group-hover/menu:after:bg-red after:absolute after:bottom-[-12px] after:left-0'>
+                            <Link href={"/"} className='text-Grey hover:text-black font-medium text-sm 2xl:text-base group-hover/menu:font-semibold relative after:w-full after:h-1 after:rounded-[4px] group-hover/menu:after:bg-red after:absolute after:bottom-[-12px] after:left-0'>
                             Career Tools
                             </Link>
                             <BiChevronDown className='font-medium text-2xl text-Grey group-hover/menu:text-black'/>
                             <div className="absolute hidden group-hover/menu:block top-0 left-0">
                                 <div className="bg-white shadow-default mt-[56px] rounded-xl w-[288px] border border-lightGrey divide-y divide-lightGrey">
-                                    <Link href='/' className='block text-Grey hover:text-black py-4 font-medium hover:font-semibold px-5'>Resume Builder</Link>
-                                    <Link href='/' className='block text-Grey hover:text-black py-4 font-medium hover:font-semibold px-5'>Career Guide</Link>
-                                    <Link href='/' className='block text-Grey hover:text-black py-4 font-medium hover:font-semibold px-5'>Mock Interviews</Link>
+                                    <Link href='/' className='block text-Grey hover:text-black py-4 font-medium hover:font-semibold text-sm 2xl:text-base px-5'>Resume Builder</Link>
+                                    <Link href='/' className='block text-Grey hover:text-black py-4 font-medium hover:font-semibold text-sm 2xl:text-base px-5'>Career Guide</Link>
+                                    <Link href='/' className='block text-Grey hover:text-black py-4 font-medium hover:font-semibold text-sm 2xl:text-base px-5'>Mock Interviews</Link>
                                 </div>
                             </div>
                         </li>
                         <li className='flex'>
-                            <Link href={"/"} className='text-Grey hover:text-black font-medium hover:font-semibold relative after:w-full after:h-1 after:rounded-[4px] hover:after:bg-red after:absolute after:bottom-[-12px] after:left-0'>
+                            <Link href={"/"} className='text-Grey hover:text-black font-medium hover:font-semibold text-sm 2xl:text-base relative after:w-full after:h-1 after:rounded-[4px] hover:after:bg-red after:absolute after:bottom-[-12px] after:left-0'>
                             Skill Centre
                             </Link>
                         </li>
                         <li className='flex'>
-                            <Link href={"/"} className='text-Grey hover:text-black font-medium hover:font-semibold relative after:w-full after:h-1 after:rounded-[4px] hover:after:bg-red after:absolute after:bottom-[-12px] after:left-0'>
+                            <Link href={"/"} className='text-Grey hover:text-black font-medium hover:font-semibold text-sm 2xl:text-base relative after:w-full after:h-1 after:rounded-[4px] hover:after:bg-red after:absolute after:bottom-[-12px] after:left-0'>
                             About Us
                             </Link>
                         </li>
                     </ul>
-                    <ul className='flex gap-7 items-center'>
+                    <ul className='flex gap-3 2xl:gap-7 items-center'>
                         <li className='relative group/menu flex'>
-                            <Link href={"/"} className='text-Grey hover:text-black font-medium group-hover/menu:font-semibold relative after:w-full after:h-1 after:rounded-[4px] group-hover/menu:after:bg-red after:absolute after:bottom-[-12px] after:left-0'>
+                            <Link href={"/"} className='text-Grey hover:text-black font-medium text-sm 2xl:text-base group-hover/menu:font-semibold relative after:w-full after:h-1 after:rounded-[4px] group-hover/menu:after:bg-red after:absolute after:bottom-[-12px] after:left-0'>
                             Employer Corner
                             </Link>
                             <BiChevronDown className='font-medium text-2xl text-black'/>
                             <div className="absolute hidden group-hover/menu:block top-0 left-0">
                                 <div className="bg-white shadow-default mt-[56px] rounded-xl w-[200px] border border-lightGrey divide-y divide-lightGrey">
-                                    <Link href='/' className='block text-Grey hover:text-black py-4 font-medium hover:font-semibold px-5'>Post Job</Link>
-                                    <Link href='/' className='block text-Grey hover:text-black py-4 font-medium hover:font-semibold px-5'>Hire Talent</Link>
+                                    <Link href='/' className='block text-Grey hover:text-black py-4 font-medium hover:font-semibold text-sm 2xl:text-base px-5'>Post Job</Link>
+                                    <Link href='/' className='block text-Grey hover:text-black py-4 font-medium hover:font-semibold text-sm 2xl:text-base px-5'>Hire Talent</Link>
                                 </div>
                             </div>
                         </li>
                         <li className='relative group/menu text-Grey font-medium flex'>
-                            <Link href={"/"} className='relative text-black flex items-center p-2 border border-[#e3e3e3] rounded-lg'>
-                            <SlGlobe className='text-black font-medium mr-1'/> English
+                            <Link href={"/"} className='relative text-black flex items-center text-sm 2xl:text-base p-2 border border-[#e3e3e3] rounded-lg'>
+                            <SlGlobe className='text-black font-medium text-sm 2xl:text-base mr-1'/> English
                             <BiChevronDown className='font-medium text-2xl text-black'/>
                             </Link>
                         </li>
                         <li>
                             <SignInButton/>
+                        </li>
+                        <li>
+                        <Image
+                            height={100}
+                            width={412}
+                            quality={100}
+                            src="/new-assets/icons/empowered by mahindra logo.png"
+                            className='w-auto max-w-[113px] h-[22px] xl:h-[20px] 2xl:h-[31px]'
+                            alt='kaabil logo'
+                            />
                         </li>
                     </ul>
                 </div>

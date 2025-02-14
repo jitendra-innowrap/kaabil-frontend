@@ -10,7 +10,7 @@ export default function RegisterInMinutes() {
                 <button className="mt-3 md:mt-4">Register to Apply jobs</button>
             </div>
             <Image
-                className="cursor-pointer w-[100px] 2xl:w-[157px] h-auto"
+                className="cursor-pointer w-[100px] sm:w-[157px] h-[100px] sm:h-auto"
                 src={'/new-assets/images/nudges/listing/timer.png'}
                 width={287}
                 height={253}

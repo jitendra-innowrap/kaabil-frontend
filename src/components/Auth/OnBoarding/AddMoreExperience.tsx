@@ -31,7 +31,7 @@ export default function AddMoreExperience() {
              <h6 className=' text-sm mb-2'>HT Media Labs <GoDotFill className='inline-block size-2'/> Full-time</h6>
              <h6 className=' text-sm mb-2'>May 2020 - Present <GoDotFill className='inline-block size-2'/> 4 yrs</h6>
            </div>
-           <div className="flex items-center h-fit">
+           <div className="flex items-center h-fit cursor-pointer">
             <Image src={'/new-assets/icons/pencil.png'} alt='edit-pencil' aria-label='edit icon' className='w-3 h-3 mr-1' width={90} height={90}/>
             <span className='text-red text-sm font-semibold'>Edit</span>
            </div>
@@ -42,10 +42,10 @@ export default function AddMoreExperience() {
          <div className="flex w-full items-end">
            <div className="whitespace-nowrap"><span className='text-red'>{progress-4}</span> - 6</div>
            <div className="flex gap-4 items-end w-full justify-end">
-           <span className={`max-w-[130px] flex items-center btn-border h-[56px]`}>
+          <span onClick={()=>{dispatch(setProgress(10))}} className={`max-w-[130px] cursor-pointer hover:border-gray-400 flex items-center btn-border h-[56px]`}>
              Skip
            </span>
-           <button className={`max-w-[250px] flex-shrink-0 justify-start`} disabled={false} type="submit">
+           <button className={`max-w-[100px] sm:max-w-[250px] flex-shrink-0 justify-start`} disabled={false} type="submit">
              Next
            </button>
            </div>

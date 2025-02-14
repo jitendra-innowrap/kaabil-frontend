@@ -10,7 +10,7 @@ export default function FilterSidebar() {
     const [open, setOpen] = useState(false);
   return (
     <>
-    {open && <div className="block bg-black opacity-20 w-screen h-screen fixed top-0 left-0" onClick={()=>setOpen(false)}></div>}
+    {open && <div className="block bg-black z-10 opacity-20 w-screen h-screen fixed top-0 left-0" onClick={()=>setOpen(false)}></div>}
     <div className="filters-sidebar h-fit p-4 md:p-6 rounded-[20px] flex bg-white relative flex-col lg:w-fit items-start">
         <div className="flex justify-between items-center w-full mb-2 md:mb-4 xl:mb-6 2xl:mb-8">
             <h2 className="text-lg 2xl:text-xl font-semibold">All Filters

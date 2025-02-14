@@ -1,5 +1,6 @@
 'use client'
 import Image from 'next/image'
+import Link from 'next/link'
 import React from 'react'
 import { CiHeart } from 'react-icons/ci'
 import { LiaMapMarkerAltSolid } from 'react-icons/lia'
@@ -42,8 +43,8 @@ export default function JobListingCard() {
           <li className='label'>adaptability</li>
         </ul>
         <div className="flex action-btns gap-4 flex-wrap justify-end items-end">
-          <button className='btn-border whitespace-nowrap h-fit px-1 w-[137px] text-red !border-red'>view Jobs</button>
-          <button className='h-fit px-1 w-[137px]'>quick jobs</button>
+          <Link href="/jobs/detail/wbg-operations" className='btn-border whitespace-nowrap px-1 h-[44px] w-[137px] text-red !border-red'>view Job</Link>
+          <button className='px-1 w-[137px] !border h-[44px] border-red'>quick Apply</button>
         </div>
       </div>
     </div>

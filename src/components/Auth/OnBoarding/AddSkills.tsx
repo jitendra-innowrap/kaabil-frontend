@@ -95,7 +95,7 @@ export default function AddSkills() {
         </div>
         <div className="flex w-full justify-between items-end">
           <div className="whitespace-nowrap"><span className='text-red'>{progress-4}</span> - 6</div>
-          <button className={`max-w-[250px]`} disabled={false} type="submit">
+          <button className={`max-w-[100px] sm:max-w-[250px]`} disabled={false} type="submit">
             Next
           </button>
         </div>

@@ -3,6 +3,7 @@ import GallerySlider from "@/components/JobDetail/Slider/GallarySlider";
 import Map from "@/components/Map";
 import ReadMoreComponent from "@/components/utils/ReadMoreText";
 import Image from "next/image";
+import Link from "next/link";
 import { CiCalendar, CiHeart } from "react-icons/ci";
 import { FaCheck, FaFacebook, FaLinkedinIn } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
@@ -90,7 +91,7 @@ export default function Home() {
       </section>
       <section className="container mt-5 md:mt-8 xl:mt-10 mb-6 md:mb-10 xl:mb-14 2xl:mb-16 ">
         <div className="grid  grid-cols-12 gap-4 md:gap-6 2xl:gap-10">
-            <div className=" order-2  col-span-12 lg:col-span-4 2xl:col-span-3 job-detail-sidebar p-3 md:p-4 xl:p-8 rounded-xl w-full shadow-default">
+            <div className="h-fit order-2  col-span-12 lg:col-span-4 2xl:col-span-3 job-detail-sidebar p-3 md:p-4 xl:p-8 rounded-xl w-full shadow-default">
               <h2 className="text-lg 2xl:text-xl font-semibold mb-2 md:mb-4 xl:mb-5">About this role</h2>
               <div className="bg-[#F8F8F8] font-medium text-black p-3 md:p-4 rounded-xl mb-2 md:mb-4 xl:mb-5">115 Applied</div>              
               <div className="flex items-center">
@@ -150,10 +151,12 @@ export default function Home() {
             </div>
             <div className="lg:order-2 col-span-12 lg:col-span-8 2xl:col-span-9 job-description">
               <ul className="flex mb-3 md:mb-4 2xl:mb-6 gap-5 md:gap-8 xl:gap-10 2xl:gap-12 border-b py-2 2xl:py-[10px] border-[#D4D4D4]">
-                <li className={`text-red md:text-sm font-bold`}>Job Description</li>
-                <li className={`md:text-sm font-normal`}>About the company</li>
+                <li className={`text-red md:text-sm font-bold`}>
+                  <Link href="#description">Job Description</Link></li>
+                <li className={`md:text-sm font-normal`}>
+                  <Link href="#about" className="text-black hover:font-bold hover:text-red">About the company</Link></li>
               </ul>
-              <div className="py-4 md:py-6 xl:py-8 2xl:py-10 rounded-xl shadow-default">
+              <div id="description" className="py-4 md:py-6 xl:py-8 2xl:py-10 rounded-xl shadow-default">
                 <div className="px-4 md:px-6 xl:px-8 2xl:px-10">
                   <h2 className="text-lg 2xl:text-xl font-semibold mb-3 md:mb-4 xl:mb-6">Job Description</h2>
                   <p className="text-sm leading-[32px] mb-4 md:mb-6 xl:mb-8">The key purpose of this job role is to develop, communicate and implement a strategy to identify, mitigate and handle current and potential issues / lapses in security of Information Technology Systems and Processes.
@@ -194,12 +197,12 @@ export default function Home() {
                   </ul>
                 </div>
               </div>
-              <div className="py-4 md:py-6 xl:py-8 2xl:py-10 rounded-xl shadow-default mt-4 md:mt-6 xl:mt-4">
+              <div id="about" className="py-4 md:py-6 xl:py-8 2xl:py-10 rounded-xl shadow-default mt-4 md:mt-6 xl:mt-4">
                 <div className="px-4 md:px-6 xl:px-8 2xl:px-10">
                   <h2 className="text-lg 2xl:text-xl font-semibold mb-3 md:mb-4 xl:mb-6">About the company</h2>
                 </div>
                 <hr />
-                <div className="px-4 md:px-6 xl:px-8 2xl:px-10 my-3 flex items-center justify-between flex-col sm:flex-row gap-5 xl:gap-7 2xl:gap-8">
+                <div className="px-4 md:px-6 xl:px-8 2xl:px-10 my-3 flex sm:items-center justify-between flex-col sm:flex-row gap-5 xl:gap-7 2xl:gap-8">
                   <div className="flex flex-col sm:flex-row gap-2 xl:gap-3 2xl:gap-4">
                     <Image
                     src={"/new-assets/icons/Comapny-profile-icon.png"}
@@ -251,8 +254,8 @@ export default function Home() {
       </section>
       <section className="py-5 xl:py-6 bg-[#F8F8F8]">
         <div className="w-full flex flex-col my-5 md:my-8 xl:my-14 2xl:my-16  mx-auto">
-          <div className="container">                        
-            <div className="section-heading ml-[70px]">
+          <div className="">                        
+            <div className="container section-heading sm:ml-[70px]">
                 <h2 className='text-black text-start text-2xl md:text-3xl xl:text-4xl 2xl:text-[48px] 2xl:leading-[54px]  font-medium'>Similar jobs</h2>
             </div>
             <div className="block">

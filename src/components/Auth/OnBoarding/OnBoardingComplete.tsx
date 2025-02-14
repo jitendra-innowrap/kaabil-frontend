@@ -22,14 +22,14 @@ export default function OnBoardingComplete({onClose}:prop) {
            Your profile is active    
          </h2>
          <form onSubmit={handleSubmit} className="block mt-8 md:mt-10 xl:mt-14 2xl:mt-16">
-           <div className=" p-4 rounded-lg border-[1.6px] border-[#E3ECFB] shadow-tertiary justify-start flex gap-4">
+           <div className=" p-4 flex-col sm:flex-row rounded-lg border-[1.6px] border-[#E3ECFB] shadow-tertiary justify-start flex sm:gap-4">
             <div className="flex flex-col justify-center items-center">
             <Image src={'/new-assets/icons/avatar.png'} alt='edit-pencil' aria-label='edit icon' className='w-[75px] h-[75px] mr-1' width={150} height={150}/>
             <button className='!p-0 !rounded-full !text-[11px] !w-[87px] !h-6 !m-2'>Upload Photo</button>
             </div>
               <div className="">
-                <h5 className='font-semibold text-black mb-1'>Shweta Malankar</h5>
-                <h5 className='text-black mb-1 font-medium'>Lead UI/UX Designer</h5>
+                <h5 className='font-semibold text-black mb-1 text-center sm:text-left'>Shweta Malankar</h5>
+                <h5 className='text-black mb-1 font-medium text-center sm:text-left'>Lead UI/UX Designer</h5>
                 <h6 className=' text-sm text-[#4D4D4F] mb-2'>HT Media Labs <GoDotFill className='inline-block size-3'/> Full-time</h6>
                 <h6 className=' text-sm text-[#4D4D4F]'>Selected job roles:  </h6>
                 <h6 className=' text-sm font-medium mb-2 inline mr-2'><GoDotFill className='inline-block size-3'/> 2D Animator</h6>

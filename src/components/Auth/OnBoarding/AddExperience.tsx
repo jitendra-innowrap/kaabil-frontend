@@ -24,16 +24,16 @@ export default function AddExperience() {
       </h2>
       <form onSubmit={handleSubmit} className="block mt-8 md:mt-10 xl:mt-14 2xl:mt-16">
         <h4 className='text-lg font-medium'>What’s your level of experience?</h4>
-        <div className="my-4 flex gap-4">
+        <div className="my-4 flex flex-col sm:flex-row gap-4">
           <div className="form-group flex-1 gap-4 rounded-lg px-5 py-4 shadow-default flex items-center">
-            <input type="radio" id="experience1" name="experience" className='inline-block !m-0 !w-4 !h-4' value="entry" />
-            <label htmlFor="experience1" className="!mb-0 gap-2 inline-block">
+            <input type="radio" id="experience1" name="experience" className='cursor-pointer inline-block !m-0 !w-4 !h-4' value="entry" />
+            <label htmlFor="experience1" className="!mb-0 gap-2 inline-block cursor-pointer">
               Entry Level
             </label>
           </div>
           <div className="form-group flex-1 gap-4 rounded-lg px-5 py-4 shadow-default flex items-center">
-          <input type="radio" id="experience2" name="experience" className='inline-block !m-0 !w-4 !h-4' value="intermediate" />
-            <label htmlFor="experience2" className="!mb-0 gap-2 inline-block">
+          <input type="radio" id="experience2" name="experience" className='cursor-pointer inline-block !m-0 !w-4 !h-4' value="intermediate" />
+            <label htmlFor="experience2" className="!mb-0 gap-2 inline-block cursor-pointer">
               Intermediate
             </label>
           </div>
@@ -44,10 +44,10 @@ export default function AddExperience() {
         <div className="flex w-full items-end">
           <div className="whitespace-nowrap"><span className='text-red'>{progress-4}</span> - 6</div>
           <div className="flex gap-4 items-end w-full justify-end">
-          <span className={`max-w-[130px] flex items-center btn-border h-[56px]`}>
+          <span onClick={()=>{dispatch(setProgress(10))}} className={`max-w-[130px] cursor-pointer hover:border-gray-400 flex items-center btn-border h-[56px]`}>
             Skip
           </span>
-          <button className={`max-w-[250px] flex-shrink-0 justify-start`} disabled={false} type="submit">
+          <button className={` max-w-[100px] sm:max-w-[250px] flex-shrink-0 justify-start`} disabled={false} type="submit">
             Next
           </button>
           </div>

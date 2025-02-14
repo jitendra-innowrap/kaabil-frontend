@@ -19,6 +19,7 @@ interface GallerySliderProps extends SwiperOptions {
   onHoverPause?: boolean; // Pause on hover
   reverse?: boolean; // Reverse autoplay direction
   freeMode?: boolean; // Enable free mode
+  arrowOut?: boolean; //
   slideComponent?: React.ComponentType<any>; // Custom slide component
 }
 
@@ -30,6 +31,7 @@ const GallerySlider: React.FC<GallerySliderProps> = ({
   customArrowLeft,
   customArrowRight,
   showNavigation = false,
+  arrowOut = true,
   freeMode = false,
   speed,
   spaceBetween = 25,
@@ -72,7 +74,7 @@ useEffect(() => {
   }
 }, []);
   return (
-    <div className={`relative ${showNavigation?'px-12 md:px-16':''}`}>
+    <div className={`relative ${showNavigation && arrowOut?'px-6 sm:px-12 md:px-16':'px-3'}`}>
       <Swiper
         modules={[Autoplay, Navigation, FreeMode]}
         loop={loop}

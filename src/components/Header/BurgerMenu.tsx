@@ -5,6 +5,7 @@ import { SlGlobe, SlMagnifier } from 'react-icons/sl';
 import Link from 'next/link';
 import { BiChevronDown } from 'react-icons/bi';
 import SignInButton from './SignInButton';
+import Image from 'next/image';
 
 export default function BurgerMenu() {
     const [isOpen, setOpen] = useState(false);
@@ -71,6 +72,16 @@ export default function BurgerMenu() {
                     </li>
                     <li>
                         <SignInButton closeSideMenu={closeSideMenu}/>
+                    </li>
+                    <li>
+                    <Image
+                        height={100}
+                        width={412}
+                        quality={100}
+                        src="/new-assets/icons/empowered by mahindra logo.png"
+                        className='w-auto max-w-[113px] h-[22px] xl:h-[20px] 2xl:h-[31px]'
+                        alt='kaabil logo'
+                        />
                     </li>
                 </ul>
             </div>

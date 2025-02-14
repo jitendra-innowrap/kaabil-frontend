@@ -5,7 +5,7 @@ import { jobcardtype } from './CompanyCard'
 
 export default function JobtypeCard({icon, title, jobUrl}:jobcardtype) {
   return (
-    <div className="p-5 2xl:p-6 gap-4 flex rounded-2xl 2xl:rounded-3xl items-center justify-between bg-lightGrey">
+    <div className="p-5 cursor-pointer 2xl:p-6 gap-4 flex rounded-2xl 2xl:rounded-3xl items-center justify-between bg-lightGrey">
         <div className="flex items-center">
         <Image
             className="size-[60px] 2xl:size-[90px] cursor-pointer mx-auto"

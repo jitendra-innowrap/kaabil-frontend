@@ -3,6 +3,7 @@ import PlayStoreAppAd from "@/components/Banners/PlaystoreAppAd";
 import GallerySlider from "@/components/JobDetail/Slider/GallarySlider";
 import CompanyGallerycard from "@/components/Cards/CompanyGallerycard";
 import JobListingCard from "@/components/Cards/JobListingCard";
+import Link from "next/link";
 
 export default function Home() {
   const profiledata = {
@@ -84,11 +85,17 @@ export default function Home() {
       </section>
       <section className="container">
           <ul className="flex xl:mx-10 my-5 md:my-8 xl:my-10 gap-5 md:gap-8 xl:gap-10 2xl:gap-12 border-b pb-2 2xl:p-[10px] border-[#D4D4D4]">
-            <li className={`text-red md:text-sm font-bold`}>About</li>
-            <li className={`md:text-sm font-normal`}>Jobs</li>
-            <li className={`md:text-sm font-normal`}>Perks & Benefits</li>
+            <li className={`text-red md:text-sm font-bold`}>
+              <Link href={"#about"}>About</Link>
+            </li>
+            <li className={`md:text-sm font-normal`}>
+              <Link href={"#jobs"} className="text-black">Jobs</Link>
+            </li>
+            <li className={`md:text-sm font-normal`}>
+              <Link href={"#benefits"} className="text-black">Perks & Benefits</Link>
+            </li>
           </ul>
-          <div className="py-5 md:py-8 xl:py-14 2xl:py-16 rounded-xl shadow-default">
+          <div id="about" className="py-5 md:py-8 xl:py-14 2xl:py-16 rounded-xl shadow-default">
             <div className="px-5 md:px-8 xl:px-14 2xl:px-16">
               <h2 className="text-lg 2xl:text-xl font-semibold mb-4 md:mb-6 xl:mb-8">About Tech Mahindra</h2>
               <p className="text-sm leading-[32px] mb-4 md:mb-6 xl:mb-8">Tech Mahindra offers technology consulting and digital solutions to global enterprises across industries, enabling transformative scale at unparalleled speed. With 150,000+ professionals across 90+ countries helping 1100+ clients, TechM provides a full spectrum of services including consulting, information technology, enterprise applications, business process services, engineering services, network services, customer experience & design services, AI & analytics, and cloud & infrastructure services. It is the first Indian company in the world to have been awarded the Sustainable Markets Initiative’s Terra Carta Seal, in recognition of actively leading the charge to create a climate and nature-positive future.Tech Mahindra (NSE: TECHM) is part of the Mahindra Group, founded in 1945, one of the largest and most admired multinational federations of companies.Visit www.techmahindra.com to #ScaleAtSpeed</p>
@@ -104,7 +111,7 @@ export default function Home() {
                 />
             </div>
           </div>
-          <div className="my-5 md:my-8 xl:my-10 py-5 md:py-8 xl:py-14 2xl:py-16 rounded-xl shadow-default">
+          <div id="jobs" className="my-5 md:my-8 xl:my-10 py-5 md:py-8 xl:py-14 2xl:py-16 rounded-xl shadow-default">
             <div className="px-5 md:px-8 xl:px-14 2xl:px-16">
               <h2 className="text-lg 2xl:text-xl font-semibold">45 Jobs in Tech Mahindra</h2>
             </div>
@@ -118,7 +125,7 @@ export default function Home() {
                 />
             </div>
           </div>
-          <div className="my-5 md:my-8 xl:my-10 py-5 md:py-8 xl:py-14 2xl:py-16 rounded-xl shadow-default">
+          <div id="benefits" className="my-5 md:my-8 xl:my-10 py-5 md:py-8 xl:py-14 2xl:py-16 rounded-xl shadow-default">
             <div className="px-5 md:px-8 xl:px-14 2xl:px-16">
               <h2 className="text-lg 2xl:text-xl font-semibold mb-4 md:mb-6 xl:mb-8">Perks & Benefits</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 md:gap-8 xl:gap-10 2xl:gap-11">

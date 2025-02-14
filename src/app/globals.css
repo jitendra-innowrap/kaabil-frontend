@@ -342,7 +342,7 @@ css-10wo9uf-option:hover, .css-d7l1ni-option:hover{
   width: 100%;
 }
 
-@media (width >= 768) {
+@media (width >= 768px) {
   .container {
     max-width: 100%;
     padding-inline: 20px;
@@ -360,7 +360,7 @@ css-10wo9uf-option:hover, .css-d7l1ni-option:hover{
     padding-inline: 20px;
   }
 }
-@media (width >= 1024) {
+@media (width >= 1024px) {
   
   .seach-section input#searchbar_input,
   .seach-section button{
@@ -397,7 +397,7 @@ css-10wo9uf-option:hover, .css-d7l1ni-option:hover{
     padding-inline: 100px;
   }
 }
-@media (width >=1280){
+@media (width >=1280px){
   .popup-content{
     max-width: 600px;
   }
@@ -423,7 +423,7 @@ css-10wo9uf-option:hover, .css-d7l1ni-option:hover{
     padding-inline: 110px;
   }
 }
-@media (width >=1500){
+@media (width >=1500px){
   .popup-content{
     max-width: 660px;
   }

@@ -33,7 +33,7 @@ export default function Header() {
                             Career Tools
                             </Link>
                             <BiChevronDown className='font-medium text-2xl text-Grey group-hover/menu:text-black'/>
-                            <div className="absolute hidden group-hover/menu:block top-0 left-0">
+                            <div className="absolute z-30 hidden group-hover/menu:block top-0 left-0">
                                 <div className="bg-white shadow-default mt-[56px] rounded-xl w-[288px] border border-lightGrey divide-y divide-lightGrey">
                                     <Link href='/' className='block text-Grey hover:text-black py-4 font-medium hover:font-semibold text-sm 2xl:text-base px-5'>Resume Builder</Link>
                                     <Link href='/' className='block text-Grey hover:text-black py-4 font-medium hover:font-semibold text-sm 2xl:text-base px-5'>Career Guide</Link>
@@ -58,7 +58,7 @@ export default function Header() {
                             Employer Corner
                             </Link>
                             <BiChevronDown className='font-medium text-2xl text-black'/>
-                            <div className="absolute hidden group-hover/menu:block top-0 left-0">
+                            <div className="absolute z-30 hidden group-hover/menu:block top-0 left-0">
                                 <div className="bg-white shadow-default mt-[56px] rounded-xl w-[200px] border border-lightGrey divide-y divide-lightGrey">
                                     <Link href='/' className='block text-Grey hover:text-black py-4 font-medium hover:font-semibold text-sm 2xl:text-base px-5'>Post Job</Link>
                                     <Link href='/' className='block text-Grey hover:text-black py-4 font-medium hover:font-semibold text-sm 2xl:text-base px-5'>Hire Talent</Link>

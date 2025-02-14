@@ -132,18 +132,18 @@ export default function Home() {
 
     const JobTypes = [
         {
-            icon: "/new-assets/company-icons/image (1).png",
-            title: "Senior Software Engineer",
+            icon: "/new-assets/job-types/full-time.png",
+            title: "Full Time",
             jobUrl: "/"
            },
            {
-            icon: "/new-assets/company-icons/image (2).png",
-            title: "Senior Software Engineer",
+            icon: "/new-assets/job-types/intership.png",
+            title: "Internship",
             jobUrl: "/"
            },
            {
-            icon: "/new-assets/company-icons/image (3).png",
-            title: "Senior Software Engineer",
+            icon: "/new-assets/job-types/part-time.png",
+            title: "Part Time",
             jobUrl: "/"
            },
     ]

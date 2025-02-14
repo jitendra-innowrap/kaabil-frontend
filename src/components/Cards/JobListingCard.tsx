@@ -43,7 +43,7 @@ export default function JobListingCard() {
           <li className='label'>adaptability</li>
         </ul>
         <div className="flex action-btns gap-4 flex-wrap justify-end items-end">
-          <Link href="/jobs/detail/wbg-operations" className='btn-border whitespace-nowrap px-1 h-[44px] w-[137px] text-red !border-red'>view Job</Link>
+          <Link href="/jobs/detail/wbg-operations" className='grid place-items-center btn-border whitespace-nowrap px-1 h-[44px] w-[137px] text-red !border-red'>view Job</Link>
           <button className='px-1 w-[137px] !border h-[44px] border-red'>quick Apply</button>
         </div>
       </div>

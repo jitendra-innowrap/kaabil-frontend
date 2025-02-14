@@ -32,9 +32,11 @@ export default function JobListingCard() {
         <span className='ml-2 text-sm text-[#545581]'>Kandivali, Mumbai</span>
       </div>
       <div className="flex">
-        <TbBriefcase2 className='text-[#545581] size-5'/>
-        <span className='ml-2 text-sm text-[#545581]'>Kandivali, Mumbai</span>
-        <span className='ml-5 text-sm text-[#545581]'>₹ 25k - 40k / <small className='text-[#B1B4B7]'>month</small></span>
+        <div className="flex">
+          <TbBriefcase2 className='text-[#545581] size-5'/>
+          <span className='ml-2 text-sm text-[#545581] whitespace-nowrap'>1-4 yrs experience</span>
+        </div>
+        <span className='ml-5 text-sm text-[#545581] whitespace-nowrap'>₹ 25k - 40k / <small className='text-[#B1B4B7]'>month</small></span>
       </div>
       <div className="flex flex-wrap gap-4 min-h-16 justify-between">
         <ul className='flex flex-wrap gap-2 mt-3'>

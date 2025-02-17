@@ -61,7 +61,7 @@ const userSlice = createSlice({
       state.experiences.push(action.payload);
     },
     // Clear the user state
-    clearUser: (state) => {
+    signOut: (state) => {
       state.name = undefined;
       state.number = undefined;
       state.skills = undefined;
@@ -79,7 +79,7 @@ export const {
   updateType,
   updateExperiences,
   addExperience,
-  clearUser,
+  signOut,
 } = userSlice.actions;
 
 // Export the reducer

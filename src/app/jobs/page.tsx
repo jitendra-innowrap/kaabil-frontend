@@ -62,7 +62,7 @@ const slides = jobsList.map((job, index) => (
             />
         </div>
         <div className="">
-            <div className="container seach-section px-5 pt-8 md:px-14 md:pt-12 xl:px-24 xl:pt-14 2xl:px-20">
+            <div className="container search-section px-5 pt-8 md:px-14 md:pt-12 xl:px-24 xl:pt-14 2xl:px-20">
                 <SearchSection />
             </div>
         </div>

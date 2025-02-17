@@ -157,7 +157,7 @@ export default function Home() {
                     />
                 </div>
                 <div className="bg-[#F5F5F5]">
-                    <div className="container seach-section px-5 py-8 md:px-14 md:py-12 xl:px-24 xl:py-14 2xl:px-20">
+                    <div className="container search-section px-5 py-8 md:px-14 md:py-12 xl:px-24 xl:py-14 2xl:px-20">
                         <h2 className='text-black text-center text-2xl md:text-3xl xl:text-4xl 2xl:text-[40px] 2xl:leading-[64px] mb-5 xl:mb-8 font-medium'>Find your dream job with <span className="font-kalam text-red">Kaabil!</span></h2>
                         <SearchSection />
                     </div>

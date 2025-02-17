@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import progressReducer from './progressSlice';
 import userReducer from './userSlice';
+import searchReducer from './searchSlice';
 
 // Create the store
 export const makeStore = () => {
@@ -8,8 +9,7 @@ export const makeStore = () => {
     reducer: {
       progress: progressReducer, 
       user: userReducer,
-
-
+      search: searchReducer,
     },
   });
 };

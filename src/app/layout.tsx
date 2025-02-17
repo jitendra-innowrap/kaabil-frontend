@@ -5,6 +5,8 @@ import { Poppins, Kalam } from 'next/font/google';
 import './globals.css';
 import 'reactjs-popup/dist/index.css';
 import ReduxProvider from "@/providers/ReduxProvider";
+import SearchSection from "@/components/SearchSection";
+import SearchAppear from "@/components/Header/SearchAppear";
 
 // Configure Poppins
 const poppins = Poppins({
@@ -39,6 +41,7 @@ export default function RootLayout({
       >
         <ReduxProvider>
         <Header />
+        <SearchAppear/>
         {children}
         <Footer/>
         </ReduxProvider>

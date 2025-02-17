@@ -438,6 +438,20 @@ css-10wo9uf-option:hover, .css-d7l1ni-option:hover{
     padding-inline: 130px;
   }
 }
+
+@media (width>=1700){
+  .search-clicker {
+    padding-inline: 16px;
+    gap: 16px;
+  }
+  .search-clicker .search-icon{
+    width: 24px;
+    height: 24px;
+  }
+  .search-clicker .search-label {
+    font-size: 16px;
+  }
+}
 .swiper-wrapper {
   -webkit-transition-timing-function:linear!important; 
   -o-transition-timing-function:linear!important;
@@ -514,3 +528,13 @@ css-10wo9uf-option:hover, .css-d7l1ni-option:hover{
 .range-slider .range-slider__range{
   background: #FFA7A7 !important;
 }
+.search-appear-animate {
+  max-height: 0; /* Start with a collapsed state */
+  overflow: hidden; /* Hide the content when collapsed */
+  transition: max-height 0.2s ease-in-out; /* Smooth transition for max-height */
+}
+
+.search-appear-animate.open {
+  max-height: 500px; /* Set a value larger than the expected height */
+}
+

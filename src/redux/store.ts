@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import progressReducer from './progressSlice';
 import userReducer from './userSlice';
 import searchReducer from './searchSlice';
+import authReducer from './authSlice';
 
 // Create the store
 export const makeStore = () => {
@@ -10,6 +11,7 @@ export const makeStore = () => {
       progress: progressReducer, 
       user: userReducer,
       search: searchReducer,
+      auth: authReducer,
     },
   });
 };

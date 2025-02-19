@@ -1,9 +1,19 @@
+'use client'
+import { getDeviceToken } from '@/redux/authSlice'
+import { AppDispatch } from '@/redux/store'
 import Image from 'next/image'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { FaArrowRight, FaFacebookF, FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa'
 import { MdOutlineArrowRightAlt } from 'react-icons/md'
+import { useDispatch } from 'react-redux'
 
 export default function Footer() {
+    const dispatch = useDispatch<AppDispatch>();
+//   const { deviceId, secret, loading, error } = useSelector((state: RootState) => state.auth);
+
+  useEffect(() => {
+    dispatch(getDeviceToken());
+  }, [dispatch]);
   return (
     <footer className='border-t-4 text-[#E3E3E3] border-[#000000] bg-[#000000]'>
         <div className="container small w-full flex flex-col mt-5 md:mt-8 xl:mt-14 2xl:mt-16  mx-auto">

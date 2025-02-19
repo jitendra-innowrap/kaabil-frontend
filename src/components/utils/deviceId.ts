@@ -1,3 +1,4 @@
+'use client'
 import { decrypt, encrypt } from '@/Services/Encryption';
 import { v4 as uuidv4 } from 'uuid'; // You might need to install this: npm install uuid
 
@@ -20,6 +21,7 @@ const generateSalt = (deviceId: string): string => {
 
 // Function to get session data
 export const getSessionData = (): { deviceId: string, secret: string, salt: string, } => {
+    if (typeof window === "undefined") return { deviceId: "", secret: "", salt: "" };
     const storedDeviceIdEncrypted = localStorage.getItem(DEVICE_ID_KEY);
     const storedSaltEncrypted = localStorage.getItem(SALT_KEY);
     const storedSecretEncrypted = localStorage.getItem(SECRET_KEY);
@@ -36,6 +38,8 @@ export const getSessionData = (): { deviceId: string, secret: string, salt: stri
 
 // Function to initialize session data (generate and store if not present)
 export const initializeSession = (deviceId:string , secret:string): { deviceId: string; secret:string, salt: string } => {
+    if (typeof window === "undefined") return { deviceId: "", secret: "", salt: "" };
+
     let { salt } = getSessionData();
 
     if (!deviceId || !salt) {
@@ -49,10 +53,12 @@ export const initializeSession = (deviceId:string , secret:string): { deviceId: 
 };
 
 export const storeAuthToken = (token:string) =>{
-  localStorage.setItem(AUTH_TOKEN_KEY, encrypt(token, encryptionKey));
+    if (typeof window === "undefined") return ;
+    localStorage.setItem(AUTH_TOKEN_KEY, encrypt(token, encryptionKey));
 }
 export const getAuthToken = () =>{
-  const storedAuthTokenEncrypted = localStorage.getItem(SECRET_KEY);
+    if (typeof window === "undefined") return "";
+    const storedAuthTokenEncrypted = localStorage.getItem(SECRET_KEY);
 
     if (storedAuthTokenEncrypted) {
         const token = decrypt(storedAuthTokenEncrypted, encryptionKey) as string;
@@ -63,6 +69,7 @@ export const getAuthToken = () =>{
 
 // Function to clear session data
 export const clearSessionData = (): void => {
+    if (typeof window === "undefined") return ;
     localStorage.removeItem(DEVICE_ID_KEY);
     localStorage.removeItem(SALT_KEY);
     localStorage.removeItem(SECRET_KEY);

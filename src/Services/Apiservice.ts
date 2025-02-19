@@ -10,18 +10,6 @@ const api = axios.create({
   },
 });
 
-// Function to generate hash
-const generateHash = async (data: any, secret: string) => {
-  return 
-};
-// Function to retrieve device data from localStorage
-const getDeviceData = () => {
-    if (typeof window === "undefined") return { deviceId: "null", secret: "null" };
-  
-    const deviceId = localStorage.getItem("deviceId");
-    const secret = localStorage.getItem("secret") || "null";
-    return { deviceId, secret };
-  };
 // Add interceptors to modify requests
 api.interceptors.request.use(async (config) => {
   const { deviceId, secret, salt } = getSessionData();

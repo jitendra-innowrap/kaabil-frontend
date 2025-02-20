@@ -1,7 +1,7 @@
 'use client'
 import axios from "axios";
 import { encryptAndBase64 } from "./Encryption";
-import { getSessionData } from "@/components/utils/deviceId";
+import { getAuthToken, getSessionData } from "@/components/utils/deviceId";
 
 const api = axios.create({
   baseURL: "/api/endpoint/",
@@ -13,6 +13,7 @@ const api = axios.create({
 // Add interceptors to modify requests
 api.interceptors.request.use(async (config) => {
   const { deviceId, secret, salt } = getSessionData();
+  const token = getAuthToken();
   const timestamp = Date.now().toString();
   const jsonData = {
     "version":"1",
@@ -30,6 +31,9 @@ api.interceptors.request.use(async (config) => {
 
     if (config.data && secret) {
       config.headers["hash"] = hash;
+    }
+    if (config.data && token) {
+      config.headers["token"] = token;
     }
   }
   return config;

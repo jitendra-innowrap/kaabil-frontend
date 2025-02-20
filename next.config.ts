@@ -7,4 +7,8 @@ module.exports = {
       },
     ];
   },
+  productionBrowserSourceMaps: false,
+  images: {
+    domains: ['kaam-uat-files.s3.ap-south-1.amazonaws.com'],
+  },
 };

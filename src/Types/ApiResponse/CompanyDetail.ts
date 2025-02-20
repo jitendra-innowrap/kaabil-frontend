@@ -1,7 +1,7 @@
-interface JobResponse {
+interface CompanyDetailResponse {
     code: number;
     result: Company[];
-    job: (Job | JobCategory)[];
+    job: (CompanyJob | CompanyJobCategory)[];
   }
   
   interface Company {
@@ -79,7 +79,7 @@ interface JobResponse {
     company_master_id: string;
   }
   
-  interface Job {
+  interface CompanyJob {
     id: string;
     company_master_id: string;
     job_distance: string;
@@ -110,7 +110,7 @@ interface JobResponse {
     is_show_candidate_percent: number;
   }
   
-  interface JobCategory {
+  interface CompanyJobCategory {
     row: "job_category";
     data: JobCategoryData[];
   }

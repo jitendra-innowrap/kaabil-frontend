@@ -1,3 +1,4 @@
+import { getAuthUser } from '@/components/utils/deviceId';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 // Define the experience interface
@@ -20,9 +21,11 @@ interface UserState {
 }
 
 // Initial state
+
+const user =  getAuthUser();
 const initialState: UserState = {
   name: undefined,
-  number: undefined,
+  number: user?.mobile,
   skills: undefined,
   type: undefined,
   experiences: undefined,

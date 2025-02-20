@@ -1,11 +1,14 @@
 'use client'
 import { decrypt, encrypt } from '@/Services/Encryption';
+import { User } from '@/Types/common';
 import { v4 as uuidv4 } from 'uuid'; // You might need to install this: npm install uuid
 
 const DEVICE_ID_KEY = 'deviceId';
 const SALT_KEY = 'salt';
 const SECRET_KEY = 'secret';
 const AUTH_TOKEN_KEY = 'authToken';
+const AUTH_USER_KEY = 'authUser';
+const PROGRESS_KEY = 'onboardingProgress';
 const encryptionKey = 'oifyuey3784ryiq'
 
 // Function to generate a unique 16-digit device ID
@@ -58,13 +61,48 @@ export const storeAuthToken = (token:string) =>{
 }
 export const getAuthToken = () =>{
     if (typeof window === "undefined") return "";
-    const storedAuthTokenEncrypted = localStorage.getItem(SECRET_KEY);
+    const storedAuthTokenEncrypted = localStorage.getItem(AUTH_TOKEN_KEY);
 
     if (storedAuthTokenEncrypted) {
         const token = decrypt(storedAuthTokenEncrypted, encryptionKey) as string;
         return token;
     }
     return ""
+}
+export const storeAuthUser = (user: User) => {
+    if (typeof window === "undefined") return;
+    localStorage.setItem(AUTH_USER_KEY, encrypt(JSON.stringify(user), encryptionKey));
+};
+export const getAuthUser = () => {
+    if (typeof window === "undefined") return null;
+    const storedUserEncrypted = localStorage.getItem(AUTH_USER_KEY);
+    if (storedUserEncrypted) {
+        const userstring = decrypt(storedUserEncrypted, encryptionKey) as string;
+        try {
+        const user = JSON.parse(userstring) as User;
+        return user;
+        } catch (error) {
+        console.error("Failed to parse authUser:", error);
+        return null;
+        }
+    }
+    return null;
+};
+
+export const storeProgress = (progress:number) =>{
+    const progressString = progress.toString();
+    if (typeof window === "undefined") return ;
+    localStorage.setItem(PROGRESS_KEY, encrypt(progressString, encryptionKey));
+}
+export const getProgress = () =>{
+    if (typeof window === "undefined") return 1;
+    const storedprogressEncrypted = localStorage.getItem(PROGRESS_KEY);
+
+    if (storedprogressEncrypted) {
+        const progress = decrypt(storedprogressEncrypted, encryptionKey);
+        return parseInt(progress || '1');
+    }
+    return 1
 }
 
 // Function to clear session data

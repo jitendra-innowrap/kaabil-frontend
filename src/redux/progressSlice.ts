@@ -1,12 +1,13 @@
+import { getProgress } from '@/components/utils/deviceId';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface ProgressState {
   value: number;
 }
+const initialProgress = getProgress();
 const initialState: ProgressState = {
-  value: 1, // Initial progress state
+  value: initialProgress, // Initial progress state
 };
-
 const progressSlice = createSlice({
   name: 'progress',
   initialState,

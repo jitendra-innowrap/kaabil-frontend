@@ -1,24 +1,28 @@
 // features/authSlice.ts
-import { generateDeviceId, getSessionData, initializeSession, getAuthToken } from '@/components/utils/deviceId';
+import { generateDeviceId, getSessionData, initializeSession, getAuthToken, getAuthUser } from '@/components/utils/deviceId';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from './store';
 import api from '@/Services/Apiservice';
 import axios from 'axios';
+import { User } from '@/Types/common';
 
 interface AuthState {
   deviceId: string;
   secret: string;
   token: string;
+  user: User | null;
   loading: boolean;
   error: string | null;
 }
 
 const { deviceId, secret } = getSessionData();
+const user = getAuthUser();
 const token = getAuthToken();
 const initialState: AuthState = {
   deviceId,
   secret,
   token,
+  user,
   loading: false,
   error: null,
 };
@@ -81,7 +85,6 @@ export const resendOTP = createAsyncThunk(
   async (_, { getState, rejectWithValue }) => {
     const { auth } = getState() as RootState;
     try {
-      
       const response = await api.post('/Auth/resendOTP', {}, {
         headers: {
           token: auth.token,
@@ -165,8 +168,10 @@ const authSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(verifyOTP.fulfilled, (state) => {
+      .addCase(verifyOTP.fulfilled, (state, action) => {
         state.loading = false;
+        state.token = action.payload.token;
+        state.user = action.payload.result;
       })
       .addCase(verifyOTP.rejected, (state, action) => {
         state.loading = false;

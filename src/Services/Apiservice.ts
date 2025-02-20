@@ -32,7 +32,6 @@ api.interceptors.request.use(async (config) => {
       config.headers["hash"] = hash;
     }
   }
-  console.log("headers---",config.headers)
   return config;
 });
 

@@ -8,7 +8,7 @@ import ReadMoreComponent from "@/components/utils/ReadMoreText";
 import api from "@/Services/Apiservice";
 import Image from "next/image";
 import Link from "next/link";
-import { notFound, useParams } from "next/navigation";
+import { notFound, useParams, useRouter } from "next/navigation";
 import { json, text } from "node:stream/consumers";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -28,7 +28,8 @@ export default function Home() {
   const [isSkillMatch, setIsSkillMatch] = useState(false);
   const [openShare, setOpenShare] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [isFavorited, setIsFavorited] = useState(jobDetails?.saveJob_status=='2')
+  const [isFavorited, setIsFavorited] = useState(jobDetails?.saveJob_status=='2');
+  const router = useRouter();
     const handleSave = () => {
       setIsFavorited(!isFavorited)
     }
@@ -55,15 +56,22 @@ export default function Home() {
           },
         });
         const responseData = response.data as ApiResponseJobDetail;
-  
         if (responseData.code === 1) {
+          // if(responseData.result?.[0]?.id==null){
+          //   toast.error("page not found", { position: "bottom-right" });
+          //   notFound();
+          // }
           setJobDetails(responseData.result?.[0] as JobResult);
         }else{
           notFound();
         }
       } catch (error: any) {
-        console.error(error);
-        toast.error("something went wrong", { position: "bottom-right" });
+        if(error?.status==401){
+          router.back();
+          console.error("page error: 👍👍👍",error);
+        }else if(error?.status==404){
+          notFound();
+        }
       }
       setIsLoading(false)
     };
@@ -326,9 +334,16 @@ export default function Home() {
               <div id="description" className="py-4 md:py-6 xl:py-8 2xl:py-10 rounded-xl shadow-default">
                 <div className="px-4 md:px-6 xl:px-8 2xl:px-10">
                   <h2 className="text-lg 2xl:text-xl font-semibold mb-3 md:mb-4 xl:mb-6">Job Description</h2>
-                  <p className="text-sm leading-[32px] mb-4 md:mb-6 xl:mb-8">
-                    {jobDetails?.company_description}
-                  </p>
+                  <div
+                    className="text-sm leading-[32px] mb-4 md:mb-6 xl:mb-8"
+                    dangerouslySetInnerHTML={{
+                      __html:
+                        jobDetails?.additional_info && typeof jobDetails.additional_info === "string"
+                          ? jobDetails.additional_info
+                          : "",
+                    }}
+                  />
+
                 </div>
               </div>
               <div id="about" className="py-4 md:py-6 xl:py-8 2xl:py-10 rounded-xl shadow-default mt-4 md:mt-6 xl:mt-4">

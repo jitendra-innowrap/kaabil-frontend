@@ -22,13 +22,16 @@
     "react-headless-accordion": "^1.0.2",
     "react-hot-toast": "^2.5.2",
     "react-icons": "^5.3.0",
+    "react-lightgallery": "^0.9.0",
     "react-multi-select-component": "^4.3.4",
     "react-range-slider-input": "^3.0.7",
     "react-redux": "^9.2.0",
     "react-select": "^5.8.2",
+    "react-share-social": "^0.1.60",
     "reactjs-popup": "^2.0.6",
     "swiper": "^11.1.14",
     "uuid": "^11.0.5",
+    "yet-another-react-lightbox": "^3.21.7",
     "yup": "^1.6.1"
   },
   "devDependencies": {

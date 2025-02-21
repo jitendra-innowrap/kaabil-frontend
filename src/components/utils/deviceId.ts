@@ -111,4 +111,10 @@ export const clearSessionData = (): void => {
     localStorage.removeItem(DEVICE_ID_KEY);
     localStorage.removeItem(SALT_KEY);
     localStorage.removeItem(SECRET_KEY);
+    localStorage.removeItem(AUTH_TOKEN_KEY);
+    localStorage.removeItem(AUTH_USER_KEY);
+    localStorage.removeItem(PROGRESS_KEY);
+    
+    window.location.href = '/'; // Full page reload on session expiration
+
 };

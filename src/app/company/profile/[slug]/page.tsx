@@ -3,48 +3,27 @@ import Image from "next/image";
 import PlayStoreAppAd from "@/components/Banners/PlaystoreAppAd";
 import GallerySlider from "@/components/JobDetail/Slider/GallarySlider";
 import CompanyGallerycard from "@/components/Cards/CompanyGallerycard";
-import JobListingCard from "@/components/Cards/JobListingCard";
+import JobListingCardSmall from "@/components/Cards/JobListingCardSmall";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { notFound, useParams } from "next/navigation";
 import api from "@/Services/Apiservice";
 import toast from "react-hot-toast";
-const profiledata = {
-  profileicon: "",
-  name: "Tech Mahindra",
-  website: "www.techmahindra.com",
-  options:[
-    {icon: "", label: "Founded", value: "1986"},
-    {icon: "/new-assets/icons/employees-icon.png", label: "Employees", value: "10k+"},
-    {icon: "/new-assets/icons/location-icon.png", label: "Location", value: "pune, Maharashtra"},
-    {icon: "/new-assets/icons/industry-icon.png", label: "Industry", value: "IT Services and IT Consulting"},
-  ]
-}
-const successList = [
-        {name: "", role:"", image:"", video:""},
-        {name: "", role:"", image:"", video:""},
-        {name: "", role:"", image:"", video:""},
-        {name: "", role:"", image:"", video:""},
-        {name: "", role:"", image:"", video:""},
-        {name: "", role:"", image:"", video:""},
-        {name: "", role:"", image:"", video:""},
-        {name: "", role:"", image:"", video:""},
-    ]
-
-const gallerySlides = successList.map((job, index) => (
-  <CompanyGallerycard key={index} {...job} />
-));
-
-
+import CompanyGallery from "@/components/Gallary/CompanyGallary";
 
 export default function CompanyDetails() {
 const {slug} = useParams();
-const [companyJobs, setCompanyJobs] = useState<(CompanyJob)[]>([])
+const [isLoading, setIsLoading] = useState(true);
 const [CompanyDetails, setCompanyDetails] = useState<Company>();
-const jobsSlides = companyJobs?.map((job, index) => (
-  <div className="flex w-[100%] md:w-[338px]" key={index}>
-    <JobListingCard key={index} {...job} />
-  </div>
+const [companyGallary, setCompanyGallary] = useState<(CompanyImage | CompanyVideo)[]>([]);
+
+const [companyJobs, setCompanyJobs] = useState<(CompanyJob | CompanyJobCategory)[]>([])
+const jobsSlides = companyJobs
+  ?.filter((job): job is CompanyJob => 'id' in job) // Type guard to filter only CompanyJob
+  .map((job, index) => (
+    <div className="flex w-[100%] md:w-[338px]" key={index}>
+      <JobListingCardSmall key={index} detail={job} />
+    </div>
   ));
 useEffect(() => {
   async function fetchCompanyDetails() {
@@ -70,6 +49,7 @@ useEffect(() => {
       if (responseData.code === 1) {
         setCompanyDetails(responseData.result?.[0]);
         setCompanyJobs(responseData.job)
+        setCompanyGallary([...responseData.result?.[0]?.company_image, ...responseData.result?.[0]?.company_videos ])
       }else{
         notFound();
       }
@@ -77,21 +57,28 @@ useEffect(() => {
       console.error(error);
       toast.error("something went wrong", { position: "bottom-right" });
     }
+    setIsLoading(false)
   };
   fetchCompanyDetails();
 }, [slug]);
 
 
 
-  
+if(isLoading){
+  return (
+    <div className="flex justify-center items-center h-screen">
+      <div className='flex space-x-6 justify-center items-center'>
+                  <span className='sr-only'>Loading...</span>
+                   <div className='h-6 w-6 bg-red rounded-full animate-bounce [animation-delay:-0.3s]'></div>
+                 <div className='h-6 w-6 bg-red rounded-full animate-bounce [animation-delay:-0.15s]'></div>
+                 <div className='h-6 w-6 bg-red rounded-full animate-bounce'></div>
+               </div>
+    </div>
+  )
+}
   
   return (
     <main>
-      <pre className="h-[200px] overflow-auto">
-        {
-          JSON.stringify(CompanyDetails, null ,2)
-        }
-      </pre>
       <section className="bg-[#0a0100] py-10 xl:py-14 2xl:py-[76px] relative">
             <Image
                 src="/new-assets/icons/Comapny-profile-bg.png"
@@ -190,20 +177,12 @@ useEffect(() => {
           </ul>
           <div id="about" className="py-5 md:py-8 xl:py-14 2xl:py-16 rounded-xl shadow-default">
             <div className="px-5 md:px-8 xl:px-14 2xl:px-16">
-              <h2 className="text-lg 2xl:text-xl font-semibold mb-4 md:mb-6 xl:mb-8">About Tech Mahindra</h2>
+              <h2 className="text-lg 2xl:text-xl font-semibold mb-4 md:mb-6 xl:mb-8">About {CompanyDetails?.company_name}</h2>
               <p className="text-sm leading-[32px] mb-4 md:mb-6 xl:mb-8">{CompanyDetails?.company_description
                 }</p>
               <h2 className="text-lg 2xl:text-xl font-semibold">Gallery</h2>
             </div>
-            <div className="block">
-                <GallerySlider
-                slides={gallerySlides}
-                spaceBetween={25}
-                showNavigation
-                loop={false}
-                autoplay={false}
-                />
-            </div>
+            <CompanyGallery galleryItems={companyGallary} />
           </div>
           <div id="jobs" className="my-5 md:my-8 xl:my-10 py-5 md:py-8 xl:py-14 2xl:py-16 rounded-xl shadow-default">
             <div className="px-5 md:px-8 xl:px-14 2xl:px-16">

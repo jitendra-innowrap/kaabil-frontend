@@ -64,6 +64,12 @@ interface CompanyDetailResponse {
     created_by: string;
     share_url: string;
   }
+  // Props for the CompanyGalleryCard component
+interface CompanyGalleryCardProps {
+  item: CompanyImage | CompanyVideo;
+  onClick: () => void;
+}
+
   
   interface Benefit {
     id: string;
@@ -94,6 +100,7 @@ interface CompanyDetailResponse {
     booked_interview_date: string;
     education_master_id: string;
     min_exp: string;
+    max_exp: string;
     skills_master_id: string;
     applied_job_date: string;
     weight: string;
@@ -105,7 +112,7 @@ interface CompanyDetailResponse {
     company_job_slots: any[]; // Assuming it's an array of some unknown type
     jobs_questions: any[]; // Assuming it's an array of some unknown type
     jobs_location: any[]; // Assuming it's an array of some unknown type
-    profile_matched_percentage: number;
+    profile_matched_percentage?: number;
     perfect_match_percent: number;
     is_show_candidate_percent: number;
   }

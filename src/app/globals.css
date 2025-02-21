@@ -203,6 +203,15 @@ button{
   width: 90%;
   border-radius: 14px;
 }
+.popup-content.video-payer-content{
+  border: none !important;
+  background: none !important;
+}
+.popup-content.share-modal-content{
+  border: none !important;
+  background: none !important;
+  width: fit-content !important;
+}
 .popup-content form{
   max-width: 528px;
   margin-inline: auto;
@@ -582,4 +591,7 @@ css-10wo9uf-option:hover, .css-d7l1ni-option:hover{
 .search-clicker.open {
   transform: translateY(30px) scale(0.5);
   opacity: 0;
+}
+.place-card{
+  display: none !important;
 }

@@ -11,6 +11,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { signOut } from '@/redux/userSlice';
 import { setProgress } from '@/redux/progressSlice';
+import { clearSessionData } from '../utils/deviceId';
 
 interface prop {
   closeSideMenu?: () => void;  
@@ -18,7 +19,7 @@ interface prop {
 
 export default function SignInButton({ closeSideMenu }: prop) {
   const dispatch = useDispatch();
-  const isUser = useAppSelector((state) => state.user.name);
+  const isUser = useAppSelector((state) => state.auth.token);
   const [open, setOpen] = useState(false)
   const popupRef = useRef<any>(null);
 
@@ -37,6 +38,7 @@ export default function SignInButton({ closeSideMenu }: prop) {
   const logout = () => {
     dispatch(signOut());
     dispatch(setProgress(1));
+    clearSessionData();
   };
 
   return (
@@ -47,6 +49,7 @@ export default function SignInButton({ closeSideMenu }: prop) {
         open={open}
         onClose={closePopup}
         modal
+        className='onboarding'
         overlayStyle={{
           background: '#4D4D4DC2',
           padding: '20px',

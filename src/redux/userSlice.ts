@@ -1,3 +1,4 @@
+import { getAuthUser } from '@/components/utils/deviceId';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 // Define the experience interface
@@ -20,9 +21,11 @@ interface UserState {
 }
 
 // Initial state
+
+const user =  getAuthUser();
 const initialState: UserState = {
   name: undefined,
-  number: undefined,
+  number: user?.mobile,
   skills: undefined,
   type: undefined,
   experiences: undefined,
@@ -61,7 +64,7 @@ const userSlice = createSlice({
       state.experiences.push(action.payload);
     },
     // Clear the user state
-    clearUser: (state) => {
+    signOut: (state) => {
       state.name = undefined;
       state.number = undefined;
       state.skills = undefined;
@@ -79,7 +82,7 @@ export const {
   updateType,
   updateExperiences,
   addExperience,
-  clearUser,
+  signOut,
 } = userSlice.actions;
 
 // Export the reducer

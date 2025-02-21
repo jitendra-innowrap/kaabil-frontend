@@ -203,6 +203,15 @@ button{
   width: 90%;
   border-radius: 14px;
 }
+.popup-content.video-payer-content{
+  border: none !important;
+  background: none !important;
+}
+.popup-content.share-modal-content{
+  border: none !important;
+  background: none !important;
+  width: fit-content !important;
+}
 .popup-content form{
   max-width: 528px;
   margin-inline: auto;
@@ -281,8 +290,8 @@ button{
   max-width: 1440px;
   margin-inline: auto;
 }
-.seach-section input#searchbar_input,
-.seach-section button{
+.search-section input#searchbar_input,
+.search-section button{
   height: 52px;
   padding-left: 1.5rem; 
   padding-right: 1.5rem;
@@ -294,7 +303,7 @@ button{
   box-shadow: 0 0 0 1px var(--primary-red) !important;
   border-color: var(--primary-red);
 }
-.seach-section .css-13cymwt-control, .seach-section .css-t3ipsp-control{
+.search-section .css-13cymwt-control, .search-section .css-t3ipsp-control{
   padding-left: 1.9rem; 
   padding-right: 1.5rem;
   width: 100%;
@@ -338,7 +347,7 @@ css-10wo9uf-option:hover, .css-d7l1ni-option:hover{
   border-radius: 8px;
   height: 40px;
 }
-.seach-section input[type="text"]{
+.search-section input[type="text"]{
   width: 100%;
 }
 
@@ -362,8 +371,8 @@ css-10wo9uf-option:hover, .css-d7l1ni-option:hover{
 }
 @media (width >= 1024px) {
   
-  .seach-section input#searchbar_input,
-  .seach-section button{
+  .search-section input#searchbar_input,
+  .search-section button{
     height: 100%;
     padding-left: 1.5rem; 
     padding-right: 1.5rem;
@@ -371,10 +380,10 @@ css-10wo9uf-option:hover, .css-d7l1ni-option:hover{
     display: flex;
     align-items: center;
   }
-  .seach-section input#searchbar_input{
+  .search-section input#searchbar_input{
     border-radius: 20px;
   }
-  .seach-section .css-13cymwt-control, .seach-section .css-t3ipsp-control{
+  .search-section .css-13cymwt-control, .search-section .css-t3ipsp-control{
     padding-left: 1.9rem; 
     padding-right: 1.5rem;
     width: 200px;
@@ -401,7 +410,7 @@ css-10wo9uf-option:hover, .css-d7l1ni-option:hover{
   .popup-content{
     max-width: 600px;
   }
-  .seach-section .css-13cymwt-control, .seach-section .css-t3ipsp-control{
+  .search-section .css-13cymwt-control, .search-section .css-t3ipsp-control{
     padding-left: 1.5rem; 
     padding-right: 1.5rem;
     width: 250px;
@@ -436,6 +445,20 @@ css-10wo9uf-option:hover, .css-d7l1ni-option:hover{
   
   .container.small{
     padding-inline: 130px;
+  }
+}
+
+@media (width>=1700){
+  .search-clicker {
+    padding-inline: 16px;
+    gap: 16px;
+  }
+  .search-clicker .search-icon{
+    width: 24px;
+    height: 24px;
+  }
+  .search-clicker .search-label {
+    font-size: 16px;
   }
 }
 .swiper-wrapper {
@@ -513,4 +536,62 @@ css-10wo9uf-option:hover, .css-d7l1ni-option:hover{
 }
 .range-slider .range-slider__range{
   background: #FFA7A7 !important;
+}
+@keyframes growSearchBar {
+  0% {
+    max-height: 100px;
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  100% {
+    max-height: 500px;
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes shrinkSearchBar {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+    max-height: 400px;
+  }
+  100% {
+    max-height: 0px;
+    transform: scale(0.5);
+    opacity: 0;
+  }
+}
+/* Search bar container */
+.search-appear-animate {
+  max-height: 0px; /* Adjust based on your content height */
+  overflow: hidden;
+  opacity: 0;
+  transform: scale(0.5);
+  transform-origin: top; /* Ensures the search bar grows from the top */
+}
+
+/* Open state for search bar */
+.search-appear-animate.open {
+  animation: growSearchBar 0.3s ease-in-out forwards;
+}
+
+/* Closed state for search bar */
+.search-appear-animate.closed {
+  animation: shrinkSearchBar 0.3s ease-in-out forwards;
+}
+
+/* Search clicker styling */
+.search-clicker {
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Open state for search clicker */
+.search-clicker.open {
+  transform: translateY(30px) scale(0.5);
+  opacity: 0;
+}
+.place-card{
+  display: none !important;
 }

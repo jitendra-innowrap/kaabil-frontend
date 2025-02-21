@@ -22,14 +22,12 @@ const useTruncatedElement = ({ ref }: {ref:any}) => {
   };
 };
 
-export default function Note() {
+export default function Note({fullText}:{fullText:string}) {
   const ref = React.useRef(null);
   const { isTruncated, isReadingMore, setIsReadingMore } = useTruncatedElement({
     ref,
   });
 
-  // Code to get your note content...
-  const fullText = 'Tech Mahindra offers technology consulting and digital solutions to global enterprises across industries, enabling transformative scale at unparalleled speed. With 150,000+ professionals across 90+ countries helping 1100+ clients, TechM provides a full spectrum of services including consulting, information technology, enterprise solutions, and more. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat, voluptatem.';
 
   return (
     <div>

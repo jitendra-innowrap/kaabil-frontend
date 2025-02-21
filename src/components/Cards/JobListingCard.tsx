@@ -41,11 +41,11 @@ export default function JobListingCard() {
       <div className="flex flex-wrap gap-4 min-h-16 justify-between">
         <ul className='flex flex-wrap gap-2 mt-3'>
           <li className='label'>Problem Solving</li>
-          <li className='label'>time management</li>
+          <li className='label green'>time management</li>
           <li className='label'>adaptability</li>
         </ul>
         <div className="flex action-btns gap-4 flex-wrap justify-end items-end">
-          <Link href="/jobs/detail/wbg-operations" className='grid place-items-center btn-border whitespace-nowrap px-1 h-[44px] w-[137px] text-red !border-red'>view Job</Link>
+          <Link href="/jobs/detail/2838" className='grid place-items-center btn-border whitespace-nowrap px-1 h-[44px] w-[137px] text-red !border-red'>view Job</Link>
           <button className='px-1 w-[137px] !border h-[44px] border-red'>quick Apply</button>
         </div>
       </div>

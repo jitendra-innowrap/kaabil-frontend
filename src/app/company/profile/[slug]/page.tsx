@@ -1,46 +1,87 @@
+'use client'
 import Image from "next/image";
 import PlayStoreAppAd from "@/components/Banners/PlaystoreAppAd";
 import GallerySlider from "@/components/JobDetail/Slider/GallarySlider";
 import CompanyGallerycard from "@/components/Cards/CompanyGallerycard";
-import JobListingCard from "@/components/Cards/JobListingCard";
+import JobListingCardSmall from "@/components/Cards/JobListingCardSmall";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { notFound, useParams } from "next/navigation";
+import api from "@/Services/Apiservice";
+import toast from "react-hot-toast";
+import CompanyGallery from "@/components/Gallary/CompanyGallary";
 
-export default function Home() {
-  const profiledata = {
-    profileicon: "",
-    name: "Tech Mahindra",
-    website: "www.techmahindra.com",
-    options:[
-      {icon: "/new-assets/icons/foundation-icon.png", label: "Founded", value: "1986"},
-      {icon: "/new-assets/icons/employees-icon.png", label: "Employees", value: "10k+"},
-      {icon: "/new-assets/icons/location-icon.png", label: "Location", value: "pune, Maharashtra"},
-      {icon: "/new-assets/icons/industry-icon.png", label: "Industry", value: "IT Services and IT Consulting"},
-    ]
-  }
-  const successList = [
-          {name: "", role:"", image:"", video:""},
-          {name: "", role:"", image:"", video:""},
-          {name: "", role:"", image:"", video:""},
-          {name: "", role:"", image:"", video:""},
-          {name: "", role:"", image:"", video:""},
-          {name: "", role:"", image:"", video:""},
-          {name: "", role:"", image:"", video:""},
-          {name: "", role:"", image:"", video:""},
-      ]
-  
-  const gallerySlides = successList.map((job, index) => (
-    <CompanyGallerycard key={index} {...job} />
-  ));
-  const jobsSlides = successList.map((job, index) => (
+export default function CompanyDetails() {
+const {slug} = useParams();
+const [isLoading, setIsLoading] = useState(true);
+const [CompanyDetails, setCompanyDetails] = useState<Company>();
+const [companyGallary, setCompanyGallary] = useState<(CompanyImage | CompanyVideo)[]>([]);
+
+const [companyJobs, setCompanyJobs] = useState<(CompanyJob | CompanyJobCategory)[]>([])
+const jobsSlides = companyJobs
+  ?.filter((job): job is CompanyJob => 'id' in job) // Type guard to filter only CompanyJob
+  .map((job, index) => (
     <div className="flex w-[100%] md:w-[338px]" key={index}>
-      <JobListingCard key={index} {...job} />
+      <JobListingCardSmall key={index} detail={job} />
     </div>
-    ));
+  ));
+useEffect(() => {
+  async function fetchCompanyDetails() {
+    try {
+      let payload = {
+        company_master_id: slug as string,
+        flag: '2'
+      };
+
+      const formData = new FormData();
+      // ✅ Automatically append all fields from the object
+        Object.entries(payload).forEach(([key, value]) => {
+          formData.append(key, value); // Convert all values to strings
+        });
+
+      const response = await api.post('/Company/getCompanyJobDetail', formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      const responseData = response.data as CompanyDetailResponse;
+
+      if (responseData.code === 1) {
+        setCompanyDetails(responseData.result?.[0]);
+        setCompanyJobs(responseData.job)
+        setCompanyGallary([...responseData.result?.[0]?.company_image, ...responseData.result?.[0]?.company_videos ])
+      }else{
+        notFound();
+      }
+    } catch (error: any) {
+      console.error(error);
+      toast.error("something went wrong", { position: "bottom-right" });
+    }
+    setIsLoading(false)
+  };
+  fetchCompanyDetails();
+}, [slug]);
+
+
+
+if(isLoading){
+  return (
+    <div className="flex justify-center items-center h-screen">
+      <div className='flex space-x-6 justify-center items-center'>
+                  <span className='sr-only'>Loading...</span>
+                   <div className='h-6 w-6 bg-red rounded-full animate-bounce [animation-delay:-0.3s]'></div>
+                 <div className='h-6 w-6 bg-red rounded-full animate-bounce [animation-delay:-0.15s]'></div>
+                 <div className='h-6 w-6 bg-red rounded-full animate-bounce'></div>
+               </div>
+    </div>
+  )
+}
+  
   return (
     <main>
       <section className="bg-[#0a0100] py-10 xl:py-14 2xl:py-[76px] relative">
             <Image
-                src={"/new-assets/icons/Comapny-profile-bg.png"}
+                src="/new-assets/icons/Comapny-profile-bg.png"
                 width={988}
                 height={300}
                 alt="company profile logo"
@@ -49,7 +90,7 @@ export default function Home() {
           <div className="container relative z-[1]">
             <div className="flex flex-col sm:flex-row gap-5 xl:gap-7 2xl:gap-8">
             <Image
-                src={"/new-assets/icons/Comapny-profile-icon.png"}
+                src={CompanyDetails?.company_logo || ""}
                 width={200}
                 height={97}
                 alt="company profile logo"
@@ -57,27 +98,66 @@ export default function Home() {
                 />
                 <div className="block">
                   <div className="flex justify-between lg:justify-start gap-5 xl:gap-7 2xl:gap-8 items-center">
-                    <h1 className="font-medium text-white text-xl lg:text-3xl">{profiledata?.name}</h1> <button className="btn-border">+ Follow</button>
+                    <div className="block">
+                      <h1 className="font-medium text-white text-xl lg:text-3xl">{CompanyDetails?.company_name}</h1>
+                      <p className="text-greyText mt-1">{"www.lorem.ipsum"}</p>
+                    </div> 
+                    <button className="btn-border">+ Follow</button>
                   </div>
-                  <p className="text-greyText mt-1">{profiledata?.website}</p>
+                  
                   <div className="flex flex-wrap mt-4 xl:mt-5 2xl:mt-6 gap-5 lg:gap-8 xl:gap-10">
-                    {
-                      profiledata?.options.map((options)=>(
-                        <div key={options?.label} className="flex gap-2 lg:gap-3 2xl:gap-4">
-                          <Image
-                          src={options?.icon}
-                          width={44}
-                          height={44}
-                          alt="company profile logo"
-                          className="rounded-2xl size-8 xl:size-10 2xl:size-11"
-                          />
-                          <div className="text-white">
-                            <strong className="block">{options?.label}</strong>
-                            <span>{options?.value}</span>
-                          </div>
-                        </div>
-                      ))
-                    }
+                    <div className="flex gap-2 lg:gap-3 2xl:gap-4">
+                      <Image
+                      src={'/new-assets/icons/foundation-icon.png'}
+                      width={44}
+                      height={44}
+                      alt="company profile logo"
+                      className="rounded-2xl size-8 xl:size-10 2xl:size-11"
+                      />
+                      <div className="text-white">
+                        <strong className="block">Founded</strong>
+                        <span>Lorem</span>
+                      </div>
+                    </div>
+                    <div className="flex gap-2 lg:gap-3 2xl:gap-4">
+                      <Image
+                      src={'/new-assets/icons/employees-icon.png'}
+                      width={44}
+                      height={44}
+                      alt="company profile logo"
+                      className="rounded-2xl size-8 xl:size-10 2xl:size-11"
+                      />
+                      <div className="text-white">
+                        <strong className="block">Employees</strong>
+                        <span>{CompanyDetails?.company_emp_size}</span>
+                      </div>
+                    </div>
+                    <div className="flex gap-2 lg:gap-3 2xl:gap-4">
+                      <Image
+                      src={'/new-assets/icons/foundation-icon.png'}
+                      width={44}
+                      height={44}
+                      alt="company profile logo"
+                      className="rounded-2xl size-8 xl:size-10 2xl:size-11"
+                      />
+                      <div className="text-white">
+                        <strong className="block">Location</strong>
+                        <span>{CompanyDetails?.company_location}</span>
+                      </div>
+                    </div>
+                    <div className="flex gap-2 lg:gap-3 2xl:gap-4">
+                      <Image
+                      src={'/new-assets/icons/foundation-icon.png'}
+                      width={44}
+                      height={44}
+                      alt="company profile logo"
+                      className="rounded-2xl size-8 xl:size-10 2xl:size-11"
+                      />
+                      <div className="text-white">
+                        <strong className="block">Industry</strong>
+                        <span>Lorem</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
             </div>
@@ -97,23 +177,16 @@ export default function Home() {
           </ul>
           <div id="about" className="py-5 md:py-8 xl:py-14 2xl:py-16 rounded-xl shadow-default">
             <div className="px-5 md:px-8 xl:px-14 2xl:px-16">
-              <h2 className="text-lg 2xl:text-xl font-semibold mb-4 md:mb-6 xl:mb-8">About Tech Mahindra</h2>
-              <p className="text-sm leading-[32px] mb-4 md:mb-6 xl:mb-8">Tech Mahindra offers technology consulting and digital solutions to global enterprises across industries, enabling transformative scale at unparalleled speed. With 150,000+ professionals across 90+ countries helping 1100+ clients, TechM provides a full spectrum of services including consulting, information technology, enterprise applications, business process services, engineering services, network services, customer experience & design services, AI & analytics, and cloud & infrastructure services. It is the first Indian company in the world to have been awarded the Sustainable Markets Initiative’s Terra Carta Seal, in recognition of actively leading the charge to create a climate and nature-positive future.Tech Mahindra (NSE: TECHM) is part of the Mahindra Group, founded in 1945, one of the largest and most admired multinational federations of companies.Visit www.techmahindra.com to #ScaleAtSpeed</p>
+              <h2 className="text-lg 2xl:text-xl font-semibold mb-4 md:mb-6 xl:mb-8">About {CompanyDetails?.company_name}</h2>
+              <p className="text-sm leading-[32px] mb-4 md:mb-6 xl:mb-8">{CompanyDetails?.company_description
+                }</p>
               <h2 className="text-lg 2xl:text-xl font-semibold">Gallery</h2>
             </div>
-            <div className="block">
-                <GallerySlider
-                slides={gallerySlides}
-                spaceBetween={25}
-                showNavigation
-                loop={false}
-                autoplay={false}
-                />
-            </div>
+            <CompanyGallery galleryItems={companyGallary} />
           </div>
           <div id="jobs" className="my-5 md:my-8 xl:my-10 py-5 md:py-8 xl:py-14 2xl:py-16 rounded-xl shadow-default">
             <div className="px-5 md:px-8 xl:px-14 2xl:px-16">
-              <h2 className="text-lg 2xl:text-xl font-semibold">45 Jobs in Tech Mahindra</h2>
+              <h2 className="text-lg 2xl:text-xl font-semibold">{CompanyDetails?.job_count} Jobs in {CompanyDetails?.company_name}</h2>
             </div>
             <div className="block">
                 <GallerySlider
@@ -130,7 +203,7 @@ export default function Home() {
               <h2 className="text-lg 2xl:text-xl font-semibold mb-4 md:mb-6 xl:mb-8">Perks & Benefits</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 md:gap-8 xl:gap-10 2xl:gap-11">
                   {
-                    successList.map((benefit)=>(
+                    CompanyDetails?.benifits.map((benefit)=>(
                       <div className="block">
                      <Image
                         src={"/new-assets/icons/employee-benefit1.png"}
@@ -139,8 +212,8 @@ export default function Home() {
                         alt="company profile logo"
                         className="rounded-2xl size-8 md:size-10 mb-3 md:mb-4"
                         />
-                        <h3 className="text-black font-medium mb-2 md:mb-3">Flexi Work Arrangement</h3>
-                        <p className="text-[#152B41] text-sm font-normal">To help associates balance their professional and personal commitments during emergency situations.</p>
+                        <h3 className="text-black font-medium mb-2 md:mb-3">{benefit?.name}</h3>
+                        <p className="text-[#152B41] text-sm font-normal">Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora voluptatem iste voluptas similique ab eius nisi eaque neque reprehenderit non.</p>
 
                   </div>
                     ))

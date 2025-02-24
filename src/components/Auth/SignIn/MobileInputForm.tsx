@@ -25,10 +25,7 @@ export default function MobileInputForm() {
         const { mobile } = values;
   
         // ✅ Use `unwrap()` to get the resolved payload or catch errors
-        const response = await dispatch(login({ mobile, name: "", login_type: 1, role_id: 4 })).unwrap();
-  
-        console.log("Response from API:", response);
-  
+        const response = await dispatch(login({ mobile, name: "", login_type: 1, role_id: 4 })).unwrap();  
         if (response?.code === 1) {
           dispatch(setProgress(2));
           dispatch(updateNumber(mobile));
@@ -69,7 +66,7 @@ export default function MobileInputForm() {
                 !formik.isValid || !formik.dirty ? "opacity-50 cursor-not-allowed" : ""
               }`}
             >
-                next
+              {formik.isSubmitting ? "Submitting..." : "Next"}
             </button>
         </form>
     </div>

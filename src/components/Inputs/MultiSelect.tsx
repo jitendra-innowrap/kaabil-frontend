@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
-import { default as ReactSelect, components, MultiValue, ActionMeta, SingleValue } from 'react-select';
-import { FaMagnifyingGlass } from 'react-icons/fa6';
-import { RxCross2 } from 'react-icons/rx';
+import React, { useState } from "react";
+import { default as ReactSelect, components, MultiValue, ActionMeta } from "react-select";
+import { FaMagnifyingGlass } from "react-icons/fa6";
 
 export interface OptionType {
   value: string;
@@ -15,63 +14,68 @@ interface MultiSelectProps {
   maxSelections?: number;
   onChange: (selectedOptions: OptionType[]) => void;
   selectedValues: OptionType[];
-  icon?: React.ReactNode; // Custom icon for the select component
+  icon?: React.ReactNode;
 }
 
 const MultiSelect: React.FC<MultiSelectProps> = ({
   options,
-  placeholder = 'Select',
-  isMulti = true,
+  placeholder = "Select",
   maxSelections,
   onChange,
   selectedValues,
-  icon
+  icon,
 }) => {
-    const handleChange = (
-        selectedOptions: MultiValue<OptionType> | SingleValue<OptionType>,
-        actionMeta: ActionMeta<OptionType>
-      ) => {
-        // Ensure selectedOptions is an array before checking its length
-        const selectedArray = Array.isArray(selectedOptions) ? selectedOptions : selectedOptions ? [selectedOptions] : [];
-      
-        if (maxSelections && selectedArray.length > maxSelections) {
-          return; // Prevent selecting more than maxSelections
-        }
-        setTimeout(() => setMenuOpen(true), 0.01);
-        onChange(selectedArray); // Ensure `onChange` gets an array
-      };
-      
+  const [menuOpen, setMenuOpen] = useState(false);
 
+  const handleChange = (selectedOption: OptionType) => {
+    let updatedSelections = [...selectedValues];
+
+    // Toggle selection
+    if (updatedSelections.some((opt) => opt.value === selectedOption.value)) {
+      updatedSelections = updatedSelections.filter((opt) => opt.value !== selectedOption.value);
+    } else {
+      if (!maxSelections || updatedSelections.length < maxSelections) {
+        updatedSelections.push(selectedOption);
+      }
+    }
+
+    setTimeout(() => setMenuOpen(true), 0.01); // Keep menu open
+    onChange(updatedSelections);
+  };
+
+  // Custom option with checkbox
   const Option = (props: any) => {
-    const isSelected = selectedValues.some(role => role.value === props.data.value);
+    const { data, innerRef, innerProps } = props;
+    const isSelected = selectedValues.some((opt) => opt.value === data.value);
+
     return (
       <components.Option {...props}>
-        <div className='relative flex items-center gap-2' onClick={() => handleChange([props.data], {} as ActionMeta<OptionType>)}>
-          <input type="checkbox" className='!w-4 !h-4' checked={isSelected} readOnly />
-          <label className='!mb-0'>{props.label}</label>
+      <div ref={innerRef} {...innerProps} onClick={() => handleChange(data)}>
+        <div className="relative flex items-center gap-2">
+          <input type="checkbox" className="!w-4 !h-4" checked={isSelected} readOnly />
+          <label className="!mb-0">{data.label}</label>
         </div>
+      </div>
       </components.Option>
     );
   };
-  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <div className="relative w-full">
       <ReactSelect
         options={options}
-        isMulti={isMulti}
         components={{ Option }}
         closeMenuOnSelect={false}
         hideSelectedOptions={false}
         placeholder={placeholder}
-        value={selectedValues}
-        onChange={handleChange}
+        value={null} // Ensure the input does not display selected values
+        onChange={() => {}} // Do nothing, since we handle selection manually
         className="react-select"
         menuIsOpen={menuOpen}
         onMenuOpen={() => setMenuOpen(true)}
         onMenuClose={() => setMenuOpen(false)}
       />
-      {icon ? icon : <FaMagnifyingGlass className='absolute left-[15px] top-[20px] size-4 text-[#808080]' />}
+      {icon ? icon : <FaMagnifyingGlass className="absolute left-[15px] top-[20px] size-4 text-[#808080]" />}
     </div>
   );
 };

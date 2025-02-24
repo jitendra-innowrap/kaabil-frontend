@@ -1,28 +1,49 @@
 // features/authSlice.ts
-import { generateDeviceId, getSessionData, initializeSession, getAuthToken, getAuthUser } from '@/components/utils/deviceId';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { generateDeviceId, getSessionData, initializeSession, getAuthToken, getAuthUser, getAuthUserDesiredRole } from '@/components/utils/deviceId';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
 import api from '@/Services/Apiservice';
 import axios from 'axios';
-import { User } from '@/Types/common';
+import { Skill, User, UserRole } from '@/Types/common';
 
 interface AuthState {
   deviceId: string;
   secret: string;
   token: string;
-  user: User | null;
+  email?: string;
+  id?: string;
+  is_profile_verify?: string;
+  mobile?: string;
+  name?: string;
+  photo_url?: string;
+  user_id?: string;
+  role_id?: string | string[];
+  job_type_master_id?: string;
+  skills?: Skill[];
+  active_jobseeker?: number;
+  available_job?: number;
   loading: boolean;
   error: string | null;
 }
 
 const { deviceId, secret } = getSessionData();
 const user = getAuthUser();
+const userRole = getAuthUserDesiredRole();
 const token = getAuthToken();
 const initialState: AuthState = {
   deviceId,
   secret,
   token,
-  user,
+  email: user?.email,
+  id: user?.id,
+  is_profile_verify: user?.is_profile_verify,
+  mobile: user?.mobile,
+  name: user?.name,
+  role_id: userRole?.role_id,
+  job_type_master_id: userRole?.job_type_master_id,
+  skills: [],
+  active_jobseeker: 0,
+  available_job: 0,
   loading: false,
   error: null,
 };
@@ -127,7 +148,12 @@ export const verifyOTP = createAsyncThunk(
 const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    setUserRole: (state, action: PayloadAction<UserRole>) => {
+      state.role_id = action.payload.role_id; // Update progress state
+      state.job_type_master_id = action.payload.job_type_master_id; // Update progress state
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getDeviceToken.pending, (state) => {
@@ -149,7 +175,12 @@ const authSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action) => {
         state.loading = false;
+        state.user_id = action.payload.user_id;
+        state.role_id = action.payload.role_id;
+        state.skills = action.payload.skills;
         state.token = action.payload.token;
+        state.active_jobseeker = action.payload.active_jobseeker;
+        state.available_job = action.payload.available_job;
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = false;
@@ -173,7 +204,12 @@ const authSlice = createSlice({
       .addCase(verifyOTP.fulfilled, (state, action) => {
         state.loading = false;
         state.token = action.payload.token;
-        state.user = action.payload.result;
+        state.photo_url = action.payload?.result?.photo_url;
+        state.name = action.payload?.result?.name;
+        state.email = action.payload?.result?.email;
+        state.is_profile_verify = action.payload?.result?.is_profile_verify;
+        state.mobile = action.payload?.result?.mobile;
+        state.id = action.payload?.result?.id;
       })
       .addCase(verifyOTP.rejected, (state, action) => {
         state.loading = false;
@@ -182,4 +218,5 @@ const authSlice = createSlice({
   },
 });
 
+export const { setUserRole } = authSlice.actions;
 export default authSlice.reducer;

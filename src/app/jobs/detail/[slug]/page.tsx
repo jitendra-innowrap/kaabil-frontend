@@ -20,12 +20,15 @@ import { IoIosHeart, IoIosHeartEmpty } from "react-icons/io";
 import { IoShareSocialOutline } from "react-icons/io5";
 import Popup from "reactjs-popup";
 import { ShareSocial } from 'react-share-social'
+import { useAppSelector } from "@/redux/hooks";
+import { Skill } from "@/Types/common";
 
 
 export default function Home() {
   const {slug} = useParams();
+  const userSkills = useAppSelector((state) => state.auth.skills) as Skill[];
   const [jobDetails, setJobDetails] = useState<JobResult>();
-  const [isSkillMatch, setIsSkillMatch] = useState(false);
+  const [skillMatchCount, setSkillMatchCount] = useState(0);
   const [openShare, setOpenShare] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isFavorited, setIsFavorited] = useState(jobDetails?.saveJob_status=='2');
@@ -62,6 +65,8 @@ export default function Home() {
           //   toast.error("page not found", { position: "bottom-right" });
           //   notFound();
           // }
+          const matchedSkillsCount = jobDetails?.jobs_skills?.filter((skill) => userSkills.some((uSkill) => uSkill?.id === skill?.id)).length;
+          setSkillMatchCount(matchedSkillsCount || 0);
           setJobDetails(responseData.result?.[0] as JobResult);
         }else{
           notFound();
@@ -244,7 +249,7 @@ export default function Home() {
                       <strong className="block text-sm font-normal">{jobDetails?.jobs_location?.[0]?.job_location}</strong>
                     </div>
                   </div>
-                  {isSkillMatch && <span className="label green text-xs 2xl:text-sm flex font-semibold items-center">4 skills match <FaCheck className="ml-2"/> </span>}
+                  {skillMatchCount > 0 && <span className="label green text-xs 2xl:text-sm flex font-semibold items-center">{skillMatchCount} skills match <FaCheck className="ml-2"/> </span>}
                 </div>
               </div>
           </div>
@@ -290,7 +295,7 @@ export default function Home() {
               <div className="flex flex-wrap gap-1 md:gap-2">
                 {
                   jobDetails?.jobs_skills?.map((skill)=>(
-                    <div className={`label grey lightgreen`}>{skill?.name}</div>
+                    <div className={`label  ${userSkills.some((uSkill) => uSkill?.id == skill?.id) ? "lightgreen" : "grey"}`}>{skill?.name}{JSON.stringify(userSkills.some((uSkill) => uSkill?.id !== skill?.id))}</div>
                   ))
                 }
               </div>

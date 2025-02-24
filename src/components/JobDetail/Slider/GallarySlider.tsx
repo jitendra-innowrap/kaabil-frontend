@@ -99,7 +99,7 @@ useEffect(() => {
         {...restProps}
       >
         {slides.map((slide, index) => (
-          <SwiperSlide key={index} style={{ width: 'fit-content' }}>
+          <SwiperSlide key={index} style={{ width: 'fit-content', height: '100%' }}>
             {SlideComponent ? (
               <SlideComponent {...slide} />
             ) : (

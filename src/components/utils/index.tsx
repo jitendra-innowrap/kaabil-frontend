@@ -23,48 +23,79 @@ export function handleCommaForQuery(string: string){
   };
   
   export const showSalary = (
-    is_industry_standard: string,
+    isIndustryStandard: string,
     salaryRangeUnit: string,
-    minSalary: string,
-    maxSalary: string,
-  ): JSX.Element => {
-    // Convert salary values to numbers
-    const min = parseInt(minSalary, 10);
-    const max = parseInt(maxSalary, 10);
-    if(is_industry_standard === "1"){
-      return <span className="">Industry Standard</span>
+    minSalary: string | null,
+    maxSalary: string | null,
+    text?: string
+  ): string => {
+    // Check if salary is as per industry standards
+    if (isIndustryStandard === "1") {
+      return "As per Industry standards";
     }
-    // Determine the unit (monthly or yearly)
-    const unit = salaryRangeUnit === "1" ? "month" : "year";
   
-    // Format the salary range
-    const salaryRange = `₹ ${min}k - ${max}k / `;
+    // Check if both min and max salary are null or empty
+    if (((minSalary === null || minSalary === "" || minSalary === "0")) && ((maxSalary === null || maxSalary === "" || maxSalary === "0"))) {
+      return "-";
+    }
   
-    return (
-      <>
-        {salaryRange}
-        <small className="text-[#B1B4B7]">{unit}</small>
-      </>
-    );
+    // Determine the salary unit
+    const unit = salaryRangeUnit === "1" ? "Monthly" : "Yearly";
+  
+    // Check if min salary is null or empty or "0" and max salary is not null or empty or "0"
+    if ((minSalary === null || minSalary === "" || minSalary === "0") && (maxSalary !== null && maxSalary !== "" && maxSalary !== "0")) {
+      return `₹${maxSalary} Max / ${unit}`;
+    }
+  
+    // Check if max salary is null or empty or "0" and min salary is not null or empty or "0"
+    if ((maxSalary === null || maxSalary === "" || maxSalary === "0") && (minSalary !== null && minSalary !== "" && minSalary !== "0")) {
+      return `₹${minSalary} Max / ${unit}`;
+    }
+  
+    // Default case: show salary range
+    return `₹${minSalary} - ₹${maxSalary} Max / ${unit}`;
   };
+  
 
-export const showExperience = (
-  freshersCanApply: string,
-  minExp: string,
-  maxExp: string,
-  text?: string
-): string => {
-  if (freshersCanApply === "1") {
-    return "Freshers";
-  } else {
-    // Convert experience values to numbers
-    const min = parseInt(minExp, 10);
-    const max = parseInt(maxExp, 10);
-
-    // Format the experience range
-    return `${min} - ${max} ${text?text:"yrs experience"}`;
-  }
-};
+  export const showExperience = (
+    minExp: string | null,
+    maxExp: string | null,
+    text?: string
+  ): string => {
+    // Check if both min and max experience are null or empty
+    if (!minExp && !maxExp) {
+      return "-";
+    }
+  
+    // Check if either min or max experience suggests freshers can apply
+    if (
+      (minExp === null || minExp === "" || minExp === "0") &&
+      (maxExp === null || maxExp === "" || maxExp === "0" || maxExp === "1")
+    ) {
+      return "Freshers can apply";
+    }
+  
+    // Check if min experience is not "1" and max experience is null or empty or "0"
+    if (
+      (minExp !== null && minExp !== "1") &&
+      (maxExp === null || maxExp === "" || maxExp === "0")
+    ) {
+      return `Min ${minExp} years`;
+    }
+  
+    // Check if min experience is null or "0" and max experience is not null or empty or "0"
+    if (
+      (minExp === null || minExp === "" || minExp === "0") &&
+      (maxExp !== null && maxExp !== "" && maxExp !== "0")
+    ) {
+      return `Max ${maxExp} years`;
+    }
+  
+    // Default case: show experience range
+    return `${minExp}-${maxExp} ${text ? text : "yrs experience"}`;
+  };
+  
+  
 
 export function formatDate(date:any){
   if(date){

@@ -41,7 +41,8 @@ export default function Home() {
     async function fetchCompanyDetails() {
       try {
         let payload = {
-          job_id: slug as string,
+          // job_id: slug as string,
+          job_id: '2850' as string,
         };
   
         const formData = new FormData();
@@ -108,6 +109,7 @@ export default function Home() {
       profile_matched_percentage: 75 + index * 5,
       perfect_match_percent: 80 + index * 5,
       is_show_candidate_percent: 1,
+      jobs_skills: [],
     }));
   };
   
@@ -197,7 +199,7 @@ export default function Home() {
                       className="size-4 2xl:size-6"
                     />
                     <div className="text-[#231F20]">
-                      <strong className="block text-sm font-normal">{showExperience(jobDetails?.freshers_can_apply || "0", jobDetails?.min_exp ||"0", jobDetails?.max_exp || "0", "years")}</strong>
+                      <strong className="block text-sm font-normal">{showExperience(jobDetails?.min_exp ||"0", jobDetails?.max_exp || "0", "years")}</strong>
                     </div>
                   </div>
 
@@ -255,7 +257,7 @@ export default function Home() {
                         !isFavorited? (
                           <IoIosHeartEmpty className={`text-black size-5 cursor-pointer`}/>
                         ) : (
-                          <IoIosHeart className={`text-black size-5 cursor-pointer`}/>
+                          <IoIosHeart className={`text-red size-5 cursor-pointer`}/>
                         )
                       }
             </button>

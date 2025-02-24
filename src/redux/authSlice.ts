@@ -36,7 +36,7 @@ export const getDeviceToken = createAsyncThunk<
     console.clear();
     console.log("secret is " + secret);
 
-    if (secret) {
+    if (deviceId) {
       // If secret exists, return the existing deviceId and secret
       return { deviceId: deviceId!, secret: secret! }; // Non-null assertion here is safe due to the `if (secret)` condition
     } else {
@@ -73,6 +73,7 @@ export const login = createAsyncThunk(
           "Content-Type": "multipart/form-data",
         },
       });
+      // console.log('login data:',response);
       return response.data;
     } catch (error:any) {
       return rejectWithValue(error.response.data);
@@ -115,6 +116,7 @@ export const verifyOTP = createAsyncThunk(
           token: auth.token,
         },
       });
+      // console.log('User data:',response);
       return response.data;
     } catch (error:any) {
       return rejectWithValue(error.response.data);

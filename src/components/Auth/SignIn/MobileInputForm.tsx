@@ -8,12 +8,8 @@ import toast from 'react-hot-toast';
 import { useFormik } from "formik";
 import * as Yup from "yup";
 export default function MobileInputForm() {
-    const dispatch = useAppDispatch();
-    const handleSubmit = async ()=>{
-      console.log("ok");
-      toast.success("An otp has been sent!", { position: "top-right" });
-    }
-      // ✅ Validation schema
+  const dispatch = useAppDispatch();
+  // ✅ Validation schema
   const validationSchema = Yup.object().shape({
     mobile: Yup.string()
       .matches(/^[6-9]\d{9}$/, "Invalid mobile number")
@@ -50,7 +46,7 @@ export default function MobileInputForm() {
 
   return (
     <div>
-        <h2 onClick={handleSubmit} className='text-center font-semibold text-lg md:text-xl 2xl:text-[28px] 2xl:leading-[36px]'>Lets start with your mobile number</h2>
+        <h2 className='text-center font-semibold text-lg md:text-xl 2xl:text-[28px] 2xl:leading-[36px]'>Lets start with your mobile number</h2>
         <form onSubmit={formik.handleSubmit} className="block mt-8 md:mt-10 xl:mt-14 2xl:mt-16">
             <label htmlFor="mobile">Mobile Number</label>
             <input

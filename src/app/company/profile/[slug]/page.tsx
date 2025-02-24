@@ -21,7 +21,7 @@ const [companyJobs, setCompanyJobs] = useState<(CompanyJob | CompanyJobCategory)
 const jobsSlides = companyJobs
   ?.filter((job): job is CompanyJob => 'id' in job) // Type guard to filter only CompanyJob
   .map((job, index) => (
-    <div className="flex w-[100%] md:w-[338px]" key={index}>
+    <div className="flex w-[100%] h-full md:w-[338px]" key={index}>
       <JobListingCardSmall key={index} detail={job} />
     </div>
   ));
@@ -29,7 +29,8 @@ useEffect(() => {
   async function fetchCompanyDetails() {
     try {
       let payload = {
-        company_master_id: slug as string,
+        // company_master_id: slug as string,
+        company_master_id: '1506' as string,
         flag: '2'
       };
 
@@ -46,11 +47,12 @@ useEffect(() => {
       });
       const responseData = response.data as CompanyDetailResponse;
 
-      if (responseData.code === 1) {
+      if (responseData.result?.[0]?.id !== null) {
         setCompanyDetails(responseData.result?.[0]);
         setCompanyJobs(responseData.job)
         setCompanyGallary([...responseData.result?.[0]?.company_image, ...responseData.result?.[0]?.company_videos ])
       }else{
+        console.log("Page Not Found:", response);
         notFound();
       }
     } catch (error: any) {

@@ -115,8 +115,15 @@ interface CompanyGalleryCardProps {
     profile_matched_percentage?: number;
     perfect_match_percent: number;
     is_show_candidate_percent: number;
+    jobs_skills: jobsSkills[]
   }
   
+  interface jobsSkills{
+    id: string;
+    company_job_id: string;
+    skill_level: string;
+    name: string;
+  }
   interface CompanyJobCategory {
     row: "job_category";
     data: JobCategoryData[];

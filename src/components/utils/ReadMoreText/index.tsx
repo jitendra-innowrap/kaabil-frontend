@@ -31,9 +31,13 @@ export default function Note({fullText}:{fullText:string}) {
 
   return (
     <div>
-      <p ref={ref} className={`break-words text-xl ${!isReadingMore && 'line-clamp-3'}`}>
-        {fullText}
-      </p>
+      <div ref={ref} className={`break-words ${!isReadingMore && 'line-clamp-3'}`}
+      dangerouslySetInnerHTML={{
+        __html:
+          fullText && typeof fullText === "string"
+            ? fullText
+            : "",
+      }}/>
       {isTruncated && !isReadingMore && (
         <span aria-label='read more button' className='cursor-pointer font-semibold' onClick={() => setIsReadingMore(true)}>
           Read more

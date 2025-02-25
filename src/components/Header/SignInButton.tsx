@@ -63,7 +63,7 @@ export default function SignInButton({ closeSideMenu }: prop) {
       {!isUser ? (
         <button 
           onClick={handleSignIn}
-          className='bg-red text-white text-sm w-[120px] h-[38px] grid place-items-center rounded-[9px]'
+          className='bg-red text-white text-xs 2xl:text-sm w-[80px] !p-0 2xl:w-[120px] h-[32px] 2xl:h-[38px] grid place-items-center rounded-[9px]'
         >
           Sign In
         </button>

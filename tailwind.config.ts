@@ -9,6 +9,10 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      screens: {
+        '2xl': '1600px', // Update the 2xl breakpoint
+        '3xl': '1920px', // Add a new 3xl breakpoint
+      },
       fontFamily: {
         sans: ['var(--font-poppins)', ...fontFamily.sans], // Poppins as default
         kalam: ['var(--font-kalam)', 'cursive'], // Kalam as secondary

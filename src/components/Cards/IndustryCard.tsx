@@ -9,7 +9,7 @@ interface industryCard extends jobcardtype{
 export default function IndustryCard({icon, title, jobUrl, color}:industryCard) {
   return (
     <Link className="" href={jobUrl}>
-    <div style={{background:`${color}`}} className={`size-[200px] 2xl:size-[263px] flex flex-col justify-between bg-white rounded-2xl p-4 2xl:p-6 text-center`}>
+    <div style={{background:`${color}`}} className={`w-full h-full flex flex-col justify-between bg-white rounded-2xl p-4 2xl:p-6 text-center`}>
         <div className="block">
             <Image
             className="size-[60px] 2xl:size-[90px] cursor-pointer mx-auto"
@@ -18,7 +18,7 @@ export default function IndustryCard({icon, title, jobUrl, color}:industryCard) 
             height={90}
             alt="company-icons"
             />
-            <h3 className="font-medium p-4 text-black text-lg 2xl:text-xl mt-4 2xl:mt-6">{title}</h3>
+            <h3 className="font-medium p-4 text-black text-sm 2xl:text-xl mt-2 2xl:mt-6">{title}</h3>
         </div>
     </div>
     </Link>

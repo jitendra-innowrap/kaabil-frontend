@@ -1,6 +1,6 @@
 'use client'
 import { decrypt, encrypt } from '@/Services/Encryption';
-import { User } from '@/Types/common';
+import { User, UserRole } from '@/Types/common';
 import { v4 as uuidv4 } from 'uuid'; // You might need to install this: npm install uuid
 
 const DEVICE_ID_KEY = 'deviceId';
@@ -8,6 +8,7 @@ const SALT_KEY = 'salt';
 const SECRET_KEY = 'secret';
 const AUTH_TOKEN_KEY = 'authToken';
 const AUTH_USER_KEY = 'authUser';
+const AUTH_USER_ROLE_KEY = 'desiredRole';
 const PROGRESS_KEY = 'onboardingProgress';
 const encryptionKey = 'oifyuey3784ryiq'
 
@@ -81,6 +82,26 @@ export const getAuthUser = () => {
         try {
         const user = JSON.parse(userstring) as User;
         return user;
+        } catch (error) {
+        console.error("Failed to parse authUser:", error);
+        return null;
+        }
+    }
+    return null;
+};
+
+export const storeAuthUserDesiredRole = (userRole: UserRole) => {
+    if (typeof window === "undefined") return;
+    localStorage.setItem(AUTH_USER_ROLE_KEY, encrypt(JSON.stringify(userRole), encryptionKey));
+};
+export const getAuthUserDesiredRole = () => {
+    if (typeof window === "undefined") return null;
+    const storedUserRoleEncrypted = localStorage.getItem(AUTH_USER_ROLE_KEY);
+    if (storedUserRoleEncrypted) {
+        const userRolestring = decrypt(storedUserRoleEncrypted, encryptionKey) as string;
+        try {
+        const userRole = JSON.parse(userRolestring) as UserRole;
+        return userRole;
         } catch (error) {
         console.error("Failed to parse authUser:", error);
         return null;

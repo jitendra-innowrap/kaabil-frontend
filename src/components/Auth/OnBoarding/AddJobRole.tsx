@@ -1,79 +1,185 @@
-import React, { useState } from 'react';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { setProgress } from '@/redux/progressSlice';
-import { updateName } from '@/redux/userSlice';
-import MultiSelect from '@/components/Inputs/MultiSelect';
-import SelectedChips from '@/components/Inputs/SelectedChips';
-import { RxCross2 } from 'react-icons/rx';
-import { FaArrowLeft, FaMagnifyingGlass } from 'react-icons/fa6';
+"use client";
 
+import React, { useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { setProgress } from "@/redux/progressSlice";
+import MultiSelect from "@/components/Inputs/MultiSelect";
+import SelectedChips from "@/components/Inputs/SelectedChips";
+import { FaMagnifyingGlass } from "react-icons/fa6";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import api from "@/Services/Apiservice";
+import toast from "react-hot-toast";
+import { storeProgress } from "@/components/utils/deviceId";
+import { setUserRole } from "@/redux/authSlice";
 
 export default function AddJobRole() {
-  const progress = useAppSelector((state) => state.progress.value);
-  const name = useAppSelector((state) => state.user.name);
   const dispatch = useAppDispatch();
-  const [jobRoles, setJobRoles] = useState<{ value: string; label: string }[]>([]);
-  const [jobType, setJobType] = useState("");
+  const {name, role_id, job_type_master_id} = useAppSelector((state) => state.auth);
+  const [selectedRoles, setSelectedRoles] = useState([]);
+  const [selectedJobType, setSelectedJobType] = useState("");
+  // State for options
+  const [rolesList, setRolesList] = useState<{ value: string; label: string }[]>([]);
+  const [jobTypes, setJobTypes] = useState<{ value: string; label: string }[]>([]);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    dispatch(setProgress(6));
+  // ✅ Fetch roles from API
+  useEffect(() => {
+    
+    fetchRoles();
+    fetchJobTypes();
+  }, []);
+  const fetchRoles = async () => {
+    try {
+      const response = await api.get("/MasterData/getDesignation");
+      const roles = response?.data?.result?.map((role: any) => ({
+        value: role.id,
+        label: role.name,
+      })) || [];
+       // Set initial selected roles if user has existing roles
+       if (role_id?.length) {
+        const preselectedRoles = roles.filter((role:any) => role_id.includes(role.value));
+        setSelectedRoles(preselectedRoles);
+      }
+      setRolesList(roles);
+    } catch (error) {
+      console.error("Error fetching roles:", error);
+    }
   };
 
-  const handleJobRoleChange = (selectedRoles: { value: string; label: string }[]) => {
-    setJobRoles(selectedRoles);
+  const fetchJobTypes = async () => {
+    try {
+      const response = await api.get("/MasterData/getJobType");
+      console.log(response)
+      const jobTypes = response?.data?.result?.map((type: any) => ({
+        value: type.id.toString(),
+        label: type.name,
+      })) || [];
+      // Set initial job type selection
+      if (job_type_master_id) {
+        setSelectedJobType(job_type_master_id.toString());
+      }
+      setJobTypes(jobTypes);
+    } catch (error) {
+      console.error("Error fetching job types:", error);
+    }
   };
 
-  const handleRemoveJobRole = (value: string) => {
-    setJobRoles(prev => prev.filter(role => role.value !== value));
-  };
+  // ✅ Validation Schema
+  const validationSchema = Yup.object().shape({
+    role_id: Yup.array()
+      .of(Yup.string())
+      .min(1, "Select at least one role")
+      .max(2, "You can select up to 2 roles")
+      .required("Job role is required"),
+    job_type_master_id: Yup.string().required("Please select a job type"),
+  });
 
-  const rolesList = [
-    { value: '1', label: 'Admin' },
-    { value: '2', label: 'Editor' },
-    { value: '3', label: 'Viewer' },
-  ];
+  // ✅ Formik Hook
+  const formik = useFormik({
+    initialValues: {
+      role_id: selectedRoles as string[],
+      job_type_master_id: selectedJobType,
+    },
+    validationSchema,
+    onSubmit: async (values, { setSubmitting }) => {
+      try {
+        // ✅ Submit selected roles & job type
+        const response = await api.post("/Auth/addJobseekerProfile", values);
 
-  const jobTypes = ["Full Time", "Part Time", "Internship"];
-
-  return (
-    <div className=''>
-      <h2 className='text-center font-semibold text-lg md:text-xl xl:text-[28px] xl:leading-[36px]'>
-        <span className='text-red'>Hi {name}!</span> <br />Take the first step to find a job
-      </h2>
-      <form onSubmit={handleSubmit} className="block mt-8 md:mt-10 xl:mt-14 2xl:mt-16">
-        <h4 className='text-lg font-medium'>What job role are you looking for?</h4>
-        <p className='text-sm text-[#249D64]'>(You can select up to 2 job roles)</p>
-        <div className="my-4">
-        <MultiSelect
-          options={rolesList}
-          placeholder="Select Role"
-          isMulti
+        if (response?.data?.code === 1) {
+          dispatch(setProgress(6));
+          storeProgress(6);
+          setUserRole(values)
           
-          onChange={handleJobRoleChange}
-          selectedValues={jobRoles}
-          icon={<FaMagnifyingGlass className='absolute left-[15px] top-[20px] size-4 text-[#808080]' />}
-        />
-        </div>
-        <SelectedChips selectedValues={jobRoles} onRemove={handleRemoveJobRole} />
+          toast.success("Job role submitted successfully!", { position: "bottom-right" });
+        } else {
+          toast.error(response?.data?.message || "Submission failed!", { position: "bottom-right" });
+        }
+      } catch (error: any) {
+        console.error("Error submitting job role:", error);
+        toast.error(error?.message || "Something went wrong!", { position: "bottom-right" });
+      } finally {
+        setSubmitting(false);
+      }
+    },
+  });
+  
+  return (
+    <div className="">
+      <h2 className="text-center font-semibold text-lg md:text-xl xl:text-[28px] xl:leading-[36px]">
+        <span className="text-red">Hi {name}!</span> <br />
+        Take the first step to find a job
+      </h2>
 
-        <h4 className='text-lg font-medium my-4'>What type of job required?</h4>
+      {/* ✅ Formik Form */}
+      <form onSubmit={formik.handleSubmit} className="block mt-8 md:mt-10 xl:mt-14 2xl:mt-16">
+        <h4 className="text-lg font-medium">What job role are you looking for?</h4>
+        <p className="text-sm text-[#249D64]">(You can select up to 2 job roles)</p>
+
+        {/* ✅ MultiSelect for Job Roles */}
+        <div className="my-4">
+          <MultiSelect
+            options={rolesList}
+            placeholder="Select Role"
+            isMulti
+            onChange={(selectedRoles: { value: string; label: string }[]) =>
+              formik.setFieldValue("role_id", selectedRoles.map((role) => role.value))
+            }
+            selectedValues={rolesList.filter((role) => formik.values.role_id.includes(role.value))}
+            icon={<FaMagnifyingGlass className="absolute left-[15px] top-[20px] size-4 text-[#808080]" />}
+          />
+        </div>
+
+        {/* ✅ Display Selected Job Roles */}
+        <SelectedChips
+          selectedValues={rolesList.filter((role) => formik.values.role_id.includes(role.value))}
+          onRemove={(value: string) =>
+            formik.setFieldValue(
+              "role_id",
+              formik.values.role_id.filter((id) => id !== value)
+            )
+          }
+        />
+
+        {/* ✅ Validation Error */}
+        {formik.errors.role_id && formik.touched.role_id && (
+          <p className="text-red text-sm mt-1">{formik.errors.role_id}</p>
+        )}
+
+        <h4 className="text-lg font-medium my-4">What type of job are you looking for?</h4>
+
+        {/* ✅ Job Type Selection */}
         <div className="grid sm:grid-cols-3 gap-4">
-          {jobTypes.map(type => (
+          {jobTypes.map((type) => (
             <div
-              key={type}
-              className={`col-span-1 label-option cursor-pointer px-4 py-2 rounded ${jobType === type ? 'bg-red text-white' : ''}`}
-              onClick={() => setJobType(type)}
+              key={type.value}
+              className={`col-span-1 label-option cursor-pointer px-4 py-2 rounded ${
+                formik.values.job_type_master_id === type.value ? "bg-red text-white" : ""
+              }`}
+              onClick={() => formik.setFieldValue("job_type_master_id", type.value)}
             >
-              {type}
+              {type.label}
             </div>
           ))}
         </div>
-        
+
+        {/* ✅ Validation Error */}
+        {formik.errors.job_type_master_id && formik.touched.job_type_master_id && (
+          <p className="text-red text-sm mt-1">{formik.errors.job_type_master_id}</p>
+        )}
+
         <div className="flex w-full justify-between items-end">
-          <div className="whitespace-nowrap"><span className='text-red'>{progress-4}</span> - 6</div>
-          <button className={`max-w-[100px] sm:max-w-[250px]`} disabled={false} type="submit">
-            Next
+          <div className="whitespace-nowrap">
+            <span className="text-red">{6 - 4}</span> - 6
+          </div>
+          <button
+            type="submit"
+            className={`max-w-[100px] sm:max-w-[250px] ${
+              formik.isValid ? "bg-red text-white" : "!opacity-50 !cursor-default"
+            }`}
+            disabled={formik.isSubmitting}
+          >
+            {formik.isSubmitting ? "Submitting..." : "Next"}
           </button>
         </div>
       </form>

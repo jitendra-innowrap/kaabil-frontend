@@ -29,10 +29,10 @@ api.interceptors.request.use(async (config) => {
     config.headers["version"] = jsonData.version;;
     config.headers["os"] = jsonData.os;
 
-    if (config.data && secret) {
+    if (secret) {
       config.headers["hash"] = hash;
     }
-    if (config.data && token) {
+    if (token) {
       config.headers["token"] = token;
     }
   }

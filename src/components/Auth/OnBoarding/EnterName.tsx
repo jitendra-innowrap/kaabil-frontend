@@ -1,30 +1,99 @@
+'use client';
+
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setProgress } from '@/redux/progressSlice';
 import { updateName } from '@/redux/userSlice';
-import React, { useState } from 'react'
+import api from '@/Services/Apiservice';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import React from 'react';
+import toast from 'react-hot-toast';
+import { storeProgress } from '@/components/utils/deviceId';
 
 export default function EnterName() {
   const progress = useAppSelector((state) => state.progress.value);
-      const dispatch = useAppDispatch();
-      const [name, setName] = useState("")
+  const dispatch = useAppDispatch();
+  const name = useAppSelector((state) => state.auth.name);
+  
 
-      const handleSubmit =()=>{
-        dispatch(setProgress(5));
-        dispatch(updateName(name));
+  // ✅ Yup Validation Schema
+  const validationSchema = Yup.object().shape({
+    name: Yup.string()
+      .trim()
+      .matches(/^[a-zA-Z\s]+$/, "Only alphabets and spaces are allowed")
+      .min(3, "Name must be at least 3 characters")
+      .max(50, "Name must be at most 50 characters")
+      .required("Full name is required"),
+  });
+
+  // ✅ Formik hook
+  const formik = useFormik({
+    initialValues: { name: name || "", },
+    validationSchema,
+    onSubmit: async (values, { setSubmitting }) => {
+      try {
+        const formData = new FormData();
+        formData.append("first_name", values.name);
+
+        // ✅ API Call
+        const response:any = await api.post('/Auth/addJobseekerProfile', formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+        console.log('repsonse:',response);
+        if (response?.data?.code === 1) {
+          // ✅ Redux Updates
+          dispatch(setProgress(5));
+          storeProgress(5);
+          dispatch(updateName(values.name));
+          toast.success("Name submitted successfully!", { position: "bottom-right" });
+        } else {
+          toast.error(response?.message || "Something went wrong. Try again!", { position: "bottom-right" });
+        }
+
+      } catch (error: any) {
+        console.error("Error submitting name:", error);
+        toast.error(error?.message || "Something went wrong!", { position: "bottom-right" });
+      } finally {
+        setSubmitting(false);
       }
-      const handleChange =(e:any)=>{
-        setName(e.target.value)
-      }
-    return (
-      <div>
-          <h2 className='text-center font-semibold text-lg md:text-xl 2xl:text-[28px] 2xl:leading-[36px]'>Welcome to <span className='text-red font-kalam'>Kaabil</span></h2>
-          <form onSubmit={handleSubmit} className="block mt-8 md:mt-10 xl:mt-14 2xl:mt-16">
-              <label htmlFor="name">Enter your full name</label>
-              <input type="text" id="name" value={name} onChange={handleChange} name="name" placeholder="Enter your full name" />
-              <button className={`${name?'':'disable'}`} disabled={!name} type="submit">
-                  next
-              </button>
-          </form>
-      </div>
-    )
+    },
+  });
+
+  return (
+    <div>
+      <h2 className="text-center font-semibold text-lg md:text-xl 2xl:text-[28px] 2xl:leading-[36px]">
+        Welcome to <span className="text-red font-kalam">Kaabil</span>
+      </h2>
+
+      {/* ✅ Formik Form */}
+      <form onSubmit={formik.handleSubmit} className="block mt-8 md:mt-10 xl:mt-14 2xl:mt-16">
+        <label htmlFor="name">Enter your full name</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          placeholder="Enter your full name"
+          value={formik.values.name}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          className={`border p-2 w-full ${formik.errors.name && formik.touched.name ? 'border-red-500' : 'border-gray-300'}`}
+        />
+
+        {/* ✅ Display Validation Error */}
+        {formik.errors.name && formik.touched.name && (
+              <div className="text-red-500 text-sm text-red mt-1">{formik.errors.name}</div>
+            )}
+
+        <button
+          type="submit"
+          className={`mt-4 px-6 py-2 bg-red text-white rounded ${
+            !formik.isValid || formik.isSubmitting ? "!opacity-50 !cursor-default" : ""
+          }`}
+          disabled={!formik.isValid || formik.isSubmitting}
+        >
+          {formik.isSubmitting ? "Submitting..." : "Next"}
+        </button>
+      </form>
+    </div>
+  );
 }

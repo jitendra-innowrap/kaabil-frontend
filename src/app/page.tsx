@@ -216,7 +216,7 @@ export default function Home() {
         <main>
             <section className=''>
                 <div className=''>
-                    <Image src='/new-assets/banners/Hero banner.png' quality={100} alt="" width={1920} height={500}
+                    <Image src='/new-assets/banners/Hero banner.png' quality={100} alt="" width={3840} height={1000}
                     className="w-full h-auto"
                     />
                 </div>

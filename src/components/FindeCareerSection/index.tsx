@@ -22,7 +22,7 @@ export default function FindCareerSection() {
             <CareerRoleCard key={index} {...role} />
         ));
   return (
-    <div className="grid md:grid-cols-12 xl:w-[950] 3xl:w-[1279px]">
+    <div className="grid md:grid-cols-12 xl:w-[950px] 3xl:w-[1279px]">
     <div className="absolute bottom-4 3xl:bottom-12 left-0 w-full">
         <div className="">
             <GallerySlider

@@ -12,7 +12,7 @@ import HeaderSearch from './HeaderSearch'
 export default function Header() {
 
   return (
-    <header className='sticky top-0 bg-white z-50'>
+    <header className='sticky top-0 bg-white z-[101]'>
         <div className='relative'>
             <div className="border-b-[1px] shadow-default flex justify-center">
                 <div className='flex container py-4 lg:py-1 2xl:py-[10px] justify-between lg:justify-start items-center'>

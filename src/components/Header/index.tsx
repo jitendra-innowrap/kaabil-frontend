@@ -15,19 +15,19 @@ export default function Header() {
     <header className='sticky top-0 bg-white z-50'>
         <div className='relative'>
             <div className="border-b-[1px] shadow-default flex justify-center">
-                <div className='flex container py-4 lg:py-1 2xl:py-3 justify-between lg:justify-start items-center'>
+                <div className='flex container py-4 lg:py-1 2xl:py-[10px] justify-between lg:justify-start items-center'>
                     <Link href="/" className="flex relative pr-4 md:pr-8 xl:pr-14 items-center">
                         <Image
                             height={70}
                             width={141}
-                            src="/assets/logos/Kaabil logo.svg"
+                            src="/new-assets/logos/Kaabil logo.png"
                             className='w-auto max-w-fit h-[40px] xl:h-[40px] 2xl:h-[70px]'
                             alt='kaabil logo'
                             />
                     </Link>
                     <div className="hidden lg:flex h-full flex-col w-[-webkit-fill-available]">
                         <div className="flex h-full justify-between items-center">
-                            <ul className="flex py-4 gap-3 xl:gap-4 2xl:gap-8">
+                            <ul className="flex py-4 gap-3 xl:gap-4 2xl:gap-[30px]">
                                 <li className='flex'>
                                     <Link href={"/jobs"} className='text-Grey hover:text-black font-medium hover:font-semibold text-xs 2xl:text-base relative after:w-full after:h-[3px] 2xl:after:h-1 after:rounded-[4px] hover:after:bg-red after:absolute after:bottom-[-8px] 2xl:after:bottom-[-12px] after:left-0'>
                                     Jobs
@@ -35,9 +35,9 @@ export default function Header() {
                                 </li>
                                 <li className='relative group/menu cursor-pointer flex '>
                                     <Link href={"/"} className='text-Grey hover:text-black font-medium text-xs 2xl:text-base group-hover/menu:font-semibold relative after:w-full after:h-[3px] 2xl:after:h-1 after:rounded-[4px] group-hover/menu:after:bg-red after:absolute after:bottom-[-8px] 2xl:after:bottom-[-12px] after:left-0'>
-                                    Career Tools
+                                        Career Tools
                                     </Link>
-                                    <BiChevronDown className='font-medium 2xl:text-2xl text-Grey group-hover/menu:text-black'/>
+                                    <BiChevronDown className='font-light 2xl:text-2xl text-Grey group-hover/menu:text-black'/>
                                     <div className="absolute z-30 hidden group-hover/menu:block top-0 left-0">
                                         <div className="bg-white shadow-default mt-[40px] 2xl:mt-[56px] rounded-xl w-[288px] border border-lightGrey divide-y divide-lightGrey">
                                             <Link href='/' className='block text-Grey hover:text-black py-4 font-medium hover:font-semibold text-xs 2xl:text-base px-5'>Resume Builder</Link>
@@ -58,10 +58,10 @@ export default function Header() {
                                 </li>
                             </ul>
                             <HeaderSearch/>
-                            <ul className='flex gap-3 2xl:gap-7 items-center'>
-                                <li className='relative group/menu text-Grey font-medium flex'>
-                                    <Link href={"/"} className='relative text-black flex items-center text-xs 2xl:text-base p-2 border border-[#e3e3e3] rounded-lg'>
-                                    <SlGlobe className='text-black font-medium text-xs 2xl:text-base mr-1'/> English
+                            <ul className='flex gap-[10px] items-center'>
+                                <li className='relative group/menu text-Grey flex'>
+                                    <Link href={"/"} className='relative text-black font-thin flex items-center text-xs 2xl:text-base p-2 border border-[#e3e3e3] rounded-lg'>
+                                    <Image src={'/new-assets/icons/globe.svg'} width={19} height={19} className='mr-1' alt='globe icon'/> English
                                     <BiChevronDown className='font-medium 2xl:text-2xl text-black'/>
                                     </Link>
                                 </li>

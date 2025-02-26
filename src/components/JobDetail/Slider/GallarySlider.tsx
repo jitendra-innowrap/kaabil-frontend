@@ -74,11 +74,11 @@ useEffect(() => {
   }
 }, []);
   return (
-    <div className={`relative ${showNavigation && arrowOut?'px-6 sm:px-12 md:px-16':'px-3'}`}>
+    <div className={`relative ${showNavigation && arrowOut?'px-6 sm:px-10 2xl:px-[60px]':'px-3'}`}>
       <Swiper
         modules={[Autoplay, Navigation, FreeMode]}
         loop={loop}
-        autoplay={autoplayConfig}
+        // autoplay={autoplayConfig}
         spaceBetween={spaceBetween}
         slidesPerView={slidesPerView}
         freeMode={freeMode}
@@ -114,18 +114,18 @@ useEffect(() => {
         <div
           ref={prevButtonRef}
           onClick={() => swiperRef.current?.slidePrev()}
-          className={`swiper-button-prev absolute left-0 size-10 shadow-default rounded-full !w-fit  !text-lightGrey ${isBeginning ? 'disabled' : ''}`}
+          className={`swiper-button-prev absolute left-0 !size-8 shadow-default rounded-full !w-fit  !text-lightGrey ${isBeginning ? 'no-disabled' : ''}`}
         >
-          {customArrowLeft? customArrowLeft : <div className="bg-black swiper-btn rounded-full size-10 grid shrink-0 place-items-center 2xl:size-[50px]"><IoChevronBackOutline className="text-white !size-4 2xl:!size-5 font-bold text-xl"/></div>}
+          {customArrowLeft? customArrowLeft : <div className="bg-[#000000] swiper-btn rounded-full !size-8 grid shrink-0 place-items-center 2xl:!size-[50px]"><IoChevronBackOutline className="text-white !size-4 2xl:!size-5 font-bold text-xl"/></div>}
         </div>
       )}
       {showNavigation && (
         <div
           onClick={() => swiperRef.current?.slideNext()}
           ref={nextButtonRef}
-          className={`swiper-button-next absolute right-0 size-10 shadow-default rounded-full !w-fit  !text-lightGrey ${isEnd ? 'disabled' : ''}`}
+          className={`swiper-button-next absolute right-0 !size-8 shadow-default rounded-full !w-fit  !text-lightGrey ${isEnd ? 'no-disabled' : ''}`}
         >
-          {customArrowRight? customArrowRight : <div className="bg-black swiper-btn rounded-full size-10 grid shrink-0 place-items-center 2xl:size-[50px]"><IoChevronForwardOutline className="text-white !size-4 2xl:!size-5 font-bold text-xl"/></div>}
+          {customArrowRight? customArrowRight : <div className="bg-[#000000] swiper-btn rounded-full !size-8 grid shrink-0 place-items-center 2xl:!size-[50px]"><IoChevronForwardOutline className="text-white !size-4 2xl:!size-5 font-bold text-xl"/></div>}
         </div>
       )}
     </div>

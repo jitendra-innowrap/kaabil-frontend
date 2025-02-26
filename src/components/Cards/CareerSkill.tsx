@@ -4,7 +4,7 @@ import React from 'react'
 
 export default function CareerSkill({title, link, image, index}:{title: string, link: string, image: string, index: string}) {
   return (
-    <div className={`career-skill-${index} bg-white relative rounded-2xl shadow-secondary`}>
+    <div className={`career-skill-${index} skill-card bg-white relative rounded-2xl 2xl:rounded-3xl shadow-lg`}>
         <Image
             className="w-full rounded-2xl h-auto"
             src={image}

@@ -21,14 +21,25 @@ export default function FindCareerSection() {
             <CareerRoleCard key={index} {...role} />
         ));
   return (
-    <div className="grid md:grid-cols-12">
-        <div className="section-heading mb-5 xl:mb-8 col-span-7">
+    <div className="grid md:grid-cols-12 xl:w-[950] 3xl:w-[1279px]">
+    <div className="absolute bottom-4 3xl:bottom-12 left-0 w-full">
+        <div className="">
+            <GallerySlider
+                speed={2000}
+                slides={inputSlides}
+                spaceBetween={16}
+                loop={true}
+                autoplay={true}
+                />
+        </div>
+    </div>
+        <div className="section-heading mb-5 xl:mb-8 col-span-7 max-w-[650px]">
             <h2 className='text-black text-start text-2xl xl:text-3xl 2xl:text-[40px] 2xl:leading-[64px] font-medium mb-2'>Not sure what  <span className="font-kalam font-bold text-red"> job</span> suits you?</h2>
-            <p className="font-normal xl:text-sm 2xl:text-xl 2xl:leading-9">Find career paths that match your skills and strengths.</p>
-            <p className="font-semibold text-lg xl:text-base 2xl:text-xl mt-7 xl:mt-8 2xl:mt-10 mb-3 2xl:mb-4">Answer a few simple questions and we’ll help you discover the right careers!</p>
+            <p className="font-normal xl:text-sm 3xl:text-xl 3xl:leading-9">Find career paths that match your skills and strengths.</p>
+            <p className="font-semibold text-lg xl:text-base 3xl:text-xl mt-7 xl:mt-8 3xl:mt-10 mb-3 3xl:mb-4 3xl:max-w-[520px]">Answer a few simple questions and we’ll help you discover the right careers!</p>
             <div className="flex flex-col items-end">
                 <Select
-                className='w-full react-select'
+                className='w-full react-select text-xs 3xl:text-base shadow-sm'
                 options={[
                     { value: 'IT', label: 'IT' },
                     { value: 'Finance', label: 'Finance' },
@@ -37,27 +48,15 @@ export default function FindCareerSection() {
                 placeholder="Select your education level"
                 components={{
                     IndicatorSeparator: () => null, // Remove the separator
-                    DropdownIndicator: () => (<img className='mr-3' src="/new-assets/icons/find-career-dropdown-arrow.png" alt="" />)
+                    DropdownIndicator: () => (<img className='mr-3 w-3 3xl:w-4' src="/new-assets/icons/find-career-dropdown-arrow.png" alt="" />)
                 }}
                 classNamePrefix={"find-career"}
                 />
-                <button className='w-[220px] mt-3 2xl:mt-4'>Next</button>
+                <button className='w-[150px] 3xl:w-[220px] mt-3 3xl:mt-4'>Next</button>
             </div>
         </div>
-        <div className="col-span-5 xl:mt-10">
-            <img src='/new-assets/banners/find-career-banner-update.png' alt='find-career' className='w-full max-w-[350px] 2xl:max-w-[450px] mx-auto' />
-        </div>
-        <div className="absolute bottom-0 left-0 w-full">
-            <div className="">
-                
-                <GallerySlider
-                    speed={2000}
-                    slides={inputSlides}
-                    spaceBetween={20}
-                    loop={true}
-                    autoplay={true}
-                    />
-            </div>
+        <div className="col-span-5">
+            <img src='/new-assets/banners/find-career-banner-update.png' alt='find-career' className='w-full 3xl:-ml-10 max-w-[350px] 3xl:max-w-[450px] 3xl:min-w-[481px] mx-auto' />
         </div>
     </div>
   )

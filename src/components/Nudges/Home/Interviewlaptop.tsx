@@ -5,7 +5,7 @@ export default function Interviewlaptop() {
   return (
     <div className="flex flex-col-reverse sm:flex-row sm:items-center bg-white rounded-lg py-8 2xl:py-11 px-9 2xl:px-14 !pb-0">
         <div className="block pb-8 xl:pb-10 2xl:pb-11">
-            <h3 className="text-2xl xl:text-sm 2xl:text-3xl font-medium">Practice <span className='text-red font-bold font-kalam'>mock interviews</span> and boost your confidence!</h3>
+            <h3 className="text-2xl xl:text-lg 2xl:text-3xl font-medium xl:leading-5 2xl:leading-8">Practice <span className='text-red font-bold font-kalam'>mock interviews</span> and boost your confidence!</h3>
             <button className="mt-3 md:mt-4 xl:!text-xs xl:!px-5">Start Building Your Resume</button>
         </div>
         <Image

@@ -835,7 +835,7 @@ css-10wo9uf-option:hover, .css-d7l1ni-option:hover{
 .find-career__value-container {
   padding-block: 10px !important;
 }
-.find-career__control.css-13cymwt-control{
+.find-career__control.css-13cymwt-control, .find-career__control.css-t3ipsp-control{
   border: none !important;
   box-shadow: none !important;
   outline: none !important;

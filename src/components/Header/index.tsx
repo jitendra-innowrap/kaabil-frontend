@@ -39,10 +39,10 @@ export default function Header() {
                                     </Link>
                                     <BiChevronDown className='font-light 2xl:text-2xl text-Grey group-hover/menu:text-black'/>
                                     <div className="absolute z-30 hidden group-hover/menu:block top-0 left-0">
-                                        <div className="bg-white shadow-default mt-[40px] 2xl:mt-[56px] rounded-xl w-[288px] border border-lightGrey divide-y divide-lightGrey">
-                                            <Link href='/' className='block text-Grey hover:text-black py-4 font-medium hover:font-semibold text-xs 2xl:text-base px-5'>Resume Builder</Link>
-                                            <Link href='/' className='block text-Grey hover:text-black py-4 font-medium hover:font-semibold text-xs 2xl:text-base px-5'>Career Guide</Link>
-                                            <Link href='/' className='block text-Grey hover:text-black py-4 font-medium hover:font-semibold text-xs 2xl:text-base px-5'>Mock Interviews</Link>
+                                        <div className="bg-white shadow-default mt-[40px] 2xl:mt-[56px] rounded-xl w-[180px] 2xl:w-[288px] border border-lightGrey divide-y divide-lightGrey">
+                                            <Link href='/' className='block text-Grey hover:text-black py-3 2xl:py-4 font-medium hover:font-semibold text-xs 2xl:text-base px-5'>Resume Builder</Link>
+                                            <Link href='/' className='block text-Grey hover:text-black py-3 2xl:py-4 font-medium hover:font-semibold text-xs 2xl:text-base px-5'>Career Guide</Link>
+                                            <Link href='/' className='block text-Grey hover:text-black py-3 2xl:py-4 font-medium hover:font-semibold text-xs 2xl:text-base px-5'>Mock Interviews</Link>
                                         </div>
                                     </div>
                                 </li>

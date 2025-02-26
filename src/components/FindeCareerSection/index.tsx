@@ -3,6 +3,7 @@ import React from 'react'
 import Select from 'react-select'
 import GallerySlider from '../JobDetail/Slider/GallarySlider'
 import CareerRoleCard from './CareerRoleCard'
+import Image from 'next/image'
 
 export default function FindCareerSection() {
     const roles = [
@@ -56,7 +57,7 @@ export default function FindCareerSection() {
             </div>
         </div>
         <div className="col-span-5">
-            <img src='/new-assets/banners/find-career-banner-update.png' alt='find-career' className='w-full 3xl:-ml-10 max-w-[350px] 3xl:max-w-[450px] 3xl:min-w-[481px] mx-auto' />
+            <Image height={1704} width={1448} quality={100} src='/new-assets/banners/find-career-banner-update.png' alt='find-career' className='w-full 3xl:-ml-10 max-w-[350px] 3xl:max-w-[450px] 3xl:min-w-[481px] mx-auto' />
         </div>
     </div>
   )

@@ -22,8 +22,9 @@ export default function PlayStoreAppAd() {
           <div className="absolute left-1/2 -translate-x-1/2 md:translate-x-0 xl:top-[-65px] 2xl:translate-x-8 shrink-0 md:left-[8%] top-[-50px] md:bottom-0 block h-[300px] md:h-[120%] w-[300px] lg:max-w-[563px] flex-1 xl:w-[350px] 2xl:w-[460px] 2xl:top-[-90px]">
             <Image
             src={"/new-assets/images/footer-mobile.png"}
-            width={429}
-            height={400}
+            width={1716}
+            height={1600}
+            quality={100}
             alt="company logo"
             className="w-auto h-full xl:w-[350px] 2xl:w-[460px] xl:h-auto"
             />

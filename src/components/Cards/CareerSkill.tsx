@@ -8,9 +8,10 @@ export default function CareerSkill({title, link, image, index}:{title: string, 
         <Image
             className="w-full rounded-2xl h-auto"
             src={image}
-            width={460}
-            height={458}
+            width={1380}
+            height={1374}
             alt="company-icons"
+            quality={100}
             />   
          <div className="p-6 2xl:p-10 absolute bottom-0 left-0"> 
             <h3 className='text-white font-medium text-xl md:text-2xl 2xl:text-[32px] 2xl:leading-[38px] mb-2 2xl:mb-5'>{title.split(" ").slice(0,-1).join(" ")}

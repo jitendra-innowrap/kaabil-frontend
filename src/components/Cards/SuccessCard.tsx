@@ -8,8 +8,8 @@ export default function SuccessCard({name, role, image, video}:{name: string, ro
             <Image
                 className="w-full rounded-2xl h-auto"
                 src={image}
-                width={313}
-                height={514}
+                width={939}
+                height={1542}
                 quality={100}
                 alt="company-icons"
                 />   

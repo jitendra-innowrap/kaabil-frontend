@@ -16,67 +16,76 @@ export default function Footer() {
   }, [dispatch]);
   return (
     <footer className='border-t-4 text-[#E3E3E3] border-[#000000] bg-[#000000]'>
-        <div className="container small w-full flex flex-col mt-5 md:mt-8 xl:mt-14 2xl:mt-16  mx-auto">
-            <div className="grid lg:gap-10 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mt-8 md:mt-10 xl:mt-16 mb-8 md:mb-10 xl:mb-16">
+        <div className="container w-full flex flex-col mt-5 md:mt-8 xl:mt-14  mx-auto">
+            <div className="flex justify-between mb-5 lg:mb-8 2xl:mb-[20px]">
                 <div className="block">
                     <Image
-                    src={"/new-assets/images/logo-white.png"}
+                    src={"/new-assets/logos/Kaabil logo white.png"}
+                    width={194}
+                    height={88}
+                    alt="company logo"
+                    className="mb-5 md:mb-8 xl:mb-12 w-[100px] 2xl:w-[194px] 2xl:mb-[52px]"
+                    />
+                    <strong className='font-semibold uppercase text-sm mb-4 block 2xl:mb-5'>Connect with us</strong>
+                    <div className="flex gap-2 2xl:gap-4">
+                        <a href="/" target="_blank" rel="noopener noreferrer">
+                            <Image width={24} height={24} alt='' src="/new-assets/icons/fb.svg" className='inline-block w-6 h-6 text-white' />
+                        </a>
+                        <a href="/" target="_blank" rel="noopener noreferrer">
+                            <Image width={24} height={24} alt='' src="/new-assets/icons/x.svg" className='inline-block w-6 h-6 text-white ml-3' />
+                        </a>
+                        <a href="/" target="_blank" rel="noopener noreferrer">
+                            <Image width={24} height={24} alt='' src="/new-assets/icons/linkedIn.svg" className='inline-block w-6 h-6 text-white ml-3' />
+                        </a>
+                        <a href="/" target="_blank" rel="noopener noreferrer">
+                            <Image width={24} height={24} alt='' src="/new-assets/icons/insta.svg" className='inline-block w-6 h-6 text-white ml-3' />
+                        </a>
+                    </div>
+
+                </div>
+                    <div className="block">
+                        <strong className='uppercase font-semibold text-sm mb-4 2xl:mb-5 text-[#E3E3E3] block'>COMPANY</strong>
+                        <ul>
+                            <li className='mb-4 2xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Home</li>
+                            <li className='mb-4 2xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>About Us</li>
+                            <li className='mb-4 2xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Resume Builder</li>
+                            <li className='mb-4 2xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Career Advisor</li>
+                            <li className='mb-4 2xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Mock Interviews</li>
+                            <li className='mb-4 2xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Skill Center</li>
+                            <li className='mb-4 2xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Blogs</li>
+                        </ul>
+                    </div>
+                    <div className="block">
+                        <strong className='uppercase font-semibold text-sm mb-4 2xl:mb-5 text-[#E3E3E3] block'>Legal</strong>
+                        <ul>
+                            <li className='mb-4 2xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Privacy Policy</li>
+                            <li className='mb-4 2xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Terms of Use</li>
+                            <li className='mb-4 2xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Cookie Policy</li>
+                        </ul>
+                    </div>
+                    <div className="block">
+                        <strong className='uppercase font-semibold text-sm mb-4 2xl:mb-5 text-[#E3E3E3] block'>Resources</strong>
+                        <ul>
+                            <li className='mb-4 2xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Help Center</li>
+                            <li className='mb-4 2xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>FAQs</li>
+                        </ul>
+                    </div>
+                    <div className="block">
+                        <strong className='uppercase font-semibold text-sm mb-4 2xl:mb-5 text-[#E3E3E3] block'>Contact US</strong>
+                        <ul>
+                            <li className='mb-4 2xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3] w-[190px]'>K. C. Mahindra Education Trust Cecil Court, Near Regal Cinema, Mahakavi Bhushan Marg, Mumbai 400001.</li>
+                        </ul>
+                    </div>
+                {/* <div className="flex gap-[37px]">
+                </div> */}
+                <div className="block">
+                    <Image
+                    src={"/new-assets/logos/mahindra logo white.png"}
                     width={182}
                     height={83}
                     alt="company logo"
-                    className=""
+                    className="mb-5 md:mb-8 w-[122px] 2xl:w-[182px] xl:mb-12 2xl:mb-[52px]"
                     />
-                </div>
-                <div className="block">
-                    <strong className='font-semibold text-sm mb-4 block'>For Women</strong>
-                    <ul>
-                        <li className='mb-3 font-medium text-sm'>Search Jobs</li>
-                        <li className='mb-3 font-medium text-sm'>Find Employers</li>
-                        <li className='mb-3 font-medium text-sm'>Join Community</li>
-                        <li className='mb-3 font-medium text-sm'>Skill Training Courses</li>
-                        <li className='mb-3 font-medium text-sm'>Stories & Inspiration</li>
-                        <li className='mb-3 font-medium text-sm'>Women Job Seekers Login</li>
-                    </ul>
-                </div>
-                <div className="block">
-                    <strong className='font-semibold text-sm mb-4 block'>For Employers</strong>
-                    <ul>
-                        <li className='mb-3 font-medium text-sm'>Employers Resources</li>
-                        <li className='mb-3 font-medium text-sm'>Hiring Talents</li>
-                        <li className='mb-3 font-medium text-sm'>Manage Jobs</li>
-                        <li className='mb-3 font-medium text-sm'>Employer Login</li>
-                    </ul>
-                </div>
-                <div className="block">
-                    <strong className='font-semibold text-sm mb-4 block'>Resources</strong>
-                    <ul>
-                        <li className='mb-3 font-medium text-sm'>Blogs</li>
-                        <li className='mb-3 font-medium text-sm'>Stories</li>
-                        <li className='mb-3 font-medium text-sm'>Videos</li>
-                        <li className='mb-3 font-medium text-sm'>Podcasts</li>
-                        <li className='mb-3 font-medium text-sm'>Events</li>
-                        <li className='mb-3 font-medium text-sm'>Join a community</li>
-                    </ul>
-                </div>
-                <div className="block">
-                    <strong className='font-semibold text-sm mb-4 block'>Trending</strong>
-                    <ul>
-                        <li className='mb-3 font-medium text-sm'>Sales & Marketing Jobs</li>
-                        <li className='mb-3 font-medium text-sm'>Administration Jobs</li>
-                        <li className='mb-3 font-medium text-sm'>Retail Jobs</li>
-                        <li className='mb-3 font-medium text-sm'>Accounting Jobs</li>
-                        <li className='mb-3 font-medium text-sm'>Manufacturing Jobs</li>
-                        <li className='mb-3 font-medium text-sm'>Transport & Shipping Jobs</li>
-                    </ul>
-                </div>
-                <div className="block">
-                    <strong className='font-semibold text-sm mb-4 block'>Legal</strong>
-                    <ul>
-                        <li className='mb-3 font-medium text-sm'>Terms of Use</li>
-                        <li className='mb-3 font-medium text-sm'>Privacy Policy</li>
-                        <li className='mb-3 font-medium text-sm'>Disclaimers</li>
-                        <li className='mb-3 font-medium text-sm'>Cookies Policy</li>
-                    </ul>
                 </div>
             </div>
             <div className="flex w-full justify-end py-4 flex-col md:flex-row gap-4 items-center border-t border-[#BDBDBD]">

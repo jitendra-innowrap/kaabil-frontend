@@ -9,6 +9,10 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      screens: {
+        '2xl': '1400px', // Update the 2xl breakpoint
+        '3xl': '1700px', // Add a new 3xl breakpoint
+      },
       fontFamily: {
         sans: ['var(--font-poppins)', ...fontFamily.sans], // Poppins as default
         kalam: ['var(--font-kalam)', 'cursive'], // Kalam as secondary
@@ -29,10 +33,12 @@ const config: Config = {
         "infinite-slider-reverse": "infiniteSliderReverse 20s linear infinite",
       },
       boxShadow:{
-        default: "0px 4px 22px 0px #00000029",
+        default: "0px 4px 48px 0px #00000017",
         secondary: "0px 0px 17px -3px #bdbdbd",
         tertiary: "0px 12px 32px 0px #CFDAEC4D",
-
+        lg: '0px 4px 10px 0px #00000021',
+        sm: "0px 4px 10px 0px #00000017",
+        
 
       },
       keyframes: {

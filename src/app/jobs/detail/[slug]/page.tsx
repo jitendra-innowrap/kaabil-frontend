@@ -419,8 +419,10 @@ export default function Home() {
               slides={jobsSlides}
               spaceBetween={25}
               showNavigation
-              loop={false}
-              autoplay={false}
+              loop={true}
+              autoplay={true}
+                            autoplayDuration={3000}
+                            freeMode={false}
               />
             </div>
           </div>

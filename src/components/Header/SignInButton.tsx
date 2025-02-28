@@ -79,7 +79,7 @@ export default function SignInButton({ closeSideMenu }: prop) {
               <Image
                 height={100}
                 width={100}
-                src="/new-assets/icons/avatar.png"
+                src="/new-assets/icons/avatar.svg"
                 className='w-auto max-w-fit h-[30px] xl:h-[40px] 2xl:h-[50px]'
                 alt='kaabil logo'
               />

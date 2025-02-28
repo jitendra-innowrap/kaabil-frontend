@@ -2,7 +2,6 @@
 import Image from "next/image";
 import PlayStoreAppAd from "@/components/Banners/PlaystoreAppAd";
 import GallerySlider from "@/components/JobDetail/Slider/GallarySlider";
-import CompanyGallerycard from "@/components/Cards/CompanyGallerycard";
 import JobListingCardSmall from "@/components/Cards/JobListingCardSmall";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -10,6 +9,7 @@ import { notFound, useParams } from "next/navigation";
 import api from "@/Services/Apiservice";
 import toast from "react-hot-toast";
 import CompanyGallery from "@/components/Gallary/CompanyGallary";
+import Tabs from "@/components/Tabs";
 
 export default function CompanyDetails() {
 const {slug} = useParams();
@@ -76,10 +76,10 @@ if(isLoading){
     </div>
   )
 }
-  
+ const tabTitles = ["About", "Jobs", "Perks & Benefits"]
   return (
     <main>
-      <section className="bg-[#0a0100] py-10 xl:py-14 2xl:py-[76px] relative">
+      <section className="bg-[#0a0100] py-10 2xl:py-16 3xl:py-[76px] relative">
             <Image
                 src="/new-assets/icons/Comapny-profile-bg.png"
                 width={988}
@@ -95,13 +95,13 @@ if(isLoading){
                 width={200}
                 height={97}
                 alt="company profile logo"
-                className="rounded-2xl flex-shrink-0 size-16 xl:size-36 3xl:size-40"
+                className="rounded-lg 2xl:rounded-2xl flex-shrink-0 size-16 lg:size-[105px] 2xl:size-36 3xl:size-40"
                 />
                 <div className="block">
-                  <div className="flex mt-2 justify-between lg:justify-start gap-5 xl:gap-7 2xl:gap-8">
+                  <div className="flex 2xl:mt-2 justify-between lg:justify-start gap-5 xl:gap-7 2xl:gap-8">
                     <div className="block">
                       <h1 className="font-medium text-white text-2xl 3xl:text-[32px] 3xl:leading-[32px]">{CompanyDetails?.company_name}</h1>
-                      <p className="text-greyText text-sm 2xl:text-base 3xl:text-lg 3xl:mt-3">{"www.lorem.ipsum"}</p>
+                      <p className="text-greyText text-xs 2xl:text-base 3xl:text-lg mt-2 2xl:mt-3">{"www.lorem.ipsum"}</p>
                     </div> 
                     <button className="btn-border whitespace-nowrap !text-[10px] 3xl:!text-[15px] h-[25px] 3xl:h-[33px] !px-3 !rounded-md !py-0">+ Follow</button>
                   </div>
@@ -110,53 +110,57 @@ if(isLoading){
                     <div className="flex gap-2 lg:gap-3 3xl:gap-4">
                       <Image
                       src={'/new-assets/icons/foundation-icon.png'}
-                      width={44}
-                      height={44}
+                      width={1320}
+                      height={1320}
+                      quality={100}
                       alt="company profile logo"
-                      className="rounded-2xl size-8 xl:size-10 2xl:size-11"
+                      className="rounded-2xl size-8 2xl:size-10 3xl:size-11"
                       />
                       <div className="text-white">
-                        <strong className="block">Founded</strong>
-                        <span>Lorem</span>
+                        <strong className="block font-medium text-xs 2xl:text-base -mb-[2px] 2xl:mb">Founded</strong>
+                        <span className="text-[10px] 2xl:text-sm font-light">Lorem</span>
                       </div>
                     </div>
                     <div className="flex gap-2 lg:gap-3 2xl:gap-4">
                       <Image
                       src={'/new-assets/icons/employees-icon.png'}
-                      width={44}
-                      height={44}
+                      width={1320}
+                      height={1320}
+                      quality={100}
                       alt="company profile logo"
-                      className="rounded-2xl size-8 xl:size-10 2xl:size-11"
+                      className="rounded-2xl size-8 2xl:size-10 3xl:size-11"
                       />
                       <div className="text-white">
-                        <strong className="block">Employees</strong>
-                        <span>{CompanyDetails?.company_emp_size}</span>
+                        <strong className="block font-medium text-xs 2xl:text-base -mb-[2px] 2xl:mb">Employees</strong>
+                        <span className="text-[10px] 2xl:text-sm font-light">{CompanyDetails?.company_emp_size}</span>
                       </div>
                     </div>
                     <div className="flex gap-2 lg:gap-3 2xl:gap-4">
                       <Image
-                      src={'/new-assets/icons/foundation-icon.png'}
-                      width={44}
-                      height={44}
+                      src={'/new-assets/icons/location-icon.png'}
+                      width={1320}
+                      height={1320}
+                      quality={100}
                       alt="company profile logo"
-                      className="rounded-2xl size-8 xl:size-10 2xl:size-11"
+                      className="rounded-2xl size-8 2xl:size-10 3xl:size-11"
                       />
                       <div className="text-white">
-                        <strong className="block">Location</strong>
-                        <span>{CompanyDetails?.company_location}</span>
+                        <strong className="block font-medium text-xs 2xl:text-base -mb-[2px] 2xl:mb">Location</strong>
+                        <span className="text-[10px] 2xl:text-sm font-light">{CompanyDetails?.company_location}</span>
                       </div>
                     </div>
                     <div className="flex gap-2 lg:gap-3 2xl:gap-4">
                       <Image
-                      src={'/new-assets/icons/foundation-icon.png'}
-                      width={44}
-                      height={44}
+                      src={'/new-assets/icons/industry-icon.png'}
+                      width={1320}
+                      height={1320}
+                      quality={100}
                       alt="company profile logo"
-                      className="rounded-2xl size-8 xl:size-10 2xl:size-11"
+                      className="rounded-2xl size-8 2xl:size-10 3xl:size-11"
                       />
                       <div className="text-white">
-                        <strong className="block">Industry</strong>
-                        <span>Lorem</span>
+                        <strong className="block font-medium text-xs 2xl:text-base -mb-[2px] 2xl:mb">Industry</strong>
+                        <span className="text-[10px] 2xl:text-sm font-light">Lorem</span>
                       </div>
                     </div>
                   </div>
@@ -165,17 +169,9 @@ if(isLoading){
           </div>
       </section>
       <section className="container">
-          <ul className="flex xl:mx-10 my-5 md:my-8 3xl:my-10 gap-5 md:gap-8 2xl:gap-10 3xl:gap-12 border-b pb-2 3xl:p-[10px] border-[#D4D4D4]">
-            <li className={`text-red md:text-sm font-bold`}>
-              <Link href={"#about"}>About</Link>
-            </li>
-            <li className={`md:text-sm font-normal`}>
-              <Link href={"#jobs"} className="text-black">Jobs</Link>
-            </li>
-            <li className={`md:text-sm font-normal`}>
-              <Link href={"#benefits"} className="text-black">Perks & Benefits</Link>
-            </li>
-          </ul>
+          <div className="xl:mx-10 my-5 md:my-8 3xl:my-10">
+            <Tabs tabTitles={tabTitles}/>
+          </div>
           <div id="about" className="py-5 md:py-8 xl:py-14 2xl:py-16 rounded-xl shadow-default">
             <div className="px-5 md:px-8 xl:px-14 2xl:px-16">
               <h2 className="text-sm 2xl:text-lg 3xl:text-xl font-semibold mb-2 md:mb-4 3xl:mb-6">About {CompanyDetails?.company_name}</h2>
@@ -195,6 +191,8 @@ if(isLoading){
                 spaceBetween={25}
                 showNavigation
                 loop={true}
+                arrowOut={false}
+                arrowColor="white"
                 autoplay={true}
                 autoplayDuration={3000}
                 freeMode={false}
@@ -218,7 +216,7 @@ if(isLoading){
                 />
             </div>
           </div>
-          <div id="benefits" className="my-5 md:my-8 xl:my-10 py-5 md:py-8 xl:py-14 2xl:py-16 rounded-xl shadow-default">
+          <div id="perks-&-benefits" className="my-5 md:my-8 xl:my-10 py-5 md:py-8 xl:py-14 2xl:py-16 rounded-xl shadow-default">
             <div className="px-5 md:px-8 xl:px-14 2xl:px-16">
               <h2 className="text-sm 2xl:text-lg 3xl:text-xl font-semibold mb-2 md:mb-4 3xl:mb-6">Perks & Benefits</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 md:gap-8 xl:gap-10 2xl:gap-11">

@@ -53,7 +53,7 @@ export default function FindCareerSection() {
                 }}
                 classNamePrefix={"find-career"}
                 />
-                <button className='text-xs 2xl:text-base w-[150px] 3xl:w-[220px] mt-3 3xl:mt-4'>Next</button>
+                <button className='text-xs 2xl:text-base mt-3 3xl:mt-4' style={{textTransform:"unset"}}>Start your career guidance test</button>
             </div>
         </div>
         <div className="col-span-5">

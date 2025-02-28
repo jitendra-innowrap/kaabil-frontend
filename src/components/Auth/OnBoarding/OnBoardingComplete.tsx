@@ -24,7 +24,7 @@ export default function OnBoardingComplete({onClose}:prop) {
          <form onSubmit={handleSubmit} className="block mt-8 md:mt-10 xl:mt-14 2xl:mt-16">
            <div className=" p-4 flex-col sm:flex-row rounded-lg border-[1.6px] border-[#E3ECFB] shadow-tertiary justify-start flex sm:gap-4">
             <div className="flex flex-col justify-center items-center">
-            <Image src={'/new-assets/icons/avatar.png'} alt='edit-pencil' aria-label='edit icon' className='w-[75px] h-[75px] mr-1' width={150} height={150}/>
+            <Image src={'/new-assets/icons/avatar.svg'} alt='edit-pencil' aria-label='edit icon' className='w-[75px] h-[75px] mr-1' width={150} height={150}/>
             <button className='!p-0 !rounded-full !text-[11px] !w-[87px] !h-6 !m-2'>Upload Photo</button>
             </div>
               <div className="">

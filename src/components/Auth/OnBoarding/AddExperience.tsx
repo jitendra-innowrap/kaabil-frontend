@@ -19,7 +19,7 @@ export default function AddExperience() {
     <div className=''>
       <h2 className='text-center font-semibold text-lg md:text-xl xl:text-[28px] 2xl:leading-[38px]'>
       You’re almost there! Add<br /> your 
-        <span className='text-red'>experience </span>
+      <span className='text-red'> experience </span>
 
       </h2>
       <form onSubmit={handleSubmit} className="block mt-8 md:mt-10 xl:mt-14 2xl:mt-16">

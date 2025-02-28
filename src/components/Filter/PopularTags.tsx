@@ -46,7 +46,7 @@ function PopularTags() {
     };
 
     // Define an array of available tags
-    const availableTags = ['Retail', 'Manufacturing', 'IT', 'Healthcare', 'Hospitality', 'Travel'];
+    const availableTags = ['engineering', ' design', 'ui/ux', 'marketing', 'management', 'soft', 'construction'];
 
     return (
         <Accordion
@@ -57,7 +57,7 @@ function PopularTags() {
                 {({ open }: any) => (
                     <>
                         <AccordionHeader className="w-full flex justify-between items-center text-black py-4">
-                            <span className="font-semibold mb-4 xl:mb-5 text-base">Popular Tags</span>
+                            <span className="font-semibold mb-4 xl:mb-5 text-base">Tags</span>
                             {open ? (
                                 <BiChevronUp className="hidden text-slate-500 font-bold text-xl" />
                             ) : (
@@ -71,10 +71,10 @@ function PopularTags() {
                                         <li
                                             key={tag}
                                             onClick={() => handleTagClick(tag)}
-                                            className={`cursor-pointer rounded-[36px] px-4 py-2 border text-sm min-w-fit text-center capitalize ${
+                                            className={`cursor-pointer rounded-[36px] p-[5px] leading-none 2xl:p-2 2xl:py-1 bg-[#F6F6F6] border min-w-fit text-center  font-medium text-xs 2xl:text-sm ${
                                                 tags.includes(tag)
-                                                    ? 'border-[#e41c3b] font-medium  text-[#e41c3b]'
-                                                    : 'border-black text-black'
+                                                    ? 'border-[#e41c3b] text-[#e41c3b]'
+                                                    : 'text-black'
                                             }`}
                                         >
                                             {tag}

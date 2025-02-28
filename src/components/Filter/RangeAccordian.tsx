@@ -74,10 +74,10 @@ import { formatSalary } from '../utils';
                             </div>
                                 <form className="mb-5">
                                     <div className="form-group relative mb-2">
-                                        <label htmlFor="min-salary" className="absolute block text-base font-medium top-[14px] left-3 mb-1">Min ₹</label>
+                                        <label htmlFor="min-salary" className="absolute block text-xs 2xl:text-sm top-[14px] left-3 mb-1">Min ₹</label>
                                         <input
                                             type="text"
-                                            className='w-full text-sm p-[14px] pl-[65px] rounded-lg bg-[#F6F6F6] '
+                                            className='w-full text-xs 2xl:text-sm p-[14px] pl-[65px] rounded-lg bg-[#F6F6F6] mt-[1px]'
                                             id="min-salary"
                                             name="min-salary"
                                             value={value.min}
@@ -85,17 +85,17 @@ import { formatSalary } from '../utils';
                                         />
                                     </div>
                                     <div className="form-group relative mb-2">
-                                        <label htmlFor="min-salary" className="absolute block text-base font-medium top-[14px] left-3 mb-1">Max ₹</label>
+                                        <label htmlFor="min-salary" className="absolute block text-xs 2xl:text-sm top-[14px] left-3 mb-1">Max ₹</label>
                                         <input
                                             type="text"
-                                            className='w-full text-sm p-[14px] pl-[65px] rounded-lg bg-[#F6F6F6] '
+                                            className='w-full text-xs 2xl:text-sm p-[14px] pl-[65px] rounded-lg bg-[#F6F6F6] mt-[1px]'
                                             id="max-salary"
                                             name="max-salary"
                                             value={value.max}
                                             onChange={(e) => setValue({...value, max: Number(e.target.value) })}
                                         />
                                     </div>
-                                    <button className='w-full !bg-black !p-[14px] !text-white'>Apply</button>
+                                    <button className='w-full filter-range-btn !bg-black text-xs 2xl:text-sm font-normal !text-white'>Apply</button>
                                 </form>
                         </AccordionBody>
                     </>

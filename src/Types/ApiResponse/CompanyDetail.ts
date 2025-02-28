@@ -120,8 +120,8 @@ interface CompanyGalleryCardProps {
   
   interface jobsSkills{
     id: string;
-    company_job_id: string;
-    skill_level: string;
+    company_job_id?: string;
+    skill_level?: string;
     name: string;
   }
   interface CompanyJobCategory {

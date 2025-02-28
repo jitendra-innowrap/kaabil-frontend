@@ -10,7 +10,7 @@ export default function AddExperienceForm() {
         <input type="text" className='mb-2' id="designation" onChange={()=>{}} name="designation" placeholder="Enter your designation" />
         <input type="text" className='mb-2' id="companyName" onChange={()=>{}} name="companyName" placeholder="Enter your company name" />
         <input type="text" className='mb-2' id="salary" onChange={()=>{}} name="salary" placeholder="Monthly salary eg : 15000 (Optional)" />
-        <div className="grid sm:grid-cols-3 mt-3">
+        <div className="grid sm:grid-cols-3 gap-3 3xl:gap-4 mt-3">
             <div className={`"col-span-1 label-option cursor-pointer ${type===1?"bg-red text-white":""}`} onClick={()=> setType(1)}>Full-time</div>
             <div className={`"col-span-1 label-option cursor-pointer ${type===2?"bg-red text-white":""}`} onClick={()=> setType(2)}>Part-time</div>
             <div className={`"col-span-1 label-option cursor-pointer ${type===3?"bg-red text-white":""}`} onClick={()=> setType(3)}>Intership</div>

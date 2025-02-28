@@ -8,7 +8,7 @@ function Radio({item, checked=false}:CheckOptions) {
       <span className={`flex w-4 h-4 rounded-full border mr-2 text-[8px] font-bold justify-center transition-all duration-300 items-center ${checked?'border-white bg-[#e41c3b] text-white':'text-transparent border-[#6C757D]'}`}>
         &#10003;
       </span>
-      <span className={`${checked?'text-black':'text-[#8C8C8C]'}`}>
+      <span className={`${checked?'text-black':''} text-xs 2xl:text-sm`}>
         {item}
       </span>
     </span>

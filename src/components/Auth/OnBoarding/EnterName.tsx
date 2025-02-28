@@ -66,7 +66,7 @@ export default function EnterName() {
       </h2>
 
       {/* ✅ Formik Form */}
-      <form onSubmit={formik.handleSubmit} className="block mt-8 md:mt-10 xl:mt-14 2xl:mt-16">
+      <form onSubmit={formik.handleSubmit} className="block mt-8 3xl:mt-16">
         <label htmlFor="name">Enter your full name</label>
         <input
           type="text"

@@ -51,13 +51,30 @@ const CompanyGallery: React.FC<{ galleryItems: (CompanyImage | CompanyVideo)[] }
       {/* Gallery Slider */}
       <div className="block">
         <GallerySlider
-          slides={gallerySlides}
+          slides={[...gallerySlides, ...gallerySlides]}
           spaceBetween={25}
           showNavigation
           loop={true}
           autoplay={true}
-                            autoplayDuration={3000}
-                            freeMode={false}
+          autoplayDuration={3000}
+          freeMode={false}
+          slidesPerView={1}
+          breakpoints={{
+              768: {
+                slidesPerView: 1.5,
+              },
+              1024: {
+                slidesPerView: 4,
+              },
+              1280: {
+                slidesPerView: 5,
+                spaceBetween: 20,
+              },
+              1920:{
+                slidesPerView: 5,
+                spaceBetween: 24,
+              }
+            }}
         />
       </div>
 

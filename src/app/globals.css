@@ -9,6 +9,7 @@
 :root {
   --swiper-theme-color: #E31837;
   --primary-red: #E31837;
+  --primary-red-hover: #ff0026;
   --foreground: #2c2c2c;
 }
 html{
@@ -102,38 +103,46 @@ input:focus{
 }
 a{
   color: var(--primary-red);
+  display: grid;
+  align-items: center;
+  width: fit-content;
 }
-button{
+button, .btn, a.btn{
   background-color: var(--primary-red);
   color: #fff;
   border: none;
   padding: 10px 30px;
   border-radius: 8px;
   text-transform: capitalize;
+  transition: background-color 0.3s ease;
 }
-a.btn{
-  background-color: var(--primary-red);
-  color: #fff;
-  border: none;
-  padding: 10px 30px;
-  border-radius: 8px;
-  text-transform: capitalize;
+
+button:hover, .btn:hover, a.btn:hover{
+  background-color: var(--primary-red-hover);
+  transition: background-color 0.3s ease;
 }
 .btn-border{
-  padding: 10px 30px;
+  padding: 9px 30px;
   border-radius: 8px;
   text-transform: capitalize;
   border: 1.5px solid #F2F2F2 ;
   background: transparent;
 }
+.btn-border:hover{
+  background: transparent;
+}
+.btn-border.hover{
+  background: white;
+  color: var(--primary-red);
+}
 .label{
   color: #717B9E;
-  font-size: 14px;
+  font-size: 10px;
   background-color: #EEF2FE;
   /* white-space: nowrap; */
   padding: 6px;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 6px;
+  padding-right: 6px;
   text-transform: capitalize;
   height: fit-content;
   border-radius: 0.25rem;
@@ -181,18 +190,35 @@ a.btn{
 .label-option svg {
   cursor: pointer;
 }
+.job-type-card:hover .arrow{
+  /* scale: 1.1; */
+}
+.job-type-card:hover .arrow svg{
+  transition: 0.3s all ease-in-out ;
+  transform: translate(4px, -4px);
+  scale: 1.1;
+}
 .swiper.swiper-horizontal {
   padding: 15px !important;
 }
 .swiper-button-prev:after, .swiper-rtl .swiper-button-next:after, .swiper-button-next:after, .swiper-rtl .swiper-button-prev:after{
   content: none !important;
 }
-.swiper-button-next.disabled .swiper-btn
-, .swiper-button-prev.disabled .swiper-btn{
-  background: white;
-}.swiper-button-next.disabled .swiper-btn svg
-, .swiper-button-prev.disabled .swiper-btn svg{
-  color: #949494;
+.swiper-button-next .swiper-btn
+, .swiper-button-prev .swiper-btn{
+  border: 1px solid #cccccc;
+}
+.swiper-button-next .swiper-btn svg
+, .swiper-button-prev .swiper-btn svg{
+  color: #cccccc;
+}
+.swiper-button-next:hover .swiper-btn
+, .swiper-button-prev:hover .swiper-btn{
+  background: #000000 !important;
+  border-color: #000000 !important;
+}.swiper-button-next:hover .swiper-btn svg
+, .swiper-button-prev:hover .swiper-btn svg{
+  color: #ffffff !important;
 }
 .swiper-slide .job-card .action-btns {
   width: 100%;
@@ -380,6 +406,9 @@ css-10wo9uf-option:hover, .css-d7l1ni-option:hover{
 }
 .section-shadow {
   box-shadow: 0px 4px 122px 0px #7F54541F;
+}
+.job-card{
+  box-shadow: 0px 4px 10px 0px #00000012;
 
 }
 @media (width >= 768px) {
@@ -423,86 +452,30 @@ css-10wo9uf-option:hover, .css-d7l1ni-option:hover{
     text-overflow: ellipsis;
     height: 52px !important;
     border: none;
-    border-left: 1px solid #00000099;
+    border-left: 1px solid #b3b3b3;
     border-radius: 0;
     outline: none !important;
   }
 }
 @media (min-width : 1024px) {
   .container{
-    max-width: 900px;
+    max-width: 980px;
     padding-inline: 20px;
   }
   .container.big{
-    max-width: 1000;
+    max-width: 1080;
   }
   .container.no-pad{
-    max-width: 900px;
+    max-width: 980px;
     padding-inline: 0px;
   }
   
   .container.small{
-    padding-inline: 130px;
-  }
-}
-@media (width >=1280px){
-  .popup-content{
-    max-width: 600px;
-  }
-  
-  .search-section .css-13cymwt-control, .search-section .css-t3ipsp-control{
-    padding-left: .8rem; 
-    padding-right: .7rem;
-    width: 220px;
-    height: 52px !important;
-    border: none;
-    border-left: 1px solid #00000099;
-    border-radius: 0;
-    outline: none !important;
-  }
-  .search-section .select-location__control.css-13cymwt-control, .search-section .select-location__control.css-t3ipsp-control{
-    padding-left: 2.5rem; 
-    padding-right: .7rem;
-    width: 250px;
-    height: 52px !important;
-    border: none;
-    border-left: 1px solid #00000099;
-    border-radius: 0;
-    outline: none !important;
-  }
-  .search-section input#searchbar_input,
-  .search-section button{
-    height: 100%;
-    padding-left: 1.5rem; 
-    padding-right: 1.5rem;
-    border-radius: 0 12px 12px 0;
-    display: flex;
-    align-items: center;
-  }
-  .search-section input#searchbar_input{
-    border-radius: 12px;
-  }
-}
-
-@media (min-width : 1280px) {
-  .container{
-    max-width: 1180px;
     padding-inline: 60px;
   }
-  .container.big{
-    max-width: 1500px;
-  }
   
-  .container.no-pad{
-    max-width: 1100px;
-    padding-inline: 0px;
-  }
-  
-  .container.small{
-    padding-inline: 130px;
-  }
   .home-nudges{
-    width: 550px !important;
+    width: 600px !important;
   }
   .home-nudges .interview-img{
     height: 130px !important;
@@ -516,14 +489,110 @@ css-10wo9uf-option:hover, .css-d7l1ni-option:hover{
     width: 60px !important;
     height: 60px !important;
   }
+  
+  .search-section .css-13cymwt-control, .search-section .css-t3ipsp-control{
+    padding-left: .8rem; 
+    padding-right: .7rem;
+    width: 190px;
+    height: 32px !important;
+    border-left: 1px solid #979797 !important;
+    border: none;
+    border-radius: 0;
+    outline: none !important;
+  }
+  .search-section .select-location__control.css-13cymwt-control, .search-section .select-location__control.css-t3ipsp-control{
+    padding-left: 2rem; 
+    padding-right: .7rem;
+    width: 220px;
+    height: 32px !important;
+    border: none;
+    border-radius: 0;
+    outline: none !important;
+  }
+  .search-section input#searchbar_input,
+  .search-section button{
+    height: 100%;
+    padding-left: 1.5rem; 
+    padding-right: 1.5rem;
+    border-radius: 0 12px 12px 0;
+    display: flex;
+    align-items: center;
+  }
+  .search-section input#searchbar_input{
+    border-radius: 12px;
+  }
+  .job-detail-sidebar {
+    max-width: 280px;
+  }
 }
-@media (width >=1500px){
+@media (width >=1280px){
   .popup-content{
-    max-width: 660px;
+    max-width: 600px;
   }
   
+}
 
+@media (min-width : 1280px) {
+  .label{
+    font-size: 10px;
+  }
+  .container{
+    max-width: 1180px;
+    padding-inline: 60px;
+  }
+  .container.big{
+    max-width: 1500px;
+  }
   
+  .container.no-pad{
+    max-width: 1080px;
+    padding-inline: 0px;
+  }
+  .container.slider{
+    max-width: 1280px;
+  }
+  .container.small{
+    padding-inline: 100px;
+  }
+  .home-nudges{
+    width: 550px !important;
+  }
+  .home-nudges .interview-img{
+    height: 130px !important;
+    margin-bottom: 40px;
+  }
+  .home-nudges .resume-img{
+    height: 170px !important;
+    margin-bottom: 0px;
+  }
+  .company-card img{
+    width: 70px !important;
+    height: 70px !important;
+  }
+  .skill-card .btn{
+    padding: 8px 15px;
+    font-size: 10px;
+    border-radius: 4px;
+  }
+  
+  .search-section .css-13cymwt-control, .search-section .css-t3ipsp-control{
+    padding-left: .8rem; 
+    padding-right: .7rem;
+    width: 190px;
+    height: 32px !important;
+    border: none;
+    border-radius: 0;
+    outline: none !important;
+  }
+  .search-section .select-location__control.css-13cymwt-control, .search-section .select-location__control.css-t3ipsp-control{
+    padding-left: 2rem; 
+    padding-right: .7rem;
+    width: 220px;
+    height: 32px !important;
+    border: none;
+    border-radius: 0;
+    outline: none !important;
+  }
   .search-section input#searchbar_input,
   .search-section button{
     height: 100%;
@@ -537,6 +606,12 @@ css-10wo9uf-option:hover, .css-d7l1ni-option:hover{
     border-radius: 12px;
   }
 }
+@media (width >=1500px){
+  .popup-content{
+    max-width: 660px;
+  }
+
+}
 @media (min-width : 1400px){
   .container{
     max-width: 1340px;
@@ -549,7 +624,11 @@ css-10wo9uf-option:hover, .css-d7l1ni-option:hover{
   }
   
   .container.small{
-    padding-inline: 130px;
+    padding-inline: 80px;
+  }
+  .container.slider{
+    max-width: 1370px;
+    padding-inline: 40px;
   }
   .container.big{
     max-width: 1700px;
@@ -570,6 +649,25 @@ css-10wo9uf-option:hover, .css-d7l1ni-option:hover{
     width: 60px !important;
     height: 60px !important;
   }
+  
+  .search-section .css-13cymwt-control, .search-section .css-t3ipsp-control{
+    padding-left: .8rem; 
+    padding-right: .7rem;
+    width: 220px;
+    height: 52px !important;
+    border: none;
+    border-radius: 0;
+    outline: none !important;
+  }
+  .search-section .select-location__control.css-13cymwt-control, .search-section .select-location__control.css-t3ipsp-control{
+    padding-left: 2.5rem; 
+    padding-right: .7rem;
+    width: 250px;
+    height: 52px !important;
+    border: none;
+    border-radius: 0;
+    outline: none !important;
+  }
   .search-section input#searchbar_input,
   .search-section button{
     height: 100%;
@@ -582,9 +680,28 @@ css-10wo9uf-option:hover, .css-d7l1ni-option:hover{
   .search-section input#searchbar_input{
     border-radius: 12px;
   }
+  .search-section input#searchbar_input,
+  .search-section button{
+    height: 100%;
+    padding-left: 1.5rem; 
+    padding-right: 1.5rem;
+    border-radius: 0 12px 12px 0;
+    display: flex;
+    align-items: center;
+  }
+  .search-section input#searchbar_input{
+    border-radius: 12px;
+  }
+  .job-detail-sidebar{
+    max-width: 350px;
+  }
 }
 
 @media (min-width : 1700px){
+  
+  .label{
+    font-size: 14px;
+  }
   .container{
     max-width: 1570px;
     padding-inline: 60px;
@@ -596,7 +713,11 @@ css-10wo9uf-option:hover, .css-d7l1ni-option:hover{
   }
   
   .container.small{
-    padding-inline: 130px;
+    padding-inline: 80px;
+  }
+  .container.slider{
+    max-width: 1680px;
+    padding-inline: 40px;
   }
   .container.big{
     max-width: 1620px;
@@ -658,7 +779,6 @@ css-10wo9uf-option:hover, .css-d7l1ni-option:hover{
     width: 295px;
     height: 52px !important;
     border: none;
-    border-left: 1px solid #00000099;
     border-radius: 0;
     outline: none !important;
   }
@@ -668,11 +788,13 @@ css-10wo9uf-option:hover, .css-d7l1ni-option:hover{
     width: 345px;
     height: 52px !important;
     border: none;
-    border-left: 1px solid #00000099;
     border-radius: 0;
     outline: none !important;
   }
   
+  .job-detail-sidebar{
+    max-width: 439px;
+  }
 }
 
 @media (width>=1700){

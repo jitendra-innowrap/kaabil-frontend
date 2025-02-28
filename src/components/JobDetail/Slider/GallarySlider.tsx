@@ -20,6 +20,8 @@ interface GallerySliderProps extends SwiperOptions {
   reverse?: boolean; // Reverse autoplay direction
   freeMode?: boolean; // Enable free mode
   arrowOut?: boolean; //
+  arrowColor?: string;
+  arrowShadows?: boolean;
   slideComponent?: React.ComponentType<any>; // Custom slide component
 }
 
@@ -37,7 +39,9 @@ const GallerySlider: React.FC<GallerySliderProps> = ({
   spaceBetween = 25,
   slidesPerView = 'auto',
   reverse = false,
+  arrowColor = '',
   onHoverPause = false,
+  arrowShadows = false,
   slideComponent: SlideComponent = null,
   ...restProps
 }) => {
@@ -78,7 +82,7 @@ useEffect(() => {
       <Swiper
         modules={[Autoplay, Navigation, FreeMode]}
         loop={loop}
-        // autoplay={autoplayConfig}
+        autoplay={autoplayConfig}
         spaceBetween={spaceBetween}
         slidesPerView={slidesPerView}
         freeMode={freeMode}
@@ -116,16 +120,18 @@ useEffect(() => {
           onClick={() => swiperRef.current?.slidePrev()}
           className={`swiper-button-prev absolute left-0 !size-8 shadow-default rounded-full !w-fit  !text-lightGrey ${isBeginning ? 'no-disabled' : ''}`}
         >
-          {customArrowLeft? customArrowLeft : <div className="bg-[#000000] swiper-btn rounded-full !size-8 grid shrink-0 place-items-center 2xl:!size-[50px]"><IoChevronBackOutline className="text-white !size-4 2xl:!size-5 font-bold text-xl"/></div>}
+          {customArrowLeft? customArrowLeft : <div className={`swiper-btn ${arrowColor? `bg-white` : ""} ${arrowShadows? "shadow-sm" : ""}  rounded-full !size-8 grid shrink-0 place-items-center 2xl:!size-[50px]`}>
+            <IoChevronBackOutline className={`!size-3 2xl:!size-5 font-bold text-xl ${arrowColor? '!text-black':''}`}/></div>}
         </div>
       )}
       {showNavigation && (
         <div
           onClick={() => swiperRef.current?.slideNext()}
           ref={nextButtonRef}
-          className={`swiper-button-next absolute right-0 !size-8 shadow-default rounded-full !w-fit  !text-lightGrey ${isEnd ? 'no-disabled' : ''}`}
+          className={`swiper-button-next absolute right-0 !size-8 shadow-default rounded-full !w-fit !text-lightGrey ${isEnd ? 'no-disabled' : ''}`}
         >
-          {customArrowRight? customArrowRight : <div className="bg-[#000000] swiper-btn rounded-full !size-8 grid shrink-0 place-items-center 2xl:!size-[50px]"><IoChevronForwardOutline className="text-white !size-4 2xl:!size-5 font-bold text-xl"/></div>}
+          {customArrowRight? customArrowRight : <div className={`swiper-btn ${arrowColor?  `bg-white` : ""} ${arrowShadows? "shadow-sm" : ""}  rounded-full !size-8 grid shrink-0 place-items-center 2xl:!size-[50px]`}>
+            <IoChevronForwardOutline className={`!size-3 2xl:!size-5 font-bold text-xl ${arrowColor? '!text-black':''}`}/></div>}
         </div>
       )}
     </div>

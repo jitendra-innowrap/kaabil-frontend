@@ -228,7 +228,7 @@ export default function Home() {
                 </div>
             </section>
 
-            <section className="bg-[#F5F5F5] py-5 xl:py-6">
+            <section className="bg-[#F6F7F7] py-5 xl:py-6">
                 <h2 className='text-black text-center text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[64px] mb-5 2xl:mb-4 font-medium'>Top companies <span className="font-kalam font-bold text-red">hiring</span> now</h2>
                 <div className="w-full flex flex-col items-center mb-5 md:mb-8 2xl:mb-12  mx-auto">
                     <div className="container no-pad">                        
@@ -249,7 +249,7 @@ export default function Home() {
                                 768: {
                                   slidesPerView: 4,
                                 },
-                                1280: {
+                                1024: {
                                   spaceBetween:20,
                                   slidesPerView: 5,
                                 },
@@ -268,7 +268,7 @@ export default function Home() {
             <section className="section-shadow">
                 <div className="w-full flex flex-col items-center py-5 md:py-8 xl:py-14 2xl:py-16 mx-auto">
                 <h2 className='text-black text-center text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[64px] mb-5 xl:mb-6 font-medium'>What type of <span className="font-kalam text-red font-bold">job</span> are you looking for?</h2>
-                <div className="container grid grid-cols-1 xl:grid-cols-3 gap-4 2xl:gap-6 w-full mb-5 md:mb-8 xl:mb-14 2xl:mb-[84px]">
+                <div className="container small grid grid-cols-1 lg:grid-cols-3 gap-4 2xl:gap-6 w-full mb-5 md:mb-8 xl:mb-14 2xl:mb-[84px]">
                     {JobTypes.map((job, index) => (
                     <JobtypeCard key={index} {...job} />
                     ))}
@@ -282,6 +282,7 @@ export default function Home() {
                             spaceBetween={25}
                             showNavigation
                             loop={true}
+                            arrowShadows
                             autoplay={true}
                             autoplayDuration={3000}
                             freeMode={false}
@@ -307,11 +308,11 @@ export default function Home() {
                     </div>
                 </div>
             </section>
-            <section className="bg-[#F5F5F5]">
+            <section className="bg-[#F6F7F7]">
                 <div className="container no-pad py-5 md:py-8 xl:py-14 2xl:py-16">
-                    <div className="bg-[#FEF5E4] rounded-[24px] p-4 px-2 flex flex-col lg:flex-row gap-4 xl:gap-6">
+                    <div className="bg-[#FEF5E4] rounded-[24px] p-4 px-2 flex flex-col lg:flex-row gap-4 lg:gap-6">
                         <div className="w-full flex items-center">
-                        <h2 className="mx-auto max-w-[400px] flex-shrink-0 2xl:max-w-[500px] text-xl md:text-3xl xl:text-3xl 2xl:text-[40px] 2xl:leading-[52px] font-medium">Kaabil helps you create resumes, practice for interviews, and get jobs!</h2>
+                        <h2 className="mx-auto max-w-[300px] xl:max-w-[400px] flex-shrink-0 2xl:max-w-[500px] text-xl md:text-2xl xl:text-3xl 2xl:text-[40px] 2xl:leading-[52px] font-medium">Kaabil helps you create resumes, practice for interviews, and get jobs!</h2>
                         </div>
                         <div className="lg:w-1/2 home-nudges">
                         <GallerySlider
@@ -363,7 +364,7 @@ export default function Home() {
                 </div>
             </section>
             <section className="pt-5 xl:pt-6 bg-[#eeefef] relative">
-                <div className="container w-full flex flex-col items-center mt-5 md:mt-8 xl:mt-12 mx-auto">
+                <div className="container small w-full flex flex-col items-center mt-5 md:mt-8 xl:mt-12 mx-auto">
                 <FindCareerSection/>
                 </div>
             </section>
@@ -416,7 +417,7 @@ export default function Home() {
                                 <span className="block text-xs xl:text-sm text-center w-[130px]">Women got hired</span>
                             </div>
                         </div>
-                        <button className='w-[150px] 2xl:w-[247px] h-[50px] mt-3 2xl:mt-6 3xl:mt-[36px]'>Read More</button>
+                        <button className='text-xs 2xl:text-base w-[170px] 2xl:w-[247px] 2xl:h-[50px] mt-3 2xl:mt-6 3xl:mt-[36px]'>Read More</button>
                     </div>
                     <div className="flex-1 order-1">                        
                         <Image src={`/new-assets/banners/why-choose-home.png`} width={704} height={735} alt="" className="w-full h-auto" />
@@ -440,6 +441,7 @@ export default function Home() {
                             arrowOut={false}
                             autoplayDuration={3000}
                             freeMode={false}
+                            arrowColor="white"
                             slidesPerView={1.4}
                             breakpoints={{
                                 480:{

@@ -31,7 +31,7 @@ export default function Note({fullText}:{fullText:string}) {
 
   return (
     <div>
-      <div ref={ref} className={`break-words ${!isReadingMore && 'line-clamp-3'}`}
+      <div ref={ref} className={`break-words text-xs leading-6 3xl:text-sm 3xl:leading-[32px] ${!isReadingMore && 'line-clamp-3'}`}
       dangerouslySetInnerHTML={{
         __html:
           fullText && typeof fullText === "string"
@@ -39,7 +39,7 @@ export default function Note({fullText}:{fullText:string}) {
             : "",
       }}/>
       {isTruncated && !isReadingMore && (
-        <span aria-label='read more button' className='cursor-pointer font-semibold' onClick={() => setIsReadingMore(true)}>
+        <span aria-label='read more button' className='cursor-pointer font-semibold text-xs leading-6 3xl:text-sm 3xl:leading-[32px]' onClick={() => setIsReadingMore(true)}>
           Read more
         </span>
       )}

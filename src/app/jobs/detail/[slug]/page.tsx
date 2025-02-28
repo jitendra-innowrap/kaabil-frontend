@@ -121,9 +121,7 @@ export default function Home() {
   // Generate 5 dummy jobs
   const jobs: CompanyJob[] = generateDummyJobs(5);
   const jobsSlides = jobs.map((job, index) => (
-      <div className="flex w-[100%] md:w-[338px]" key={index}>
         <JobListingCardSmall key={index} detail={job} />
-      </div>
       ));
   const jobdetail = {
     profileicon: "",
@@ -177,23 +175,23 @@ export default function Home() {
   }
   return (
     <main>
-      <section className="bg-[#FDEAC9] py-6 xl:py-8 relative">
+      <section className="bg-[#FDEAC9] py-6 xl:py-8 sticky">
       <div className="container relative z-[1]">
         <div className="flex justify-between flex-wrap flex-col sm:flex-row gap-5 xl:gap-7 2xl:gap-8">
-          <div className="flex justify-between flex-col sm:flex-row gap-5 xl:gap-7 2xl:gap-8">
+          <div className="flex justify-between flex-col sm:flex-row gap-3 2xl:gap-5 3xl:gap-8">
             <Image
               src={jobDetails?.logo || ""}
               width={68}
               height={68}
               alt="company profile logo"
-              className="flex-shrink-0 border border-[#07082833] size-16 xl:size-16 rounded-full"
+              className="flex-shrink-0 border border-[#07082833] size-12 2xl:size-16 rounded-full"
               />
               <div className="block">
                 <div className="flex justify-between lg:justify-start gap-5 xl:gap-7 2xl:gap-8 items-center">
-                  <h1 className="font-medium text-[#231F20] text-xl lg:text-3xl">{jobDetails?.company_name}</h1>
+                  <h1 className="font-medium text-[#231F20] text-xl 2xl:text-3xl">{jobDetails?.company_name}</h1>
                 </div>
-                <p className="text-[#231F20] mt-1">{"www.lorem.ipsum"}</p>
-                <div className="flex items-center flex-wrap mt-4 xl:mt-5 2xl:mt-6 gap-5 2xl:gap-10">
+                <p className="text-[#231F20] text-xs 2xl:text-sm 3xl:text-base mt-1">{"Tech mahindra pvt ltd"}</p>
+                <div className="flex items-center flex-wrap mt-4 2xl:mt-6 gap-5 2xl:gap-10">
                   {/* Option 1 */}
                   <div className="flex gap-2 2xl:gap-4">
                     <Image
@@ -201,10 +199,10 @@ export default function Home() {
                       width={80}
                       height={80}
                       alt="Briefcase icon"
-                      className="size-4 2xl:size-6"
+                      className="size-4 3xl:size-6"
                     />
                     <div className="text-[#231F20]">
-                      <strong className="block text-sm font-normal">{showExperience(jobDetails?.min_exp ||"0", jobDetails?.max_exp || "0", "years")}</strong>
+                      <strong className="block text-xs 2xl:text-sm font-normal">{showExperience(jobDetails?.min_exp ||"0", jobDetails?.max_exp || "0", "years")}</strong>
                     </div>
                   </div>
 
@@ -215,10 +213,10 @@ export default function Home() {
                       width={80}
                       height={80}
                       alt="Clock icon"
-                      className="size-4 2xl:size-6"
+                      className="size-4 3xl:size-6"
                     />
                     <div className="text-[#231F20]">
-                      <strong className="block text-sm font-normal">{jobDetails?.job_type}</strong>
+                      <strong className="block text-xs 2xl:text-sm font-normal">{jobDetails?.job_type}</strong>
                     </div>
                   </div>
 
@@ -229,10 +227,10 @@ export default function Home() {
                       width={80}
                       height={80}
                       alt="Wallet icon"
-                      className="size-4 2xl:size-6"
+                      className="size-4 3xl:size-6"
                     />
                     <div className="text-[#231F20]">
-                      <strong className="block text-sm font-normal">{showSalary(jobDetails?.is_industry_standard || "0", jobDetails?.salary_range_unit ||"0",jobDetails?.min_salary ||"0",jobDetails?.max_salary ||"0")}</strong>
+                      <strong className="block text-xs 2xl:text-sm font-normal">{showSalary(jobDetails?.is_industry_standard || "0", jobDetails?.salary_range_unit ||"0",jobDetails?.min_salary ||"0",jobDetails?.max_salary ||"0")}</strong>
                     </div>
                   </div>
 
@@ -243,43 +241,43 @@ export default function Home() {
                       width={80}
                       height={80}
                       alt="Map pin icon"
-                      className="size-4 2xl:size-6"
+                      className="size-4 3xl:size-6"
                     />
                     <div className="text-[#231F20]">
-                      <strong className="block text-sm font-normal">{jobDetails?.jobs_location?.[0]?.job_location}</strong>
+                      <strong className="block text-xs 2xl:text-sm font-normal">{jobDetails?.jobs_location?.[0]?.job_location}</strong>
                     </div>
                   </div>
-                  {skillMatchCount > 0 && <span className="label green text-xs 2xl:text-sm flex font-semibold items-center">{skillMatchCount} skills match <FaCheck className="ml-2"/> </span>}
+                  {skillMatchCount > 0 && <span className="label green flex font-medium 3xl:font-semibold items-center">{skillMatchCount} skills match <FaCheck className="ml-2 text-xs 2xl:text-sm 3xl:text-base"/> </span>}
                 </div>
               </div>
           </div>
           <div className="flex gap-3 md:gap-4 justify-end items-end">
-            <div onClick={handleShare} className="bg-white cursor-pointer flex-shrink-0 grid place-items-center rounded-full size-8 2xl:size-10">
-              <IoShareSocialOutline className="text-[#4D4D4F]"/>
+            <div onClick={handleShare} className="bg-white cursor-pointer flex-shrink-0 grid place-items-center rounded-full size-6 2xl:size-8 3xl:size-10">
+              <IoShareSocialOutline className="text-[#4D4D4F] text-xs 2xl:text-sm 3xl:text-base"/>
             </div>
-            <button onClick={handleSave} className="text-[#231F20] btn-border !text-sm 2xl:!text-base flex h-fit items-center gap-2 !border-black">
+            <button onClick={handleSave} className="text-[#231F20] btn-border !text-xs 2xl:!text-sm 3xl:!text-base flex h-fit items-center gap-2 !border-black">
               save {
                         !isFavorited? (
-                          <IoIosHeartEmpty className={`text-black size-5 cursor-pointer`}/>
+                          <IoIosHeartEmpty className={`text-black 3xl:size-5 cursor-pointer`}/>
                         ) : (
-                          <IoIosHeart className={`text-red size-5 cursor-pointer`}/>
+                          <IoIosHeart className={`text-red 3xl:size-5 cursor-pointer`}/>
                         )
                       }
             </button>
-            <button className="h-fit whitespace-nowrap !text-sm 2xl:!text-base">apply now</button>
+            <button className="h-fit whitespace-nowrap !text-xs 2xl:!text-sm 3xl:!text-base">apply now</button>
           </div>
         </div>
       </div>
       </section>
       <section className="container mt-5 md:mt-8 xl:mt-10 mb-6 md:mb-10 xl:mb-14 2xl:mb-16 ">
-        <div className="grid  grid-cols-12 gap-4 md:gap-6 2xl:gap-10">
-            <div className="h-fit order-2  col-span-12 lg:col-span-4 2xl:col-span-3 job-detail-sidebar p-3 md:p-4 xl:p-8 rounded-xl w-full shadow-default">
-              <h2 className="text-lg 2xl:text-xl font-semibold mb-2 md:mb-4 xl:mb-5">About this role</h2>
-              <div className="bg-[#F8F8F8] font-medium text-black p-3 md:p-4 rounded-xl mb-2 md:mb-4 xl:mb-5">{jobDetails?.candidates_applied_for_job} Applied</div>              
+        <div className="flex flex-col lg:flex-row gap-4 md:gap-6 2xl:gap-10">
+            <div className="h-fit order-2 job-detail-sidebar p-3 md:p-4 lg:p-5 3xl:p-8 rounded-xl w-full shadow-default">
+              <h2 className="text-sm 2xl:text-lg 3xl:text-xl font-semibold mb-2 md:mb-4 3xl:mb-5">About this role</h2>
+              {/* <div className="bg-[#F8F8F8] font-medium text-black p-3 md:p-4 rounded-xl mb-2 md:mb-4 xl:mb-5">{jobDetails?.candidates_applied_for_job} Applied</div>               */}
               <div className="flex items-center">
-                <CiCalendar className=" flex-shrink-0 text-[#777373] mr-1 md:mr-2"/>
-                  <span className="whitespace-nowrap">Job Posted On</span>
-                  <span className="justify-self-end w-full text-end">{formatDate(jobDetails?.job_posted_date)}</span>
+                <CiCalendar className=" flex-shrink-0 text-[#777373] mr-1 2xl:mr-2"/>
+                  <span className="whitespace-nowrap text-xs 2xl:text-sm 3xl:text-base">Job Posted On</span>
+                  <span className="justify-self-end w-full text-end text-xs 2xl:text-sm 3xl:text-base">{formatDate(jobDetails?.job_posted_date)}</span>
               </div>
               {/* <hr className="border-[#D6DDEB] my-4 md:my-5 xl:my-6" />
               <h2 className="text-lg 2xl:text-xl font-semibold mb-2 md:mb-4 xl:mb-5">Industry</h2>
@@ -288,8 +286,8 @@ export default function Home() {
                 <div className="label lightgreen">It Security</div>
                 <div className="label lightgreen">It Rist Management</div>
               </div> */}
-              <hr className="border-[#D6DDEB] my-4 md:my-5 xl:my-6" />
-              <h2 className="text-lg 2xl:text-xl font-semibold mb-2 md:mb-4 xl:mb-5 flex items-center gap-2">
+              <hr className="border-[#D6DDEB] my-4 2xl:my-5 3xl:my-6" />
+              <h2 className="text-sm 2xl:text-lg 3xl:text-xl font-semibold mb-2 md:mb-4 3xl:mb-5 flex items-center gap-2">
                 <Image src="/new-assets/icons/idea-bulb.png" className="size-4 2xl:size-6 inline-block" width={150} height={150} alt="idea icon" />
                 Required Skills</h2>
               <div className="flex flex-wrap gap-1 md:gap-2">
@@ -300,7 +298,7 @@ export default function Home() {
                 }
               </div>
               <hr className="border-[#D6DDEB] my-4 md:my-5 xl:my-6" />
-              <h2 className="text-lg 2xl:text-xl font-semibold mb-2 md:mb-4 xl:mb-5 flex items-center gap-2">
+              <h2 className="text-sm 2xl:text-lg 3xl:text-xl font-semibold mb-2 md:mb-4 3xl:mb-5 flex items-center gap-2">
                 <Image src="/new-assets/icons/edu-hat.png" className="size-4 2xl:size-6 inline-block" width={150} height={150} alt="idea icon" />
                 Education</h2>
               <div className="flex flex-wrap gap-1 md:gap-2">
@@ -311,16 +309,16 @@ export default function Home() {
                 }
               </div>
               <hr className="border-[#D6DDEB] my-4 md:my-5 xl:my-6" />
-              <h2 className="text-lg 2xl:text-xl font-semibold mb-2 md:mb-4 xl:mb-5 flex items-center gap-2">
+              <h2 className="text-sm 2xl:text-lg 3xl:text-xl font-semibold mb-2 md:mb-4 3xl:mb-5 flex items-center gap-2">
                 <Image src="/new-assets/icons/distance-pin.png" className="w-auto
                 h-4 2xl:h-6 ml-1 inline-block" width={150} height={150} alt="idea icon" />
                 Location</h2>
-                <p className="mb-2 md:mb-4 xl:mb-5">{jobDetails?.jobs_location?.[0]?.job_location}</p>
+                <p className="mb-2 text-xs 2xl:text-sm 3xl:text-base md:mb-2 3xl:mb-5">{jobDetails?.jobs_location?.[0]?.job_location}</p>
                 <div className="w-full">
                   <Map lat={jobDetails?.jobs_location?.[0]?.latitude || ""} lng={jobDetails?.jobs_location?.[0]?.longitude || ""} />
                 </div>
               <hr className="border-[#D6DDEB] my-4 md:my-5 xl:my-6" />
-              <h2 className="text-lg 2xl:text-xl font-semibold mb-2 md:mb-4 xl:mb-5 flex items-center gap-2">
+              <h2 className="text-sm 2xl:text-lg 3xl:text-xl font-semibold mb-2 md:mb-4 3xl:mb-5 flex items-center gap-2">
                 <Image src="/new-assets/icons/star-circle.png" className="size-4 2xl:size-6 inline-block" width={150} height={150} alt="idea icon" />
                 Perks and Benefits</h2>
               <div className="flex flex-wrap gap-1 md:gap-2">
@@ -331,7 +329,7 @@ export default function Home() {
                 }
               </div>
             </div>
-            <div className="lg:order-2 col-span-12 lg:col-span-8 2xl:col-span-9 job-description">
+            <div className="lg:order-2 job-description">
               <ul className="flex mb-3 md:mb-4 2xl:mb-6 gap-5 md:gap-8 xl:gap-10 2xl:gap-12 border-b py-2 2xl:py-[10px] border-[#D4D4D4]">
                 <li className={`text-red md:text-sm font-bold`}>
                   <Link href="#description">Job Description</Link></li>
@@ -340,9 +338,9 @@ export default function Home() {
               </ul>
               <div id="description" className="py-4 md:py-6 xl:py-8 2xl:py-10 rounded-xl shadow-default">
                 <div className="px-4 md:px-6 xl:px-8 2xl:px-10">
-                  <h2 className="text-lg 2xl:text-xl font-semibold mb-3 md:mb-4 xl:mb-6">Job Description</h2>
+                  <h2 className="text-sm 2xl:text-lg 3xl:text-xl font-semibold mb-2 md:mb-4 3xl:mb-6">Job Description</h2>
                   <div
-                    className="text-sm leading-[32px] mb-4 md:mb-6 xl:mb-8"
+                    className="text-xs leading-6 3xl:text-sm 3xl:leading-[32px] mb-4 md:mb-6 xl:mb-8"
                     dangerouslySetInnerHTML={{
                       __html:
                         jobDetails?.additional_info && typeof jobDetails.additional_info === "string"
@@ -355,7 +353,7 @@ export default function Home() {
               </div>
               <div id="about" className="py-4 md:py-6 xl:py-8 2xl:py-10 rounded-xl shadow-default mt-4 md:mt-6 xl:mt-4">
                 <div className="px-4 md:px-6 xl:px-8 2xl:px-10">
-                  <h2 className="text-lg 2xl:text-xl font-semibold mb-3 md:mb-4 xl:mb-6">About the company</h2>
+                  <h2 className="text-sm 2xl:text-lg 3xl:text-xl font-semibold mb-2 md:mb-4 3xl:mb-6">About the company</h2>
                 </div>
                 <hr />
                 <div className="px-4 md:px-6 xl:px-8 2xl:px-10 my-3 flex sm:items-center justify-between flex-col sm:flex-row gap-5 xl:gap-7 2xl:gap-8">
@@ -365,15 +363,15 @@ export default function Home() {
                     width={68}
                     height={68}
                     alt="company profile logo"
-                    className="flex-shrink-0 border border-[#0708280a] size-16 xl:size-[75px] rounded-lg"
+                    className="flex-shrink-0 border border-[#0708280a] size-14 2xl:size-16 3xl:size-[75px] rounded-lg"
                     />
                     <div className="block">
-                      <h1 className="text-[#231F20] xl:text-lg xl:leading-8 font-medium">{jobdetail?.name}</h1>
-                      <p className="text-[#231F20] text-sm mt-1">{jobDetails?.industry_name} <br />
+                      <h1 className="text-[#231F20] text-sm 2xl:text-base 3xl:text-lg xl:leading-8 font-medium">{jobdetail?.name}</h1>
+                      <p className="text-[#636363] text-[10px] 2xl:text-sm -mt-1 2xl:mt-1">{jobDetails?.industry_name} <br />
                       {jobDetails?.company_emp_size}</p>
                     </div>
                   </div>
-                  <Link href={`/company/profile/${jobDetails?.company_master_id}`} className="!bg-black !text-white btn-border h-fit">Explore More </Link>
+                  <Link href={`/company/profile/${jobDetails?.company_master_id}`} className="!bg-black !text-white h-fit whitespace-nowrap !text-[10px] 2xl:!text-sm 3xl:!text-base btn">Explore More </Link>
                 </div>
                 <div className="px-4 md:px-6 xl:px-8 2xl:px-10  mt-4 md:mt-6 xl:mt-8">
                   <ReadMoreComponent fullText={jobDetails?.company_description || ""} />
@@ -381,7 +379,7 @@ export default function Home() {
               </div>
               <div className="py-4 md:py-6 xl:py-8 2xl:py-10 rounded-xl shadow-default mt-4 md:mt-6 xl:mt-4">
                 <div className="px-4 md:px-6 xl:px-8 2xl:px-10">
-                  <h2 className="text-lg 2xl:text-xl font-semibold mb-3 md:mb-4 xl:mb-6">Tags</h2>
+                  <h2 className="text-sm 2xl:text-lg 3xl:text-xl font-semibold mb-2 md:mb-4 3xl:mb-6">Tags</h2>
                   <div className="flex gap-4 md:gap-6 flex-wrap">
                     <div className="label grey">Full time</div>
                     <div className="label grey">IT Security</div>
@@ -390,16 +388,16 @@ export default function Home() {
                     <div className="label grey">IT Controls </div>
                   </div>
                   <div className="flex gap-4 md:gap-6 mt-3 md:mt-4 xl:mt-6">
-                    <h2 className="text-lg 2xl:text-xl font-semibold inline-block">Share Job:</h2>
+                    <h2 className="text-sm 2xl:text-lg 3xl:text-xl font-semibold inline-block">Share Job:</h2>
                     <div className="flex gap-4 md:gap-6">
-                      <div className="size-6 bg-black text-white rounded-full grid place-items-center">
-                        <GrFacebookOption/>
+                      <div className="size-4 2xl:size-5 3xl:size-6 bg-black text-white rounded-full grid place-items-center">
+                        <GrFacebookOption className="size-3 3xl:size-4"/>
                       </div>
-                      <div className="size-6 bg-black text-white rounded-full grid place-items-center">
-                        <FaXTwitter/>
+                      <div className="size-4 2xl:size-5 3xl:size-6 bg-black text-white rounded-full grid place-items-center">
+                        <FaXTwitter className="size-3 3xl:size-4"/>
                       </div>
-                      <div className="size-6 bg-black text-white rounded-full grid place-items-center">
-                        <FaLinkedinIn/>
+                      <div className="size-4 2xl:size-5 3xl:size-6 bg-black text-white rounded-full grid place-items-center">
+                        <FaLinkedinIn className="size-[10px] 3xl:size-[14px]"/>
                       </div>
                     </div>
                   </div>
@@ -408,21 +406,38 @@ export default function Home() {
             </div>
         </div>
       </section>
-      <section className="py-5 xl:py-6 bg-[#F8F8F8]">
-        <div className="w-full flex flex-col my-5 md:my-8 xl:my-14 2xl:my-16  mx-auto">
+      <section className="bg-[#F8F8F8]">
+        <div className="w-full flex flex-col py-5 md:py-8 xl:py-14 2xl:py-16  mx-auto">
           <div className="">                        
-            <div className="container section-heading sm:ml-[70px]">
-                <h2 className='text-black text-start text-2xl md:text-3xl xl:text-4xl 2xl:text-[48px] 2xl:leading-[54px]  font-medium'>Similar jobs</h2>
+            <div className="container section-heading">
+                <h2 className='text-black text-start text-2xl md:text-2xl 2xl:text-3xl 3xl:text-4xl 2xl:mb-3 font-medium'>Trending jobs</h2>
             </div>
-            <div className="block">
+            <div className="block container slider">
               <GallerySlider
               slides={jobsSlides}
-              spaceBetween={25}
+              spaceBetween={20}
               showNavigation
               loop={true}
-              autoplay={true}
-                            autoplayDuration={3000}
-                            freeMode={false}
+              autoplay={false}
+              autoplayDuration={3000}
+              freeMode={false}
+              slidesPerView={1}
+              breakpoints={{
+                  768: {
+                    slidesPerView: 1.5,
+                  },
+                  1024: {
+                    slidesPerView: 4,
+                  },
+                  1280: {
+                    slidesPerView: 4,
+                    spaceBetween: 20,
+                  },
+                  1920:{
+                    slidesPerView: 4,
+                    spaceBetween: 24,
+                  }
+                }}
               />
             </div>
           </div>

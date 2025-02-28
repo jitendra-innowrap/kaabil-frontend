@@ -4,14 +4,13 @@ import { BiPlay } from 'react-icons/bi'
 
 export default function CompanyGallerycard({ item, onClick }:CompanyGalleryCardProps) {
   return (
-    <div className={`w-64 ${item?.media_type=="2"?"cursor-pointer":""}`} onClick={onClick}>
-        <div className="relative">
+    <div className={`relative size-36 xl:size-44 3xl:size-64 ${item?.media_type=="2"?"cursor-pointer":""}`} onClick={onClick}>
+        <div className="">
           <Image
           src={item?.media_type=="2"?item?.media_thumbnail:item?.media_url}
-          width={250}
-          height={250}
+          fill
           alt="company profile logo"
-          className="rounded-2xl size-64"
+          className="rounded-2xl absolute"
           />
         {item?.media_type=="2" && <div className="absolute bottom-2 right-2 size-9 2xl:size-11 bg-white rounded-full shadow-secondary grid place-items-center">
           <BiPlay/>

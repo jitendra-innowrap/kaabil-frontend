@@ -21,9 +21,7 @@ const [companyJobs, setCompanyJobs] = useState<(CompanyJob | CompanyJobCategory)
 const jobsSlides = companyJobs
   ?.filter((job): job is CompanyJob => 'id' in job) // Type guard to filter only CompanyJob
   .map((job, index) => (
-    <div className="flex w-[100%] h-full md:w-[338px]" key={index}>
       <JobListingCardSmall key={index} detail={job} />
-    </div>
   ));
 useEffect(() => {
   async function fetchCompanyDetails() {
@@ -86,6 +84,7 @@ if(isLoading){
                 src="/new-assets/icons/Comapny-profile-bg.png"
                 width={988}
                 height={300}
+                quality={100}
                 alt="company profile logo"
                 className="absolute md:max-w-[50%] h-full w-auto top-0 right-0 z-0"
                 />
@@ -96,19 +95,19 @@ if(isLoading){
                 width={200}
                 height={97}
                 alt="company profile logo"
-                className="rounded-2xl flex-shrink-0 size-16 xl:size-20 2xl:size-40"
+                className="rounded-2xl flex-shrink-0 size-16 xl:size-36 3xl:size-40"
                 />
                 <div className="block">
-                  <div className="flex justify-between lg:justify-start gap-5 xl:gap-7 2xl:gap-8 items-center">
+                  <div className="flex mt-2 justify-between lg:justify-start gap-5 xl:gap-7 2xl:gap-8">
                     <div className="block">
-                      <h1 className="font-medium text-white text-xl lg:text-3xl">{CompanyDetails?.company_name}</h1>
-                      <p className="text-greyText mt-1">{"www.lorem.ipsum"}</p>
+                      <h1 className="font-medium text-white text-2xl 3xl:text-[32px] 3xl:leading-[32px]">{CompanyDetails?.company_name}</h1>
+                      <p className="text-greyText text-sm 2xl:text-base 3xl:text-lg 3xl:mt-3">{"www.lorem.ipsum"}</p>
                     </div> 
-                    <button className="btn-border">+ Follow</button>
+                    <button className="btn-border whitespace-nowrap !text-[10px] 3xl:!text-[15px] h-[25px] 3xl:h-[33px] !px-3 !rounded-md !py-0">+ Follow</button>
                   </div>
                   
-                  <div className="flex flex-wrap mt-4 xl:mt-5 2xl:mt-6 gap-5 lg:gap-8 xl:gap-10">
-                    <div className="flex gap-2 lg:gap-3 2xl:gap-4">
+                  <div className="flex flex-wrap mt-4 xl:mt-5 2xl:mt-6 gap-5 lg:gap-8 3xl:gap-10">
+                    <div className="flex gap-2 lg:gap-3 3xl:gap-4">
                       <Image
                       src={'/new-assets/icons/foundation-icon.png'}
                       width={44}
@@ -166,7 +165,7 @@ if(isLoading){
           </div>
       </section>
       <section className="container">
-          <ul className="flex xl:mx-10 my-5 md:my-8 xl:my-10 gap-5 md:gap-8 xl:gap-10 2xl:gap-12 border-b pb-2 2xl:p-[10px] border-[#D4D4D4]">
+          <ul className="flex xl:mx-10 my-5 md:my-8 3xl:my-10 gap-5 md:gap-8 2xl:gap-10 3xl:gap-12 border-b pb-2 3xl:p-[10px] border-[#D4D4D4]">
             <li className={`text-red md:text-sm font-bold`}>
               <Link href={"#about"}>About</Link>
             </li>
@@ -179,16 +178,16 @@ if(isLoading){
           </ul>
           <div id="about" className="py-5 md:py-8 xl:py-14 2xl:py-16 rounded-xl shadow-default">
             <div className="px-5 md:px-8 xl:px-14 2xl:px-16">
-              <h2 className="text-lg 2xl:text-xl font-semibold mb-4 md:mb-6 xl:mb-8">About {CompanyDetails?.company_name}</h2>
-              <p className="text-sm leading-[32px] mb-4 md:mb-6 xl:mb-8">{CompanyDetails?.company_description
+              <h2 className="text-sm 2xl:text-lg 3xl:text-xl font-semibold mb-2 md:mb-4 3xl:mb-6">About {CompanyDetails?.company_name}</h2>
+              <p className="text-xs leading-6 3xl:text-sm 3xl:leading-[32px] mb-4 md:mb-6 xl:mb-8">{CompanyDetails?.company_description
                 }</p>
-              <h2 className="text-lg 2xl:text-xl font-semibold">Gallery</h2>
+              <h2 className="text-sm 2xl:text-lg 3xl:text-xl font-semibold">Gallery</h2>
             </div>
             <CompanyGallery galleryItems={companyGallary} />
           </div>
           <div id="jobs" className="my-5 md:my-8 xl:my-10 py-5 md:py-8 xl:py-14 2xl:py-16 rounded-xl shadow-default">
             <div className="px-5 md:px-8 xl:px-14 2xl:px-16">
-              <h2 className="text-lg 2xl:text-xl font-semibold">{CompanyDetails?.job_count} Jobs in {CompanyDetails?.company_name}</h2>
+              <h2 className="text-sm 2xl:text-lg 3xl:text-xl font-semibold ">{CompanyDetails?.job_count} Jobs in {CompanyDetails?.company_name}</h2>
             </div>
             <div className="block">
                 <GallerySlider
@@ -197,14 +196,31 @@ if(isLoading){
                 showNavigation
                 loop={true}
                 autoplay={true}
-                            autoplayDuration={3000}
-                            freeMode={false}
+                autoplayDuration={3000}
+                freeMode={false}
+                slidesPerView={1}
+                breakpoints={{
+                    768: {
+                      slidesPerView: 1.5,
+                    },
+                    1024: {
+                      slidesPerView: 4,
+                    },
+                    1280: {
+                      slidesPerView: 4,
+                      spaceBetween: 20,
+                    },
+                    1920:{
+                      slidesPerView: 4,
+                      spaceBetween: 24,
+                    }
+                  }}
                 />
             </div>
           </div>
           <div id="benefits" className="my-5 md:my-8 xl:my-10 py-5 md:py-8 xl:py-14 2xl:py-16 rounded-xl shadow-default">
             <div className="px-5 md:px-8 xl:px-14 2xl:px-16">
-              <h2 className="text-lg 2xl:text-xl font-semibold mb-4 md:mb-6 xl:mb-8">Perks & Benefits</h2>
+              <h2 className="text-sm 2xl:text-lg 3xl:text-xl font-semibold mb-2 md:mb-4 3xl:mb-6">Perks & Benefits</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 md:gap-8 xl:gap-10 2xl:gap-11">
                   {
                     CompanyDetails?.benifits.map((benefit)=>(

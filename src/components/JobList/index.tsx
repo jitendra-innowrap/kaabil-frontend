@@ -42,22 +42,24 @@ export default function JobList() {
         setCurrentPage(page);
     };
 
+    const [sort, setSort] = useState(0);
   return (
     <div style={{width:"-webkit-fill-available"}}>
-            <div className="flex justify-between mb-5 xl:mb-12">
+            <div className="flex justify-between mb-5 xl:mb-7 2xl:mb-10 3xl:mb-12">
               <div className="">
-                <h2 className='font-medium text-lg md:text-xl xl:text-2xl mb-1 md:mb-2'>IT and Technology jobs</h2>
-                <p className='text-[#787878]'>670 jobs for you</p>
+                <h2 className='font-medium text-lg xl:text-xl 3xl:text-2xl 3xl:leading-7 mb-1 xl:mb-2'>IT and Technology jobs</h2>
+                <p className='text-[#787878] text-sm 2xl:text-sm'>670 jobs for you</p>
               </div>
-              <div className="relative h-fit max-h-[40px] text-left group">
+              <div className="relative h-fit group sort-by-container">
                 <button type="button" className="text-[#4D4D4F] px-3 !py-2 flex items-center !border-black btn-border" id="menu-button" aria-expanded="true" aria-haspopup="true">
-                  Sort By  <IoMdArrowDropdown className='ml-1 xl:ml-5 text-[#000000] size-5'/>
+                  {(sort===1?"Relevance":sort===2?"Salary":"Sort By")}  
+                  <IoMdArrowDropdown className='flex-shrink-0 ml-1 xl:ml-5 text-[#000000] size-4 3xl:size-5'/>
                 </button>
-                <div className="opacity-0 hidden group-hover:block group-hover:opacity-100 absolute right-0 z-10 w-56 origin-top-right top-full focus:outline-hidden" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabIndex={-1}>
-                    <div className="rounded-md bg-white ring-1 shadow-lg ring-black/5 mt-1">
-                        <div className="py-0" role="none">
-                        <div className="block px-4 py-2 text-sm hover:bg-gray-100 text-gray-700 hover:text-gray-900 outline-hidden" role="menuitem" tabIndex={-1} id="menu-item-2">Relevance</div>
-                        <div className="block px-4 py-2 text-sm hover:bg-gray-100 text-gray-700 hover:text-gray-900 outline-hidden" role="menuitem" tabIndex={-1} id="menu-item-2">Salary</div>
+                <div className="opacity-0 sort-by-items-container hidden group-hover:block group-hover:opacity-100 absolute right-0 z-10 origin-top-right top-full focus:outline-hidden" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabIndex={-1}>
+                    <div className="sort-items-wrapper rounded-md bg-white ring-1 shadow-lg ring-black/5 mt-1">
+                        <div className="py-0 sort-items" role="none">
+                          <div onClick={()=>{setSort(1)}} className="sort-item block px-4 py-2 text-xs 2xl:text-sm hover:bg-gray-100 text-gray-700 hover:text-gray-900 outline-hidden" role="menuitem" tabIndex={-1} id="menu-item-2">Relevance</div>
+                          <div onClick={()=>{setSort(2)}} className="sort-item block px-4 py-2 text-xs 2xl:text-sm hover:bg-gray-100 text-gray-700 hover:text-gray-900 outline-hidden" role="menuitem" tabIndex={-1} id="menu-item-2">Salary</div>
                         </div>
                     </div>
                 </div>

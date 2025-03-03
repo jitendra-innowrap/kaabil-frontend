@@ -85,7 +85,7 @@ const slides = jobsList.map((job, index) => (
       <section className="bg-white py-5 xl:py-6">
           <div className="w-full flex flex-col items-center my-5 md:my-8 xl:my-14 2xl:my-16  mx-auto">
           <h2 className='text-black text-center text-2xl md:text-3xl xl:text-4xl 2xl:text-[40px] 2xl:leading-[64px] mb-5 xl:mb-8 font-medium'>Top companies <span className="font-kalam text-red">hiring</span> now</h2>
-              <div className="container">                        
+              <div className="container no-pad">                        
                   <div className="block">
                       <GallerySlider
                       slides={slides}
@@ -93,8 +93,25 @@ const slides = jobsList.map((job, index) => (
                       showNavigation
                       loop={true}
                       autoplay={true}
-                            autoplayDuration={3000}
-                            freeMode={false}
+                      autoplayDuration={3000}
+                      freeMode={false}
+                      slidesPerView={3}
+                      breakpoints={{
+                          480:{
+                              slidesPerView: 3,
+                          },
+                          768: {
+                            slidesPerView: 4,
+                          },
+                          1024: {
+                            spaceBetween:20,
+                            slidesPerView: 5,
+                          },
+                          1500: {
+                            spaceBetween:35,
+                            slidesPerView: 5,
+                          },
+                        }}
                       />
                   </div>
               </div>

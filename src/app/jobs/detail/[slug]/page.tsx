@@ -22,6 +22,7 @@ import Popup from "reactjs-popup";
 import { ShareSocial } from 'react-share-social'
 import { useAppSelector } from "@/redux/hooks";
 import { Skill } from "@/Types/common";
+import Tabs from "@/components/Tabs";
 
 
 export default function Home() {
@@ -85,7 +86,7 @@ export default function Home() {
   }, [slug]);
   const generateDummyJobs = (count: number): CompanyJob[] => {
     return Array.from({ length: count }, (_, index) => ({
-      id: `job_00${index + 1}`,
+      id: `${index + 1}`,
       company_master_id: `comp_00${index + 1}`,
       job_distance: `${5 + index * 5} miles`,
       job_location: ["New York, NY", "San Francisco, CA", "Austin, TX", "Chicago, IL", "Seattle, WA"][index % 5],
@@ -114,7 +115,7 @@ export default function Home() {
       profile_matched_percentage: 75 + index * 5,
       perfect_match_percent: 80 + index * 5,
       is_show_candidate_percent: 1,
-      jobs_skills: [],
+      jobs_skills: [{id:"1", name:"Problem Solving"}, {id:"1", name:"time management"},{id:"1", name: "adaptability"}, {id:"1", name:"performance optimization"}, {id:"1", name:"Leadership"}, {id:"1", name: "Cloud infra"}, {id:"1", name:"performance optimization"}],
     }));
   };
   
@@ -173,6 +174,7 @@ export default function Home() {
       </div>
     )
   }
+  const tabTitles = ["Job Description", "About the company",]
   return (
     <main>
       <section className="bg-[#FDEAC9] py-6 xl:py-8 sticky">
@@ -330,13 +332,8 @@ export default function Home() {
               </div>
             </div>
             <div className="lg:order-2 job-description">
-              <ul className="flex mb-3 md:mb-4 2xl:mb-6 gap-5 md:gap-8 xl:gap-10 2xl:gap-12 border-b py-2 2xl:py-[10px] border-[#D4D4D4]">
-                <li className={`text-red md:text-sm font-bold`}>
-                  <Link href="#description">Job Description</Link></li>
-                <li className={`md:text-sm font-normal`}>
-                  <Link href="#about" className="text-black hover:font-bold hover:text-red">About the company</Link></li>
-              </ul>
-              <div id="description" className="py-4 md:py-6 xl:py-8 2xl:py-10 rounded-xl shadow-default">
+            <Tabs tabTitles={tabTitles} />
+              <div id="job-description" className="py-4 md:py-6 xl:py-8 2xl:py-10 rounded-xl shadow-default">
                 <div className="px-4 md:px-6 xl:px-8 2xl:px-10">
                   <h2 className="text-sm 2xl:text-lg 3xl:text-xl font-semibold mb-2 md:mb-4 3xl:mb-6">Job Description</h2>
                   <div
@@ -351,7 +348,7 @@ export default function Home() {
 
                 </div>
               </div>
-              <div id="about" className="py-4 md:py-6 xl:py-8 2xl:py-10 rounded-xl shadow-default mt-4 md:mt-6 xl:mt-4">
+              <div id="about-the-company" className="py-4 md:py-6 xl:py-8 2xl:py-10 rounded-xl shadow-default mt-4 md:mt-6 xl:mt-4">
                 <div className="px-4 md:px-6 xl:px-8 2xl:px-10">
                   <h2 className="text-sm 2xl:text-lg 3xl:text-xl font-semibold mb-2 md:mb-4 3xl:mb-6">About the company</h2>
                 </div>

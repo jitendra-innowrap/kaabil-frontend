@@ -26,7 +26,7 @@ export default function SignIn({onClose}:prop) {
     dispatch(setProgress(progress - 1));
   }
   return (
-    <div className="relative mx-auto py-5 md:py-8 xl:py-10 2xl:py-12 w-[90%] rounded-2xl">
+    <div className="relative sign-up-modal mx-auto py-5 md:py-8 xl:py-10 2xl:py-12 w-[90%] rounded-2xl">
       
       {progress >=5 && <div onClick={handleBack}><FaArrowLeft className='absolute cursor-pointer top-4 z-30 -left-2 size-6 stroke-[1.4]'/></div>}
       {progress >=5 && <div onClick={onClose}><IoClose className='absolute z-30 cursor-pointer top-4 -right-4 size-8 font-bold stroke-[1.9]'/></div>}

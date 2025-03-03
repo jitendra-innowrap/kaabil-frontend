@@ -55,7 +55,7 @@ const CompanyGallery: React.FC<{ galleryItems: (CompanyImage | CompanyVideo)[] }
           spaceBetween={25}
           showNavigation
           loop={true}
-          autoplay={true}
+          autoplay={false}
           autoplayDuration={3000}
           freeMode={false}
           slidesPerView={1}

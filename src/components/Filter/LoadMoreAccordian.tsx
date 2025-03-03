@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Accordion, AccordionBody, AccordionHeader, AccordionItem } from 'react-headless-accordion';
 import { BiChevronDown, BiChevronUp, BiSearch } from 'react-icons/bi';
@@ -13,13 +13,17 @@ interface LoadMoreAccordionProps {
     isSearchable?: boolean;
     isRadio?: boolean;
     list: Array<{ id: number | string; name: string }>;
+    searchPlaceholder?: string;
+    searchIcon?: ReactNode;
 }
 function LoadMoreAccordion({ 
     fetchMoreItems, 
     header,
     isSearchable = false, 
     isRadio = false, 
-    list
+    list,
+    searchPlaceholder = "",
+    searchIcon = <BiSearch />
 }: LoadMoreAccordionProps) {
     const [selected, setSelected] = useState<string>('');    
     const [search, setSearch] = useState("");
@@ -80,7 +84,7 @@ function LoadMoreAccordion({
                 {({ open=true }: any) => (
                     <>
                         <AccordionHeader className="w-full flex justify-between items-center text-black py-4">
-                            <span className="font-semibold mb-4 xl:mb-5 text-base">{header}</span>
+                            <span className="font-semibold text-sm 2xl:text-base">{header}</span>
                             {open ? (
                                 <BiChevronUp className="hidden text-slate-500 font-bold text-xl" />
                             ) : (
@@ -89,36 +93,36 @@ function LoadMoreAccordion({
                         </AccordionHeader>
                         <AccordionBody>
                             {isSearchable ? (
-                                <div className="relative mb-4">
+                                <div className="relative mt-4 xl:mt-5">
                                     <input
                                         type="text"
                                         value={search}
                                         onChange={(e) => setSearch(e.target.value)}
-                                        className="py-2 pl-8 2xl:pl-10 h-[40px] px-4 w-full font-medium text-sm rounded-[12px] z-0 focus:shadow focus:outline-none bg-[#F6F6F6] placeholder:text-[#6C757D] placeholder:font-normal"
-                                        placeholder={`Search ${header}`}
+                                        className="py-2 pl-8 2xl:pl-10 h-[40px] px-4 w-full text-xs 2xl:text-sm rounded-[12px] z-0 focus:shadow focus:outline-none bg-[#F6F6F6] placeholder:text-[#6C757D] placeholder:font-normal"
+                                        placeholder={searchPlaceholder?searchPlaceholder:`Search ${header}`}
                                     />
                                     <div className="absolute top-[32px] left-[10px] -translate-y-1/2">
-                                        <span className="mr-4 h-full">
-                                            <BiSearch className='size-4 xl:size-5 text-[#6C757D]' />
+                                        <span className="mr-4 ">
+                                            {searchIcon?searchIcon:<BiSearch className='size-4 xl:size-5 bg-[#6C757D] text-[#6C757D] font-bold' color='#6C757D' />}
                                         </span>
                                     </div>
                                 </div>
                             ) : null}
-                            <ul className='mb-4 grid gap-3 max-h-[210px] overflow-y-auto custom-scrollbar'>
+                            {list?.length>0 &&<ul className='pb-3 3xl:pb-5 grid gap-3  pt-3 3xl:pt-5 overflow-y-auto custom-scrollbar'>
                                 {list.map((item) => (
                                     isRadio ? (
-                                        <li key={item.id} className='flex justify-between' onClick={() => handleRadio(item)}>
+                                        <li key={item.id} className='flex justify-between gap-3' onClick={() => handleRadio(item)}>
                                             <Radio item={item.name} checked={selected === item.name} />
-                                            <span className='mr-3 text-end'>{item.id}</span>
+                                            <span className='mr-3 text-xs 2xl:text-sm text-end'>{item.id}</span>
                                         </li>
                                     ) : (
-                                        <li key={item.id} className='flex justify-between' onClick={() => handleCheck(item)}>
+                                        <li key={item.id} className='flex justify-between gap-3' onClick={() => handleCheck(item)}>
                                             <Check item={item.name} checked={selected.split('|').includes(item.name)} />
-                                            <span className='mr-3 text-end'>{item.id}</span>
+                                            <span className='mr-3 text-xs 2xl:text-sm text-end'>{item.id}</span>
                                         </li>
                                     )
                                 ))}
-                            </ul>
+                            </ul>}
                             {fetchMoreItems && <button className='show-more !py-2'>show more</button>}
                         </AccordionBody>
                     </>
@@ -133,7 +137,9 @@ export default function Page({fetchMoreItems,
     header,
     isSearchable = false, 
     isRadio = false, 
-    list
+    list,
+    searchIcon,
+    searchPlaceholder
 }: LoadMoreAccordionProps) {
     return (
         <React.Suspense fallback={<div>Loading...</div>}>
@@ -141,6 +147,8 @@ export default function Page({fetchMoreItems,
                 header={header}
                 fetchMoreItems={fetchMoreItems}
                 list={list} 
+                searchIcon={searchIcon}
+                searchPlaceholder={searchPlaceholder}
                 isSearchable={isSearchable} 
                 isRadio={isRadio} 
             />

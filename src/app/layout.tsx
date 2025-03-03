@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Poppins, Kalam } from 'next/font/google';
 import './globals.css';
+import './responsive.css';
 import 'reactjs-popup/dist/index.css';
 import ReduxProvider from "@/providers/ReduxProvider";
 import SearchSection from "@/components/SearchSection";
@@ -19,7 +20,7 @@ const poppins = Poppins({
 
 // Configure Kalam
 const kalam = Kalam({
-  weight: ['400', '700'],
+  weight: ['300', '400', '700'],
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-kalam', // CSS variable for Kalam

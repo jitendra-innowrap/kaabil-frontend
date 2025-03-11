@@ -10,7 +10,7 @@ export default function AddExperience() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(setProgress(9));
+    dispatch(setProgress(10));
   };
 
   

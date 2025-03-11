@@ -66,8 +66,7 @@ export default function AddLocation() {
 
         if (response?.data?.code === 1) {
           dispatch(setProgress(8));
-          storeProgress(8);
-          dispatch(setUserLocation([]));
+          dispatch(setUserLocation(values.location_id));
           toast.success("Job location submitted successfully!", { position: "bottom-right" });
         } else {
           toast.error(response?.data?.message || "Submission failed!", { position: "bottom-right" });

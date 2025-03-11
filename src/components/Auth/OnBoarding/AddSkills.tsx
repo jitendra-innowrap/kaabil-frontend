@@ -10,6 +10,7 @@ import { getAuthUserDesiredRole, storeAuthUserUserSkills, storeProgress } from '
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import toast from 'react-hot-toast';
+import { setUserSkills } from '@/redux/userSlice';
 
 interface Skill {
   value: string;
@@ -18,6 +19,7 @@ interface Skill {
 
 export default function AddSkills() {
   const progress = useAppSelector((state) => state.progress.value);
+  const user = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const [skillsList, setSkillsList] = useState<Skill[]>([]);
   const [selectedSkills, setSelectedSkills] = useState<Skill[]>([]);
@@ -89,8 +91,7 @@ export default function AddSkills() {
         if (response?.data?.code === 1) {
           dispatch(setProgress(7));
           storeProgress(7);
-          // setUserSkill(values)
-          storeAuthUserUserSkills(values)
+          setUserSkills(values.user_skill)
           toast.success("Skills submitted successfully!", { position: "bottom-right" });
         } else {
           toast.error(response?.data?.message || "Submission failed!", { position: "bottom-right" });
@@ -109,6 +110,8 @@ export default function AddSkills() {
       <h2 className='text-center font-semibold text-lg md:text-xl xl:text-[28px] 2xl:leading-[36px]'>
         <span className='text-red'>Skills</span>
       </h2>
+      <pre>{JSON.stringify(user, null, 2)}</pre>
+
       <h3 className='md:text-lg font-semibold text-center'>Add skills to find the right job for you.</h3>
       <form onSubmit={formik.handleSubmit} className="block mt-8 md:mt-10 xl:mt-14 2xl:mt-16">
         <h4 className='text-lg font-medium'>Add Skills</h4>

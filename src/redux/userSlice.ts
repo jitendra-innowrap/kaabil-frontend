@@ -37,7 +37,6 @@ interface AuthState {
 }
 const { deviceId, secret } = getSessionData();
 const user = getAuthUser() as User;
-const userRole = getAuthUserDesiredRole();
 const token = getAuthToken();
 const initialState: AuthState = {
   deviceId,
@@ -48,8 +47,8 @@ const initialState: AuthState = {
   is_profile_verify: user?.is_profile_verify,
   mobile: user?.mobile,
   name: user?.name || "",
-  role_id: userRole?.role_id || [],
-  job_type_master_id: userRole?.job_type_master_id || [],
+  role_id: user?.role_id || [],
+  job_type_master_id: user?.job_type_master_id || [],
   skills: [],
   experience: [],
   location_id: [],

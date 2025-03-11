@@ -92,9 +92,7 @@ export default function AddJobRole() {
         if (response?.data?.code === 1) {
           dispatch(setProgress(6));
           storeProgress(6);
-          setUserRole(values)
-          storeAuthUserDesiredRole(values)
-          
+          setUserRole(values);          
           toast.success("Job role submitted successfully!", { position: "bottom-right" });
         } else {
           toast.error(response?.data?.message || "Submission failed!", { position: "bottom-right" });

@@ -35,7 +35,7 @@ export interface UserRole {
     job_type_master_id: string[];
 }
 export interface Skill {
-    id: string | string[];
+    id: string;
     name: string;
     skill_level_type: string;
 }

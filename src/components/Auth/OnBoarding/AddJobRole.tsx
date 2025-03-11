@@ -11,11 +11,11 @@ import * as Yup from "yup";
 import api from "@/Services/Apiservice";
 import toast from "react-hot-toast";
 import { storeAuthUserDesiredRole, storeProgress } from "@/components/utils/deviceId";
-import { setUserRole } from "@/redux/authSlice";
+import { setUserRole } from "@/redux/userSlice";
 
 export default function AddJobRole() {
   const dispatch = useAppDispatch();
-  const {name, role_id, job_type_master_id} = useAppSelector((state) => state.auth);
+  const user = useAppSelector((state) => state.user);
   const [selectedRoles, setSelectedRoles] = useState([]);
   const [selectedJobType, setSelectedJobType] = useState<string[]>([]);
   // State for options
@@ -36,10 +36,10 @@ export default function AddJobRole() {
         label: role.name,
       })) || [];
        // Set initial selected roles if user has existing roles
-       if (role_id?.length) {
-        const preselectedRoles = roles.filter((role:any) => role_id.includes(role.value));
-        setSelectedRoles(preselectedRoles);
-      }
+      //  if (user.role_id?.length) {
+      //   const preselectedRoles = roles.filter((role:any) => user?.role_id.includes(role.value));
+      //   setSelectedRoles(preselectedRoles);
+      // }
       setRolesList(roles);
     } catch (error) {
       console.error("Error fetching roles:", error);
@@ -55,9 +55,9 @@ export default function AddJobRole() {
         label: type.name,
       })) || [];
       // Set initial job type selection
-      if (job_type_master_id) {
-        setSelectedJobType([job_type_master_id.toString()]);
-      }
+      // if (user.job_type_master_id) {
+      //   setSelectedJobType([user.job_type_master_id.toString()]);
+      // }
       setJobTypes(jobTypes);
     } catch (error) {
       console.error("Error fetching job types:", error);
@@ -111,9 +111,10 @@ export default function AddJobRole() {
   return (
     <div className="">
       <h2 className="text-center font-semibold text-lg md:text-xl xl:text-[28px] xl:leading-[36px]">
-        <span className="text-red">Hi {name}!</span> <br />
+        <span className="text-red">Hi {user?.name}!</span> <br />
         Take the first step to find a job
       </h2>
+      <pre>{JSON.stringify(user, null, 2)}</pre>
 
       {/* ✅ Formik Form */}
       <form onSubmit={formik.handleSubmit} className="block mt-8 md:mt-10 xl:mt-14 2xl:mt-16">

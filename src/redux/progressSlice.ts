@@ -1,4 +1,4 @@
-import { getProgress } from '@/components/utils/deviceId';
+import { getProgress, storeProgress } from '@/components/utils/deviceId';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface ProgressState {
@@ -14,6 +14,7 @@ const progressSlice = createSlice({
   reducers: {
     setProgress: (state, action: PayloadAction<number>) => {
       state.value = action.payload; // Update progress state
+      storeProgress(action.payload);
     },
   },
 });

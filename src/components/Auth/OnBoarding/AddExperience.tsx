@@ -28,13 +28,13 @@ export default function AddExperience() {
           <div className="form-group flex-1 gap-4 rounded-lg px-5 py-4 shadow-default flex items-center">
             <input type="radio" id="experience1" name="experience" className='cursor-pointer inline-block !m-0 !w-4 !h-4' value="entry" />
             <label htmlFor="experience1" className="!mb-0 gap-2 inline-block cursor-pointer">
-              Entry Level
+              I'm a Fresher
             </label>
           </div>
           <div className="form-group flex-1 gap-4 rounded-lg px-5 py-4 shadow-default flex items-center">
           <input type="radio" id="experience2" name="experience" className='cursor-pointer inline-block !m-0 !w-4 !h-4' value="intermediate" />
             <label htmlFor="experience2" className="!mb-0 gap-2 inline-block cursor-pointer">
-              Intermediate
+              I'm Experienced
             </label>
           </div>
         </div>

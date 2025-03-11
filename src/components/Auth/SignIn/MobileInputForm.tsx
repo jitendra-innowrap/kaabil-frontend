@@ -2,11 +2,11 @@
 import { login } from '@/redux/authSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setProgress } from '@/redux/progressSlice';
-import { updateNumber } from '@/redux/userSlice';
 import React, { useState } from 'react'
 import toast from 'react-hot-toast';
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { setUserMobile } from '@/redux/userSlice';
 export default function MobileInputForm() {
   const dispatch = useAppDispatch();
   // ✅ Validation schema
@@ -28,7 +28,7 @@ export default function MobileInputForm() {
         const response = await dispatch(login({ mobile, name: "", login_type: 1, role_id: 4 })).unwrap();  
         if (response?.code === 1) {
           dispatch(setProgress(2));
-          dispatch(updateNumber(mobile));
+          dispatch(setUserMobile(mobile));
           toast.success("An OTP has been sent!", { position: "bottom-right" });
         } else {
           toast.error(response?.message || "Login failed. Try again!", { position: "bottom-right" });

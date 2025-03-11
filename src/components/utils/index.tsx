@@ -1,3 +1,5 @@
+import { UserLocation } from "@/Types/common";
+
 export function handleCommaForQuery(string: string){
     if(string){
       return string.replace(/,/g, '|');
@@ -103,3 +105,43 @@ export function formatDate(date:any){
   }
   return ""
 }
+
+// Utility function to fetch user location and city name
+export const fetchUserLocation = () => {
+  return new Promise<UserLocation>((resolve, reject) => {
+    if (!navigator.geolocation) {
+      reject(new Error('Geolocation is not supported by your browser.'));
+      return;
+    }
+
+    // Ask for location permission
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const { latitude, longitude } = position.coords;
+
+        try {
+          // Use a reverse geocoding API to get the city name
+          const response = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+          );
+          const data = await response.json();
+
+          const city = data.address.city || data.address.town || data.address.village ||data.address.county || data.address.state_district ||data.address.state || data.address.country || 'Unknown';
+
+          // Resolve with the user location object
+          resolve({
+            city,
+            user_city: city,
+            city_latitude: latitude,
+            city_longitude: longitude,
+          });
+        } catch (error) {
+          reject(new Error('Failed to fetch city name.'));
+        }
+      },
+      (error) => {
+        reject(new Error('Unable to retrieve your location.'));
+      }
+    );
+  });
+};

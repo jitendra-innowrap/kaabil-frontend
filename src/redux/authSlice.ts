@@ -1,5 +1,5 @@
 // features/authSlice.ts
-import { generateDeviceId, getSessionData, initializeSession, getAuthToken, getAuthUser, getAuthUserDesiredRole } from '@/components/utils/deviceId';
+import { generateDeviceId, getSessionData, initializeSession, getAuthToken, getAuthUser, getAuthUserDesiredRole, storeAuthUser } from '@/components/utils/deviceId';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
 import api from '@/Services/Apiservice';
@@ -20,6 +20,8 @@ interface AuthState {
   role_id?: string | string[];
   job_type_master_id?: string[];
   skills?: Skill[];
+  users_education?: string[];
+  experience: object[];
   location_id?: string | string[];
   active_jobseeker?: number;
   available_job?: number;
@@ -28,7 +30,7 @@ interface AuthState {
 }
 
 const { deviceId, secret } = getSessionData();
-const user = getAuthUser();
+const user = getAuthUser() as User;
 const userRole = getAuthUserDesiredRole();
 const token = getAuthToken();
 const initialState: AuthState = {
@@ -43,6 +45,9 @@ const initialState: AuthState = {
   role_id: userRole?.role_id,
   job_type_master_id: userRole?.job_type_master_id,
   skills: [],
+  experience: [],
+  location_id: [],
+  users_education: [],
   active_jobseeker: 0,
   available_job: 0,
   loading: false,
@@ -149,12 +154,7 @@ export const verifyOTP = createAsyncThunk(
 const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {
-    setUserRole: (state, action: PayloadAction<UserRole>) => {
-      state.role_id = action.payload.role_id; // Update progress state
-      state.job_type_master_id = action.payload.job_type_master_id; // Update progress state
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getDeviceToken.pending, (state) => {
@@ -219,5 +219,4 @@ const authSlice = createSlice({
   },
 });
 
-export const { setUserRole } = authSlice.actions;
 export default authSlice.reducer;

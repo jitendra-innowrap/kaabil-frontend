@@ -2,18 +2,16 @@
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setProgress } from '@/redux/progressSlice';
-import { updateName } from '@/redux/userSlice';
 import api from '@/Services/Apiservice';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import React from 'react';
 import toast from 'react-hot-toast';
-import { storeProgress } from '@/components/utils/deviceId';
+import { setUserName } from '@/redux/userSlice';
 
 export default function EnterName() {
-  const progress = useAppSelector((state) => state.progress.value);
   const dispatch = useAppDispatch();
-  const name = useAppSelector((state) => state.auth.name);
+  const user = useAppSelector((state) => state.user);
   
 
   // ✅ Yup Validation Schema
@@ -28,7 +26,7 @@ export default function EnterName() {
 
   // ✅ Formik hook
   const formik = useFormik({
-    initialValues: { name: name || "", },
+    initialValues: { name: user.name || "", },
     validationSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
@@ -43,13 +41,11 @@ export default function EnterName() {
         if (response?.data?.code === 1) {
           // ✅ Redux Updates
           dispatch(setProgress(5));
-          storeProgress(5);
-          dispatch(updateName(values.name));
+          dispatch(setUserName(values.name));
           toast.success("Name submitted successfully!", { position: "bottom-right" });
         } else {
           toast.error(response?.message || "Something went wrong. Try again!", { position: "bottom-right" });
         }
-
       } catch (error: any) {
         console.error("Error submitting name:", error);
         toast.error(error?.message || "Something went wrong!", { position: "bottom-right" });
@@ -64,7 +60,7 @@ export default function EnterName() {
       <h2 className="text-center font-semibold text-lg md:text-xl 2xl:text-[28px] 2xl:leading-[36px]">
         Welcome to <span className="text-red font-kalam">Kaabil</span>
       </h2>
-
+      <pre>{JSON.stringify(user, null, 2)}</pre>
       {/* ✅ Formik Form */}
       <form onSubmit={formik.handleSubmit} className="block mt-8 3xl:mt-16">
         <label htmlFor="name">Enter your full name</label>

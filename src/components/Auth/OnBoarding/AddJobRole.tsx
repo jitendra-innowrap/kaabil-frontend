@@ -17,7 +17,7 @@ export default function AddJobRole() {
   const dispatch = useAppDispatch();
   const {name, role_id, job_type_master_id} = useAppSelector((state) => state.auth);
   const [selectedRoles, setSelectedRoles] = useState([]);
-  const [selectedJobType, setSelectedJobType] = useState("");
+  const [selectedJobType, setSelectedJobType] = useState<string[]>([]);
   // State for options
   const [rolesList, setRolesList] = useState<{ value: string; label: string }[]>([]);
   const [jobTypes, setJobTypes] = useState<{ value: string; label: string }[]>([]);
@@ -56,7 +56,7 @@ export default function AddJobRole() {
       })) || [];
       // Set initial job type selection
       if (job_type_master_id) {
-        setSelectedJobType(job_type_master_id.toString());
+        setSelectedJobType([job_type_master_id.toString()]);
       }
       setJobTypes(jobTypes);
     } catch (error) {
@@ -71,7 +71,10 @@ export default function AddJobRole() {
       .min(1, "Select at least one role")
       .max(2, "You can select up to 2 roles")
       .required("Job role is required"),
-    job_type_master_id: Yup.string().required("Please select a job type"),
+      job_type_master_id: Yup.array()
+      .of(Yup.string())
+      .min(1, "Select at least one job type")
+      .required("Job role is required"),
   });
 
   // ✅ Formik Hook
@@ -154,9 +157,16 @@ export default function AddJobRole() {
             <div
               key={type.value}
               className={`col-span-1 label-option cursor-pointer px-4 py-2 rounded ${
-                formik.values.job_type_master_id === type.value ? "bg-red text-white" : ""
+                formik.values.job_type_master_id.includes(type.value) ? "bg-red text-white" : ""
               }`}
-              onClick={() => formik.setFieldValue("job_type_master_id", type.value)}
+              onClick={() => {
+                const currentValues = formik.values.job_type_master_id;
+                const newValues = currentValues.includes(type.value)
+                  ? currentValues.filter((id) => id !== type.value) // Remove the ID if it's already selected
+                  : [...currentValues, type.value]; // Add the ID if it's not selected
+
+                formik.setFieldValue("job_type_master_id", newValues);
+              }}
             >
               {type.label}
             </div>

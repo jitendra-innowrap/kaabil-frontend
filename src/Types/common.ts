@@ -17,7 +17,7 @@ export interface User {
     
 export interface UserRole {
     role_id: string[];
-    job_type_master_id: string;
+    job_type_master_id: string[];
 }
 export interface Skill {
     id: string;

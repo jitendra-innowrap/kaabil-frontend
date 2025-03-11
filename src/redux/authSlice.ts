@@ -18,7 +18,7 @@ interface AuthState {
   photo_url?: string;
   user_id?: string;
   role_id?: string | string[];
-  job_type_master_id?: string;
+  job_type_master_id?: string[];
   skills?: Skill[];
   active_jobseeker?: number;
   available_job?: number;

@@ -2,14 +2,21 @@ import MultiSelect from '@/components/Inputs/MultiSelect';
 import SelectedChips from '@/components/Inputs/SelectedChips';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setProgress } from '@/redux/progressSlice';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { RiMapPin2Line } from 'react-icons/ri';
+import api from '@/Services/Apiservice';
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import toast from "react-hot-toast";
+import { storeProgress } from '@/components/utils/deviceId';
 
 export default function AddLocation() {
   const progress = useAppSelector((state) => state.progress.value);
   const dispatch = useAppDispatch();
   const [location, setLocation] = useState<{ value: string; label: string }[]>([]);
-  
+  const { location_id } = useAppSelector((state) => state.auth);  
+  const [selectedLocation, setSelectedLocation] = useState([]);
+  const [locationList, setLocationList] = useState<{ value: string; label: string }[]>([]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,23 +32,66 @@ export default function AddLocation() {
   };
 
 
-  const locationList = [
-    { value: '1', label: 'Mumbai, Maharashtra' },
-    { value: '2', label: 'Delhi, Delhi' },
-    { value: '3', label: 'Bangalore, Karnataka' },
-    { value: '4', label: 'Hyderabad, Telangana' },
-    { value: '5', label: 'Chennai, Tamil Nadu' },
-    { value: '6', label: 'Kolkata, West Bengal' },
-    { value: '7', label: 'Pune, Maharashtra' },
-    { value: '8', label: 'Ahmedabad, Gujarat' },
-    { value: '9', label: 'Jaipur, Rajasthan' },
-    { value: '10', label: 'Lucknow, Uttar Pradesh' },
-    { value: '11', label: 'Surat, Gujarat' },
-    { value: '12', label: 'Kanpur, Uttar Pradesh' },
-    { value: '13', label: 'Nagpur, Maharashtra' },
-    { value: '14', label: 'Indore, Madhya Pradesh' },
-    { value: '15', label: 'Thane, Maharashtra' },
-  ];
+  useEffect(() => {
+    fetchLocation();
+  }, []);
+
+  const fetchLocation = async () => {
+    try {
+      const response = await api.get("/MasterData/getCity");
+      const locations = response?.data?.result?.map((loc: any) => ({
+        value: loc.id,
+        label: loc.name,
+      })) || [];
+       if (location_id?.length) {
+        const preselectedLocations = locations.filter((loc:any) => location_id.includes(loc.value));
+        setSelectedLocation(preselectedLocations);
+      }
+      setLocationList(locations);
+    } catch (error) {
+      console.error("Error fetching roles:", error);
+    }
+  };
+  
+   // ✅ Validation Schema
+   const validationSchema = Yup.object().shape({
+    location_id: Yup.array()
+      .of(Yup.string())
+      .min(1, "Select at least one location")
+      .required("Location is required"),
+    job_type_master_id: Yup.string().required("Please select a job type"),
+  });
+
+  // ✅ Formik Hook
+  const formik = useFormik({
+    initialValues: {
+      location_id: selectedLocation as string[]
+    },
+    validationSchema,
+    onSubmit: async (values, { setSubmitting }) => {
+      try {
+        // ✅ Submit selected roles & job type
+        const response = await api.post("/Auth/addJobseekerProfile", values);
+
+        if (response?.data?.code === 1) {
+          dispatch(setProgress(8));
+          storeProgress(8);
+          // setUserRole(values)
+          // storeAuthUserDesiredRole(values)
+          
+          toast.success("Job role submitted successfully!", { position: "bottom-right" });
+        } else {
+          toast.error(response?.data?.message || "Submission failed!", { position: "bottom-right" });
+        }
+      } catch (error: any) {
+        console.error("Error submitting job role:", error);
+        toast.error(error?.message || "Something went wrong!", { position: "bottom-right" });
+      } finally {
+        setSubmitting(false);
+      }
+    },
+  });
+  
 
   return (
     <div className=''>
@@ -56,13 +106,22 @@ export default function AddLocation() {
           options={locationList}
           placeholder="Job location"
           isMulti
-          
-          onChange={handleJobRoleChange}
-          selectedValues={location}
+          onChange={(selectedLocation: { value: string; label: string }[]) =>
+            formik.setFieldValue("location_id", selectedLocation.map((loc) => loc.value))
+          }
+          selectedValues={locationList.filter((loc) => formik.values.location_id.includes(loc.value))}
           icon={<RiMapPin2Line className='absolute left-[15px] top-[20px] size-4 text-[#808080]' />}
         />
         </div>
-        <SelectedChips selectedValues={location} onRemove={handleRemoveJobRole} />
+        <SelectedChips
+          selectedValues={locationList.filter((loc) => formik.values.location_id.includes(loc.value))}
+          onRemove={(value: string) =>
+            formik.setFieldValue(
+              "role_id",
+              formik.values.location_id.filter((id) => id !== value)
+            )
+          }
+        />
 
         <div className="flex w-full justify-between items-end">
           <div className="whitespace-nowrap"><span className='text-red'>{progress-4}</span> - 6</div>

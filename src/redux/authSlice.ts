@@ -20,6 +20,7 @@ interface AuthState {
   role_id?: string | string[];
   job_type_master_id?: string;
   skills?: Skill[];
+  location_id?: string | string[];
   active_jobseeker?: number;
   available_job?: number;
   loading: boolean;

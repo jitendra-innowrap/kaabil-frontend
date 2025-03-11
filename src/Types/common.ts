@@ -15,7 +15,7 @@ export interface User {
     skills?: Skill[];
     users_education?: string[];
     experience: object[];
-    location_id?: string | string[];
+    location_id?: string[];
     active_jobseeker?: number;
     available_job?: number;
     user_id?: string;

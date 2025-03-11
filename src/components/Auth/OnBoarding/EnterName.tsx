@@ -60,7 +60,7 @@ export default function EnterName() {
       <h2 className="text-center font-semibold text-lg md:text-xl 2xl:text-[28px] 2xl:leading-[36px]">
         Welcome to <span className="text-red font-kalam">Kaabil</span>
       </h2>
-      <pre>{JSON.stringify(user, null, 2)}</pre>
+      {/* <pre>{JSON.stringify(user, null, 2)}</pre> */}
       {/* ✅ Formik Form */}
       <form onSubmit={formik.handleSubmit} className="block mt-8 3xl:mt-16">
         <label htmlFor="name">Enter your full name</label>

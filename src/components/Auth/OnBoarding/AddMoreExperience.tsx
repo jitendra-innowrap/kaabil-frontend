@@ -14,8 +14,6 @@ export default function AddMoreExperience() {
      dispatch(setProgress(11));
    };
  
-   
- 
    return (
      <div className=''>
        <h2 className='text-center font-semibold text-lg md:text-xl xl:text-[28px] 2xl:leading-[38px]'>

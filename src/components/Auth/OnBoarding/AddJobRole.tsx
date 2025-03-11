@@ -10,7 +10,6 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import api from "@/Services/Apiservice";
 import toast from "react-hot-toast";
-import { storeAuthUserDesiredRole, storeProgress } from "@/components/utils/deviceId";
 import { setUserRole } from "@/redux/userSlice";
 
 export default function AddJobRole() {
@@ -34,12 +33,13 @@ export default function AddJobRole() {
       const roles = response?.data?.result?.map((role: any) => ({
         value: role.id,
         label: role.name,
+        ...role
       })) || [];
        // Set initial selected roles if user has existing roles
-      //  if (user.role_id?.length) {
-      //   const preselectedRoles = roles.filter((role:any) => user?.role_id.includes(role.value));
-      //   setSelectedRoles(preselectedRoles);
-      // }
+        if (user.role_id) {
+        const preselectedRoles = roles.filter((role:any) => user?.role_id?.includes(role.value));
+        setSelectedRoles(preselectedRoles);
+      }
       setRolesList(roles);
     } catch (error) {
       console.error("Error fetching roles:", error);
@@ -91,8 +91,7 @@ export default function AddJobRole() {
 
         if (response?.data?.code === 1) {
           dispatch(setProgress(6));
-          storeProgress(6);
-          setUserRole(values);          
+          dispatch(setUserRole(values))         
           toast.success("Job role submitted successfully!", { position: "bottom-right" });
         } else {
           toast.error(response?.data?.message || "Submission failed!", { position: "bottom-right" });
@@ -112,7 +111,7 @@ export default function AddJobRole() {
         <span className="text-red">Hi {user?.name}!</span> <br />
         Take the first step to find a job
       </h2>
-      <pre>{JSON.stringify(user, null, 2)}</pre>
+      {/* <pre>{JSON.stringify(user, null, 2)}</pre> */}
 
       {/* ✅ Formik Form */}
       <form onSubmit={formik.handleSubmit} className="block mt-8 md:mt-10 xl:mt-14 2xl:mt-16">

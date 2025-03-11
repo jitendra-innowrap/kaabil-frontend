@@ -90,8 +90,7 @@ export default function AddSkills() {
         const response = await api.post("/Auth/addJobseekerProfile", values);
         if (response?.data?.code === 1) {
           dispatch(setProgress(7));
-          storeProgress(7);
-          setUserSkills(values.user_skill)
+          dispatch(setUserSkills(values.user_skill))
           toast.success("Skills submitted successfully!", { position: "bottom-right" });
         } else {
           toast.error(response?.data?.message || "Submission failed!", { position: "bottom-right" });
@@ -110,7 +109,7 @@ export default function AddSkills() {
       <h2 className='text-center font-semibold text-lg md:text-xl xl:text-[28px] 2xl:leading-[36px]'>
         <span className='text-red'>Skills</span>
       </h2>
-      <pre>{JSON.stringify(user, null, 2)}</pre>
+      {/* <pre>{JSON.stringify(user, null, 2)}</pre> */}
 
       <h3 className='md:text-lg font-semibold text-center'>Add skills to find the right job for you.</h3>
       <form onSubmit={formik.handleSubmit} className="block mt-8 md:mt-10 xl:mt-14 2xl:mt-16">
@@ -123,6 +122,11 @@ export default function AddSkills() {
           isMulti
           onChange={(selectedOptions) => {
             setSelectedSkills(selectedOptions);
+            setUserSkills(selectedOptions.map(skill => ({
+              id: skill.value,
+              name: skill.label,
+              skill_level_type: "1",
+            })))
             formik.setFieldValue("user_skill", selectedOptions.map(skill => ({
               id: skill.value,
               name: skill.label,

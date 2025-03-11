@@ -71,9 +71,10 @@ const userSlice = createSlice({
         state = initialState // Clear user_location on sign out
       },
       setUserRole: (state, action: PayloadAction<UserRole>) => {
-        state.role_id = action.payload.role_id;
-        state.job_type_master_id = action.payload.job_type_master_id;
-        storeAuthUser({ ...state, role_id: action.payload.role_id, job_type_master_id: action.payload.job_type_master_id });
+        console.log('updating name: ---------', action.payload);
+        // state.role_id = action.payload.role_id;
+        // state.job_type_master_id = action.payload.job_type_master_id;
+        // storeAuthUser({ ...state, role_id: action.payload.role_id, job_type_master_id: action.payload.job_type_master_id });
       },
       setUserSkills: (state, action: PayloadAction<Skill[]>) => {
         state.skills = action.payload;
@@ -84,7 +85,6 @@ const userSlice = createSlice({
         storeAuthUser({ ...state, mobile: action.payload });
       },
       setUserName: (state, action: PayloadAction<string>) => {
-        console.log('updating name: ---------', action.payload);
         state.name = action.payload;
         storeAuthUser({ ...state, name: action.payload });
       },

@@ -51,8 +51,7 @@ export default function AddEducation() {
 
         if (response?.data?.code === 1) {
           dispatch(setProgress(9));
-          storeProgress(9);
-          setUserEducation([values.education_id])          
+          dispatch(setUserEducation([values.education_id]))          
           toast.success("Job role submitted successfully!", { position: "bottom-right" });
         } else {
           toast.error(response?.data?.message || "Submission failed!", { position: "bottom-right" });

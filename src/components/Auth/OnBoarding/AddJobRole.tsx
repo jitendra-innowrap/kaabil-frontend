@@ -15,31 +15,33 @@ import { setUserRole } from "@/redux/userSlice";
 export default function AddJobRole() {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user);
-  const [selectedRoles, setSelectedRoles] = useState([]);
+  const [selectedRoles, setSelectedRoles] = useState<{ value: string; label: string }[]>([]);
   const [selectedJobType, setSelectedJobType] = useState<string[]>([]);
-  // State for options
   const [rolesList, setRolesList] = useState<{ value: string; label: string }[]>([]);
   const [jobTypes, setJobTypes] = useState<{ value: string; label: string }[]>([]);
 
-  // ✅ Fetch roles from API
+  // ✅ Fetch roles and job types from API
   useEffect(() => {
-    
     fetchRoles();
     fetchJobTypes();
   }, []);
+
   const fetchRoles = async () => {
     try {
       const response = await api.get("/MasterData/getDesignation");
       const roles = response?.data?.result?.map((role: any) => ({
         value: role.id,
         label: role.name,
-        ...role
+        ...role,
       })) || [];
-       // Set initial selected roles if user has existing roles
-        if (user.role_id) {
-        const preselectedRoles = roles.filter((role:any) => user?.role_id?.includes(role.value));
+
+      // Set initial selected roles if user has existing roles
+      if (user.role_id) {
+        const preselectedRoles = roles.filter((role: any) => user?.role_id?.includes(role.value));
         setSelectedRoles(preselectedRoles);
+        formik.setFieldValue("role_id", preselectedRoles.map((role:any) => role.value));
       }
+
       setRolesList(roles);
     } catch (error) {
       console.error("Error fetching roles:", error);
@@ -49,15 +51,17 @@ export default function AddJobRole() {
   const fetchJobTypes = async () => {
     try {
       const response = await api.get("/MasterData/getJobType");
-      console.log(response)
       const jobTypes = response?.data?.result?.map((type: any) => ({
         value: type.id.toString(),
         label: type.name,
       })) || [];
-      // Set initial job type selection
-      // if (user.job_type_master_id) {
-      //   setSelectedJobType([user.job_type_master_id.toString()]);
-      // }
+
+      // Set initial job type selection if user has existing job types
+      if (user.job_type_master_id) {
+        setSelectedJobType(user.job_type_master_id.map((id) => id.toString()));
+        formik.setFieldValue("job_type_master_id", user.job_type_master_id.map((id) => id.toString()));
+      }
+
       setJobTypes(jobTypes);
     } catch (error) {
       console.error("Error fetching job types:", error);
@@ -71,17 +75,17 @@ export default function AddJobRole() {
       .min(1, "Select at least one role")
       .max(2, "You can select up to 2 roles")
       .required("Job role is required"),
-      job_type_master_id: Yup.array()
+    job_type_master_id: Yup.array()
       .of(Yup.string())
       .min(1, "Select at least one job type")
-      .required("Job role is required"),
+      .required("Job type is required"),
   });
 
   // ✅ Formik Hook
   const formik = useFormik({
     initialValues: {
-      role_id: selectedRoles as string[],
-      job_type_master_id: selectedJobType,
+      role_id: [] as string[],
+      job_type_master_id: [] as string[],
     },
     validationSchema,
     onSubmit: async (values, { setSubmitting }) => {
@@ -91,7 +95,7 @@ export default function AddJobRole() {
 
         if (response?.data?.code === 1) {
           dispatch(setProgress(6));
-          dispatch(setUserRole(values))         
+          dispatch(setUserRole(values));
           toast.success("Job role submitted successfully!", { position: "bottom-right" });
         } else {
           toast.error(response?.data?.message || "Submission failed!", { position: "bottom-right" });
@@ -104,14 +108,13 @@ export default function AddJobRole() {
       }
     },
   });
-  
+
   return (
     <div className="">
       <h2 className="text-center font-semibold text-lg md:text-xl xl:text-[28px] xl:leading-[36px]">
         <span className="text-red">Hi {user?.name}!</span> <br />
         Take the first step to find a job
       </h2>
-      {/* <pre>{JSON.stringify(user, null, 2)}</pre> */}
 
       {/* ✅ Formik Form */}
       <form onSubmit={formik.handleSubmit} className="block mt-8 md:mt-10 xl:mt-14 2xl:mt-16">

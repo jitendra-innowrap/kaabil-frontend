@@ -10,7 +10,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import api from "@/Services/Apiservice";
 import toast from "react-hot-toast";
-import { storeProgress } from "@/components/utils/deviceId";
+import { storeAuthUserDesiredRole, storeProgress } from "@/components/utils/deviceId";
 import { setUserRole } from "@/redux/authSlice";
 
 export default function AddJobRole() {
@@ -93,6 +93,7 @@ export default function AddJobRole() {
           dispatch(setProgress(6));
           storeProgress(6);
           setUserRole(values)
+          storeAuthUserDesiredRole(values)
           
           toast.success("Job role submitted successfully!", { position: "bottom-right" });
         } else {

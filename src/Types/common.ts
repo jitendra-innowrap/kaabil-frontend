@@ -13,6 +13,7 @@ export interface User {
     status?: string;
     user_id?: string;
     role_id?: string;
+    location_id?: string;
     }
     
 export interface UserRole {
@@ -20,7 +21,10 @@ export interface UserRole {
     job_type_master_id: string[];
 }
 export interface Skill {
-    id: string;
+    id: string | string[];
     name: string;
     skill_level_type: string;
+}
+export interface UserSkillPayload {
+    user_skill: Skill[];  // Now expecting an array of skills
 }

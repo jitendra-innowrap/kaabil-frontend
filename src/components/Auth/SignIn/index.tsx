@@ -15,6 +15,7 @@ import OnBoardingComplete from '../OnBoarding/OnBoardingComplete';
 import { FaArrowLeft } from 'react-icons/fa6';
 import { RxCross2 } from 'react-icons/rx';
 import { IoClose } from 'react-icons/io5';
+import AddEducation from '../OnBoarding/AddEducation';
 
 interface prop{
   onClose: () => void;  
@@ -37,9 +38,10 @@ export default function SignIn({onClose}:prop) {
       {progress === 5 && <AddJobRole />}
       {progress === 6 && <AddSkills />}
       {progress === 7 && <AddLocation />}
-      {progress === 8 && <AddExperience />}
-      {progress === 9 && <AddMoreExperience />}
-      {progress === 10 && <OnBoardingComplete onClose={onClose} />}
+      {progress === 8 && <AddEducation />}
+      {progress === 9 && <AddExperience />}
+      {progress === 10 && <AddMoreExperience />}
+      {progress === 11 && <OnBoardingComplete onClose={onClose} />}
     </div>
   );
 }

@@ -11,10 +11,8 @@ export default function AddMoreExperience() {
    const [newExperience, setNewExperience] = useState(false)
    const handleSubmit = (e: React.FormEvent) => {
      e.preventDefault();
-     dispatch(setProgress(10));
+     dispatch(setProgress(11));
    };
- 
-   
  
    return (
      <div className=''>

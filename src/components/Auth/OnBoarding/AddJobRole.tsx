@@ -10,36 +10,38 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import api from "@/Services/Apiservice";
 import toast from "react-hot-toast";
-import { storeProgress } from "@/components/utils/deviceId";
-import { setUserRole } from "@/redux/authSlice";
+import { setUserRole } from "@/redux/userSlice";
 
 export default function AddJobRole() {
   const dispatch = useAppDispatch();
-  const {name, role_id, job_type_master_id} = useAppSelector((state) => state.auth);
-  const [selectedRoles, setSelectedRoles] = useState([]);
-  const [selectedJobType, setSelectedJobType] = useState("");
-  // State for options
+  const user = useAppSelector((state) => state.user);
+  const [selectedRoles, setSelectedRoles] = useState<{ value: string; label: string }[]>([]);
+  const [selectedJobType, setSelectedJobType] = useState<string[]>([]);
   const [rolesList, setRolesList] = useState<{ value: string; label: string }[]>([]);
   const [jobTypes, setJobTypes] = useState<{ value: string; label: string }[]>([]);
 
-  // ✅ Fetch roles from API
+  // ✅ Fetch roles and job types from API
   useEffect(() => {
-    
     fetchRoles();
     fetchJobTypes();
   }, []);
+
   const fetchRoles = async () => {
     try {
       const response = await api.get("/MasterData/getDesignation");
       const roles = response?.data?.result?.map((role: any) => ({
         value: role.id,
         label: role.name,
+        ...role,
       })) || [];
-       // Set initial selected roles if user has existing roles
-       if (role_id?.length) {
-        const preselectedRoles = roles.filter((role:any) => role_id.includes(role.value));
+
+      // Set initial selected roles if user has existing roles
+      if (user.role_id) {
+        const preselectedRoles = roles.filter((role: any) => user?.role_id?.includes(role.value));
         setSelectedRoles(preselectedRoles);
+        formik.setFieldValue("role_id", preselectedRoles.map((role:any) => role.value));
       }
+
       setRolesList(roles);
     } catch (error) {
       console.error("Error fetching roles:", error);
@@ -49,15 +51,17 @@ export default function AddJobRole() {
   const fetchJobTypes = async () => {
     try {
       const response = await api.get("/MasterData/getJobType");
-      console.log(response)
       const jobTypes = response?.data?.result?.map((type: any) => ({
         value: type.id.toString(),
         label: type.name,
       })) || [];
-      // Set initial job type selection
-      if (job_type_master_id) {
-        setSelectedJobType(job_type_master_id.toString());
+
+      // Set initial job type selection if user has existing job types
+      if (user.job_type_master_id) {
+        setSelectedJobType(user.job_type_master_id.map((id) => id.toString()));
+        formik.setFieldValue("job_type_master_id", user.job_type_master_id.map((id) => id.toString()));
       }
+
       setJobTypes(jobTypes);
     } catch (error) {
       console.error("Error fetching job types:", error);
@@ -71,14 +75,17 @@ export default function AddJobRole() {
       .min(1, "Select at least one role")
       .max(2, "You can select up to 2 roles")
       .required("Job role is required"),
-    job_type_master_id: Yup.string().required("Please select a job type"),
+    job_type_master_id: Yup.array()
+      .of(Yup.string())
+      .min(1, "Select at least one job type")
+      .required("Job type is required"),
   });
 
   // ✅ Formik Hook
   const formik = useFormik({
     initialValues: {
-      role_id: selectedRoles as string[],
-      job_type_master_id: selectedJobType,
+      role_id: [] as string[],
+      job_type_master_id: [] as string[],
     },
     validationSchema,
     onSubmit: async (values, { setSubmitting }) => {
@@ -88,9 +95,7 @@ export default function AddJobRole() {
 
         if (response?.data?.code === 1) {
           dispatch(setProgress(6));
-          storeProgress(6);
-          setUserRole(values)
-          
+          dispatch(setUserRole(values));
           toast.success("Job role submitted successfully!", { position: "bottom-right" });
         } else {
           toast.error(response?.data?.message || "Submission failed!", { position: "bottom-right" });
@@ -103,11 +108,11 @@ export default function AddJobRole() {
       }
     },
   });
-  
+
   return (
     <div className="">
       <h2 className="text-center font-semibold text-lg md:text-xl xl:text-[28px] xl:leading-[36px]">
-        <span className="text-red">Hi {name}!</span> <br />
+        <span className="text-red">Hi {user?.name}!</span> <br />
         Take the first step to find a job
       </h2>
 
@@ -154,9 +159,16 @@ export default function AddJobRole() {
             <div
               key={type.value}
               className={`col-span-1 label-option cursor-pointer px-4 py-2 rounded ${
-                formik.values.job_type_master_id === type.value ? "bg-red text-white" : ""
+                formik.values.job_type_master_id.includes(type.value) ? "bg-red text-white" : ""
               }`}
-              onClick={() => formik.setFieldValue("job_type_master_id", type.value)}
+              onClick={() => {
+                const currentValues = formik.values.job_type_master_id;
+                const newValues = currentValues.includes(type.value)
+                  ? currentValues.filter((id) => id !== type.value) // Remove the ID if it's already selected
+                  : [...currentValues, type.value]; // Add the ID if it's not selected
+
+                formik.setFieldValue("job_type_master_id", newValues);
+              }}
             >
               {type.label}
             </div>

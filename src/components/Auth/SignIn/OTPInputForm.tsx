@@ -161,7 +161,7 @@ useEffect(() => {
           type="tel"
           id="mobile"
           name="mobile"
-          value={user?.number}
+          value={user?.mobile}
           placeholder="Enter your mobile number to receive OTP"
           readOnly
           required

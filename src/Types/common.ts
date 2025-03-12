@@ -7,13 +7,15 @@ export interface User {
     email?: string;
     id?: string;
     is_profile_verify?: string;
+    is_whatsapp_show?: boolean;
     mobile?: string;
     name?: string;
-    photo_url?: string;
+    photo_url?: string | File;
     status?: string;
     job_type_master_id?: string[];
     skills?: Skill[];
     users_education?: string[];
+    is_fresher?: number;
     experience: object[];
     location_id?: string[];
     active_jobseeker?: number;
@@ -29,7 +31,19 @@ export interface UserLocation {
   city_latitude: number;
   city_longitude: number;
 }
-    
+export interface Experience {
+    company_master_id: string;
+    company_name: string;
+    designation_master_id: string;
+    designation_name: string;
+    job_type_id: string;
+    job_type_name: string;
+    job_start_date: string;
+    job_end_date: string;
+    in_hand_salary: string;
+    is_current_company: string;
+    additional_info: string;
+  } 
 export interface UserRole {
     role_id: string[];
     job_type_master_id: string[];

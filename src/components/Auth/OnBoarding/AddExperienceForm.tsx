@@ -1,37 +1,221 @@
-import React, { useState } from 'react'
-import { IoMdArrowDropdown } from 'react-icons/io'
+import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import api from '@/Services/Apiservice';
 
-export default function AddExperienceForm() {
-    const [type, setType] = useState(1);
-    const [workingFrom, setWorkingFrom] = useState("");
+interface AddExperienceFormProps {
+  formik: any; // formik object
+}
+
+const AddExperienceForm = forwardRef(({ formik }: AddExperienceFormProps, ref) => {
+  const [type, setType] = useState(1);
+  const [isCurrentCompany, setIsCurrentCompany] = useState(false);
+  const [designationSuggestions, setDesignationSuggestions] = useState<any[]>([]);
+  const [companySuggestions, setCompanySuggestions] = useState<any[]>([]);
+  const [jobTypes, setJobTypes] = useState<any[]>([]);
+
+  // Fetch job types from API
+  useEffect(() => {
+    const fetchJobTypes = async () => {
+      try {
+        const response = await api.get('/MasterData/getJobType');
+        setJobTypes(response.data.result);
+      } catch (error) {
+        console.error('Error fetching job types:', error);
+      }
+    };
+
+    fetchJobTypes();
+  }, []);
+
+  // Fetch designation suggestions
+  const fetchDesignationSuggestions = async (query: string) => {
+    try {
+      const response = await api.get('/MasterData/getDesignation', {
+        params: { search: query },
+      });
+      setDesignationSuggestions(response.data.result);
+    } catch (error) {
+      console.error('Error fetching designations:', error);
+    }
+  };
+
+  // Fetch company suggestions
+  const fetchCompanySuggestions = async (query: string) => {
+    try {
+      const response = await api.get('/MasterData/getCompany', {
+        params: { search: query },
+      });
+      setCompanySuggestions(response.data.result);
+    } catch (error) {
+      console.error('Error fetching companies:', error);
+    }
+  };
+
+  // Expose formik methods to parent via ref
+  useImperativeHandle(ref, () => ({
+    handleSubmit: () => formik.handleSubmit(),
+    formik, // Expose the entire formik object if needed
+  }));
+  
 
   return (
     <div className="p-4 md:p-7 rounded-lg shadow-default">
-        <input type="text" className='mb-2' id="designation" onChange={()=>{}} name="designation" placeholder="Enter your designation" />
-        <input type="text" className='mb-2' id="companyName" onChange={()=>{}} name="companyName" placeholder="Enter your company name" />
-        <input type="text" className='mb-2' id="salary" onChange={()=>{}} name="salary" placeholder="Monthly salary eg : 15000 (Optional)" />
-        <div className="grid sm:grid-cols-3 gap-3 3xl:gap-4 mt-3">
-            <div className={`"col-span-1 label-option cursor-pointer ${type===1?"bg-red text-white":""}`} onClick={()=> setType(1)}>Full-time</div>
-            <div className={`"col-span-1 label-option cursor-pointer ${type===2?"bg-red text-white":""}`} onClick={()=> setType(2)}>Part-time</div>
-            <div className={`"col-span-1 label-option cursor-pointer ${type===3?"bg-red text-white":""}`} onClick={()=> setType(3)}>Intership</div>
-        </div>
-        <div className="flex items-center gap-2 my-4">
-            <input type="checkbox" name='present' className='!mb-0 inline-block !w-4 !h-4 cursor-pointer' id="startDate" onChange={()=>{}}  />
-            <label className='!mb-0 inline-block' htmlFor="present">Currently working here</label>
-        </div>
-        <div className="relative h-fit sm:w-1/2 text-left group">
-            <button type="button" className="!text-[#4D4D4F] px-3 !py-2 flex items-center justify-between shadow-default  btn-border" id="menu-button" aria-expanded="true" aria-haspopup="true">
-                {workingFrom || "Working From"}  <IoMdArrowDropdown className='ml-1 xl:ml-5 text-[#000000] size-5'/>
-            </button>
-            <div className="opacity-0 hidden group-hover:block group-hover:opacity-100 absolute right-0 z-10 w-56 origin-top-right top-full focus:outline-hidden" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabIndex={-1}>
-                <div className="rounded-md bg-white ring-1 shadow-lg ring-black/5 mt-1">
-                    <div className="py-0" role="none">
-                    <div onClick={()=>setWorkingFrom("Home")} className="block px-4 py-2 text-sm hover:bg-gray-100 text-gray-700 hover:text-gray-900 outline-hidden" role="menuitem" tabIndex={-1} id="menu-item-2">Home</div>
-                    <div onClick={()=>setWorkingFrom("Office")} className="block px-4 py-2 text-sm hover:bg-gray-100 text-gray-700 hover:text-gray-900 outline-hidden" role="menuitem" tabIndex={-1} id="menu-item-2">Office</div>
-                    </div>
+      <form onSubmit={formik.handleSubmit}>
+        <div className="relative mb-2">
+          <input
+            type="text"
+            id="designation"
+            name="designation"
+            value={formik.values.designation}
+            onChange={(e) => {
+              formik.handleChange(e);
+              fetchDesignationSuggestions(e.target.value);
+            }}
+            onFocus={() => fetchDesignationSuggestions(formik.values.designation)}
+            placeholder="Enter your designation"
+            className="w-full p-2 border rounded"
+          />
+          {designationSuggestions.length > 0 && (
+            <div className="absolute z-10 w-full h-[250px] overflow-auto p-0 bg-white border rounded-xl shadow-lg mt-1">
+              {designationSuggestions.map((suggestion) => (
+                <div
+                  key={suggestion.id}
+                  className="p-2 hover:bg-gray-100 cursor-pointer"
+                  onClick={() => {
+                    formik.setFieldValue('designation', suggestion.name);
+                    formik.setFieldValue('designation_master_id', suggestion.id);
+                    setDesignationSuggestions([]);
+                  }}
+                >
+                  {suggestion.name}
                 </div>
+              ))}
             </div>
+          )}
         </div>
+        {formik.errors.designation && formik.touched.designation && (
+          <p className="text-red text-sm mt-1">{formik.errors.designation}</p>
+        )}
+
+        <div className="relative mb-2">
+          <input
+            type="text"
+            id="companyName"
+            name="companyName"
+            value={formik.values.companyName}
+            onChange={(e) => {
+              formik.handleChange(e);
+              fetchCompanySuggestions(e.target.value);
+            }}
+            onFocus={() => fetchCompanySuggestions(formik.values.companyName)}
+            placeholder="Enter your company name"
+            className="w-full p-2 border rounded"
+          />
+          {companySuggestions.length > 0 && (
+            <div className="absolute z-10 w-full h-[250px] overflow-auto p-0 bg-white border rounded-xl shadow-lg mt-1">
+              {companySuggestions.map((suggestion) => (
+                <div
+                  key={suggestion.id}
+                  className="p-2 hover:bg-gray-100 cursor-pointer"
+                  onClick={() => {
+                    formik.setFieldValue('companyName', suggestion.name);
+                    formik.setFieldValue('company_master_id', suggestion.id);
+                    setCompanySuggestions([]);
+                  }}
+                >
+                  {suggestion.name}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+        {formik.errors.companyName && formik.touched.companyName && (
+          <p className="text-red text-sm mt-1">{formik.errors.companyName}</p>
+        )}
+
+        <input
+          type="number"
+          id="salary"
+          name="salary"
+          value={formik.values.salary}
+          onChange={formik.handleChange}
+          placeholder="Monthly salary eg: 15000"
+          className="mb-2 w-full p-2 border rounded"
+        />
+        {formik.errors.salary && formik.touched.salary && (
+          <p className="text-red text-sm mt-1">{formik.errors.salary}</p>
+        )}
+
+        <div className="grid sm:grid-cols-3 gap-3 3xl:gap-4 mt-3">
+          {jobTypes.map((jobType) => (
+            <div
+              key={jobType.id}
+              className={`col-span-1 label-option cursor-pointer ${
+                formik.values.type == parseInt(jobType.id) ? 'bg-red text-white' : ''
+              }`}
+              onClick={() => {
+                setType(parseInt(jobType.id));
+                formik.setFieldValue('type', jobType.id);
+                formik.setFieldValue('type_name', jobType.name);
+              }}
+            >
+              {jobType.name}
+            </div>
+          ))}
+        </div>
+
+        {formik.errors.type && formik.touched.type && (
+          <p className="text-red text-sm mt-1">{formik.errors.type}</p>
+        )}
+
+        <div className="flex items-center gap-2 my-4">
+          <input
+            type="checkbox"
+            id="isCurrentCompany"
+            name="isCurrentCompany"
+            checked={formik.values.isCurrentCompany}
+            onChange={(e) => {
+              formik.setFieldValue('isCurrentCompany', e.target.checked);
+              setIsCurrentCompany(e.target.checked);
+            }}
+            className="!mb-0 inline-block !w-4 !h-4 cursor-pointer"
+          />
+          <label htmlFor="isCurrentCompany" className="!mb-0 inline-block">
+            Currently working here
+          </label>
+        </div>
+
+        <input
+          type="date"
+          id="jobStartDate"
+          name="jobStartDate"
+          value={formik.values.jobStartDate}
+          onChange={formik.handleChange}
+          placeholder="Start Date"
+          className="mb-2 w-full p-2 border rounded"
+        />
+        {formik.errors.jobStartDate && formik.touched.jobStartDate && (
+          <p className="text-red text-sm mt-1">{formik.errors.jobStartDate}</p>
+        )}
+
+        {!isCurrentCompany && (
+          <input
+            type="date"
+            id="jobEndDate"
+            name="jobEndDate"
+            value={formik.values.jobEndDate}
+            onChange={formik.handleChange}
+            placeholder="End Date"
+            className="mb-2 w-full p-2 border rounded"
+          />
+        )}
+        {formik.errors.jobEndDate && formik.touched.jobEndDate && (
+          <p className="text-red text-sm mt-1">{formik.errors.jobEndDate}</p>
+        )}
+      </form>
     </div>
-  )
-}
+  );
+});
+
+export default AddExperienceForm;

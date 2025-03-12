@@ -8,19 +8,30 @@ import api from '@/Services/Apiservice';
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import toast from "react-hot-toast";
-import { storeProgress } from '@/components/utils/deviceId';
 import { setUserLocation } from '@/redux/userSlice';
 
 export default function AddLocation() {
   const progress = useAppSelector((state) => state.progress.value);
-  const current_location = useAppSelector((state) => state.user.current_location);
+  const {current_location, location_id} = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const [locationList, setLocationList] = useState<{ value: string; label: string }[]>([]);
-  const [selectedLocation, setSelectedLocation] = useState<{ value: string; label: string }[]>([]);
+  const [selectedLocation, setSelectedLocation] = useState<  { value: string; label: string; [key: string]: any }[]
+  >([]);
 
   useEffect(() => {
     fetchLocation();
   }, []);
+
+  // Initialize selectedLocation with user's existing location
+  useEffect(() => {
+    if (location_id) {
+      const initialLocations = locationList.filter((loc) =>
+        location_id.includes(loc.value)
+      );
+      setSelectedLocation(initialLocations);
+      formik.setFieldValue("location_id", initialLocations.map((loc) => loc.value));
+    }
+  }, [current_location, locationList]);
 
   const fetchLocation = async () => {
     try {
@@ -28,7 +39,7 @@ export default function AddLocation() {
       const locations = response?.data?.result?.map((loc: any) => ({
         value: loc.id,
         label: loc.name,
-        ...loc
+        ...loc,
       })) || [];
       setLocationList(locations);
     } catch (error) {
@@ -47,7 +58,7 @@ export default function AddLocation() {
   // ✅ Formik Hook
   const formik = useFormik({
     initialValues: {
-      location_id: [] as string[]
+      location_id: [] as string[],
     },
     validationSchema,
     onSubmit: async (values, { setSubmitting }) => {
@@ -56,12 +67,12 @@ export default function AddLocation() {
         const response = await api.post("/Auth/addJobseekerProfile", {
           ...current_location,
           is_willing_to_relocate: 1,
-          user_willing_to_relocate: selectedLocation.map((location:any) => ({
+          user_willing_to_relocate: selectedLocation.map((location) => ({
             id: location.value,
             location: location.label,
             latitude: location.latitude,
-            longitude: location.longitude
-          }))
+            longitude: location.longitude,
+          })),
         });
 
         if (response?.data?.code === 1) {

@@ -29,7 +29,7 @@ interface AuthState {
   current_location?: UserLocation | null;
   users_education?: string[];
   experience: Experience[];
-  location_id?: string | string[];
+  location_id?: string[];
   active_jobseeker?: number;
   available_job?: number;
   loading: boolean;

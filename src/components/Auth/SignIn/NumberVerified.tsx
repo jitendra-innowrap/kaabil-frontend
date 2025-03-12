@@ -4,7 +4,7 @@ import Image from 'next/image';
 import React from 'react'
 
 export default function NumberVerified() {
-    const mobile = useAppSelector((state) => state.user.number);
+    const mobile = useAppSelector((state) => state.user.mobile);
     const dispatch = useAppDispatch();
     const handleSubmit =()=>{
         dispatch(setProgress(4));

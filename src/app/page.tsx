@@ -1,17 +1,134 @@
+'use client'
 import Image from "next/image";
 import PlayStoreAppAd from "@/components/Banners/PlaystoreAppAd";
 import SearchSection from "@/components/SearchSection";
 import GallerySlider from "@/components/JobDetail/Slider/GallarySlider";
 import CompanyCard from "@/components/Cards/CompanyCard";
 import JobtypeCard from "@/components/Cards/JobtypeCard";
-import IndustryCard from "@/components/Cards/IndustryCard";
+import IndustryCard, { industryCard } from "@/components/Cards/IndustryCard";
 import CareerSkill from "@/components/Cards/CareerSkill";
 import FindCareerSection from "@/components/FindeCareerSection";
 import SuccessCard from "@/components/Cards/SuccessCard";
 import ArticleCard from "@/components/Cards/ArticleCard";
 import Interviewlaptop from "@/components/Nudges/Home/Interviewlaptop";
 import ResumeBuilder from "@/components/Nudges/Home/ResumeBuilder";
+import { useEffect, useState } from "react";
+import api from "@/Services/Apiservice";
+import { getSessionData } from "@/components/utils/deviceId";
 export default function Home() {
+    const [homeData, setHomeData] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [JobTypes, setJobTypes] = useState([
+        {
+            icon: "/new-assets/job-types/full-time.png",
+            title: "Full Time Jobs",
+            jobUrl: "/"
+           },
+           {
+            icon: "/new-assets/job-types/part-time.png",
+            title: "Part Time Jobs",
+            jobUrl: "/"
+           },
+           {
+            icon: "/new-assets/job-types/intership.png",
+            title: "Internship 2",
+            jobUrl: "/"
+           },
+    ])
+    const [topCompanies, setTopCompanies] = useState([
+        {
+         icon: "/new-assets/company-icons/image (1).png",
+         title: "Jio",
+         companyId: "/",
+         jobUrl: "/"
+        },
+        {
+         icon: "/new-assets/company-icons/image (2).png",
+         title: "Mahindra Holidays and Resorts India Ltd",
+         companyId: "/",
+         jobUrl: "/"
+        },
+        {
+         icon: "/new-assets/company-icons/image (3).png",
+         title: "Tata Consultancy Services",
+         companyId: "/",
+         jobUrl: "/"
+        },
+        {
+         icon: "/new-assets/company-icons/image (4).png",
+         title: "Tech Mahindra Ltd",
+         companyId: "/",
+         jobUrl: "/"
+        },
+        {
+         icon: "/new-assets/company-icons/image (1).png",
+         title: "Jio",
+         companyId: "/",
+         jobUrl: "/"
+        },
+        {
+         icon: "/new-assets/company-icons/image (2).png",
+         title: "Mahindra Holidays and Resorts India Ltd",
+         companyId: "/",
+         jobUrl: "/"
+        },
+        {
+         icon: "/new-assets/company-icons/image (3).png",
+         title: "Tata Consultancy Services",
+         companyId: "/",
+         jobUrl: "/"
+        },
+        {
+         icon: "/new-assets/company-icons/image (4).png",
+         title: "Tech Mahindra Ltd",
+         companyId: "/",
+         jobUrl: "/"
+        },
+    ]);
+    const [topIndustries, setTopIndustries] = useState<industryCard[]>([]);
+    // ✅ Fetch roles and job types from API
+    useEffect(() => {
+        const fetchHomedata = async () => {
+          try {
+            const { deviceId, secret, salt } = getSessionData();
+            
+            // Ensure session data is available
+            if (!deviceId || !secret || !salt) {
+              console.log("Session data not available, retrying...");
+              setTimeout(fetchHomedata, 1000); // Retry after 1 second
+              return;
+            }
+    
+            const response = await api.get("/Home/homeData");
+            console.clear();
+            console.log(response);
+            setHomeData(response?.data?.result);
+            setJobTypes(response?.data?.result?.job_types?.map((typ: any, i: number) => ({
+              icon: "/new-assets/job-types/intership.png",
+              title: typ?.name,
+              jobUrl: '/'
+            })));
+            setTopCompanies(response?.data?.result?.top_companies?.map((comp: any, i: number) => ({
+              icon: comp?.company_logo || "/new-assets/icons/company_icon_placeholder.png",
+              title: comp?.company_name,
+              companyId: '/',
+              jobUrl: '/'
+            })));
+            setTopIndustries(response?.data?.result?.top_industries?.map((ind: any, i: number) => ({
+              icon: ind?.industry_icon || "/new-assets/icons/company_icon_placeholder.png",
+              title: ind?.name,
+              companyId: '/',
+              jobUrl: '/'
+            })));
+          } catch (error) {
+            console.error("Error fetching job types:", error);
+          } finally {
+            setIsLoading(false);
+          }
+        };
+    
+        fetchHomedata();
+      }, []);
     const jobsList = [
         {
          icon: "/new-assets/company-icons/image (1).png",
@@ -78,7 +195,7 @@ export default function Home() {
         <Interviewlaptop/>,
     ]
     
-      const slides = jobsList.map((job, index) => (
+      const slides = topCompanies.map((job, index) => (
         <CompanyCard key={index} {...job} />
     )); 
     const articleSlides = jobsList.map((job, index) => (
@@ -148,7 +265,7 @@ export default function Home() {
     },
 ]
 
-    const inputSlides = industries.map((job, index) => (
+    const inputSlides = topIndustries?.map((job, index) => (
         <IndustryCard key={index} {...job} />
     ));
 
@@ -194,23 +311,7 @@ export default function Home() {
       <CareerSkill key={skill.index} {...skill} />
     ));
 
-    const JobTypes = [
-        {
-            icon: "/new-assets/job-types/full-time.png",
-            title: "Full Time Jobs",
-            jobUrl: "/"
-           },
-           {
-            icon: "/new-assets/job-types/part-time.png",
-            title: "Part Time Jobs",
-            jobUrl: "/"
-           },
-           {
-            icon: "/new-assets/job-types/intership.png",
-            title: "Internship",
-            jobUrl: "/"
-           },
-    ]
+    
 
     return (
         <main>

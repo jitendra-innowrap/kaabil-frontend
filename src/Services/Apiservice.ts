@@ -40,7 +40,7 @@ api.interceptors.request.use(async (config) => {
 });
 
 export const api2 = axios.create({
-  baseURL: "/api/endpointtwo/",
+  baseURL: "http://13.200.132.142:5000",
   headers: {
     "Content-Type": "application/json",
   },

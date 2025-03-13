@@ -90,8 +90,18 @@ export default function AddJobRole() {
     validationSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
+        const formData = new FormData();
+        // ✅ Automatically append all fields from the object
+        Object.entries(values).forEach(([key, value]) => {
+          if(typeof value !== 'string'){
+            let valueAsString = JSON.stringify(value);
+            formData.append(key, valueAsString ); // Convert all values to strings
+          }
+        });
         // ✅ Submit selected roles & job type
-        const response = await api.post("/Auth/addJobseekerProfile", values);
+        const response = await api.post("/Auth/addJobseekerProfile", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
 
         if (response?.data?.code === 1) {
           dispatch(setProgress(6));

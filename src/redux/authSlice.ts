@@ -101,9 +101,9 @@ export const login = createAsyncThunk(
         },
       });
       // console.log('login data:',response);
-      return response.data;
+      return response?.data;
     } catch (error:any) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.response?.data);
     }
   }
 );

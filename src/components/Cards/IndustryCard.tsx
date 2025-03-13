@@ -2,7 +2,7 @@ import React from 'react'
 import { jobcardtype } from './CompanyCard'
 import Image from 'next/image'
 import Link from 'next/link'
-interface industryCard extends jobcardtype{
+export interface industryCard extends jobcardtype{
     color: string
 }
 

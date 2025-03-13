@@ -20,6 +20,7 @@ interface prop {
 export default function SignInButton({ closeSideMenu }: prop) {
   const dispatch = useDispatch();
   const isUser = useAppSelector((state) => state.auth.token);
+  const {is_profile_verify} = useAppSelector((state) => state.user);
   const [open, setOpen] = useState(false)
   const popupRef = useRef<any>(null);
 
@@ -97,7 +98,7 @@ export default function SignInButton({ closeSideMenu }: prop) {
                   onClick={() => setOpen(true)}
                   className='block text-Grey hover:text-black py-3 2xl:py-4 font-medium hover:font-semibold text-xs 2xl:text-base px-5 cursor-pointer'
                 >
-                  Complete Profile
+                  {is_profile_verify==="1"?"Update Profile":"Complete Profile"}
                 </div>
               </div>
             </div>

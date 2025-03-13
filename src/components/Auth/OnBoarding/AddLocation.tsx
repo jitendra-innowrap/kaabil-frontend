@@ -15,8 +15,7 @@ export default function AddLocation() {
   const {current_location, location_id} = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const [locationList, setLocationList] = useState<{ value: string; label: string }[]>([]);
-  const [selectedLocation, setSelectedLocation] = useState<  { value: string; label: string; [key: string]: any }[]
-  >([]);
+  const [selectedLocation, setSelectedLocation] = useState<{ value: string; label: string; [key: string]: any }[]>([]);
 
   useEffect(() => {
     fetchLocation();
@@ -63,8 +62,7 @@ export default function AddLocation() {
     validationSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        // ✅ Submit selected locations
-        const response = await api.post("/Auth/addJobseekerProfile", {
+        const payload = {
           ...current_location,
           is_willing_to_relocate: 1,
           user_willing_to_relocate: selectedLocation.map((location) => ({
@@ -73,6 +71,18 @@ export default function AddLocation() {
             latitude: location.latitude,
             longitude: location.longitude,
           })),
+        }
+        const formData = new FormData();
+        // ✅ Automatically append all fields from the object
+        Object.entries(payload).forEach(([key, value]) => {
+          if(typeof value !== 'string'){
+            let valueAsString = JSON.stringify(value);
+            formData.append(key, valueAsString ); // Convert all values to strings
+          }
+        });
+        // ✅ Submit selected locations
+        const response = await api.post("/Auth/addJobseekerProfile", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
         });
 
         if (response?.data?.code === 1) {

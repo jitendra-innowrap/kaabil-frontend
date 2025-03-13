@@ -11,6 +11,7 @@ import QuickAction from "@/components/Nudges/Listing/QuickAction";
 import ResumeBuilder from "@/components/Nudges/Listing/ResumeBuilder";
 import SearchSection from "@/components/SearchSection";
 import Image from "next/image";
+import { Suspense } from "react";
 const jobsList = [
   {
    icon: "/new-assets/company-icons/image (1).png",
@@ -49,9 +50,10 @@ const jobsList = [
   },
 ]
 export default function Home() {
-const slides = jobsList.map((job, index) => (
-        <CompanyCard key={index} {...job} />
-    )); 
+  
+  const slides = jobsList.map((job, index) => (
+      <CompanyCard key={index} {...job} />
+  )); 
   return (
     <main className="bg-[#F9F9F9]">
       
@@ -67,11 +69,13 @@ const slides = jobsList.map((job, index) => (
             </div>
         </div>
       </section>
-
+      {/* <pre>{JSON.stringify([jobs[0]], null, 2)}</pre> */}
       <section className="container">
         <div className="mt-8 lg:mt-10 2xl:mt-14 mb-5 md:mb-8 xl:mb-14 2xl:mb-16 flex flex-col lg:flex-row gap-5 md:gap-7 xl:gap-10">
             <FilterSidebar/>
-            <JobList />
+            <Suspense fallback={<>... Loading</>}>
+              <JobList />
+            </Suspense>
             <div className="nudges-bar flex flex-shrink-0 flex-col gap-4 md:gap-6 max-w-[400px] mx-auto lg:w-[280px] 2xl:w-[341px]">
               <FindCareer/>
               <ProfileCard/>

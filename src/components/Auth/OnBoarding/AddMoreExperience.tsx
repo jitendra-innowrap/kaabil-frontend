@@ -25,13 +25,27 @@ export default function AddMoreExperience() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    if(newExperience){
+      formikForm.handleSubmit();
+    }
     try {
       if (is_fresher === 1) {
-        // If Experienced, submit with experiences
-        const response = await api.post('/Auth/addJobseekerProfile', {
+        const payload = {
           is_fresher: is_fresher,
           total_experiences: experiences.length,
           user_experiences: experiences,
+        }
+        const formData = new FormData();
+        // ✅ Automatically append all fields from the object
+        Object.entries(payload).forEach(([key, value]) => {
+          if(typeof value !== 'string'){
+            let valueAsString = JSON.stringify(value);
+            formData.append(key, valueAsString ); // Convert all values to strings
+          }
+        });
+        // If Experienced, submit with experiences
+        const response = await api.post('/Auth/addJobseekerProfile', formData, {
+          headers: { "Content-Type": "multipart/form-data" },
         });
 
         if (response?.data?.code === 1) {
@@ -79,7 +93,7 @@ export default function AddMoreExperience() {
       type_name: experienceToEdit.job_type_name,
       jobStartDate: experienceToEdit.job_start_date,
       jobEndDate: experienceToEdit.job_end_date,
-      isCurrentCompany: experienceToEdit.is_current_company === '1',
+      isCurrentCompany: experienceToEdit.is_current_company == '1',
     });
     setIsEditing(index); // Set the index of the experience being edited
     setNewExperience(false); // Show the form
@@ -146,17 +160,16 @@ export default function AddMoreExperience() {
       <h2 className="text-center font-semibold text-lg md:text-xl xl:text-[28px] 2xl:leading-[38px]">
         Your <span className="text-red">experience</span>
       </h2>
-
       <form onSubmit={handleSubmit} className="block mt-8 md:mt-10 xl:mt-14 2xl:mt-16">
         <h4 className="text-lg font-medium">Please add all your experience</h4>
         {/* Dynamic list of all experience added by the user */}
         {experiences.map((exp, i) => (
           <>{
             isEditing===i?
-            <>
+            <div className='mt-3'>
               <AddExperienceForm ref={setFormikFormRef} formik={formikForm} />
-              {isEditing && (
-                <div className="flex justify-end">
+              {isEditing===i && (
+                <div className="flex justify-end -translate-y-4">
                   <button type='button'
                   className=""
                   onClick={() => {
@@ -167,7 +180,8 @@ export default function AddMoreExperience() {
                 </button>
                 </div>
               )}
-            </>:
+            </div>
+            :
           <div key={i} className="my-4 p-4 rounded-lg shadow-default justify-between flex gap-4">
             <div className="">
               <h5 className="font-medium text-black mb-2">{exp?.designation_name}</h5>
@@ -176,7 +190,7 @@ export default function AddMoreExperience() {
               </h6>
               <h6 className="text-sm mb-2">
                 {formatMonthYear(exp?.job_start_date)} -{' '}
-                {exp?.is_current_company ? 'Present' : formatMonthYear(exp?.job_end_date)} <GoDotFill className="inline-block size-2" />{' '}
+                {exp?.is_current_company=='1' ? 'Present' : formatMonthYear(exp?.job_end_date)} <GoDotFill className="inline-block size-2" />{' '}
                 {formatJobDuration(exp?.job_start_date, exp?.job_end_date)}
               </h6>
             </div>
@@ -200,13 +214,17 @@ export default function AddMoreExperience() {
 
         {newExperience && <AddExperienceForm ref={setFormikFormRef} formik={formikForm} />}
 
-        {newExperience && (
+        {(
           <div
             className="flex text-red font-semibold mt-7 cursor-pointer"
             onClick={() => {
-              formikForm.resetForm();
-              setNewExperience(true);
-              setIsEditing(null); // Reset edit mode
+              if(!newExperience){
+                formikForm.resetForm();
+                setNewExperience(true);
+                setIsEditing(null); // Reset edit mode
+              }else{
+                formikForm.handleSubmit();
+              }
             }}
           >
             + add more experience

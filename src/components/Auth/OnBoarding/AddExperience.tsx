@@ -24,16 +24,28 @@ export default function AddExperience() {
   // ✅ Formik Hook
   const formik = useFormik({
     initialValues: {
-      is_fresher: user?.is_fresher || 2, // Default to Fresher
+      is_fresher: user?.is_fresher == 1? 1 : 2, // Default to Fresher
     },
     validationSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
         if (values.is_fresher === 2) {
+        const payload = {
+          is_fresher: values.is_fresher,
+          is_profile_verify: 1,
+        }
+        const formData = new FormData();
+        // ✅ Automatically append all fields from the object
+        Object.entries(payload).forEach(([key, value]) => {
+          if(typeof value !== 'string'){
+            let valueAsString = JSON.stringify(value);
+            formData.append(key, valueAsString ); // Convert all values to strings
+          }
+        });
           // If Fresher, submit immediately
-          const response = await api.post('/Auth/addJobseekerProfile', {
-            is_fresher: values.is_fresher,
-          });
+          const response = await api.post('/Auth/addJobseekerProfile', formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
 
           if (response?.data?.code === 1) {
             dispatch(setProgress(11)); // Move to the next step
@@ -44,7 +56,11 @@ export default function AddExperience() {
           }
         } else {
           dispatch(setIsFresher(values.is_fresher));
-          handleSubmitExperience();          
+          if(user.experience.length<1){
+            handleSubmitExperience();       
+          }else{
+            dispatch(setProgress(10));
+          }
         }
       } catch (error: any) {
         console.error('Error submitting experience:', error);
@@ -176,7 +192,7 @@ export default function AddExperience() {
           <p className="text-red text-sm mt-1">{formik.errors.is_fresher}</p>
         )}
 
-        {formik.values.is_fresher===1 && (
+        {(formik.values.is_fresher===1 && user.experience.length<1) && (
           <>
             <h4 className="text-lg mb-4 font-medium">Please add your latest experience</h4>
             <AddExperienceForm ref={setFormikFormRef} formik={formikForm} />

@@ -7,7 +7,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import React from 'react';
 import toast from 'react-hot-toast';
-import { setUserName } from '@/redux/userSlice';
+import { setIsFresher, setUserEducation, setUserExperience, setUserLocation, setUserName, setUserRole, setUserSkills, setUserWAConsent } from '@/redux/userSlice';
 
 export default function EnterName() {
   const dispatch = useAppDispatch();
@@ -42,6 +42,29 @@ export default function EnterName() {
           // ✅ Redux Updates
           dispatch(setProgress(5));
           dispatch(setUserName(values.name));
+          dispatch(setUserRole({
+            job_type_master_id: response?.data?.result?.[0]?.jobs_types?.map((type:any,i:number)=>{
+              return type?.id
+            }),
+            role_id: response?.data?.result?.[0]?.user_job_roles?.map((role:any,i:number)=>{
+              return role?.id
+            }),
+          }));
+          dispatch(setUserSkills(response?.data?.result?.[0]?.skills));
+          dispatch(setUserLocation(response?.data?.result?.[0]?.user_willing_to_relocate?.map((loc:any,i:number)=>{
+            return loc?.id
+          }),));
+          dispatch(setUserEducation([response?.data?.result?.[0]?.education_master_id]));
+          dispatch(setIsFresher(response?.data?.result?.[0]?.is_fresher));
+          dispatch(setIsFresher(response?.data?.result?.[0]?.is_fresher));
+          dispatch(setUserWAConsent(response?.data?.result?.[0]?.is_whatsapp_show=="1"?true:false));
+          dispatch(setUserExperience(response?.data?.result?.[0]?.user_experiences?.map((exp:any,i:number)=>{
+            return {
+              ...exp,
+              designation_name: exp?.designation,
+              job_type_name: exp?.job_type,
+            }
+          })));
           toast.success("Name submitted successfully!", { position: "bottom-right" });
         } else {
           toast.error(response?.message || "Something went wrong. Try again!", { position: "bottom-right" });
@@ -60,7 +83,6 @@ export default function EnterName() {
       <h2 className="text-center font-semibold text-lg md:text-xl 2xl:text-[28px] 2xl:leading-[36px]">
         Welcome to <span className="text-red font-kalam">Kaabil</span>
       </h2>
-      {/* <pre>{JSON.stringify(user, null, 2)}</pre> */}
       {/* ✅ Formik Form */}
       <form onSubmit={formik.handleSubmit} className="block mt-8 3xl:mt-16">
         <label htmlFor="name">Enter your full name</label>

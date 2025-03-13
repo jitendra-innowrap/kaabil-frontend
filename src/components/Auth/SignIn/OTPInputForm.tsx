@@ -8,8 +8,12 @@ import * as Yup from 'yup';
 import React, { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { getAuthUser, storeAuthToken, storeAuthUser, storeProgress } from '@/components/utils/deviceId';
+import { setAuthToken, setUserId, setUserIsProfileVerified, setUserName, setUserPhotoUrl } from '@/redux/userSlice';
 
-export default function OTPInputForm() {
+interface prop {
+  onClose: () => void;
+}
+export default function OTPInputForm({ onClose }: prop) {
   const progress = useAppSelector((state) => state.progress.value);
   const user = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
@@ -52,11 +56,18 @@ export default function OTPInputForm() {
         const response: any = await dispatch(verifyOTP({ otp: otpValue, company_id: "", company_offices_id: "" })).unwrap();
         console.log(response);
         if (response?.code == 1) {
-          storeAuthToken(response?.token);
-          storeAuthUser(response?.result);
-          dispatch(setProgress(3));
-          storeProgress(3)
-          toast.success("Logged In Successfully!", { position: "bottom-right" });
+          dispatch(setAuthToken(response?.token));
+          dispatch(setUserId(response?.result?.id));
+          dispatch(setUserPhotoUrl(response?.result?.photo_url));
+          dispatch(setUserName(response?.result?.name));
+          dispatch(setUserIsProfileVerified(response?.result?.is_profile_verify));
+          if(response?.result?.is_profile_verify=="1"){
+            dispatch(setProgress(11));
+            onClose();
+          }else{
+            dispatch(setProgress(3));
+            toast.success("Logged In Successfully!", { position: "bottom-right" });
+          }
         } else {
           throw new Error("Invalid OTP");
         }

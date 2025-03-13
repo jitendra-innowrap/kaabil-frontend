@@ -1,11 +1,11 @@
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setProgress } from '@/redux/progressSlice';
 import Image from 'next/image';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { GoDotFill } from 'react-icons/go';
 import api from '@/Services/Apiservice';
 import toast from 'react-hot-toast';
-import { setUserPhotoUrl } from '@/redux/userSlice';
+import { setUserPhotoUrl, setUserWAConsent } from '@/redux/userSlice';
 
 interface prop {
   onClose: () => void;
@@ -17,19 +17,22 @@ export default function OnBoardingComplete({ onClose }: prop) {
   const dispatch = useAppDispatch();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
+  const [WAConsent, setWAConsent] = useState(is_whatsapp_show===false?false:true);
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    
     try {
-      // Submit the final profile data
-      const response = await api.post('/Auth/updateJobseekerProfile', {
-        photo_url,
-        is_whatsapp_show,
-      });
+      const formData = new FormData();
+        formData.append('is_whatsapp_show', WAConsent?'1':'0'); // Append the file safely
+        // Submit the form data
+        const response = await api.post('/Auth/editJobSeekerPrpfile', formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
 
       if (response?.data?.code === 1) {
         toast.success('Profile updated successfully!', { position: 'bottom-right' });
+        dispatch(setUserWAConsent(WAConsent))
         onClose(); // Close the modal or navigate to the next step
       } else {
         toast.error(response?.data?.message || 'Submission failed!', { position: 'bottom-right' });
@@ -44,9 +47,33 @@ export default function OnBoardingComplete({ onClose }: prop) {
 
   const handleUploadPhoto = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      dispatch(setUserPhotoUrl(file.webkitRelativePath)); // Update photo URL in Redux store
+
+    if (file) { // Ensure file is not undefined
+      try {
+        const formData = new FormData();
+        formData.append('photo_url', file); // Append the file safely
+        // Submit the form data
+        const response = await api.post('/Auth/editJobSeekerPrpfile', formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+    
+        if (response?.data?.code === 1) {
+          toast.success('Profile updated successfully!', { position: 'bottom-right' });
+          dispatch(setUserPhotoUrl(response.data.result?.[0]?.photo_url))
+        } else {
+          toast.error(response?.data?.message || 'Submission failed!', { position: 'bottom-right' });
+        }
+      } catch (error: any) {
+        console.error('Error updating profile:', error);
+        toast.error(error?.message || 'Something went wrong!', { position: 'bottom-right' });
+      } finally {
+        setIsSubmitting(false);
+      }
+    } else {
+      console.error('No file selected');
+      toast.error('Please select a file before submitting.', { position: 'bottom-right' });
     }
+    
   };
 
   const handleUploadClick = () => {
@@ -61,14 +88,13 @@ export default function OnBoardingComplete({ onClose }: prop) {
         <span className="text-red">Congrats!</span> <br />
         Your profile is active
       </h2>
-      {/* <pre>{JSON.stringify([photo_url, skills, role_id, experience], null, 2)}</pre> */}
       <form onSubmit={handleSubmit} className="block mt-8 md:mt-10 xl:mt-14 2xl:mt-16">
         <div className="p-4 flex-col sm:flex-row rounded-lg border-[1.6px] border-[#E3ECFB] shadow-tertiary justify-start flex sm:gap-4">
           <div className="flex flex-col justify-center items-center">
             <Image
-              src={'/new-assets/icons/avatar.svg'}
+              src={photo_url || '/new-assets/icons/avatar.svg'}
               alt="profile-photo"
-              className="w-[75px] h-[75px] mr-1 rounded-full"
+              className="w-[75px] h-[75px] mr-1 rounded-full object-fit"
               width={150}
               height={150}
             />
@@ -117,9 +143,10 @@ export default function OnBoardingComplete({ onClose }: prop) {
             name="whatsapp_consent"
             className="!mb-0 !mt-1 cursor-pointer inline-block !w-4 !h-4"
             id="whatsapp_consent"
-            checked={is_whatsapp_show}
+            checked={WAConsent}
             onChange={(e) => {
               // Update the Redux store or state for WhatsApp consent
+              setWAConsent(!WAConsent)
             }}
           />
           <label className="!mb-0 inline-block" htmlFor="whatsapp_consent">

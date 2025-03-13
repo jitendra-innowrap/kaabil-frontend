@@ -1,6 +1,6 @@
 'use client'
 import Image from 'next/image'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FiCamera } from 'react-icons/fi'
 import { HiOutlineCurrencyRupee, HiOutlineFilter } from 'react-icons/hi'
 import { MdAccessTime } from 'react-icons/md'
@@ -10,21 +10,52 @@ import { IoMdArrowDropdown } from 'react-icons/io'
 import JobListingCard from '../Cards/JobListingCard'
 import Interview from '../Nudges/Listing/Interview'
 import RegisterInMinutes from '../Nudges/Listing/RegisterInMinutes'
+import { api2 } from '@/Services/Apiservice'
 
-const successList = [
-            {name: "", role:"", image:"", video:""},
-            {name: "", role:"", image:"", video:""},
-            {name: "", role:"", image:"", video:""},
-            {name: "", role:"", image:"", video:""},
-            {name: "", role:"", image:"", video:""},
-            {name: "", role:"", image:"", video:""},
-            {name: "", role:"", image:"", video:""},
-            {name: "", role:"", image:"", video:""},
-        ]
 export default function JobList() {
     const [currentPage, setCurrentPage] = useState(1);
     const totalPages = 10; // Total number of pages
     const maxPagesToShow = 5; // Maximum pages to display
+    const [jobs, setJobs] = useState<object[]>([]);
+      // Fetch job types from API
+      useEffect(() => {
+        const fetchJobs = async () => {
+          let payload = {
+            "recommendate": false,
+            "soft_skill_filter": [],
+            "skill_filter": [],
+            "job_location_types_filter": [],
+            "location_filter": [],
+            "benefits_filter": [],
+            "job_types_filter": [],
+            "search": "",
+            "sort": 1
+        }  
+    
+          const formData = new FormData();
+          // ✅ Automatically append all fields from the object
+          Object.entries(payload).forEach(([key, value]) => {
+            if(typeof value !== 'string'){
+              let valueAsString = JSON.stringify(value);
+              formData.append(key, valueAsString ); // Convert all values to strings
+            }
+          });
+          try {
+            const response = await api2.post('/api/job/list', payload, {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            });
+            setJobs(response.data?.data?.jobs as object[]);
+            console.clear();
+            console.log(response.data?.data?.jobs[0]);
+          } catch (error) {
+            console.error('Error fetching job types:', error);
+          }
+        };
+    
+        fetchJobs();
+      }, []);
 
     // Function to get the pagination group
     const getPaginationGroup = () => {
@@ -68,7 +99,7 @@ export default function JobList() {
             <div className="flex flex-col gap-4 md:gap-6">
               <Interview/>
               <RegisterInMinutes/>
-            {successList.map((job, index) => (
+            {jobs.map((job, index) => (
               <div className="flex w-[100%]" key={index}>
                 <JobListingCard key={index} {...job} />
               </div>

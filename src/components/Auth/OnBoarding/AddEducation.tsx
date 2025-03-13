@@ -51,11 +51,21 @@ export default function AddEducation() {
     validationSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        // ✅ Submit selected education
-        const response = await api.post("/Auth/addJobseekerProfile", {
+        const payload = {
           users_education: [{ "id": values.education_id, "institute_name": "", "institute_master_id": "", "field_of_study_master_id": "0", "year_of_graduation": "" }],
+        }
+        const formData = new FormData();
+        // ✅ Automatically append all fields from the object
+        Object.entries(payload).forEach(([key, value]) => {
+          if(typeof value !== 'string'){
+            let valueAsString = JSON.stringify(value);
+            formData.append(key, valueAsString ); // Convert all values to strings
+          }
         });
-
+        // ✅ Submit selected education
+        const response = await api.post("/Auth/addJobseekerProfile", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
         if (response?.data?.code === 1) {
           dispatch(setProgress(9));
           dispatch(setUserEducation([values.education_id]));

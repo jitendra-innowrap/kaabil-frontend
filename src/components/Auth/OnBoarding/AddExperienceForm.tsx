@@ -2,6 +2,7 @@ import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'rea
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import api from '@/Services/Apiservice';
+import { IoMdArrowDropdown } from 'react-icons/io';
 
 interface AddExperienceFormProps {
   formik: any; // formik object
@@ -13,6 +14,8 @@ const AddExperienceForm = forwardRef(({ formik }: AddExperienceFormProps, ref) =
   const [designationSuggestions, setDesignationSuggestions] = useState<any[]>([]);
   const [companySuggestions, setCompanySuggestions] = useState<any[]>([]);
   const [jobTypes, setJobTypes] = useState<any[]>([]);
+  const [editDateFrom, setEditDateFrom] = useState(false);
+  const [editDateTill, setEditDateTill] = useState(false);
 
   // Fetch job types from API
   useEffect(() => {
@@ -27,6 +30,10 @@ const AddExperienceForm = forwardRef(({ formik }: AddExperienceFormProps, ref) =
 
     fetchJobTypes();
   }, []);
+
+  useEffect(() => {
+    setIsCurrentCompany(formik.values.isCurrentCompany)
+  }, [formik.values])
 
   // Fetch designation suggestions
   const fetchDesignationSuggestions = async (query: string) => {
@@ -186,33 +193,46 @@ const AddExperienceForm = forwardRef(({ formik }: AddExperienceFormProps, ref) =
           </label>
         </div>
 
-        <input
-          type="date"
-          id="jobStartDate"
-          name="jobStartDate"
-          value={formik.values.jobStartDate}
-          onChange={formik.handleChange}
-          placeholder="Start Date"
-          className="mb-2 w-full p-2 border rounded"
-        />
-        {formik.errors.jobStartDate && formik.touched.jobStartDate && (
-          <p className="text-red text-sm mt-1">{formik.errors.jobStartDate}</p>
-        )}
+        <div className="flex gap-3">
+          <div className="flex-1">
 
-        {!isCurrentCompany && (
-          <input
-            type="date"
-            id="jobEndDate"
-            name="jobEndDate"
-            value={formik.values.jobEndDate}
-            onChange={formik.handleChange}
-            placeholder="End Date"
-            className="mb-2 w-full p-2 border rounded"
-          />
-        )}
-        {formik.errors.jobEndDate && formik.touched.jobEndDate && (
-          <p className="text-red text-sm mt-1">{formik.errors.jobEndDate}</p>
-        )}
+            {!editDateFrom && !formik.values.jobStartDate ?<div onClick={()=> setEditDateFrom(true)} className="!text-[#4D4D4F] px-3 flex items-center font-normal justify-between shadow-md rounded-[.75rem] h-[56px]">
+                Working From <IoMdArrowDropdown  className='ml-1 xl:ml-5 text-[#000000] size-5'/>
+            </div>:
+            <input
+              type="date"
+              id="jobStartDate"
+              name="jobStartDate"
+              value={formik.values.jobStartDate}
+              onChange={formik.handleChange}
+              placeholder="Start Date"
+              className="mb-2 w-full p-2 border rounded !bg-white shadow-md"
+            />}
+            {formik.errors.jobStartDate && formik.touched.jobStartDate && (
+              <p className="text-red text-sm mt-1">{formik.errors.jobStartDate}</p>
+            )}
+          </div>
+
+          {!isCurrentCompany ? (
+          <div className="flex-1">
+              {!editDateTill && !formik.values.jobEndDate ?<div onClick={()=> setEditDateTill(true)} className="!text-[#4D4D4F] px-3 flex items-center font-normal justify-between shadow-md rounded-[.75rem] h-[56px]">
+                  Worked Till <IoMdArrowDropdown  className='ml-1 xl:ml-5 text-[#000000] size-5'/>
+              </div>:
+              <input
+                type="date"
+                id="jobEndDate"
+                name="jobEndDate"
+                value={formik.values.jobEndDate}
+                onChange={formik.handleChange}
+                placeholder="End Date"
+                className="mb-2 w-full p-2 border rounded !bg-white shadow-md"
+              />}
+            {formik.errors.jobEndDate && formik.touched.jobEndDate && (
+              <p className="text-red text-sm mt-1">{formik.errors.jobEndDate}</p>
+            )}
+          </div>
+          ): <div className='flex-1'></div>}
+        </div>
       </form>
     </div>
   );

@@ -42,7 +42,7 @@ export default function AddSkills() {
         initialSkills.map((skill) => ({
           id: skill.value,
           name: skill.label,
-          skill_level_type: "1",
+          skill_level_type_id: "1",
         }))
       );
     }
@@ -85,7 +85,7 @@ export default function AddSkills() {
         Yup.object().shape({
           id: Yup.string().required(),
           name: Yup.string().required(),
-          skill_level_type: Yup.string().required(),
+          skill_level_type_id: Yup.string().required(),
         })
       )
       .min(1, "Select at least one skill")
@@ -94,7 +94,7 @@ export default function AddSkills() {
 
   const formik = useFormik({
     initialValues: {
-      user_skill: [] as { id: string; name: string; skill_level_type: string }[],
+      user_skill: [] as { id: string; name: string; skill_level_type_id: string }[],
     },
     validationSchema,
     onSubmit: async (values, { setSubmitting }) => {
@@ -102,7 +102,17 @@ export default function AddSkills() {
         formik.errors.user_skill = "Select at least one skill";
       }
       try {
-        const response = await api.post("/Auth/addJobseekerProfile", values);
+        const formData = new FormData();
+        // ✅ Automatically append all fields from the object
+        Object.entries(values).forEach(([key, value]) => {
+          if(typeof value !== 'string'){
+            let valueAsString = JSON.stringify(value);
+            formData.append(key, valueAsString ); // Convert all values to strings
+          }
+        });
+        const response = await api.post("/Auth/addJobseekerProfile", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
         if (response?.data?.code === 1) {
           dispatch(setProgress(7));
           dispatch(setUserSkills(values.user_skill));
@@ -141,7 +151,7 @@ export default function AddSkills() {
                 selectedOptions.map((skill) => ({
                   id: skill.value,
                   name: skill.label,
-                  skill_level_type: "1",
+                  skill_level_type_id: "1",
                 }))
               );
             }}
@@ -158,7 +168,7 @@ export default function AddSkills() {
               updatedSkills.map((skill) => ({
                 id: skill.value,
                 name: skill.label,
-                skill_level_type: "1",
+                skill_level_type_id: "1",
               }))
             );
           }}
@@ -184,7 +194,7 @@ export default function AddSkills() {
                         updatedSkills.map((skill) => ({
                           id: skill.value,
                           name: skill.label,
-                          skill_level_type: "1",
+                          skill_level_type_id: "1",
                         }))
                       );
                     }}
@@ -205,7 +215,7 @@ export default function AddSkills() {
                         updatedSkills.map((skill) => ({
                           id: skill.value,
                           name: skill.label,
-                          skill_level_type: "1",
+                          skill_level_type_id: "1",
                         }))
                       );
                     }}

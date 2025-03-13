@@ -10,13 +10,13 @@ export interface User {
     is_whatsapp_show?: boolean;
     mobile?: string;
     name?: string;
-    photo_url?: string | File;
+    photo_url?: string;
     status?: string;
     job_type_master_id?: string[];
     skills?: Skill[];
     users_education?: string[];
     is_fresher?: number;
-    experience: object[];
+    experience: Experience[];
     location_id?: string[];
     active_jobseeker?: number;
     available_job?: number;
@@ -51,7 +51,7 @@ export interface UserRole {
 export interface Skill {
     id: string;
     name: string;
-    skill_level_type: string;
+    skill_level_type_id: string;
 }
 export interface UserSkillPayload {
     user_skill: Skill[];  // Now expecting an array of skills

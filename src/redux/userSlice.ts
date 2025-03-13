@@ -1,4 +1,4 @@
-import { getAuthToken, getAuthUser, getAuthUserDesiredRole, getSessionData, storeAuthUser } from '@/components/utils/deviceId';
+import { getAuthToken, getAuthUser, getAuthUserDesiredRole, getSessionData, storeAuthToken, storeAuthUser } from '@/components/utils/deviceId';
 import { Experience, Skill, User, UserLocation, UserRole } from '@/Types/common';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
@@ -11,7 +11,6 @@ interface AuthState extends User {
   token: string;
   loading: boolean;
   error: string | null;
-  experience: Experience[]; // Override experience type if necessary
 }
 const { deviceId, secret } = getSessionData();
 const user = getAuthUser() as User;
@@ -20,19 +19,20 @@ const initialState: AuthState = {
   deviceId,
   secret,
   token,
-  email: user?.email,
-  id: user?.id,
-  is_profile_verify: user?.is_profile_verify,
-  is_whatsapp_show: user?.is_whatsapp_show,
+  email: user?.email || "",
+  photo_url: user?.photo_url || "",
+  id: user?.id || "",
+  is_profile_verify: user?.is_profile_verify =="1"? "1":"0",
+  is_whatsapp_show: user?.is_whatsapp_show? user?.is_whatsapp_show : true,
   mobile: user?.mobile,
   name: user?.name || "",
   role_id: user?.role_id || [],
   job_type_master_id: user?.job_type_master_id || [],
-  skills: [],
-  is_fresher: user?.is_fresher,
-  experience: [],
-  location_id: [],
-  users_education: [],
+  skills: user?.skills || [],
+  is_fresher: user?.is_fresher || 2,
+  experience: user?.experience || [],
+  location_id: user?.location_id || [],
+  users_education: user?.users_education || [],
   current_location: null,
   active_jobseeker: 0,
   available_job: 0,
@@ -47,14 +47,27 @@ const userSlice = createSlice({
   reducers: {
     
     // Clear the user state
+      
       signOut: (state) => {
         state = initialState // Clear user_location on sign out
+      },
+      setUserId: (state, action: PayloadAction<string>) => {
+        state.id = action.payload;
+        storeAuthUser({ ...state, id: action.payload });
+      },
+      setUserIsProfileVerified: (state, action: PayloadAction<string>) => {
+        state.is_profile_verify = action.payload;
+        storeAuthUser({ ...state, id: action.payload });
+      },
+      setAuthToken: (state, action: PayloadAction<string>) => {
+        state.token = action.payload;
+        storeAuthToken(action.payload);
       },
       setIsFresher: (state, action: PayloadAction<number>) => {
         state.is_fresher = action.payload;
         storeAuthUser({ ...state, is_fresher: action.payload });
       },
-      setUserPhotoUrl: (state, action: PayloadAction<string | File>) => {
+      setUserPhotoUrl: (state, action: PayloadAction<string>) => {
         state.photo_url = action.payload;
         storeAuthUser({ ...state, photo_url: action.payload });
       },
@@ -90,13 +103,16 @@ const userSlice = createSlice({
       setCurrentLocation: (state, action: PayloadAction<UserLocation>) => {
         state.current_location = action.payload;
         storeAuthUser({ ...state, current_location: action.payload });
+      },
+      setUserWAConsent: (state, action: PayloadAction<boolean>) => {
+        state.is_whatsapp_show = action.payload;
+        storeAuthUser({ ...state, is_whatsapp_show: action.payload });
       }
-      
     },
 });
 
 // Export actions
-export const { signOut,setIsFresher, setUserPhotoUrl, setUserRole, setUserEducation, setUserExperience, setUserMobile, setUserName, setUserLocation, setUserSkills, setCurrentLocation } = userSlice.actions;
+export const { signOut, setAuthToken, setUserIsProfileVerified, setUserId, setIsFresher, setUserWAConsent, setUserPhotoUrl, setUserRole, setUserEducation, setUserExperience, setUserMobile, setUserName, setUserLocation, setUserSkills, setCurrentLocation } = userSlice.actions;
 
 // Export the reducer
 export default userSlice.reducer;

@@ -49,9 +49,10 @@ const jobsList = [
   },
 ]
 export default function Home() {
-const slides = jobsList.map((job, index) => (
-        <CompanyCard key={index} {...job} />
-    )); 
+  
+  const slides = jobsList.map((job, index) => (
+      <CompanyCard key={index} {...job} />
+  )); 
   return (
     <main className="bg-[#F9F9F9]">
       
@@ -67,7 +68,7 @@ const slides = jobsList.map((job, index) => (
             </div>
         </div>
       </section>
-
+      {/* <pre>{JSON.stringify([jobs[0]], null, 2)}</pre> */}
       <section className="container">
         <div className="mt-8 lg:mt-10 2xl:mt-14 mb-5 md:mb-8 xl:mb-14 2xl:mb-16 flex flex-col lg:flex-row gap-5 md:gap-7 xl:gap-10">
             <FilterSidebar/>

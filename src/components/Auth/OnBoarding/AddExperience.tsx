@@ -32,6 +32,7 @@ export default function AddExperience() {
         if (values.is_fresher === 2) {
         const payload = {
           is_fresher: values.is_fresher,
+          is_profile_verify: 1,
         }
         const formData = new FormData();
         // ✅ Automatically append all fields from the object

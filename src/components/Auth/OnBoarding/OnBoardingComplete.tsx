@@ -25,6 +25,7 @@ export default function OnBoardingComplete({ onClose }: prop) {
     try {
       const formData = new FormData();
         formData.append('is_whatsapp_show', WAConsent?'1':'0'); // Append the file safely
+        formData.append('is_profile_verify', '1'); // Append the file safely
         // Submit the form data
         const response = await api.post('/Auth/editJobSeekerPrpfile', formData, {
           headers: { "Content-Type": "multipart/form-data" },

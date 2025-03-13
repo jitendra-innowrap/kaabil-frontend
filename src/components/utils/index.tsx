@@ -145,3 +145,85 @@ export const fetchUserLocation = () => {
     );
   });
 };
+
+export function formatMonthYear(date: string | Date): string {
+  let parsedDate: Date;
+
+  if (typeof date === 'string') {
+    // Attempt to parse the date string
+    parsedDate = new Date(date);
+    if (isNaN(parsedDate.getTime())) {
+      // If parsing fails, return an error message
+      return '-';
+    }
+  } else if (date instanceof Date) {
+    parsedDate = date;
+  } else {
+    return '-';
+  }
+
+  const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const month = monthNames[parsedDate.getMonth()];
+  const year = parsedDate.getFullYear();
+
+  return `${month} ${year}`;
+}
+
+export function formatJobDuration(start: string | Date, end?: string | Date): string {
+  let startDate: Date;
+  let endDate: Date | undefined;
+
+  // Validate and parse start date
+  if (typeof start === 'string') {
+    startDate = new Date(start);
+    if (isNaN(startDate.getTime())) return '-';
+  } else if (start instanceof Date) {
+    startDate = start;
+  } else {
+    return '-';
+  }
+
+  // Validate and parse end date if provided
+  if (end) {
+    if (typeof end === 'string') {
+      endDate = new Date(end);
+      if (isNaN(endDate.getTime())) {
+        // If end date is invalid, use current date
+        endDate = new Date();
+      }
+    } else if (end instanceof Date) {
+      endDate = end;
+    } else {
+      // If end date is invalid, use current date
+      endDate = new Date();
+    }
+  } else {
+    // If end date is not provided, use current date
+    endDate = new Date();
+  }
+
+  // Calculate duration in milliseconds
+  const durationInMs = endDate.getTime() - startDate.getTime();
+
+  // Handle invalid or future dates
+  if (durationInMs < 0) return '-';
+
+  // Convert to days (using average month/year lengths)
+  const totalDays = durationInMs / (1000 * 60 * 60 * 24);
+  const years = Math.floor(totalDays / 365.25);
+  const months = Math.floor(totalDays / 30.44);  // Average month length
+  const weeks = Math.floor(totalDays / 7);
+  const days = Math.floor(totalDays);
+
+  // Determine best unit to display
+  if (years > 0) {
+    return `${years} yr${years !== 1 ? 's' : ''}`;
+  }
+  if (months > 0) {
+    return `${months} month${months !== 1 ? 's' : ''}`;
+  }
+  if (weeks > 0) {
+    return `${weeks} week${weeks !== 1 ? 's' : ''}`;
+  }
+  return `${days} day${days !== 1 ? 's' : ''}`;
+}

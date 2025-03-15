@@ -1117,3 +1117,10 @@ button, .btn, a.btn{
     scale: 0.7;
   }
 }
+
+.search-section .select-location__option {
+  height: max-content !important;
+}
+.load-more-options-list{
+  max-height: 300px;
+}

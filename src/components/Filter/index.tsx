@@ -6,13 +6,17 @@ import { HiOutlineFilter } from 'react-icons/hi'
 import RangeAccordian from './RangeAccordian'
 import PopularTags from './PopularTags'
 import { GrLocation } from 'react-icons/gr'
+import { useAppSelector } from '@/redux/hooks'
 
 export default function FilterSidebar() {
     const [open, setOpen] = useState(false);
+    const filters = useAppSelector((state) => state.jobFiltersMaster);
+    
   return (
     <>
     {open && <div className="block bg-black z-10 opacity-20 w-screen h-screen fixed top-0 left-0" onClick={()=>setOpen(false)}></div>}
     <div className="filters-sidebar h-fit p-4 md:p-6 rounded-[20px] flex bg-white relative flex-col lg:w-fit items-start">
+    {/* <pre>{JSON.stringify(filters,null,2)}</pre> */}
         <div className="flex justify-between items-center w-full mb-2 md:mb-4 xl:mb-6 2xl:mb-8">
             <h2 className="text-lg 2xl:text-xl">All Filters
             <VscListFilter onClick={()=>setOpen(!open)} name="allFilters"  id="allFilters" className="inline lg:hidden ml-3 cursor-pointer size-5"/></h2>
@@ -41,48 +45,30 @@ export default function FilterSidebar() {
                 <LoadMoreAccordian 
                     header="Industry" 
                     fetchMoreItems={true}
-                    list={[
-                        {id: '670', name: 'IT and Technology'},
-                        {id: '100', name: 'Telecomunications'},
-                        {id: '435', name: 'Hospitality and Travel'},
-                        {id: '863', name: 'Marketing'},
-                        {id: '235', name: 'Banking and Finance'},
-                    ]} 
+                    list={[]} 
                 />
                 <LoadMoreAccordian 
                     header="Job Type"
-                    list={[
-                        {id: '2345', name: 'Full time'},
-                        {id: '670', name: 'Part time'},
-                        {id: '435', name: 'Internship'}
-                    ]} 
+                    list={filters?.job_types_filter} 
                     />
                 <LoadMoreAccordian 
                     header="Experience level" 
                     list={[
-                        {id:'10', name:'Fresher'},
-                        {id:'10', name:'Experienced'},
+                        {doc_count:10, key:'Fresher'},
+                        {doc_count:10, key:'Experienced'},
                     ]} 
                     />
 
                 <LoadMoreAccordian 
                     header="Work Mode" 
-                    list={[
-                        {id:'10', name:'On site'},
-                        {id:'10', name:'Hybrid'},
-                        {id:'10', name:'Remote'},
-                    ]} 
+                    list={filters?.job_location_types_filter} 
                     />
 
                 <LoadMoreAccordian 
+                    maxItems={8}
+                    // isSearchable
                     header="Benefits" 
-                    list={[
-                        {id:'10', name:'Pickup and drop services'},
-                        {id:'10', name:'Late night drop services'},
-                        {id:'10', name:'Flexible Work Hours'},
-                        {id:'10', name:'Maternity leave'},
-                        {id:'10', name:'Health Insurance'},
-                    ]} 
+                    list={filters?.benefits_filter} 
                     />
 
                 <RangeAccordian/>

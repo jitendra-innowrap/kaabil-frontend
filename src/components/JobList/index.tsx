@@ -14,6 +14,8 @@ import { api2 } from '@/Services/Apiservice';
 import { useAppSelector } from '@/redux/hooks';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { getSessionData } from '../utils/deviceId';
+import { setJobFiltersMaster } from '@/redux/jobsFilterSlice';
+import { useDispatch } from 'react-redux';
 
 export default function JobList() {
   const searchParams = useSearchParams();
@@ -24,7 +26,7 @@ export default function JobList() {
   const [totalPages, setTotalPages] = useState(0);
   const maxPagesToShow = 5; // Maximum pages to display
   const user = useAppSelector((state) => state.user);
-
+  const dispatch = useDispatch();
   const [jobs, setJobs] = useState<object[]>([]);
 
   // Fetch jobs based on the current page
@@ -72,6 +74,19 @@ export default function JobList() {
         setTotalPages(response.data?.data?.total);
         console.clear();
         console.log(response.data?.data);
+        let filterMasters = {
+          benefits_filter: response.data?.data?.filters?.benefits_filter?.buckets,
+          job_location_types_filter: response.data?.data?.filters?.job_location_types_filter?.buckets,
+          job_types_filter: response.data?.data?.filters?.job_types_filter?.buckets,
+          location_filter: response.data?.data?.filters?.location_filter?.buckets,
+          skill_filter: response.data?.data?.filters?.skill_filter?.buckets,
+          soft_skills_filter: response.data?.data?.filters?.soft_skills_filter?.buckets,
+          salary: { 
+            min: response.data?.data?.filters?.max_salary?.value,
+            max: response.data?.data?.filters?.min_salary?.value 
+          },
+        }
+        dispatch(setJobFiltersMaster(filterMasters))
       } catch (error) {
         console.error('Error fetching jobs:', error);
       }

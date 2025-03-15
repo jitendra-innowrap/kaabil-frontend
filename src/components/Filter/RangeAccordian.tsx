@@ -6,11 +6,13 @@ import { BiChevronDown, BiChevronUp } from 'react-icons/bi';
 import RangeSlider from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
 import { formatSalary } from '../utils';
+import { useAppSelector } from '@/redux/hooks';
 
  function RangeAccordion() {
     const router = useRouter();
     const searchParams = useSearchParams();
-
+    const { min, max} = useAppSelector((state) => state.jobFiltersMaster.salary);
+    
     // Default salary range values
     const defaultMin = 5000;
     const defaultMax = 600000;

@@ -73,9 +73,10 @@ export default function FilterSidebar() {
                     header="Search by Location"  
                     isSearchable={true} 
                     searchIcon={<GrLocation className='size-4 2xl:size-5 text-[#6C757D] font-bold' />}
-                    list={[]} 
+                    list={filters?.location_filter} 
+                    maxItems={10}
                     filterKey='location_filter'
-                    fetchMoreItems={fetchLocationOptions}
+                    // fetchMoreItems={fetchLocationOptions}
                     searchPlaceholder='Choose city'
                     />
     

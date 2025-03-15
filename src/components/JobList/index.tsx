@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { FiCamera } from 'react-icons/fi';
 import { HiOutlineCurrencyRupee, HiOutlineFilter } from 'react-icons/hi';
 import { MdAccessTime } from 'react-icons/md';
@@ -17,7 +17,7 @@ import { getSessionData } from '../utils/deviceId';
 import { setJobFiltersMaster } from '@/redux/jobsFilterSlice';
 import { useDispatch } from 'react-redux';
 
-export default function JobList() {
+function JobList() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const page = searchParams.get('page') || '1'; // Get the current page from the URL
@@ -49,14 +49,19 @@ export default function JobList() {
       const minSalary = searchParams.get('minSalary') || '';
       const maxSalary = searchParams.get('maxSalary') || '';
       const search = searchParams.get('search') || '';
-
+      // Format location_filter as an array of objects
+      const formattedLocationFilter = locationFilter.map((location) => ({
+        location: location,
+        latitude: 0, // Replace with actual latitude if available
+        longitude: 0, // Replace with actual longitude if available
+      }));
       // Construct payload
       let payload = {
         recommendate: false,
         soft_skill_filter: [],
         skill_filter: [],
         job_location_types_filter: jobLocationTypesFilter,
-        location_filter: locationFilter,
+        location_filter: formattedLocationFilter,
         benefits_filter: benefitsFilter,
         job_types_filter: jobTypesFilter,
         experience_filter: experienceFilter,
@@ -200,4 +205,11 @@ export default function JobList() {
       </div>
     </div>
   );
+}
+export default function Page() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <JobList />
+        </Suspense>
+    );
 }

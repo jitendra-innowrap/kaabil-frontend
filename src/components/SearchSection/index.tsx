@@ -1,16 +1,16 @@
 'use client'
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { GrLocation } from 'react-icons/gr';
 import Select from 'react-select';
 import Image from 'next/image';
 import { optionType } from '@/Types/common';
 
-export default function SearchSection() {
+function SearchSection() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [search, setSearch] = useState(searchParams.get('search') || '');
-  const [location, setLocation] = useState(searchParams.get('location') || '');
+  const [location, setLocation] = useState(searchParams.get('location_filter') || '');
   const [industry, setIndustry] = useState(searchParams.get('industry') || '');
   const [locationOptions, setLocationOptions] = useState<optionType[]>([]);
   const [industryOptions, setIndustryOptions] = useState<optionType[]>([]);
@@ -27,13 +27,9 @@ export default function SearchSection() {
     document.body.appendChild(script);
 
     // Fetch industry options from API
-    fetch('/api/industries')
-      .then(response => response.json())
-      .then(data => setIndustryOptions(data.map((ind:{id:string, name:string}) => ({ value: ind.id, label: ind.name }))));
-
-    return () => {
-      document.body.removeChild(script);
-    };
+    // fetch('/api/industries')
+    //   .then(response => response.json())
+    //   .then(data => setIndustryOptions(data.map((ind:{id:string, name:string}) => ({ value: ind.id, label: ind.name }))));
   }, []);
 
   const handleLocationInputChange = (inputValue:any) => {
@@ -57,7 +53,7 @@ export default function SearchSection() {
     e.preventDefault();
     const params = new URLSearchParams();
     if (search) params.set('search', search);
-    if (location) params.set('location', location);
+    if (location) params.set('location_filter', location);
     if (industry) params.set('industry', industry);
     router.push(`/jobs?${params.toString()}`);
   };
@@ -115,4 +111,11 @@ export default function SearchSection() {
       </button>
     </form>
   );
+}
+export default function Page() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <SearchSection />
+        </Suspense>
+    );
 }

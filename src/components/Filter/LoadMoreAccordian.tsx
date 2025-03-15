@@ -8,12 +8,13 @@ import Check from './Check';
 
 // Define the types for the props
 interface LoadMoreAccordionProps {
-    fetchMoreItems?: any; // Define a more specific type if possible
+    fetchMoreItems?: (keyword: string) => Promise<Array<{ key: string, doc_count: number }>>; // Function to fetch more items
     maxItems?: number;
+    filterKey: string;
     header: string;
     isSearchable?: boolean;
     isRadio?: boolean;
-    list: Array<{ key: string, doc_count: number }>;
+    list: Array<{ key: string, doc_count: number }>; // Static list provided by parent
     searchPlaceholder?: string;
     searchIcon?: ReactNode;
 }
@@ -22,6 +23,7 @@ function LoadMoreAccordion({
     fetchMoreItems,
     maxItems = 0,
     header,
+    filterKey,
     isSearchable = false,
     isRadio = false,
     list,
@@ -31,16 +33,37 @@ function LoadMoreAccordion({
     const [selected, setSelected] = useState<string>('');
     const [search, setSearch] = useState("");
     const [showAll, setShowAll] = useState(false); // State to control "Show More" functionality
+    const [dynamicList, setDynamicList] = useState<Array<{ key: string, doc_count: number }>>([]); // State for dynamically fetched list
     const router = useRouter();
     const searchParams = useSearchParams();
 
     // Load filters from URL on initial load
     useEffect(() => {
-        const urlFilters = searchParams.get(header.toLowerCase());
+        const urlFilters = searchParams.get(filterKey.toLowerCase());
         if (urlFilters) {
             setSelected(urlFilters);
         }
-    }, [searchParams, header]);
+    }, [searchParams, filterKey]);
+
+    // Handle search input change
+    useEffect(() => {
+        if (isSearchable && fetchMoreItems) {
+            // If fetchMoreItems is available, call it to fetch dynamic options
+            const fetchOptions = async () => {
+                const options = await fetchMoreItems(search);
+                setDynamicList(options);
+            };
+            fetchOptions();
+        }
+    }, [search, isSearchable, fetchMoreItems]);
+
+    // Filter the list based on search input
+    const filteredList = fetchMoreItems
+        ? dynamicList.filter(item => item.key.toLowerCase().includes(search.toLowerCase())) // Use dynamicList if fetchMoreItems is available
+        : list.filter(item => item.key.toLowerCase().includes(search.toLowerCase())); // Use static list otherwise
+
+    // Determine the list to display based on "Show More" state
+    const displayedList = maxItems > 0 && !showAll ? filteredList.slice(0, maxItems) : filteredList;
 
     const handleCheck = (item: { key: string }) => {
         const selectedArray = selected ? selected.split('|') : [];
@@ -60,9 +83,9 @@ function LoadMoreAccordion({
         // Update the URL parameters
         const params = new URLSearchParams(searchParams.toString());
         if (newSelected) {
-            params.set(header.toLowerCase(), newSelected);
+            params.set(filterKey.toLowerCase(), newSelected);
         } else {
-            params.delete(header.toLowerCase());
+            params.delete(filterKey.toLowerCase());
         }
         router.push(`?${params.toString()}`, { scroll: false });
     };
@@ -75,20 +98,12 @@ function LoadMoreAccordion({
         // Update the URL parameters
         const params = new URLSearchParams(searchParams.toString());
         if (newSelected) {
-            params.set(header.toLowerCase(), newSelected);
+            params.set(filterKey.toLowerCase(), newSelected);
         } else {
-            params.delete(header.toLowerCase());
+            params.delete(filterKey.toLowerCase());
         }
         router.push(`?${params.toString()}`, { scroll: false });
     };
-
-    // Filter the list based on search input
-    const filteredList = list.filter(item =>
-        item.key.toLowerCase().includes(search.toLowerCase())
-    );
-
-    // Determine the list to display based on "Show More" state
-    const displayedList = maxItems > 0 && !showAll ? filteredList.slice(0, maxItems) : filteredList;
 
     return (
         <Accordion alwaysOpen className='filter-accordian border bg-white px-7 border-[#A7A7A7] rounded-[20px]' transition={{ duration: '300ms', timingFunction: 'cubic-bezier(0, 0, 0.2, 1)' }}>
@@ -121,17 +136,17 @@ function LoadMoreAccordion({
                                 </div>
                             ) : <></>}
                             {filteredList.length > 0 ? (
-                                <ul className={`pb-3 3xl:pb-5 grid gap-3 pt-3 3xl:pt-5 overflow-y-auto load-more-options-list ${maxItems > 0 && !showAll ? 'max-h-72' : ''} custom-scrollbar`}>
+                                <ul className={`pb-3 3xl:pb-5 grid gap-3 pt-3 3xl:pt-5 overflow-y-auto ${maxItems > 0 && showAll ? 'max-h-72' : ''} custom-scrollbar`}>
                                     {displayedList.map((item) => (
                                         isRadio ? (
                                             <li key={item.key} className='flex justify-between gap-3' onClick={() => handleRadio(item)}>
                                                 <Radio item={item.key} checked={selected === item.key} />
-                                                <span className='mr-3 text-xs 2xl:text-sm text-end'>{item.doc_count}</span>
+                                                <span className='mr-3 text-xs 2xl:text-sm text-end'>{item.doc_count>=0?item.doc_count:''}</span>
                                             </li>
                                         ) : (
                                             <li key={item.key} className='flex justify-between gap-3' onClick={() => handleCheck(item)}>
                                                 <Check item={item.key} checked={selected.split('|').includes(item.key)} />
-                                                <span className='mr-3 text-xs 2xl:text-sm text-end'>{item.doc_count}</span>
+                                                <span className='mr-3 text-xs 2xl:text-sm text-end'>{item.doc_count>=0?item.doc_count:''}</span>
                                             </li>
                                         )
                                     ))}
@@ -158,6 +173,7 @@ export default function Page({
     fetchMoreItems,
     maxItems,
     header,
+    filterKey,
     isSearchable = false,
     isRadio = false,
     list,
@@ -167,6 +183,7 @@ export default function Page({
     return (
         <React.Suspense fallback={<div>Loading...</div>}>
             <LoadMoreAccordion
+                filterKey={filterKey}
                 header={header}
                 maxItems={maxItems}
                 fetchMoreItems={fetchMoreItems}

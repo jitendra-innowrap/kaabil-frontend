@@ -1,43 +1,58 @@
-'use client'
+'use client';
 import React, { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Accordion, AccordionBody, AccordionHeader, AccordionItem } from 'react-headless-accordion';
 import { BiChevronDown, BiChevronUp } from 'react-icons/bi';
 import RangeSlider from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
-import { formatSalary } from '../utils';
 import { useAppSelector } from '@/redux/hooks';
 
- function RangeAccordion() {
+function RangeAccordion() {
     const router = useRouter();
     const searchParams = useSearchParams();
-    const { min, max} = useAppSelector((state) => state.jobFiltersMaster.salary);
-    
-    // Default salary range values
-    const defaultMin = 5000;
-    const defaultMax = 600000;
+    const { min: reduxMin, max: reduxMax } = useAppSelector((state) => state.jobFiltersMaster.salary);
 
-    // State for the salary range
-    const [value, setValue] = useState({ min: defaultMin, max: defaultMax });
+    // State for the temporary salary range (used for slider and input fields)
+    const [tempValue, setTempValue] = useState({ min: reduxMin, max: reduxMax });
+
+    // State for the applied salary range (used for URL params)
+    const [appliedValue, setAppliedValue] = useState({ min: reduxMin, max: reduxMax });
+
+    // Update the temporary values when Redux state changes
+    useEffect(() => {
+        setTempValue({ min: reduxMin, max: reduxMax });
+        setAppliedValue({ min: reduxMin, max: reduxMax });
+    }, [reduxMin, reduxMax]);
 
     // Load initial salary range from URL if present
     useEffect(() => {
         const minSalary = searchParams.get('minSalary');
         const maxSalary = searchParams.get('maxSalary');
-        
+
         if (minSalary && maxSalary) {
-            setValue({ min: Number(minSalary), max: Number(maxSalary) });
+            setTempValue({ min: Number(minSalary), max: Number(maxSalary) });
+            setAppliedValue({ min: Number(minSalary), max: Number(maxSalary) });
         }
     }, [searchParams]);
 
-    // Update the URL parameters whenever the slider value changes
+    // Handle slider changes
     const handleRangeChange = ([min, max]: number[]) => {
-        setValue({ min, max });
+        setTempValue({ min, max });
+    };
+
+    // Handle input field changes
+    const handleInputChange = (type: 'min' | 'max', newValue: number) => {
+        setTempValue((prev) => ({ ...prev, [type]: newValue }));
+    };
+
+    // Handle Apply button click
+    const handleApply = () => {
+        setAppliedValue(tempValue); // Set the applied values
 
         // Update the query parameters in the URL
         const params = new URLSearchParams(searchParams.toString());
-        params.set('minSalary', min.toString());
-        params.set('maxSalary', max.toString());
+        params.set('minSalary', tempValue.min.toString());
+        params.set('maxSalary', tempValue.max.toString());
 
         // Use router to push new URL params without refreshing the page
         router.push(`?${params.toString()}`, { scroll: false });
@@ -61,44 +76,47 @@ import { useAppSelector } from '@/redux/hooks';
                         </AccordionHeader>
                         <AccordionBody>
                             <div className="block mb-6 mt-2">
-                                {/* Display the formatted salary range */}
-                                
                                 {/* Salary range slider */}
                                 <RangeSlider
                                     id="range-slider-salary"
-                                    min={defaultMin}
-                                    max={defaultMax}
+                                    min={reduxMin} // Use Redux state for min
+                                    max={reduxMax} // Use Redux state for max
                                     step={1000}
-                                    value={[value.min, value.max]}
+                                    value={[tempValue.min, tempValue.max]} // Use temporary values
                                     onInput={handleRangeChange}
-                                    
                                 />
                             </div>
-                                <form className="mb-5">
-                                    <div className="form-group relative mb-2">
-                                        <label htmlFor="min-salary" className="absolute block text-xs 2xl:text-sm top-[14px] left-3 mb-1">Min ₹</label>
-                                        <input
-                                            type="text"
-                                            className='w-full text-xs 2xl:text-sm p-[14px] pl-[65px] rounded-lg bg-[#F6F6F6] mt-[1px]'
-                                            id="min-salary"
-                                            name="min-salary"
-                                            value={value.min}
-                                            onChange={(e) => setValue({...value, min: Number(e.target.value) })}
-                                        />
-                                    </div>
-                                    <div className="form-group relative mb-2">
-                                        <label htmlFor="min-salary" className="absolute block text-xs 2xl:text-sm top-[14px] left-3 mb-1">Max ₹</label>
-                                        <input
-                                            type="text"
-                                            className='w-full text-xs 2xl:text-sm p-[14px] pl-[65px] rounded-lg bg-[#F6F6F6] mt-[1px]'
-                                            id="max-salary"
-                                            name="max-salary"
-                                            value={value.max}
-                                            onChange={(e) => setValue({...value, max: Number(e.target.value) })}
-                                        />
-                                    </div>
-                                    <button className='w-full filter-range-btn !bg-black text-xs 2xl:text-sm font-normal !text-white'>Apply</button>
-                                </form>
+                            <form className="mb-5">
+                                <div className="form-group relative mb-2">
+                                    <label htmlFor="min-salary" className="absolute block text-xs 2xl:text-sm top-[14px] left-3 mb-1">Min ₹</label>
+                                    <input
+                                        type="text"
+                                        className='w-full text-xs 2xl:text-sm p-[14px] pl-[65px] rounded-lg bg-[#F6F6F6] mt-[1px]'
+                                        id="min-salary"
+                                        name="min-salary"
+                                        value={tempValue.min}
+                                        onChange={(e) => handleInputChange('min', Number(e.target.value))}
+                                    />
+                                </div>
+                                <div className="form-group relative mb-2">
+                                    <label htmlFor="max-salary" className="absolute block text-xs 2xl:text-sm top-[14px] left-3 mb-1">Max ₹</label>
+                                    <input
+                                        type="text"
+                                        className='w-full text-xs 2xl:text-sm p-[14px] pl-[65px] rounded-lg bg-[#F6F6F6] mt-[1px]'
+                                        id="max-salary"
+                                        name="max-salary"
+                                        value={tempValue.max}
+                                        onChange={(e) => handleInputChange('max', Number(e.target.value))}
+                                    />
+                                </div>
+                                <button
+                                    type="button"
+                                    className='w-full filter-range-btn !bg-black text-xs 2xl:text-sm font-normal !text-white'
+                                    onClick={handleApply}
+                                >
+                                    Apply
+                                </button>
+                            </form>
                         </AccordionBody>
                     </>
                 )}

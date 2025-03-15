@@ -29,29 +29,43 @@ export default function JobList() {
   const dispatch = useDispatch();
   const [jobs, setJobs] = useState<object[]>([]);
 
+  const sort = searchParams.get('sort') || '1'; // Default to '1' (Relevance)
+
+  // Handle sort option selection
+  const handleSortChange = (newSort: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('sort', newSort); // Update the sort parameter in the URL
+    router.push(`?${params.toString()}`, { scroll: false }); // Update the URL without refreshing the page
+  };
   // Fetch jobs based on the current page
   useEffect(() => {
     const fetchJobs = async () => {
+      // Parse URL parameters
+      const jobTypesFilter = searchParams.get('job_types_filter')?.split('|') || [];
+      const locationFilter = searchParams.get('location_filter')?.split('|') || [];
+      const experienceFilter = searchParams.get('experience')?.split('|') || [];
+      const jobLocationTypesFilter = searchParams.get('job_location_types_filter')?.split('|') || [];
+      const benefitsFilter = searchParams.get('benefits_filter')?.split('|') || [];
+      const minSalary = searchParams.get('minSalary') || '';
+      const maxSalary = searchParams.get('maxSalary') || '';
+      const search = searchParams.get('search') || '';
+
+      // Construct payload
       let payload = {
         recommendate: false,
         soft_skill_filter: [],
         skill_filter: [],
-        job_location_types_filter: [],
-        location_filter: [],
-        benefits_filter: [],
-        job_types_filter: [],
+        job_location_types_filter: jobLocationTypesFilter,
+        location_filter: locationFilter,
+        benefits_filter: benefitsFilter,
+        job_types_filter: jobTypesFilter,
+        experience_filter: experienceFilter,
+        min_salary: minSalary ? Number(minSalary) : null,
+        max_salary: maxSalary ? Number(maxSalary) : null,
         search: search,
-        sort: 1,
+        sort: sort,
       };
 
-      const formData = new FormData();
-      // Automatically append all fields from the object
-      Object.entries(payload).forEach(([key, value]) => {
-        if (typeof value !== 'string') {
-          let valueAsString = JSON.stringify(value);
-          formData.append(key, valueAsString); // Convert all values to strings
-        }
-      });
       const { deviceId, secret, salt } = getSessionData();
                   
       // Ensure session data is available
@@ -82,8 +96,8 @@ export default function JobList() {
           skill_filter: response.data?.data?.filters?.skill_filter?.buckets,
           soft_skills_filter: response.data?.data?.filters?.soft_skills_filter?.buckets,
           salary: { 
-            min: response.data?.data?.filters?.max_salary?.value,
-            max: response.data?.data?.filters?.min_salary?.value 
+            min: response.data?.data?.filters?.min_salary?.value,
+            max: response.data?.data?.filters?.max_salary?.value 
           },
         }
         dispatch(setJobFiltersMaster(filterMasters))
@@ -93,7 +107,7 @@ export default function JobList() {
     };
 
     fetchJobs();
-  }, [page, user?.id]);
+  }, [page, user?.id, searchParams]);
 
   // Function to get the pagination group
   const getPaginationGroup = () => {
@@ -113,8 +127,6 @@ export default function JobList() {
     router.push(`?page=${page}`); // Update the URL with the new page
   };
 
-  const [sort, setSort] = useState(0);
-
   return (
     <div style={{ width: '-webkit-fill-available' }}>
       <div className="flex justify-between mb-5 xl:mb-7 2xl:mb-10 3xl:mb-12">
@@ -132,7 +144,7 @@ export default function JobList() {
             aria-expanded="true"
             aria-haspopup="true"
           >
-            {sort === 1 ? 'Relevance' : sort === 2 ? 'Salary' : 'Sort By'}
+            {sort === '1' ? 'Relevance' : sort === '2' ? 'Salary' : 'Sort By'}
             <IoMdArrowDropdown className="flex-shrink-0 ml-1 xl:ml-5 text-[#000000] size-4 3xl:size-5" />
           </button>
           <div
@@ -145,7 +157,7 @@ export default function JobList() {
             <div className="sort-items-wrapper rounded-md bg-white ring-1 shadow-lg ring-black/5 mt-1">
               <div className="py-0 sort-items" role="none">
                 <div
-                  onClick={() => setSort(1)}
+                  onClick={() => handleSortChange('1')}
                   className="sort-item block px-4 py-2 text-xs 2xl:text-sm hover:bg-gray-100 text-gray-700 hover:text-gray-900 outline-hidden"
                   role="menuitem"
                   tabIndex={-1}
@@ -154,7 +166,7 @@ export default function JobList() {
                   Relevance
                 </div>
                 <div
-                  onClick={() => setSort(2)}
+                  onClick={() => handleSortChange('2')}
                   className="sort-item block px-4 py-2 text-xs 2xl:text-sm hover:bg-gray-100 text-gray-700 hover:text-gray-900 outline-hidden"
                   role="menuitem"
                   tabIndex={-1}

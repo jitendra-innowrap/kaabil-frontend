@@ -105,15 +105,15 @@ export default function JobListingCard(prop:any) {
         </span>
       </div>
       <h3 className='text-sm 3xl:text-base 2xl:text-lg font-medium my-[6px] 3xl:my-3 line-clamp-2'>{prop?.job_title}</h3>
-      <div className="flex mb-1 md:mb-2">
-      <img src={'/new-assets/icons/location-pin-dot.svg'} alt='Map pin' width={100} height={100} className='size-3 2xl:size-[19px]' />
-      <span className='ml-2 text-[10px] 2xl:text-sm text-[#545581]'>{prop?.job_location_city_list?.map((city:string, index:number) => (
-        <React.Fragment key={index}>
-          {city}
-          {index < prop?.job_location_city_list.length - 1 && ", "}
-        </React.Fragment>
-      ))}</span>
-      </div>
+      {prop?.job_location_city_list?.length>0 && <div className="flex mb-1 md:mb-2">
+        <img src={'/new-assets/icons/location-pin-dot.svg'} alt='Map pin' width={100} height={100} className='size-3 2xl:size-[19px]' />
+        <span className='ml-2 text-[10px] 2xl:text-sm text-[#545581]'>{prop?.job_location_city_list?.map((city:string, index:number) => (
+          <React.Fragment key={index}>
+            {city}
+            {index < prop?.job_location_city_list.length - 1 && ", "}
+          </React.Fragment>
+        ))}</span>
+      </div>}
       <div className="flex gap-2">
         <div className="flex">
           <TbBriefcase2 className='text-[#545581] size-3 2xl:size-5'/>

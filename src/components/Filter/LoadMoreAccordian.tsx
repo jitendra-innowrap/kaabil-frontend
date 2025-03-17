@@ -8,13 +8,13 @@ import Check from './Check';
 
 // Define the types for the props
 interface LoadMoreAccordionProps {
-    fetchMoreItems?: (keyword: string) => Promise<Array<{ key: string, doc_count: number }>>; // Function to fetch more items
+    fetchMoreItems?: (keyword: string) => Promise<Array<{ key: string, doc_count: number, latitude?: number, longitude?: number }>>; // Function to fetch more items
     maxItems?: number;
     filterKey: string;
     header: string;
     isSearchable?: boolean;
     isRadio?: boolean;
-    list: Array<{ key: string, doc_count: number }>; // Static list provided by parent
+    list: Array<{ key: string, doc_count: number, latitude?: number, longitude?: number }>; // Static list provided by parent
     searchPlaceholder?: string;
     searchIcon?: ReactNode;
     showOptionsOnlyOnSearch?: boolean; // New prop to control visibility of options
@@ -35,7 +35,7 @@ function LoadMoreAccordion({
     const [selected, setSelected] = useState<string>('');
     const [search, setSearch] = useState("");
     const [showAll, setShowAll] = useState(false); // State to control "Show More" functionality
-    const [dynamicList, setDynamicList] = useState<Array<{ key: string, doc_count: number }>>([]); // State for dynamically fetched list
+    const [dynamicList, setDynamicList] = useState<Array<{ key: string, doc_count: number, latitude?: number, longitude?: number }>>([]); // State for dynamically fetched list
     const router = useRouter();
     const searchParams = useSearchParams();
 
@@ -69,44 +69,65 @@ function LoadMoreAccordion({
     // Determine if options should be shown based on search and showOptionsOnlyOnSearch prop
     const shouldShowOptions = !showOptionsOnlyOnSearch || search.trim() !== "";
 
-    const handleCheck = (item: { key: string }) => {
+    const handleCheck = (item: { key: string, latitude?: number, longitude?: number }) => {
         const selectedArray = selected ? selected.split('|') : [];
         const itemName = item.key;
         const isSelected = selectedArray.includes(itemName);
-
+      
         let updatedSelected;
         if (isSelected) {
-            updatedSelected = selectedArray.filter(selectedItem => selectedItem !== itemName);
+          updatedSelected = selectedArray.filter(selectedItem => selectedItem !== itemName);
         } else {
-            updatedSelected = [...selectedArray, itemName];
+          updatedSelected = [...selectedArray, itemName];
         }
-
+      
         const newSelected = updatedSelected.join('|');
         setSelected(newSelected);
-
+      
         // Update the URL parameters
         const params = new URLSearchParams(searchParams.toString());
         if (newSelected) {
-            params.set(filterKey.toLowerCase(), newSelected);
+          params.set(filterKey.toLowerCase(), newSelected);
+        //   if (filterKey === 'location_filter' && item.latitude && item.longitude) {
+        //     // Append latitude and longitude for location_filter
+        //     const latLongArray = updatedSelected.map(location => {
+        //       const selectedItem = list.find(item => item.key === location);
+        //       return selectedItem ? `${selectedItem.latitude},${selectedItem.longitude}` : '0,0';
+        //     });
+        //     params.set('latitude', latLongArray.join('|'));
+        //     params.set('longitude', latLongArray.join('|'));
+        //   }
         } else {
-            params.delete(filterKey.toLowerCase());
+          params.delete(filterKey.toLowerCase());
+        //   if (filterKey === 'location_filter') {
+        //     params.delete('latitude');
+        //     params.delete('longitude');
+        //   }
         }
         router.push(`?${params.toString()}`, { scroll: false });
-    };
-
-    const handleRadio = (item: { key: string }) => {
-        const isSelected = selected === item.key;
-        const newSelected = isSelected ? '' : item.key;
-        setSelected(newSelected);
-
-        // Update the URL parameters
-        const params = new URLSearchParams(searchParams.toString());
-        if (newSelected) {
-            params.set(filterKey.toLowerCase(), newSelected);
-        } else {
-            params.delete(filterKey.toLowerCase());
+      };
+    const handleRadio = (item: { key: string, latitude?: number, longitude?: number }) => {
+    const isSelected = selected === item.key;
+    const newSelected = isSelected ? '' : item.key;
+    setSelected(newSelected);
+    
+    // Update the URL parameters
+    const params = new URLSearchParams(searchParams.toString());
+    if (newSelected) {
+        params.set(filterKey.toLowerCase(), newSelected);
+        if (filterKey === 'location_filter' && item.latitude && item.longitude) {
+        // Append latitude and longitude for location_filter
+        params.set('latitude', item.latitude.toString());
+        params.set('longitude', item.longitude.toString());
         }
-        router.push(`?${params.toString()}`, { scroll: false });
+    } else {
+        params.delete(filterKey.toLowerCase());
+        if (filterKey === 'location_filter') {
+        params.delete('latitude');
+        params.delete('longitude');
+        }
+    }
+    router.push(`?${params.toString()}`, { scroll: false });
     };
 
     return (

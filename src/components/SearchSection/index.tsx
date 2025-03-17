@@ -1,42 +1,57 @@
-'use client'
+'use client';
 import React, { Suspense, useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { GrLocation } from 'react-icons/gr';
 import Select from 'react-select';
 import Image from 'next/image';
 import { optionType } from '@/Types/common';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '@/redux/store';
+import api from '@/Services/Apiservice';
+import { getSessionData } from '../utils/deviceId';
 
 function SearchSection() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [search, setSearch] = useState(searchParams.get('search') || '');
   const [location, setLocation] = useState(searchParams.get('location_filter') || '');
+  const [latitude, setLatitude] = useState(searchParams.get('latitude') || '');
+  const [longitude, setLongitude] = useState(searchParams.get('longitude') || '');
   const [industry, setIndustry] = useState(searchParams.get('industry') || '');
   const [locationOptions, setLocationOptions] = useState<optionType[]>([]);
   const [industryOptions, setIndustryOptions] = useState<optionType[]>([]);
-  const [autocompleteService, setAutocompleteService] = useState<any>(null);
-
+  const autocompleteService = useSelector((state: RootState) => state.search.autocompleteService);
+  const isScriptLoaded = useSelector((state: RootState) => state.search.isScriptLoaded);
   useEffect(() => {
-    // Load Google Places API script
-    const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyCp-H598wbMhBWMz9I_zbvdcknH-fiBVCo&libraries=places`;
-    script.async = true;
-    script.onload = () => {
-      setAutocompleteService(new window.google.maps.places.AutocompleteService());
-    };
-    document.body.appendChild(script);
-
-    // Fetch industry options from API
-    // fetch('/api/industries')
-    //   .then(response => response.json())
-    //   .then(data => setIndustryOptions(data.map((ind:{id:string, name:string}) => ({ value: ind.id, label: ind.name }))));
+    const fetchIndustries = async () => {
+          try {
+            const { deviceId, secret, salt } = getSessionData();
+            
+            // Ensure session data is available
+            if (!deviceId || !secret || !salt) {
+              console.log("Session data not available, retrying...");
+              setTimeout(fetchIndustries, 1000); // Retry after 1 second
+              return;
+            }
+    
+            const response = await api.post("/MasterData/getIndustry");
+            console.clear();
+            console.log(response);
+            setIndustryOptions(response.data?.result.map((ind:{id:string, name:string}) => ({ value: ind.id, label: ind.name })))
+           
+          } catch (error) {
+            console.error("Error fetching job types:", error);
+          }
+        };
+    
+        fetchIndustries();
+      // .then(data => );
   }, []);
-
-  const handleLocationInputChange = (inputValue:any) => {
+  const handleLocationInputChange = (inputValue: string) => {
     if (autocompleteService && inputValue) {
-      autocompleteService.getPlacePredictions({ input: inputValue }, (predictions:any, status:any) => {
+      autocompleteService.getPlacePredictions({ input: inputValue }, (predictions: any, status: any) => {
         if (status === 'OK') {
-          setLocationOptions(predictions.map((prediction:any) => ({
+          setLocationOptions(predictions.map((prediction: any) => ({
             value: prediction.place_id,
             label: prediction.description,
           })));
@@ -49,12 +64,40 @@ function SearchSection() {
     }
   };
 
-  const handleSearch = (e:any) => {
+  const handleLocationChange = async (selectedOption: optionType | null) => {
+    if (selectedOption) {
+      const locationName = selectedOption.label;
+      setLocation(locationName);
+
+      // Fetch latitude and longitude using the Geocoding API
+      const response = await fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(locationName)}&key=AIzaSyCp-H598wbMhBWMz9I_zbvdcknH-fiBVCo`
+      );
+      const data = await response.json();
+      if (data.status === 'OK' && data.results.length > 0) {
+        const { lat, lng } = data.results[0].geometry.location;
+        setLatitude(lat.toString());
+        setLongitude(lng.toString());
+      }
+    } else {
+      setLocation('');
+      setLatitude('');
+      setLongitude('');
+    }
+  };
+
+  const handleSearch = (e: any) => {
     e.preventDefault();
     const params = new URLSearchParams();
     if (search) params.set('search', search);
-    if (location) params.set('location_filter', location);
-    if (industry) params.set('industry', industry);
+    if (location) {
+      params.set('location_filter', location);
+      if (latitude && longitude) {
+        params.set('latitude', latitude);
+        params.set('longitude', longitude);
+      }
+    }
+    if (industry) params.set('industries_filter', industry);
     router.push(`/jobs?${params.toString()}`);
   };
 
@@ -70,13 +113,13 @@ function SearchSection() {
       />
       <div className="relative w-full z-[10] lg:w-[220px] 2xl:w-[250px] 3xl:w-[345px] rounded-[40px]">
         <Select
-          value={locationOptions.find(opt => opt.value === location)}
+          value={locationOptions.find(opt => opt.label === location)}
           options={locationOptions}
           placeholder="Select Location"
           className="text-xs 2xl:text-base"
           classNamePrefix="select-location"
           onInputChange={handleLocationInputChange}
-          onChange={(selectedOption) => setLocation(selectedOption ? selectedOption.label : '')}
+          onChange={handleLocationChange}
           components={{
             IndicatorSeparator: () => null,
             DropdownIndicator: () => (
@@ -93,7 +136,7 @@ function SearchSection() {
           placeholder="Select Industry"
           className="text-xs 2xl:text-base"
           classNamePrefix="select-industry"
-          onChange={(selectedOption) => setIndustry(selectedOption ? selectedOption.value : '')}
+          onChange={(selectedOption) => setIndustry(selectedOption ? selectedOption.label : '')}
           components={{
             IndicatorSeparator: () => null,
             DropdownIndicator: () => (

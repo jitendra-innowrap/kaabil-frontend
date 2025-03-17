@@ -16,16 +16,20 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { getSessionData } from '../utils/deviceId';
 import { setJobFiltersMaster } from '@/redux/jobsFilterSlice';
 import { useDispatch } from 'react-redux';
+import TopCompaniesHiring from '../Nudges/Listing/TopCompaniesHiring';
 
 function JobList() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const [isfilterAvailable, setIsfilterAvailable] = useState(false);
   const page = searchParams.get('page') || '1'; // Get the current page from the URL
   const search = searchParams.get('search') || ''; // Get the current page from the URL
   const [currentPage, setCurrentPage] = useState(parseInt(page, 10));
+  const [totalJobs, setTotalJobs] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const maxPagesToShow = 5; // Maximum pages to display
   const user = useAppSelector((state) => state.user);
+  const {token} = useAppSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [jobs, setJobs] = useState<object[]>([]);
 
@@ -43,25 +47,43 @@ function JobList() {
       // Parse URL parameters
       const jobTypesFilter = searchParams.get('job_types_filter')?.split('|') || [];
       const locationFilter = searchParams.get('location_filter')?.split('|') || [];
+      const industriesFilter = searchParams.get('industries_filter')?.split('|') || [];
       const experienceFilter = searchParams.get('experience')?.split('|') || [];
       const jobLocationTypesFilter = searchParams.get('job_location_types_filter')?.split('|') || [];
       const benefitsFilter = searchParams.get('benefits_filter')?.split('|') || [];
       const minSalary = searchParams.get('minSalary') || '';
       const maxSalary = searchParams.get('maxSalary') || '';
+      const latitude = searchParams.get('latitude')?.split('|') || []; // Parse latitude as an array
+      const longitude = searchParams.get('longitude')?.split('|') || []; // Parse longitude as an array
       const search = searchParams.get('search') || '';
-      // Format location_filter as an array of objects
-      const formattedLocationFilter = locationFilter.map((location) => ({
-        location: location,
-        latitude: 0, // Replace with actual latitude if available
-        longitude: 0, // Replace with actual longitude if available
-      }));
+  
+      // Format location_filter as an array of objects with latitude and longitude
+      const formattedLocationFilter = locationFilter.map((location, index) => {
+        const locationObj: { location: string; latitude?: number; longitude?: number } = {
+          location: location,
+        };
+
+        // Add latitude only if it exists
+        if (latitude[index]) {
+          locationObj.latitude = parseFloat(latitude[index]);
+        }
+
+        // Add longitude only if it exists
+        if (longitude[index]) {
+          locationObj.longitude = parseFloat(longitude[index]);
+        }
+
+        return locationObj;
+      });
+  
       // Construct payload
       let payload = {
         recommendate: false,
         soft_skill_filter: [],
         skill_filter: [],
         job_location_types_filter: jobLocationTypesFilter,
-        location_filter: formattedLocationFilter,
+        industries_filter: industriesFilter,
+        location_filter: formattedLocationFilter, // Use formatted location filter
         benefits_filter: benefitsFilter,
         job_types_filter: jobTypesFilter,
         experience_filter: experienceFilter,
@@ -72,16 +94,17 @@ function JobList() {
       };
   
       const { deviceId, secret, salt } = getSessionData();
-                  
+  
       // Ensure session data is available
       if (!deviceId || !secret || !salt) {
         console.log("Session data not available, retrying...");
         setTimeout(fetchJobs, 1000); // Retry after 1 second
         return;
       }
+  
       try {
         const response = await api2.post(
-          `/api/job/list?page=${currentPage}&pageLength=20&userId=${user?.id || 0}`,
+          `/api/job/list?page=${currentPage}&pageLength=10&userId=${user?.id || 0}`,
           payload,
           {
             headers: {
@@ -90,13 +113,13 @@ function JobList() {
           }
         );
         setJobs(response.data?.data?.jobs as object[]);
-        
+  
         // Calculate total pages based on total jobs and jobs per page
         const totalJobs = response.data?.data?.total;
-        const jobsPerPage = 20;
+        const jobsPerPage = 10;
         const totalPages = Math.ceil(totalJobs / jobsPerPage);
         setTotalPages(totalPages);
-  
+        setTotalJobs(totalJobs);
         console.clear();
         console.log(response.data?.data);
         let filterMasters = {
@@ -104,14 +127,16 @@ function JobList() {
           job_location_types_filter: response.data?.data?.filters?.job_location_types_filter?.buckets,
           job_types_filter: response.data?.data?.filters?.job_types_filter?.buckets,
           location_filter: response.data?.data?.filters?.location_filter?.buckets,
+          industries_filter: response.data?.data?.filters?.industries_filter?.buckets,
           skill_filter: response.data?.data?.filters?.skill_filter?.buckets,
           soft_skills_filter: response.data?.data?.filters?.soft_skills_filter?.buckets,
-          salary: { 
+          salary: {
             min: response.data?.data?.filters?.min_salary?.value,
-            max: response.data?.data?.filters?.max_salary?.value 
+            max: response.data?.data?.filters?.max_salary?.value,
           },
-        }
-        dispatch(setJobFiltersMaster(filterMasters))
+        };
+        if (!isfilterAvailable) dispatch(setJobFiltersMaster(filterMasters));
+        setIsfilterAvailable(true);
       } catch (error) {
         console.error('Error fetching jobs:', error);
       }
@@ -137,15 +162,24 @@ function JobList() {
     setCurrentPage(page);
     router.push(`?page=${page}`); // Update the URL with the new page
   };
-
+  
+  const nudges = [
+    <Interview key="interview" />,
+    <RegisterInMinutes key="register" />,
+  ];
+  const nudgesForLoggedInUser = [
+    <Interview key="interview" />,
+    <TopCompaniesHiring key="top-companies" />,
+  ];
   return (
     <div style={{ width: '-webkit-fill-available' }}>
       <div className="flex justify-between mb-5 xl:mb-7 2xl:mb-10 3xl:mb-12">
         <div className="">
+          {/* <pre>{JSON.stringify(user, null, 2)}</pre> */}
           <h2 className="font-medium text-lg xl:text-xl 3xl:text-2xl 3xl:leading-7 mb-1 xl:mb-2">
-            IT and Technology jobs
+            {token?"Recommended jobs for you":"IT and Technology jobs"}
           </h2>
-          <p className="text-[#787878] text-sm 2xl:text-sm">670 jobs for you</p>
+          <p className="text-[#787878] text-sm 2xl:text-sm">{totalJobs} jobs for you</p>
         </div>
         <div className="relative h-fit group sort-by-container">
           <button
@@ -191,13 +225,26 @@ function JobList() {
         </div>
       </div>
       <div className="flex flex-col gap-4 md:gap-6">
-        <Interview />
-        <RegisterInMinutes />
-        {jobs.map((job, index) => (
-          <div className="flex w-[100%]" key={index}>
-            <JobListingCard key={index} {...job} />
-          </div>
-        ))}
+        {jobs.map((job, index) => {
+          const items = [];
+
+          // Add the job listing
+          items.push(
+            <div className="flex w-[100%]" key={`job-${index}`}>
+              <JobListingCard {...job} />
+            </div>
+          );
+
+          // Add a nudge after every 2 job listings
+          if ((index + 1) % 2 === 0 && Math.floor((index + 1) / 2) - 1 < (user?.token? nudgesForLoggedInUser.length : nudges.length)) {
+            const nudgeIndex = Math.floor((index + 1) / 2) - 1;
+            if (user?.token? nudgesForLoggedInUser : nudges[nudgeIndex]) {
+              items.push(user?.token? nudgesForLoggedInUser : nudges[nudgeIndex]);
+            }
+          }
+
+          return items;
+        })}
       </div>
 
       {/* Pagination */}

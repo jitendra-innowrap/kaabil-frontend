@@ -3,7 +3,7 @@ import Image from "next/image";
 import PlayStoreAppAd from "@/components/Banners/PlaystoreAppAd";
 import SearchSection from "@/components/SearchSection";
 import GallerySlider from "@/components/JobDetail/Slider/GallarySlider";
-import CompanyCard from "@/components/Cards/CompanyCard";
+import CompanyCard, { jobcardtype } from "@/components/Cards/CompanyCard";
 import JobtypeCard from "@/components/Cards/JobtypeCard";
 import IndustryCard, { industryCard } from "@/components/Cards/IndustryCard";
 import CareerSkill from "@/components/Cards/CareerSkill";
@@ -35,56 +35,7 @@ export default function Home() {
             jobUrl: "/"
            },
     ])
-    const [topCompanies, setTopCompanies] = useState([
-        {
-         icon: "/new-assets/company-icons/image (1).png",
-         title: "Jio",
-         companyId: "/",
-         jobUrl: "/"
-        },
-        {
-         icon: "/new-assets/company-icons/image (2).png",
-         title: "Mahindra Holidays and Resorts India Ltd",
-         companyId: "/",
-         jobUrl: "/"
-        },
-        {
-         icon: "/new-assets/company-icons/image (3).png",
-         title: "Tata Consultancy Services",
-         companyId: "/",
-         jobUrl: "/"
-        },
-        {
-         icon: "/new-assets/company-icons/image (4).png",
-         title: "Tech Mahindra Ltd",
-         companyId: "/",
-         jobUrl: "/"
-        },
-        {
-         icon: "/new-assets/company-icons/image (1).png",
-         title: "Jio",
-         companyId: "/",
-         jobUrl: "/"
-        },
-        {
-         icon: "/new-assets/company-icons/image (2).png",
-         title: "Mahindra Holidays and Resorts India Ltd",
-         companyId: "/",
-         jobUrl: "/"
-        },
-        {
-         icon: "/new-assets/company-icons/image (3).png",
-         title: "Tata Consultancy Services",
-         companyId: "/",
-         jobUrl: "/"
-        },
-        {
-         icon: "/new-assets/company-icons/image (4).png",
-         title: "Tech Mahindra Ltd",
-         companyId: "/",
-         jobUrl: "/"
-        },
-    ]);
+    const [topCompanies, setTopCompanies] = useState<jobcardtype[]>([]);
     const [topIndustries, setTopIndustries] = useState<industryCard[]>([]);
     // ✅ Fetch roles and job types from API
     useEffect(() => {
@@ -111,14 +62,16 @@ export default function Home() {
             setTopCompanies(response?.data?.result?.top_companies?.map((comp: any, i: number) => ({
               icon: comp?.company_logo || "/new-assets/icons/company_icon_placeholder.png",
               title: comp?.company_name,
-              companyId: '/',
-              jobUrl: '/'
+              companyId: `${comp?.id}`,
+              jobUrl: `/`
             })));
+            const colors = ["#FDEAC9", "#DDF4E9", "#F9D1D7", "#E6E7E8"]; // Define the colors array
             setTopIndustries(response?.data?.result?.top_industries?.map((ind: any, i: number) => ({
               icon: ind?.industry_icon || "/new-assets/icons/company_icon_placeholder.png",
               title: ind?.name,
               companyId: '/',
-              jobUrl: '/'
+              jobUrl: '/',
+              color: colors[i % colors.length], // Assign color cyclically
             })));
           } catch (error) {
             console.error("Error fetching job types:", error);

@@ -23,6 +23,7 @@ import { ShareSocial } from 'react-share-social'
 import { useAppSelector } from "@/redux/hooks";
 import { Skill } from "@/Types/common";
 import Tabs from "@/components/Tabs";
+import { getSessionData } from "@/components/utils/deviceId";
 
 
 export default function Home() {
@@ -42,11 +43,19 @@ export default function Home() {
     }, [jobDetails]);
     
   useEffect(() => {
-    async function fetchCompanyDetails() {
+    async function fetchJobDetails() {
       try {
+        const { deviceId, secret, salt } = getSessionData();
+            
+        // Ensure session data is available
+        if (!deviceId || !secret || !salt) {
+          console.log("Session data not available, retrying...");
+          setTimeout(fetchJobDetails, 1000); // Retry after 1 second
+          return;
+        }
         let payload = {
-          // job_id: slug as string,
-          job_id: '2850' as string,
+          job_id: slug as string,
+          // job_id: '2850' as string,
         };
   
         const formData = new FormData();
@@ -82,7 +91,7 @@ export default function Home() {
       }
       setIsLoading(false)
     };
-    fetchCompanyDetails();
+    fetchJobDetails();
   }, [slug]);
   const generateDummyJobs = (count: number): CompanyJob[] => {
     return Array.from({ length: count }, (_, index) => ({

@@ -16,6 +16,7 @@ interface JobFiltersMasterState {
   job_types_filter: FilterBucket[];
   location_filter: FilterBucket[];
   skill_filter: FilterBucket[];
+  industries_filter: FilterBucket[]
   soft_skills_filter: FilterBucket[];
   salary: SalaryRange;
 }
@@ -23,6 +24,7 @@ interface JobFiltersMasterState {
 const initialState: JobFiltersMasterState = {
   benefits_filter: [],
   job_location_types_filter: [],
+  industries_filter: [],
   job_types_filter: [],
   location_filter: [],
   skill_filter: [],

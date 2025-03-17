@@ -6,7 +6,8 @@ import React, { useState } from 'react'
 import toast from 'react-hot-toast';
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { setUserMobile } from '@/redux/userSlice';
+import { setUserMobile, signOut } from '@/redux/userSlice';
+import { clearSessionData } from '@/components/utils/deviceId';
 export default function MobileInputForm() {
   const dispatch = useAppDispatch();
   // ✅ Validation schema
@@ -31,11 +32,24 @@ export default function MobileInputForm() {
           dispatch(setUserMobile(mobile));
           toast.success("An OTP has been sent!", { position: "bottom-right" });
         } else {
-          toast.error(response?.message || "Login failed. Try again!", { position: "bottom-right" });
+          toast.error(response?.msg || "Login failed. Try again!", { position: "bottom-right" });
+        }
+        if(response.data?.msg=="Invalid Hash Request"){
+          toast.error("Session Expired Please login !", { position: 'bottom-right' });
+          dispatch(signOut());
+          dispatch(setProgress(1));
+          clearSessionData();
         }
       } catch (error: any) {
         console.error("Login Error:", error);
-        toast.error(error?.message || "Something went wrong!", { position: "bottom-right" });
+        if(error.data?.msg=="Invalid Hash Request"){
+          toast.error("Session Expired Please login !", { position: 'bottom-right' });
+          dispatch(signOut());
+          dispatch(setProgress(1));
+          clearSessionData();
+        }else{
+          toast.error(error?.message || "Something went wrong!", { position: "bottom-right" });
+        }
       }
   
     },

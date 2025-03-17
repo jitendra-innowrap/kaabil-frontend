@@ -80,11 +80,12 @@ export default function FilterSidebar() {
                     // fetchMoreItems={fetchLocationOptions}
                     searchPlaceholder='Choose city'
                     />
-                {/* <LoadMoreAccordian 
-                    header="Industry" 
-                    list={[]} 
-                    filterKey='industry'
-                /> */}
+                <LoadMoreAccordian 
+                    header="Industry"
+                    maxItems={5}
+                    list={filters?.industries_filter} 
+                    filterKey='industries_filter'
+                    />
                 <LoadMoreAccordian 
                     header="Job Type"
                     list={filters?.job_types_filter} 

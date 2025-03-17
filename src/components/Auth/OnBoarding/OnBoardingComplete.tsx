@@ -5,7 +5,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { GoDotFill } from 'react-icons/go';
 import api from '@/Services/Apiservice';
 import toast from 'react-hot-toast';
-import { setUserPhotoUrl, setUserWAConsent } from '@/redux/userSlice';
+import { setUserIsProfileVerified, setUserPhotoUrl, setUserWAConsent } from '@/redux/userSlice';
 
 interface prop {
   onClose: () => void;
@@ -34,6 +34,7 @@ export default function OnBoardingComplete({ onClose }: prop) {
       if (response?.data?.code === 1) {
         toast.success('Profile updated successfully!', { position: 'bottom-right' });
         dispatch(setUserWAConsent(WAConsent))
+        dispatch(setUserIsProfileVerified('1'))
         onClose(); // Close the modal or navigate to the next step
       } else {
         toast.error(response?.data?.message || 'Submission failed!', { position: 'bottom-right' });

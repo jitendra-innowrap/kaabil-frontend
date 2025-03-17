@@ -54,7 +54,15 @@ export default function MobileInputForm() {
   
     },
   });
-
+  const handleInput = (e:any) => {
+    const { value } = e.target;
+    const numericValue = value.replace(/\D+/g, ''); // Remove non-numeric characters
+    if (numericValue.length <= 10) {
+      formik.setFieldValue('mobile', numericValue);
+    } else {
+      formik.setFieldValue('mobile', numericValue.slice(0, 10));
+    }
+  };
   return (
     <div>
         <h2 className='text-center font-semibold text-lg md:text-xl 2xl:text-[28px] 2xl:leading-[36px]'>Lets start with your mobile number</h2>
@@ -67,7 +75,7 @@ export default function MobileInputForm() {
               placeholder="Enter your mobile number to receive OTP"
               className="border p-2 w-full rounded"
               value={formik.values.mobile}
-              onChange={formik.handleChange}
+              onChange={handleInput}
               onBlur={formik.handleBlur}
             />
             {formik.touched.mobile && formik.errors.mobile && (

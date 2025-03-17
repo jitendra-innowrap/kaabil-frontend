@@ -70,7 +70,7 @@ function JobList() {
         search: search,
         sort: sort,
       };
-
+  
       const { deviceId, secret, salt } = getSessionData();
                   
       // Ensure session data is available
@@ -81,7 +81,7 @@ function JobList() {
       }
       try {
         const response = await api2.post(
-          `/api/job/list?page=${currentPage}&pageLength=5&userId=${user?.id || 0}`,
+          `/api/job/list?page=${currentPage}&pageLength=20&userId=${user?.id || 0}`,
           payload,
           {
             headers: {
@@ -90,7 +90,13 @@ function JobList() {
           }
         );
         setJobs(response.data?.data?.jobs as object[]);
-        setTotalPages(response.data?.data?.total);
+        
+        // Calculate total pages based on total jobs and jobs per page
+        const totalJobs = response.data?.data?.total;
+        const jobsPerPage = 20;
+        const totalPages = Math.ceil(totalJobs / jobsPerPage);
+        setTotalPages(totalPages);
+  
         console.clear();
         console.log(response.data?.data);
         let filterMasters = {
@@ -110,7 +116,7 @@ function JobList() {
         console.error('Error fetching jobs:', error);
       }
     };
-
+  
     fetchJobs();
   }, [page, user?.id, searchParams]);
 

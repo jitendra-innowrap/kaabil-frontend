@@ -17,6 +17,7 @@ interface LoadMoreAccordionProps {
     list: Array<{ key: string, doc_count: number }>; // Static list provided by parent
     searchPlaceholder?: string;
     searchIcon?: ReactNode;
+    showOptionsOnlyOnSearch?: boolean; // New prop to control visibility of options
 }
 
 function LoadMoreAccordion({
@@ -28,7 +29,8 @@ function LoadMoreAccordion({
     isRadio = false,
     list,
     searchPlaceholder = "",
-    searchIcon = <BiSearch />
+    searchIcon = <BiSearch />,
+    showOptionsOnlyOnSearch = false, // Default to false
 }: LoadMoreAccordionProps) {
     const [selected, setSelected] = useState<string>('');
     const [search, setSearch] = useState("");
@@ -57,13 +59,15 @@ function LoadMoreAccordion({
         }
     }, [search, isSearchable, fetchMoreItems]);
 
-    // Filter the list based on search input
-    const filteredList = fetchMoreItems
-        ? dynamicList.filter(item => item.key.toLowerCase().includes(search.toLowerCase())) // Use dynamicList if fetchMoreItems is available
-        : list.filter(item => item.key.toLowerCase().includes(search.toLowerCase())); // Use static list otherwise
+    // Filter the list based on search input and remove empty keys
+    const filteredList = (fetchMoreItems ? dynamicList : list)
+        .filter(item => item.key && item.key.toLowerCase().includes(search.toLowerCase())); // Filter out empty keys and match search
 
     // Determine the list to display based on "Show More" state
     const displayedList = maxItems > 0 && !showAll ? filteredList.slice(0, maxItems) : filteredList;
+
+    // Determine if options should be shown based on search and showOptionsOnlyOnSearch prop
+    const shouldShowOptions = !showOptionsOnlyOnSearch || search.trim() !== "";
 
     const handleCheck = (item: { key: string }) => {
         const selectedArray = selected ? selected.split('|') : [];
@@ -135,26 +139,26 @@ function LoadMoreAccordion({
                                     </div>
                                 </div>
                             ) : <></>}
-                            {filteredList.length > 0 ? (
+                            {shouldShowOptions && filteredList.length > 0 ? (
                                 <ul className={`pb-3 3xl:pb-5 grid gap-3 pt-3 3xl:pt-5 overflow-y-auto ${maxItems > 0 && showAll ? 'max-h-72' : ''} custom-scrollbar`}>
                                     {displayedList.map((item) => (
                                         isRadio ? (
                                             <li key={item.key} className='flex justify-between gap-3' onClick={() => handleRadio(item)}>
                                                 <Radio item={item.key} checked={selected === item.key} />
-                                                <span className='mr-3 text-xs 2xl:text-sm text-end'>{item.doc_count>=0?item.doc_count:''}</span>
+                                                <span className='mr-3 text-xs 2xl:text-sm text-end'>{item.doc_count >= 0 ? item.doc_count : ''}</span>
                                             </li>
                                         ) : (
                                             <li key={item.key} className='flex justify-between gap-3' onClick={() => handleCheck(item)}>
                                                 <Check item={item.key} checked={selected.split('|').includes(item.key)} />
-                                                <span className='mr-3 text-xs 2xl:text-sm text-end'>{item.doc_count>=0?item.doc_count:''}</span>
+                                                <span className='mr-3 text-xs 2xl:text-sm text-end'>{item.doc_count >= 0 ? item.doc_count : ''}</span>
                                             </li>
                                         )
                                     ))}
                                 </ul>
                             ) : <></>}
-                            {maxItems > 0 && filteredList.length > maxItems ? (
+                            {shouldShowOptions && maxItems > 0 && filteredList.length > maxItems ? (
                                 <button
-                                    className={`show-more !py-2 text-sm text-blue-500 hover:text-blue-700 ${showAll?'mt-3':''}`}
+                                    className={`show-more !py-2 text-sm text-blue-500 hover:text-blue-700 ${showAll ? 'mt-3' : ''}`}
                                     onClick={() => setShowAll(!showAll)}
                                 >
                                     {showAll ? 'Show Less' : 'Show More'}
@@ -178,7 +182,8 @@ export default function Page({
     isRadio = false,
     list,
     searchIcon,
-    searchPlaceholder
+    searchPlaceholder,
+    showOptionsOnlyOnSearch = false, // Pass the new prop
 }: LoadMoreAccordionProps) {
     return (
         <React.Suspense fallback={<div>Loading...</div>}>
@@ -192,6 +197,7 @@ export default function Page({
                 searchPlaceholder={searchPlaceholder}
                 isSearchable={isSearchable}
                 isRadio={isRadio}
+                showOptionsOnlyOnSearch={showOptionsOnlyOnSearch} // Pass the new prop
             />
         </React.Suspense>
     );

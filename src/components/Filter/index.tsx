@@ -70,6 +70,7 @@ export default function FilterSidebar() {
         <div className="flex lg:gap-7 xl:gap-10 2xl:gap-12">
             <div className={`absolute p-6 lg:p-0 rounded-3xl bg-white lg:relative z-[100] ${!open ? '-left-[120%] lg:left-0' : 'left-0'} transition-all top-[54px] md:top-16 lg:top-0 w-full flex flex-col gap-4 xl:gap-5 duration-300 h-max`}>
                 <LoadMoreAccordian 
+                    showOptionsOnlyOnSearch
                     header="Search by Location"  
                     isSearchable={true} 
                     searchIcon={<GrLocation className='size-4 2xl:size-5 text-[#6C757D] font-bold' />}
@@ -79,7 +80,6 @@ export default function FilterSidebar() {
                     // fetchMoreItems={fetchLocationOptions}
                     searchPlaceholder='Choose city'
                     />
-    
                 {/* <LoadMoreAccordian 
                     header="Industry" 
                     list={[]} 

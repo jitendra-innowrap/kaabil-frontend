@@ -3,6 +3,7 @@ import progressReducer from './progressSlice';
 import userReducer from './userSlice';
 import searchReducer from './searchSlice';
 import authReducer from './authSlice';
+import jobFiltersMasterReducer from './jobsFilterSlice';
 
 // Create the store
 export const makeStore = () => {
@@ -12,6 +13,7 @@ export const makeStore = () => {
       user: userReducer,
       search: searchReducer,
       auth: authReducer,
+      jobFiltersMaster: jobFiltersMasterReducer,
     },
   });
 };

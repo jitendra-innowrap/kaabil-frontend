@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { FiCamera } from 'react-icons/fi';
 import { HiOutlineCurrencyRupee, HiOutlineFilter } from 'react-icons/hi';
 import { MdAccessTime } from 'react-icons/md';
@@ -14,8 +14,10 @@ import { api2 } from '@/Services/Apiservice';
 import { useAppSelector } from '@/redux/hooks';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { getSessionData } from '../utils/deviceId';
+import { setJobFiltersMaster } from '@/redux/jobsFilterSlice';
+import { useDispatch } from 'react-redux';
 
-export default function JobList() {
+function JobList() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const page = searchParams.get('page') || '1'; // Get the current page from the URL
@@ -24,32 +26,51 @@ export default function JobList() {
   const [totalPages, setTotalPages] = useState(0);
   const maxPagesToShow = 5; // Maximum pages to display
   const user = useAppSelector((state) => state.user);
-
+  const dispatch = useDispatch();
   const [jobs, setJobs] = useState<object[]>([]);
 
+  const sort = searchParams.get('sort') || '1'; // Default to '1' (Relevance)
+
+  // Handle sort option selection
+  const handleSortChange = (newSort: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('sort', newSort); // Update the sort parameter in the URL
+    router.push(`?${params.toString()}`, { scroll: false }); // Update the URL without refreshing the page
+  };
   // Fetch jobs based on the current page
   useEffect(() => {
     const fetchJobs = async () => {
+      // Parse URL parameters
+      const jobTypesFilter = searchParams.get('job_types_filter')?.split('|') || [];
+      const locationFilter = searchParams.get('location_filter')?.split('|') || [];
+      const experienceFilter = searchParams.get('experience')?.split('|') || [];
+      const jobLocationTypesFilter = searchParams.get('job_location_types_filter')?.split('|') || [];
+      const benefitsFilter = searchParams.get('benefits_filter')?.split('|') || [];
+      const minSalary = searchParams.get('minSalary') || '';
+      const maxSalary = searchParams.get('maxSalary') || '';
+      const search = searchParams.get('search') || '';
+      // Format location_filter as an array of objects
+      const formattedLocationFilter = locationFilter.map((location) => ({
+        location: location,
+        latitude: 0, // Replace with actual latitude if available
+        longitude: 0, // Replace with actual longitude if available
+      }));
+      // Construct payload
       let payload = {
         recommendate: false,
         soft_skill_filter: [],
         skill_filter: [],
-        job_location_types_filter: [],
-        location_filter: [],
-        benefits_filter: [],
-        job_types_filter: [],
+        job_location_types_filter: jobLocationTypesFilter,
+        location_filter: formattedLocationFilter,
+        benefits_filter: benefitsFilter,
+        job_types_filter: jobTypesFilter,
+        experience_filter: experienceFilter,
+        min_salary: minSalary ? Number(minSalary) : null,
+        max_salary: maxSalary ? Number(maxSalary) : null,
         search: search,
-        sort: 1,
+        sort: sort,
       };
-
-      const formData = new FormData();
-      // Automatically append all fields from the object
-      Object.entries(payload).forEach(([key, value]) => {
-        if (typeof value !== 'string') {
-          let valueAsString = JSON.stringify(value);
-          formData.append(key, valueAsString); // Convert all values to strings
-        }
-      });
+  
       const { deviceId, secret, salt } = getSessionData();
                   
       // Ensure session data is available
@@ -60,7 +81,7 @@ export default function JobList() {
       }
       try {
         const response = await api2.post(
-          `/api/job/list?page=${currentPage}&pageLength=5&userId=${user?.id || 0}`,
+          `/api/job/list?page=${currentPage}&pageLength=20&userId=${user?.id || 0}`,
           payload,
           {
             headers: {
@@ -69,16 +90,35 @@ export default function JobList() {
           }
         );
         setJobs(response.data?.data?.jobs as object[]);
-        setTotalPages(response.data?.data?.total);
+        
+        // Calculate total pages based on total jobs and jobs per page
+        const totalJobs = response.data?.data?.total;
+        const jobsPerPage = 20;
+        const totalPages = Math.ceil(totalJobs / jobsPerPage);
+        setTotalPages(totalPages);
+  
         console.clear();
         console.log(response.data?.data);
+        let filterMasters = {
+          benefits_filter: response.data?.data?.filters?.benefits_filter?.buckets,
+          job_location_types_filter: response.data?.data?.filters?.job_location_types_filter?.buckets,
+          job_types_filter: response.data?.data?.filters?.job_types_filter?.buckets,
+          location_filter: response.data?.data?.filters?.location_filter?.buckets,
+          skill_filter: response.data?.data?.filters?.skill_filter?.buckets,
+          soft_skills_filter: response.data?.data?.filters?.soft_skills_filter?.buckets,
+          salary: { 
+            min: response.data?.data?.filters?.min_salary?.value,
+            max: response.data?.data?.filters?.max_salary?.value 
+          },
+        }
+        dispatch(setJobFiltersMaster(filterMasters))
       } catch (error) {
         console.error('Error fetching jobs:', error);
       }
     };
-
+  
     fetchJobs();
-  }, [page, user?.id]);
+  }, [page, user?.id, searchParams]);
 
   // Function to get the pagination group
   const getPaginationGroup = () => {
@@ -98,8 +138,6 @@ export default function JobList() {
     router.push(`?page=${page}`); // Update the URL with the new page
   };
 
-  const [sort, setSort] = useState(0);
-
   return (
     <div style={{ width: '-webkit-fill-available' }}>
       <div className="flex justify-between mb-5 xl:mb-7 2xl:mb-10 3xl:mb-12">
@@ -117,7 +155,7 @@ export default function JobList() {
             aria-expanded="true"
             aria-haspopup="true"
           >
-            {sort === 1 ? 'Relevance' : sort === 2 ? 'Salary' : 'Sort By'}
+            {sort === '1' ? 'Relevance' : sort === '2' ? 'Salary' : 'Sort By'}
             <IoMdArrowDropdown className="flex-shrink-0 ml-1 xl:ml-5 text-[#000000] size-4 3xl:size-5" />
           </button>
           <div
@@ -130,7 +168,7 @@ export default function JobList() {
             <div className="sort-items-wrapper rounded-md bg-white ring-1 shadow-lg ring-black/5 mt-1">
               <div className="py-0 sort-items" role="none">
                 <div
-                  onClick={() => setSort(1)}
+                  onClick={() => handleSortChange('1')}
                   className="sort-item block px-4 py-2 text-xs 2xl:text-sm hover:bg-gray-100 text-gray-700 hover:text-gray-900 outline-hidden"
                   role="menuitem"
                   tabIndex={-1}
@@ -139,7 +177,7 @@ export default function JobList() {
                   Relevance
                 </div>
                 <div
-                  onClick={() => setSort(2)}
+                  onClick={() => handleSortChange('2')}
                   className="sort-item block px-4 py-2 text-xs 2xl:text-sm hover:bg-gray-100 text-gray-700 hover:text-gray-900 outline-hidden"
                   role="menuitem"
                   tabIndex={-1}
@@ -173,4 +211,11 @@ export default function JobList() {
       </div>
     </div>
   );
+}
+export default function Page() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <JobList />
+        </Suspense>
+    );
 }

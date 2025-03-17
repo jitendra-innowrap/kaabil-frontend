@@ -29,7 +29,7 @@ export default function TopCompaniesHiring() {
         setTopCompanies(response?.data?.result?.top_companies?.map((comp: any, i: number) => ({
           icon: comp?.company_logo || "/new-assets/icons/company_icon_placeholder.png",
           title: comp?.company_name,
-          companyId: '/',
+          companyId: `${comp?.id}`,
           jobUrl: '/'
         })));
       } catch (error) {

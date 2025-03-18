@@ -63,7 +63,7 @@ const userSlice = createSlice({
       },
       setUserIsProfileVerified: (state, action: PayloadAction<string>) => {
         state.is_profile_verify = action.payload;
-        storeAuthUser({ ...state, id: action.payload });
+        storeAuthUser({ ...state, is_profile_verify: action.payload });
       },
       setAuthToken: (state, action: PayloadAction<string>) => {
         state.token = action.payload;

@@ -27,18 +27,13 @@ const jobsSlides = companyJobs
 useEffect(() => {
   async function fetchCompanyDetails() {
     try {
-      const { deviceId, secret, salt } = getSessionData();
-            
-      // Ensure session data is available
-      if (!deviceId || !secret || !salt) {
-        console.log("Session data not available, retrying...");
-        setTimeout(fetchCompanyDetails, 1000); // Retry after 1 second
-        return;
-      }
       let payload = {
         company_master_id: slug as string,
         // company_master_id: '1506' as string,
-        flag: '2'
+        flag: '2',
+        latitude:'0',
+        longitude:'0',
+        radius_id:'0'
       };
 
       const formData = new FormData();

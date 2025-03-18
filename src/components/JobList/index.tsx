@@ -13,7 +13,7 @@ import RegisterInMinutes from '../Nudges/Listing/RegisterInMinutes';
 import { api2 } from '@/Services/Apiservice';
 import { useAppSelector } from '@/redux/hooks';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { getSessionData } from '../utils/deviceId';
+import { getAuthUser, getSessionData } from '../utils/deviceId';
 import { setJobFiltersMaster } from '@/redux/jobsFilterSlice';
 import { useDispatch } from 'react-redux';
 import TopCompaniesHiring from '../Nudges/Listing/TopCompaniesHiring';
@@ -102,7 +102,7 @@ function JobList() {
         min_salary: minSalary ? Number(minSalary) : null,
         max_salary: maxSalary ? Number(maxSalary) : null,
         search: search,
-        sort: sort,
+        sort: sort == '3'? 3 : 1,
       };
   
       const { deviceId, secret, salt } = getSessionData();
@@ -187,12 +187,12 @@ function JobList() {
       <div className="flex justify-between mb-5 xl:mb-7 2xl:mb-10 3xl:mb-12">
         <div className="">
           {/* <pre>{JSON.stringify(user, null, 2)}</pre> */}
-          <h2 className="font-medium text-lg xl:text-xl 3xl:text-2xl 3xl:leading-7 mb-1 xl:mb-2">
+          <h2 className="font-medium text-base xl:text-lg 3xl:text-2xl 3xl:leading-7 mb-1 xl:mb-2">
             {token?"Recommended jobs for you":"All Jobs"}
           </h2>
           <p className="text-[#787878] text-sm 2xl:text-sm">{totalJobs} jobs for you</p>
         </div>
-        <div className="relative h-fit group sort-by-container">
+        <div className="relative h-fit group sort-by-container mt-1 3xl:mt-0">
           <button
             type="button"
             className="text-[#4D4D4F] px-3 !py-2 flex items-center !border-black btn-border"
@@ -200,8 +200,8 @@ function JobList() {
             aria-expanded="true"
             aria-haspopup="true"
           >
-            {sort === '1' ? 'Relevance' : sort === '2' ? 'Salary' : 'Sort By'}
-            <IoMdArrowDropdown className="flex-shrink-0 ml-1 xl:ml-5 text-[#000000] size-4 3xl:size-5" />
+            {sort === '3' ? 'Recently posted ' : 'Best Matched'}
+            <IoMdArrowDropdown className="flex-shrink-0 ml-1 xl:ml-2 3xl:ml-5 text-[#000000] size-3 3xl:size-4" />
           </button>
           <div
             className="opacity-0 sort-by-items-container hidden group-hover:block group-hover:opacity-100 absolute right-0 z-10 origin-top-right top-full focus:outline-hidden"
@@ -211,24 +211,24 @@ function JobList() {
             tabIndex={-1}
           >
             <div className="sort-items-wrapper rounded-md bg-white ring-1 shadow-lg ring-black/5 mt-1">
-              <div className="py-0 sort-items" role="none">
+              <div className="py-0 sort-items divide-y" role="none">
                 <div
                   onClick={() => handleSortChange('1')}
-                  className="sort-item block px-4 py-2 text-xs 2xl:text-sm hover:bg-gray-100 text-gray-700 hover:text-gray-900 outline-hidden"
+                  className="sort-item block px-4 py-2 lg:px-2 lg:py-1 3xl:px-4 3xl:py-2 text-xs lg:text-[8px] 3xl:text-sm whitespace-nowrap hover:bg-gray-100 text-[#6b6b6b] hover:text-gray-900 outline-hidden"
                   role="menuitem"
                   tabIndex={-1}
                   id="menu-item-2"
                 >
-                  Relevance
+                  Best Matched
                 </div>
                 <div
-                  onClick={() => handleSortChange('2')}
-                  className="sort-item block px-4 py-2 text-xs 2xl:text-sm hover:bg-gray-100 text-gray-700 hover:text-gray-900 outline-hidden"
+                  onClick={() => handleSortChange('3')}
+                  className="sort-item block px-4 py-2 lg:px-2 lg:py-1 3xl:px-4 3xl:py-2 text-xs lg:text-[8px] 3xl:text-sm whitespace-nowrap hover:bg-gray-100 text-[#6b6b6b] hover:text-gray-900 outline-hidden"
                   role="menuitem"
                   tabIndex={-1}
                   id="menu-item-2"
                 >
-                  Salary
+                  Recently posted
                 </div>
               </div>
             </div>
@@ -247,10 +247,18 @@ function JobList() {
           );
 
           // Add a nudge after every 2 job listings
-          if ((index + 1) % 2 === 0 && Math.floor((index + 1) / 2) - 1 < (user?.token? nudgesForLoggedInUser.length : nudges.length)) {
+          if ((index + 1) % 2 === 0) {
             const nudgeIndex = Math.floor((index + 1) / 2) - 1;
-            if (user?.token? nudgesForLoggedInUser : nudges[nudgeIndex]) {
-              items.push(user?.token? nudgesForLoggedInUser : nudges[nudgeIndex]);
+
+            // Check if the nudgeIndex is within the bounds of the nudges array
+            if (user?.token) {
+              if (nudgeIndex < nudgesForLoggedInUser.length) {
+                items.push(nudgesForLoggedInUser[nudgeIndex]);
+              }
+            } else {
+              if (nudgeIndex < nudges.length) {
+                items.push(nudges[nudgeIndex]);
+              }
             }
           }
 

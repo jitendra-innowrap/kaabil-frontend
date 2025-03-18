@@ -45,17 +45,9 @@ export default function Home() {
   useEffect(() => {
     async function fetchJobDetails() {
       try {
-        const { deviceId, secret, salt } = getSessionData();
-            
-        // Ensure session data is available
-        if (!deviceId || !secret || !salt) {
-          console.log("Session data not available, retrying...");
-          setTimeout(fetchJobDetails, 1000); // Retry after 1 second
-          return;
-        }
+
         let payload = {
           job_id: slug as string,
-          // job_id: '2850' as string,
         };
   
         const formData = new FormData();
@@ -203,7 +195,7 @@ export default function Home() {
                   <h1 className="font-medium text-[#231F20] text-xl 2xl:text-3xl">{jobDetails?.company_name}</h1>
                 </div>
                 <p className="text-[#231F20] text-xs 2xl:text-sm 3xl:text-base mt-1">{"Tech mahindra pvt ltd"}</p>
-                <div className="flex items-center flex-wrap mt-4 2xl:mt-6 gap-5 2xl:gap-10">
+                <div className="flex items-center flex-wrap xl:flex-nowrap mt-4 2xl:mt-6 gap-5 2xl:gap-10">
                   {/* Option 1 */}
                   <div className="flex gap-2 2xl:gap-4">
                     <Image
@@ -256,7 +248,7 @@ export default function Home() {
                       className="size-4 3xl:size-6"
                     />
                     <div className="text-[#231F20]">
-                      <strong className="block text-xs 2xl:text-sm font-normal">{jobDetails?.jobs_location?.[0]?.job_location}</strong>
+                      <strong className="block text-xs 2xl:text-sm font-normal max-w-[300px] line-clamp-1 truncate">{jobDetails?.jobs_location?.[0]?.job_location}</strong>
                     </div>
                   </div>
                   {skillMatchCount > 0 && <span className="label green flex font-medium 3xl:font-semibold items-center">{skillMatchCount} skills match <FaCheck className="ml-2 text-xs 2xl:text-sm 3xl:text-base"/> </span>}
@@ -321,7 +313,7 @@ export default function Home() {
                 }
               </div>
               <hr className="border-[#D6DDEB] my-4 md:my-5 xl:my-6" />
-              <h2 className="text-sm 2xl:text-lg 3xl:text-xl font-semibold mb-2 md:mb-4 3xl:mb-5 flex items-center gap-2">
+              {jobDetails?.jobs_location?.[0]?.job_location && (<><h2 className="text-sm 2xl:text-lg 3xl:text-xl font-semibold mb-2 md:mb-4 3xl:mb-5 flex items-center gap-2">
                 <Image src="/new-assets/icons/distance-pin.png" className="w-auto
                 h-4 2xl:h-6 ml-1 inline-block" width={150} height={150} alt="idea icon" />
                 Location</h2>
@@ -329,7 +321,7 @@ export default function Home() {
                 <div className="w-full">
                   <Map lat={jobDetails?.jobs_location?.[0]?.latitude || ""} lng={jobDetails?.jobs_location?.[0]?.longitude || ""} />
                 </div>
-              <hr className="border-[#D6DDEB] my-4 md:my-5 xl:my-6" />
+              <hr className="border-[#D6DDEB] my-4 md:my-5 xl:my-6" /></>)}
               <h2 className="text-sm 2xl:text-lg 3xl:text-xl font-semibold mb-2 md:mb-4 3xl:mb-5 flex items-center gap-2">
                 <Image src="/new-assets/icons/star-circle.png" className="size-4 2xl:size-6 inline-block" width={150} height={150} alt="idea icon" />
                 Perks and Benefits</h2>

@@ -60,7 +60,7 @@ export default function FilterSidebar() {
   return (
     <>
     {open && <div className="block bg-black z-10 opacity-20 w-screen h-screen fixed top-0 left-0" onClick={()=>setOpen(false)}></div>}
-    <div className="filters-sidebar lg:min-w-[260px] h-fit p-4 md:p-6 rounded-[20px] flex bg-white relative flex-col lg:w-fit items-start">
+    <div className="filters-sidebar lg:min-w-[260px] 3xl:min-w-[320px] h-fit p-4 md:p-6 rounded-[20px] flex bg-white relative flex-col lg:w-fit items-start">
     {/* <pre>{JSON.stringify(filters,null,2)}</pre> */}
         <div className="flex justify-between items-center w-full mb-2 md:mb-4 xl:mb-6 2xl:mb-8">
             <h2 className="text-lg 2xl:text-xl">All Filters

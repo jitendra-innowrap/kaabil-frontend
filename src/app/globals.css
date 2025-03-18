@@ -788,13 +788,10 @@ button, .btn, a.btn{
     padding: 6px 8px !important;
     background: #fff;
     color: #6b6b6b;
-    font-size: 8px;
+    font-size: 10px;
     text-align: center;
     justify-content: end;
     border: 0.5px solid #6b6b6b !important;
-  }
-  .sort-by-container button:hover{
-    background: white;
   }
   .sort-by-container .sort-items-wrapper .sort-item{
     cursor: pointer;

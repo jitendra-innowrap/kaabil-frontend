@@ -191,7 +191,7 @@ const handleActive = (page: number) => {
     <TopCompaniesHiring key="top-companies" />,
   ];
   return (
-    <div style={{ width: '-webkit-fill-available' }} className='lg:pl-3 xl:pl-4 3xl:pl-9'>
+    <div style={{ width: '-webkit-fill-available' }} className='lg:pl-3 xl:pl-7 3xl:pl-9'>
       <div className="flex justify-between mb-5 xl:mb-7 2xl:mb-10 3xl:mb-12">
         <div className="">
           {/* <pre>{JSON.stringify(user, null, 2)}</pre> */}
@@ -222,7 +222,7 @@ const handleActive = (page: number) => {
               <div className="py-0 sort-items divide-y" role="none">
                 <div
                   onClick={() => handleSortChange('1')}
-                  className="sort-item block px-4 py-2 lg:px-2 lg:py-1 3xl:px-4 3xl:py-2 text-xs lg:text-[8px] 3xl:text-sm whitespace-nowrap hover:bg-gray-100 text-[#6b6b6b] hover:text-gray-900 outline-hidden"
+                  className="sort-item block px-4 py-2 lg:px-[10px] lg:py-[7px] 3xl:px-4 3xl:py-2 text-xs lg:text-[10px] 3xl:text-sm whitespace-nowrap text-[#6b6b6b] hover:text-gray-900 outline-hidden"
                   role="menuitem"
                   tabIndex={-1}
                   id="menu-item-2"
@@ -231,7 +231,7 @@ const handleActive = (page: number) => {
                 </div>
                 <div
                   onClick={() => handleSortChange('3')}
-                  className="sort-item block px-4 py-2 lg:px-2 lg:py-1 3xl:px-4 3xl:py-2 text-xs lg:text-[8px] 3xl:text-sm whitespace-nowrap hover:bg-gray-100 text-[#6b6b6b] hover:text-gray-900 outline-hidden"
+                  className="sort-item block px-4 py-2 lg:px-[10px] lg:py-[7px] 3xl:px-4 3xl:py-2 text-xs lg:text-[10px] 3xl:text-sm whitespace-nowrap text-[#6b6b6b] hover:text-gray-900 outline-hidden"
                   role="menuitem"
                   tabIndex={-1}
                   id="menu-item-2"

@@ -169,10 +169,18 @@ function JobList() {
   };
 
   // Handle pagination button click
-  const handleActive = (page: number) => {
-    setCurrentPage(page);
-    router.push(`?page=${page}`); // Update the URL with the new page
-  };
+const handleActive = (page: number) => {
+  setCurrentPage(page);
+
+  // Create a new URLSearchParams object from the current search parameters
+  const params = new URLSearchParams(searchParams.toString());
+
+  // Update the 'page' parameter
+  params.set('page', page.toString());
+
+  // Push the updated query parameters to the URL
+  router.push(`?${params.toString()}`, { scroll: false });
+};
   
   const nudges = [
     <Interview key="interview" />,

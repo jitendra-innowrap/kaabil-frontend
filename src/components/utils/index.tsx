@@ -60,20 +60,20 @@ export function formatToK(number: number | string): string {
     }
   
     // Determine the salary unit
-    const unit = salaryRangeUnit === "1" ? "Monthly" : "Yearly";
+    const unit = salaryRangeUnit == "1" ? "Monthly" : "Yearly";
   
     // Check if min salary is null or empty or "0" and max salary is not null or empty or "0"
     if ((minSalary === null || minSalary === "" || minSalary === "0") && (maxSalary !== null && maxSalary !== "" && maxSalary !== "0")) {
-      return `₹${formatToK(maxSalary)} / ${unit}`;
+      return `${formatToK(maxSalary)} / `;
     }
   
     // Check if max salary is null or empty or "0" and min salary is not null or empty or "0"
     if ((maxSalary === null || maxSalary === "" || maxSalary === "0") && (minSalary !== null && minSalary !== "" && minSalary !== "0")) {
-      return `₹${formatToK(minSalary)} / ${unit}`;
+      return `${formatToK(minSalary)} / `;
     }
     if (((minSalary !== null)) && ((maxSalary !== null))) {
       // Default case: show salary range
-      return `₹${formatToK(minSalary)} - ₹${formatToK(maxSalary)} / ${unit}`;
+      return `${formatToK(minSalary)} - ${formatToK(maxSalary)} / `;
     }
     
     return "As per Industry standards"

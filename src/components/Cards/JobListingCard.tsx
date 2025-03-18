@@ -132,16 +132,21 @@ export default function JobListingCard(prop:any) {
       </div>
       <h3 className='text-sm 3xl:text-base 2xl:text-lg font-medium my-[6px] 3xl:my-3 line-clamp-2'>{prop?.job_title}</h3>
       <div className="flex mb-1 md:mb-2">
-        <img src={'/new-assets/icons/location-pin-dot.svg'} alt='Map pin' width={100} height={100} className='size-3 2xl:size-[19px]' />
+        <img src={'/new-assets/icons/location-pin-dot.svg'} alt='Map pin' width={100} height={100} className='size-3 2xl:size-5' />
         <span className='ml-2 text-[10px] 2xl:text-sm text-[#545581] line-clamp-1' title={prop?.job_location?.[0]?.job_location || "Remote"}>{prop?.job_location?.[0]?.job_location || "Remote"}</span>
       </div>
       <div className="flex gap-2">
         <div className="flex">
-          <TbBriefcase2 className='text-[#545581] size-3 2xl:size-5'/>
+          {/* <TbBriefcase2 className='text-[#545581] size-3 2xl:size-5'/> */}
+          <Image width={12} height={12} src={'/new-assets/icons/job-case.svg'} className='text-[#545581] size-3 2xl:size-5' alt='rupee icon' />
           <span className='ml-2 text-[10px] 2xl:text-sm text-[#545581]'>{showExperience(prop?.min_exp ||"0", prop?.max_exp || "0", "yrs experience")}</span>
         </div>
-        <div className='ml-5 text-[10px] 2xl:text-sm text-[#545581]'>{showSalary(prop?.is_industry_standard || "0", prop?.salary_range_unit ||"0",prop?.min_salary ||"0",prop?.max_salary ||"0")} 
-          {/* / <small className='text-[#B1B4B7]'>month</small> */  }
+        <div className='ml-5 text-[10px] 2xl:text-sm text-[#545581] flex items-center'>
+          {prop?.is_industry_standard !=1&& 
+            <Image width={15} height={15} src={'/new-assets/icons/rupee.svg'} className='mr-1 2xl:mr-2 size-[11px] 2xl:size-[15px]' alt='rupee icon' />
+          }
+          <span className='text-[10px] 2xl:text-sm'>{`${showSalary(prop?.is_industry_standard || "0", prop?.salary_range_unit ||"0",prop?.min_salary ||"0",prop?.max_salary ||"0")} `} </span>
+          {prop?.is_industry_standard !=1 && <small className='text-[#B1B4B7]'> &nbsp; {` ${ prop?.salary_range_unit== "1"?` month`:` year`}`}</small>}
           </div>
       </div>
       <div className="flex flex-wrap xl:flex-nowrap gap-4 min-h-16 justify-between">

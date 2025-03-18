@@ -10,11 +10,44 @@ import { TbBriefcase2 } from 'react-icons/tb'
 import { formatDate, showExperience, showSalary, timeAgo } from '../utils'
 import api from '@/Services/Apiservice'
 import toast from 'react-hot-toast'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from '@/redux/store'
+import { setProgress } from '@/redux/progressSlice'
+import { clearSessionData } from '../utils/deviceId'
+import { signOut } from '@/redux/userSlice'
 
 export default function JobListingCard(prop:any) {
-  const [isFavorited, setIsFavorited] = React.useState(prop?.saveJob_status==="1"?true:false);
-    const handleApply = (id:string) => {
-      // setIsFavorited(!isFavorited)
+  const token = useSelector((state: RootState) => state.user.token);
+  const [isApplied, setIsApplied] = React.useState(prop?.is_job_apply=="1"?true:false);
+  const [isFavorited, setIsFavorited] = React.useState(prop?.saveJob_status=="1"?true:false);
+  const dispatch = useDispatch();
+    const handleApply = async (id:string)=>{
+      if(!isApplied){
+        try {
+              const formData = new FormData();
+              formData.append("job_id", id); // Convert all values to strings
+              formData.append("token", token); // Convert all values to strings
+              const response = await api.post(`/Company/applyJob?job_id=${id}`,formData,{
+                  headers: {
+                    "Content-Type": "multipart/form-data",
+                  },
+                }
+              );
+              if(response.data?.code==1){
+                toast.success('Applied Successfully!', { position: 'bottom-right' });
+                setIsApplied(true);
+              }
+              if(response.data?.message=="Invalid Hash Request"){
+                toast.error("Session Expired Please login !", { position: 'bottom-right' });
+                dispatch(signOut());
+                dispatch(setProgress(1));
+                clearSessionData();
+              }
+              console.log(response);
+            } catch (error) {
+              console.error('Error fetching jobs:', error);
+            }
+          }
     }
     const handleSave = async (id:string)=>{
       try {
@@ -26,12 +59,18 @@ export default function JobListingCard(prop:any) {
                 },
               }
             );
-            if(response.data?.status==="2"){
+            if(response.data?.status=="2"){
               toast.success('Job Unsaved!', { position: 'bottom-right' });
               setIsFavorited(false);
-            }else if(response.data?.status==="1"){
+            }else if(response.data?.status=="1"){
               toast.success('Job saved!', { position: 'bottom-right' });
               setIsFavorited(true);
+            }
+            if(response.data?.message=="Invalid Hash Request"){
+              toast.error("Session Expired Please login !", { position: 'bottom-right' });
+              dispatch(signOut());
+              dispatch(setProgress(1));
+              clearSessionData();
             }
             console.log(response);
           } catch (error) {
@@ -65,16 +104,16 @@ export default function JobListingCard(prop:any) {
         
         </span>
       </div>
-      <h3 className='text-sm 3xl:text-base min-h-10 2xl:text-lg 3xl:min-h-14 font-medium my-[6px] 3xl:my-3 line-clamp-2'>{prop?.job_title}</h3>
-      <div className="flex mb-1 md:mb-2">
-      <img src={'/new-assets/icons/location-pin-dot.svg'} alt='Map pin' width={100} height={100} className='size-3 2xl:size-[19px]' />
-      <span className='ml-2 text-[10px] 2xl:text-sm text-[#545581]'>{prop?.job_location_city_list?.map((city:string, index:number) => (
-        <React.Fragment key={index}>
-          {city}
-          {index < prop?.job_location_city_list.length - 1 && ", "}
-        </React.Fragment>
-      ))}</span>
-      </div>
+      <h3 className='text-sm 3xl:text-base 2xl:text-lg font-medium my-[6px] 3xl:my-3 line-clamp-2'>{prop?.job_title}</h3>
+      {prop?.job_location_city_list?.length>0 && <div className="flex mb-1 md:mb-2">
+        <img src={'/new-assets/icons/location-pin-dot.svg'} alt='Map pin' width={100} height={100} className='size-3 2xl:size-[19px]' />
+        <span className='ml-2 text-[10px] 2xl:text-sm text-[#545581]'>{prop?.job_location_city_list?.map((city:string, index:number) => (
+          <React.Fragment key={index}>
+            {city}
+            {index < prop?.job_location_city_list.length - 1 && ", "}
+          </React.Fragment>
+        ))}</span>
+      </div>}
       <div className="flex gap-2">
         <div className="flex">
           <TbBriefcase2 className='text-[#545581] size-3 2xl:size-5'/>
@@ -85,7 +124,7 @@ export default function JobListingCard(prop:any) {
           </div>
       </div>
       <div className="flex flex-wrap xl:flex-nowrap gap-4 min-h-16 justify-between">
-        <ul className='flex flex-wrap gap-2 mt-3'>
+        <ul className='skills-wrapper flex flex-wrap gap-2 mt-3'>
           {prop?.skills?.slice(0, 3)?.map((skill:any, index:number) => (
             <li className='label small' key={index}>
               {skill?.name}
@@ -98,8 +137,8 @@ export default function JobListingCard(prop:any) {
           }
         </ul>
         <div className="flex action-btns gap-2 3xl:gap-4 flex-wrap xl:max-w-[170px] xl:flex-nowrap justify-end items-end">
-        <Link href={`/jobs/detail/${prop?.id}`} className='grid place-items-center btn-border whitespace-nowrap !py-0 xl:!px-5 3xl:!px-8 h-[30px] 3xl:h-[44px] flex-1 text-[10px] 2xl:text-xs 3xl:text-sm text-red !border-red'>view Job</Link>
-        <button type='button' onClick={()=>{handleApply(prop?.id)}} className='grid place-items-center btn-border whitespace-nowrap !py-0 xl:!px-5 3xl:!px-8 h-[30px] 3xl:h-[44px] flex-1 text-[10px] 2xl:text-xs 3xl:text-sm text-white !bg-red !border-red'>quick Apply</button>
+        <Link href={token?`/jobs/detail/${prop?.id}`:`#`} className='grid place-items-center btn-border whitespace-nowrap !py-0 xl:!px-5 3xl:!px-8 h-[30px] 3xl:h-[44px] flex-1 text-[10px] 2xl:text-xs 3xl:text-sm text-red !border-red'>view Job</Link>
+        <button type='button' onClick={()=>{handleApply(prop?.id)}} className='grid place-items-center btn-border whitespace-nowrap !py-0 xl:!px-5 3xl:!px-8 h-[30px] 3xl:h-[44px] flex-1 text-[10px] 2xl:text-xs 3xl:text-sm text-white !bg-red !border-red'>{isApplied?"Applied":"quick Apply"}</button>
         </div>
       </div>
     </div>

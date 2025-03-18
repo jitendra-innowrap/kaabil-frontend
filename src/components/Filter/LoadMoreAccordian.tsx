@@ -8,15 +8,16 @@ import Check from './Check';
 
 // Define the types for the props
 interface LoadMoreAccordionProps {
-    fetchMoreItems?: (keyword: string) => Promise<Array<{ key: string, doc_count: number }>>; // Function to fetch more items
+    fetchMoreItems?: (keyword: string) => Promise<Array<{ key: string, doc_count: number, latitude?: number, longitude?: number }>>; // Function to fetch more items
     maxItems?: number;
     filterKey: string;
     header: string;
     isSearchable?: boolean;
     isRadio?: boolean;
-    list: Array<{ key: string, doc_count: number }>; // Static list provided by parent
+    list: Array<{ key: string, doc_count: number, latitude?: number, longitude?: number }>; // Static list provided by parent
     searchPlaceholder?: string;
     searchIcon?: ReactNode;
+    showOptionsOnlyOnSearch?: boolean; // New prop to control visibility of options
 }
 
 function LoadMoreAccordion({
@@ -28,12 +29,13 @@ function LoadMoreAccordion({
     isRadio = false,
     list,
     searchPlaceholder = "",
-    searchIcon = <BiSearch />
+    searchIcon = <BiSearch />,
+    showOptionsOnlyOnSearch = false, // Default to false
 }: LoadMoreAccordionProps) {
     const [selected, setSelected] = useState<string>('');
     const [search, setSearch] = useState("");
     const [showAll, setShowAll] = useState(false); // State to control "Show More" functionality
-    const [dynamicList, setDynamicList] = useState<Array<{ key: string, doc_count: number }>>([]); // State for dynamically fetched list
+    const [dynamicList, setDynamicList] = useState<Array<{ key: string, doc_count: number, latitude?: number, longitude?: number }>>([]); // State for dynamically fetched list
     const router = useRouter();
     const searchParams = useSearchParams();
 
@@ -57,52 +59,75 @@ function LoadMoreAccordion({
         }
     }, [search, isSearchable, fetchMoreItems]);
 
-    // Filter the list based on search input
-    const filteredList = fetchMoreItems
-        ? dynamicList.filter(item => item.key.toLowerCase().includes(search.toLowerCase())) // Use dynamicList if fetchMoreItems is available
-        : list.filter(item => item.key.toLowerCase().includes(search.toLowerCase())); // Use static list otherwise
+    // Filter the list based on search input and remove empty keys
+    const filteredList = (fetchMoreItems ? dynamicList : list)
+        .filter(item => item.key && item.key.toLowerCase().includes(search.toLowerCase())); // Filter out empty keys and match search
 
     // Determine the list to display based on "Show More" state
     const displayedList = maxItems > 0 && !showAll ? filteredList.slice(0, maxItems) : filteredList;
 
-    const handleCheck = (item: { key: string }) => {
+    // Determine if options should be shown based on search and showOptionsOnlyOnSearch prop
+    const shouldShowOptions = !showOptionsOnlyOnSearch || search.trim() !== "";
+
+    const handleCheck = (item: { key: string, latitude?: number, longitude?: number }) => {
         const selectedArray = selected ? selected.split('|') : [];
         const itemName = item.key;
         const isSelected = selectedArray.includes(itemName);
-
+      
         let updatedSelected;
         if (isSelected) {
-            updatedSelected = selectedArray.filter(selectedItem => selectedItem !== itemName);
+          updatedSelected = selectedArray.filter(selectedItem => selectedItem !== itemName);
         } else {
-            updatedSelected = [...selectedArray, itemName];
+          updatedSelected = [...selectedArray, itemName];
         }
-
+      
         const newSelected = updatedSelected.join('|');
         setSelected(newSelected);
-
+      
         // Update the URL parameters
         const params = new URLSearchParams(searchParams.toString());
         if (newSelected) {
-            params.set(filterKey.toLowerCase(), newSelected);
+          params.set(filterKey.toLowerCase(), newSelected);
+        //   if (filterKey === 'location_filter' && item.latitude && item.longitude) {
+        //     // Append latitude and longitude for location_filter
+        //     const latLongArray = updatedSelected.map(location => {
+        //       const selectedItem = list.find(item => item.key === location);
+        //       return selectedItem ? `${selectedItem.latitude},${selectedItem.longitude}` : '0,0';
+        //     });
+        //     params.set('latitude', latLongArray.join('|'));
+        //     params.set('longitude', latLongArray.join('|'));
+        //   }
         } else {
-            params.delete(filterKey.toLowerCase());
+          params.delete(filterKey.toLowerCase());
+        //   if (filterKey === 'location_filter') {
+        //     params.delete('latitude');
+        //     params.delete('longitude');
+        //   }
         }
         router.push(`?${params.toString()}`, { scroll: false });
-    };
-
-    const handleRadio = (item: { key: string }) => {
-        const isSelected = selected === item.key;
-        const newSelected = isSelected ? '' : item.key;
-        setSelected(newSelected);
-
-        // Update the URL parameters
-        const params = new URLSearchParams(searchParams.toString());
-        if (newSelected) {
-            params.set(filterKey.toLowerCase(), newSelected);
-        } else {
-            params.delete(filterKey.toLowerCase());
+      };
+    const handleRadio = (item: { key: string, latitude?: number, longitude?: number }) => {
+    const isSelected = selected === item.key;
+    const newSelected = isSelected ? '' : item.key;
+    setSelected(newSelected);
+    
+    // Update the URL parameters
+    const params = new URLSearchParams(searchParams.toString());
+    if (newSelected) {
+        params.set(filterKey.toLowerCase(), newSelected);
+        if (filterKey === 'location_filter' && item.latitude && item.longitude) {
+        // Append latitude and longitude for location_filter
+        params.set('latitude', item.latitude.toString());
+        params.set('longitude', item.longitude.toString());
         }
-        router.push(`?${params.toString()}`, { scroll: false });
+    } else {
+        params.delete(filterKey.toLowerCase());
+        if (filterKey === 'location_filter') {
+        params.delete('latitude');
+        params.delete('longitude');
+        }
+    }
+    router.push(`?${params.toString()}`, { scroll: false });
     };
 
     return (
@@ -135,26 +160,26 @@ function LoadMoreAccordion({
                                     </div>
                                 </div>
                             ) : <></>}
-                            {filteredList.length > 0 ? (
+                            {shouldShowOptions && filteredList.length > 0 ? (
                                 <ul className={`pb-3 3xl:pb-5 grid gap-3 pt-3 3xl:pt-5 overflow-y-auto ${maxItems > 0 && showAll ? 'max-h-72' : ''} custom-scrollbar`}>
                                     {displayedList.map((item) => (
                                         isRadio ? (
                                             <li key={item.key} className='flex justify-between gap-3' onClick={() => handleRadio(item)}>
                                                 <Radio item={item.key} checked={selected === item.key} />
-                                                <span className='mr-3 text-xs 2xl:text-sm text-end'>{item.doc_count>=0?item.doc_count:''}</span>
+                                                <span className='mr-3 text-xs 2xl:text-sm text-end'>{item.doc_count >= 0 ? item.doc_count : ''}</span>
                                             </li>
                                         ) : (
                                             <li key={item.key} className='flex justify-between gap-3' onClick={() => handleCheck(item)}>
                                                 <Check item={item.key} checked={selected.split('|').includes(item.key)} />
-                                                <span className='mr-3 text-xs 2xl:text-sm text-end'>{item.doc_count>=0?item.doc_count:''}</span>
+                                                <span className='mr-3 text-xs 2xl:text-sm text-end'>{item.doc_count >= 0 ? item.doc_count : ''}</span>
                                             </li>
                                         )
                                     ))}
                                 </ul>
                             ) : <></>}
-                            {maxItems > 0 && filteredList.length > maxItems ? (
+                            {shouldShowOptions && maxItems > 0 && filteredList.length > maxItems ? (
                                 <button
-                                    className={`show-more !py-2 text-sm text-blue-500 hover:text-blue-700 ${showAll?'mt-3':''}`}
+                                    className={`show-more !py-2 text-sm text-blue-500 hover:text-blue-700 ${showAll ? 'mt-3' : ''}`}
                                     onClick={() => setShowAll(!showAll)}
                                 >
                                     {showAll ? 'Show Less' : 'Show More'}
@@ -178,7 +203,8 @@ export default function Page({
     isRadio = false,
     list,
     searchIcon,
-    searchPlaceholder
+    searchPlaceholder,
+    showOptionsOnlyOnSearch = false, // Pass the new prop
 }: LoadMoreAccordionProps) {
     return (
         <React.Suspense fallback={<div>Loading...</div>}>
@@ -192,6 +218,7 @@ export default function Page({
                 searchPlaceholder={searchPlaceholder}
                 isSearchable={isSearchable}
                 isRadio={isRadio}
+                showOptionsOnlyOnSearch={showOptionsOnlyOnSearch} // Pass the new prop
             />
         </React.Suspense>
     );

@@ -6,7 +6,8 @@ import React, { useState } from 'react'
 import toast from 'react-hot-toast';
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { setUserMobile } from '@/redux/userSlice';
+import { setUserMobile, signOut } from '@/redux/userSlice';
+import { clearSessionData } from '@/components/utils/deviceId';
 export default function MobileInputForm() {
   const dispatch = useAppDispatch();
   // ✅ Validation schema
@@ -31,16 +32,37 @@ export default function MobileInputForm() {
           dispatch(setUserMobile(mobile));
           toast.success("An OTP has been sent!", { position: "bottom-right" });
         } else {
-          toast.error(response?.message || "Login failed. Try again!", { position: "bottom-right" });
+          toast.error(response?.msg || "Login failed. Try again!", { position: "bottom-right" });
+        }
+        if(response.data?.msg=="Invalid Hash Request"){
+          toast.error("Session Expired Please login !", { position: 'bottom-right' });
+          dispatch(signOut());
+          dispatch(setProgress(1));
+          clearSessionData();
         }
       } catch (error: any) {
         console.error("Login Error:", error);
-        toast.error(error?.message || "Something went wrong!", { position: "bottom-right" });
+        if(error.data?.msg=="Invalid Hash Request"){
+          toast.error("Session Expired Please login !", { position: 'bottom-right' });
+          dispatch(signOut());
+          dispatch(setProgress(1));
+          clearSessionData();
+        }else{
+          toast.error(error?.message || "Something went wrong!", { position: "bottom-right" });
+        }
       }
   
     },
   });
-
+  const handleInput = (e:any) => {
+    const { value } = e.target;
+    const numericValue = value.replace(/\D+/g, ''); // Remove non-numeric characters
+    if (numericValue.length <= 10) {
+      formik.setFieldValue('mobile', numericValue);
+    } else {
+      formik.setFieldValue('mobile', numericValue.slice(0, 10));
+    }
+  };
   return (
     <div>
         <h2 className='text-center font-semibold text-lg md:text-xl 2xl:text-[28px] 2xl:leading-[36px]'>Lets start with your mobile number</h2>
@@ -53,7 +75,7 @@ export default function MobileInputForm() {
               placeholder="Enter your mobile number to receive OTP"
               className="border p-2 w-full rounded"
               value={formik.values.mobile}
-              onChange={formik.handleChange}
+              onChange={handleInput}
               onBlur={formik.handleBlur}
             />
             {formik.touched.mobile && formik.errors.mobile && (

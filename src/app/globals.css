@@ -661,6 +661,31 @@ button, .btn, a.btn{
     max-width: 980px;
     padding-inline: 20px;
   }
+  .job_listing_center_top_companies_nudge{
+    width: calc(1180px - 838px);
+  }
+  
+  .job_listing_center_top_companies_nudge h3{
+    font-size: 12px !important;
+    line-height: 18px !important;
+    height: 36px !important;
+  }
+  .job_listing_center_top_companies_nudge .swiper-btn{
+    height: 25px !important;
+    width: 25px !important;
+  }
+  .job_listing_center_top_companies_nudge .swiper-button-prev{
+    left: -10px;
+  }
+  .job_listing_center_top_companies_nudge .swiper-button-next{
+    right: -10px;
+  }
+  .job_listing_center_top_companies_nudge a{
+    font-size: 12px !important;
+  }
+  .job_listing_center_top_companies_nudge .slider-wrapper{
+    padding-inline: 20px;
+  }
   .container.big{
     max-width: 1080;
   }
@@ -763,7 +788,9 @@ button, .btn, a.btn{
 }
 
 @media (min-width : 1280px) {
-  
+.job-card .skills-wrapper{
+  max-width: 50% !important;
+}
 button, .btn, a.btn{
   background-color: var(--primary-red);
   color: #fff;
@@ -786,6 +813,22 @@ button, .btn, a.btn{
   .container{
     max-width: 1180px;
     padding-inline: 60px;
+  }
+  .job_listing_center_top_companies_nudge{
+    width: calc(1180px - 706px);
+  }
+  
+  .job_listing_center_top_companies_nudge .company-card img{
+    width: 40px !important;
+    height: 40px !important;
+  }
+  .job_listing_center_top_companies_nudge h3{
+    font-size: 12px !important;
+    line-height: 18px !important;
+    height: 46px !important;
+  }
+  .job_listing_center_top_companies_nudge a{
+    font-size: 12px !important;
   }
   .container.big{
     max-width: 1500px;
@@ -866,6 +909,17 @@ button, .btn, a.btn{
   .container{
     max-width: 1340px;
     padding-inline: 80px;
+  }
+  .job_listing_center_top_companies_nudge{
+    width: calc(1340px - 826px);
+  }
+  .job_listing_center_top_companies_nudge h3{
+    font-size: 12px !important;
+    line-height: 18px !important;
+    height: 46px !important;
+  }
+  .job_listing_center_top_companies_nudge a{
+    font-size: 12px !important;
   }
   
   .container.no-pad{
@@ -992,6 +1046,36 @@ button, .btn, a.btn{
   .container{
     max-width: 1570px;
     padding-inline: 60px;
+  }
+  .job_listing_center_top_companies_nudge{
+    width: calc(1570px - 776px);
+  }
+  
+  .job_listing_center_top_companies_nudge .company-card img{
+    width: 80px !important;
+    height: 80px !important;
+  }
+  
+  .job_listing_center_top_companies_nudge h3{
+    font-size: 16px !important;
+    line-height: 20px !important;
+    height: 60px !important;
+  }
+  .job_listing_center_top_companies_nudge .swiper-btn{
+    height: 40px !important;
+    width: 40px !important;
+  }
+  .job_listing_center_top_companies_nudge .swiper-button-prev{
+    left: -10px;
+  }
+  .job_listing_center_top_companies_nudge .swiper-button-next{
+    right: -10px;
+  }
+  .job_listing_center_top_companies_nudge a{
+    font-size: 16px !important;
+  }
+  .job_listing_center_top_companies_nudge .slider-wrapper{
+    padding-inline: 20px;
   }
   
   .container.no-pad{

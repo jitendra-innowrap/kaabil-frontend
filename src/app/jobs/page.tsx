@@ -1,6 +1,7 @@
+'use client'
 import PlayStoreAppAd from "@/components/Banners/PlaystoreAppAd";
 import Breadcrumb from "@/components/Breadcrumb";
-import CompanyCard from "@/components/Cards/CompanyCard";
+import CompanyCard, { jobcardtype } from "@/components/Cards/CompanyCard";
 import FilterSidebar from "@/components/Filter";
 import GallerySlider from "@/components/JobDetail/Slider/GallarySlider";
 import JobList from "@/components/JobList";
@@ -10,50 +11,47 @@ import ProfileCard from "@/components/Nudges/Listing/ProfileCard";
 import QuickAction from "@/components/Nudges/Listing/QuickAction";
 import ResumeBuilder from "@/components/Nudges/Listing/ResumeBuilder";
 import SearchSection from "@/components/SearchSection";
+import { getSessionData } from "@/components/utils/deviceId";
+import api from "@/Services/Apiservice";
 import Image from "next/image";
-import { Suspense } from "react";
-const jobsList = [
-  {
-   icon: "/new-assets/company-icons/image (1).png",
-   title: "Senior Software Engineer",
-   jobUrl: "/"
-  },
-  {
-   icon: "/new-assets/company-icons/image (2).png",
-   title: "Senior Software Engineer",
-   jobUrl: "/"
-  },
-  {
-   icon: "/new-assets/company-icons/image (3).png",
-   title: "Senior Software Engineer",
-   jobUrl: "/"
-  },
-  {
-   icon: "/new-assets/company-icons/image (4).png",
-   title: "Senior Software Engineer",
-   jobUrl: "/"
-  },
-  {
-   icon: "/new-assets/company-icons/image (1).png",
-   title: "Senior Software Engineer",
-   jobUrl: "/"
-  },
-  {
-   icon: "/new-assets/company-icons/image (2).png",
-   title: "Senior Software Engineer",
-   jobUrl: "/"
-  },
-  {
-   icon: "/new-assets/company-icons/image (3).png",
-   title: "Senior Software Engineer",
-   jobUrl: "/"
-  },
-]
+import { Suspense, useEffect, useState } from "react";
+
 export default function Home() {
-  
-  const slides = jobsList.map((job, index) => (
+  const [isLoading, setIsLoading] = useState(true);
+  const [topCompanies, setTopCompanies] = useState<jobcardtype[]>([]);
+  const slides = topCompanies.map((job, index) => (
       <CompanyCard key={index} {...job} />
   )); 
+  useEffect(() => {
+    const fetchHomedata = async () => {
+      try {
+        const { deviceId, secret, salt } = getSessionData();
+        
+        // Ensure session data is available
+        if (!deviceId || !secret || !salt) {
+          console.log("Session data not available, retrying...");
+          setTimeout(fetchHomedata, 1000); // Retry after 1 second
+          return;
+        }
+
+        const response = await api.get("/Home/homeData");
+        console.clear();
+        console.log(response);
+        setTopCompanies(response?.data?.result?.top_companies?.map((comp: any, i: number) => ({
+          icon: comp?.company_logo || "/new-assets/icons/company_icon_placeholder.png",
+          title: comp?.company_name,
+          companyId: `${comp?.id}`,
+          jobUrl: '/'
+        })));
+      } catch (error) {
+        console.error("Error fetching job types:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchHomedata();
+  }, []);
   return (
     <main className="bg-[#F9F9F9]">
       

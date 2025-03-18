@@ -24,7 +24,6 @@ export default function TopCompaniesHiring() {
         }
 
         const response = await api.get("/Home/homeData");
-        console.clear();
         console.log(response);
         setTopCompanies(response?.data?.result?.top_companies?.map((comp: any, i: number) => ({
           icon: comp?.company_logo || "/new-assets/icons/company_icon_placeholder.png",

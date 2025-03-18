@@ -24,28 +24,46 @@ function SearchSection() {
   const isScriptLoaded = useSelector((state: RootState) => state.search.isScriptLoaded);
   useEffect(() => {
     const fetchIndustries = async () => {
-          try {
-            const { deviceId, secret, salt } = getSessionData();
-            
-            // Ensure session data is available
-            if (!deviceId || !secret || !salt) {
-              console.log("Session data not available, retrying...");
-              setTimeout(fetchIndustries, 1000); // Retry after 1 second
-              return;
-            }
-    
-            const response = await api.post("/MasterData/getIndustry");
-            console.clear();
-            console.log(response);
-            setIndustryOptions(response.data?.result.map((ind:{id:string, name:string}) => ({ value: ind.id, label: ind.name })))
-           
-          } catch (error) {
-            console.error("Error fetching job types:", error);
-          }
-        };
-    
-        fetchIndustries();
-      // .then(data => );
+      try {
+        const { deviceId, secret, salt } = getSessionData();
+        
+        // Ensure session data is available
+        if (!deviceId || !secret || !salt) {
+          console.log("Session data not available, retrying...");
+          setTimeout(fetchIndustries, 1000); // Retry after 1 second
+          return;
+        }
+
+        const response = await api.post("/MasterData/getIndustry");
+        console.log(response);
+        setIndustryOptions(response.data?.result.map((ind:{id:string, name:string}) => ({ value: ind.id, label: ind.name })))
+       
+      } catch (error) {
+        console.error("Error fetching job types:", error);
+      }
+    };
+    const fetchLocations = async () => {
+      try {
+        const { deviceId, secret, salt } = getSessionData();
+        
+        // Ensure session data is available
+        if (!deviceId || !secret || !salt) {
+          console.log("Session data not available, retrying...");
+          setTimeout(fetchIndustries, 1000); // Retry after 1 second
+          return;
+        }
+
+        const response = await api.get("/MasterData/getCity");
+        console.log(response);
+        setLocationOptions(response.data?.result.map((ind:{id:string, name:string}) => ({ value: ind.id, label: ind.name })))
+       
+      } catch (error) {
+        console.error("Error fetching job types:", error);
+      }
+    };
+
+    fetchIndustries();
+    fetchLocations();
   }, []);
   const handleLocationInputChange = (inputValue: string) => {
     if (autocompleteService && inputValue) {
@@ -118,8 +136,8 @@ function SearchSection() {
           placeholder="Select Location"
           className="text-xs 2xl:text-base"
           classNamePrefix="select-location"
-          onInputChange={handleLocationInputChange}
-          onChange={handleLocationChange}
+          // onInputChange={handleLocationInputChange}
+          onChange={(selectedOption) => setLocation(selectedOption ? selectedOption.label : '')}
           components={{
             IndicatorSeparator: () => null,
             DropdownIndicator: () => (

@@ -22,6 +22,8 @@ export interface User {
     available_job?: number;
     user_id?: string;
     role_id?: string[];
+    designation?: string;
+    profilePercentage?: number;
     current_location?: UserLocation | null;
     }
     // Define the user location interface

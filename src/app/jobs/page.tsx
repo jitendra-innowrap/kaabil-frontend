@@ -12,11 +12,14 @@ import QuickAction from "@/components/Nudges/Listing/QuickAction";
 import ResumeBuilder from "@/components/Nudges/Listing/ResumeBuilder";
 import SearchSection from "@/components/SearchSection";
 import { getSessionData } from "@/components/utils/deviceId";
+import { useAppSelector } from "@/redux/hooks";
 import api from "@/Services/Apiservice";
 import Image from "next/image";
 import { Suspense, useEffect, useState } from "react";
 
 export default function Home() {
+    const {token} = useAppSelector((state) => state.auth);
+
   const [isLoading, setIsLoading] = useState(true);
   const [topCompanies, setTopCompanies] = useState<jobcardtype[]>([]);
   const slides = topCompanies.map((job, index) => (
@@ -35,7 +38,6 @@ export default function Home() {
         }
 
         const response = await api.get("/Home/homeData");
-        console.clear();
         console.log(response);
         setTopCompanies(response?.data?.result?.top_companies?.map((comp: any, i: number) => ({
           icon: comp?.company_logo || "/new-assets/icons/company_icon_placeholder.png",
@@ -76,10 +78,10 @@ export default function Home() {
             </Suspense>
             <div className="nudges-bar flex flex-shrink-0 flex-col gap-4 md:gap-6 max-w-[400px] mx-auto lg:w-[280px] 2xl:w-[341px]">
               <FindCareer/>
-              <ProfileCard/>
-              <QuickAction/>
+              {token && <ProfileCard/>}
+              {token && <QuickAction/>}
               <ResumeBuilder/>
-              <BoostProfile/>
+              {token && <BoostProfile/>}
             </div>
         </div>
       </section>

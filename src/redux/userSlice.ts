@@ -29,10 +29,12 @@ const initialState: AuthState = {
   role_id: user?.role_id || [],
   job_type_master_id: user?.job_type_master_id || [],
   skills: user?.skills || [],
+  designation: user?.designation || "",
   is_fresher: user?.is_fresher || 2,
   experience: user?.experience || [],
   location_id: user?.location_id || [],
   users_education: user?.users_education || [],
+  profilePercentage: user?.profilePercentage || 0,
   current_location: null,
   active_jobseeker: 0,
   available_job: 0,
@@ -54,6 +56,10 @@ const userSlice = createSlice({
       setUserId: (state, action: PayloadAction<string>) => {
         state.id = action.payload;
         storeAuthUser({ ...state, id: action.payload });
+      },
+      setUserDesignation: (state, action: PayloadAction<string>) => {
+        state.designation = action.payload;
+        storeAuthUser({ ...state, designation: action.payload });
       },
       setUserIsProfileVerified: (state, action: PayloadAction<string>) => {
         state.is_profile_verify = action.payload;
@@ -107,12 +113,16 @@ const userSlice = createSlice({
       setUserWAConsent: (state, action: PayloadAction<boolean>) => {
         state.is_whatsapp_show = action.payload;
         storeAuthUser({ ...state, is_whatsapp_show: action.payload });
+      },
+      setUserProfilePercentage: (state, action: PayloadAction<number>) => {
+        state.profilePercentage = action.payload;
+        storeAuthUser({ ...state, profilePercentage: action.payload });
       }
     },
 });
 
 // Export actions
-export const { signOut, setAuthToken, setUserIsProfileVerified, setUserId, setIsFresher, setUserWAConsent, setUserPhotoUrl, setUserRole, setUserEducation, setUserExperience, setUserMobile, setUserName, setUserLocation, setUserSkills, setCurrentLocation } = userSlice.actions;
+export const { signOut, setUserProfilePercentage, setUserDesignation, setAuthToken, setUserIsProfileVerified, setUserId, setIsFresher, setUserWAConsent, setUserPhotoUrl, setUserRole, setUserEducation, setUserExperience, setUserMobile, setUserName, setUserLocation, setUserSkills, setCurrentLocation } = userSlice.actions;
 
 // Export the reducer
 export default userSlice.reducer;

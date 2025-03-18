@@ -82,12 +82,13 @@ export default function Home() {
           notFound();
         }
       } catch (error: any) {
-        if(error?.status==401){
-          router.back();
-          console.error("page error: 👍👍👍",error);
-        }else if(error?.status==404){
-          notFound();
-        }
+        // if(error?.status==401){
+        //   router.back();
+        //   console.error("page error: 👍👍👍",error);
+        // }else if(error?.status==404){
+        //   notFound();
+        // }
+        console.log(error);
       }
       setIsLoading(false)
     };

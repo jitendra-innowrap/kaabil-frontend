@@ -57,6 +57,18 @@ function JobList() {
       const longitude = searchParams.get('longitude')?.split('|') || []; // Parse longitude as an array
       const search = searchParams.get('search') || '';
   
+      // Check if any filters are applied
+      const hasFilters =
+      jobTypesFilter.length > 0 ||
+      locationFilter.length > 0 ||
+      industriesFilter.length > 0 ||
+      experienceFilter.length > 0 ||
+      jobLocationTypesFilter.length > 0 ||
+      benefitsFilter.length > 0 ||
+      minSalary ||
+      maxSalary ||
+      search;
+
       // Format location_filter as an array of objects with latitude and longitude
       const formattedLocationFilter = locationFilter.map((location, index) => {
         const locationObj: { location: string; latitude?: number; longitude?: number } = {
@@ -78,7 +90,7 @@ function JobList() {
   
       // Construct payload
       let payload = {
-        recommendate: false,
+        recommendate: token?!hasFilters:false, // Set recommendate to true if no filters are applied, else false
         soft_skill_filter: [],
         skill_filter: [],
         job_location_types_filter: jobLocationTypesFilter,
@@ -120,7 +132,6 @@ function JobList() {
         const totalPages = Math.ceil(totalJobs / jobsPerPage);
         setTotalPages(totalPages);
         setTotalJobs(totalJobs);
-        console.clear();
         console.log(response.data?.data);
         let filterMasters = {
           benefits_filter: response.data?.data?.filters?.benefits_filter?.buckets,
@@ -177,7 +188,7 @@ function JobList() {
         <div className="">
           {/* <pre>{JSON.stringify(user, null, 2)}</pre> */}
           <h2 className="font-medium text-lg xl:text-xl 3xl:text-2xl 3xl:leading-7 mb-1 xl:mb-2">
-            {token?"Recommended jobs for you":"IT and Technology jobs"}
+            {token?"Recommended jobs for you":"All Jobs"}
           </h2>
           <p className="text-[#787878] text-sm 2xl:text-sm">{totalJobs} jobs for you</p>
         </div>

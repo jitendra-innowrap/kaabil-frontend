@@ -16,6 +16,7 @@ import { setProgress } from '@/redux/progressSlice'
 import { clearSessionData } from '../utils/deviceId'
 import { signOut } from '@/redux/userSlice'
 import { FaHeart } from 'react-icons/fa6'
+import { VscHeart, VscHeartFilled } from 'react-icons/vsc'
 
 export default function JobListingCard(prop:any) {
   const token = useSelector((state: RootState) => state.user.token);
@@ -121,9 +122,9 @@ export default function JobListingCard(prop:any) {
         <span tabIndex={0} onClick={()=>{handleSave(prop?.id)}}>
         {
           !isFavorited? (
-            <img src='/new-assets/icons/heart.svg' className={`text-[#717B9E] size-4 3xl:size-5 cursor-pointer`}/>
+            <VscHeart className={`text-[#717B9E] size-4 3xl:size-5 cursor-pointer`}/>
           ) : (
-            <FaHeart className={`text-red size-4 3xl:size-5 cursor-pointer`}/>
+            <VscHeartFilled className={`text-red size-4 3xl:size-5 cursor-pointer`}/>
           )
         }
         

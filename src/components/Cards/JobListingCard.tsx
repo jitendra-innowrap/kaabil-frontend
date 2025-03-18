@@ -18,6 +18,7 @@ import { signOut } from '@/redux/userSlice'
 
 export default function JobListingCard(prop:any) {
   const token = useSelector((state: RootState) => state.user.token);
+  const userSkills = useSelector((state: RootState) => state.user.skills);
   const [isApplied, setIsApplied] = React.useState(prop?.is_job_apply=="1"?true:false);
   const [isFavorited, setIsFavorited] = React.useState(prop?.saveJob_status=="1"?true:false);
   const dispatch = useDispatch();
@@ -92,6 +93,9 @@ export default function JobListingCard(prop:any) {
             <h3 className='text-xs 3xl:text-sm text-[#070828]'>{prop?.company_name}</h3>
             <p className='text-[8px] mt-1 3xl:text-xs text-[#B9B9B9]'>{timeAgo(prop?.created_date)}</p>
           </div>
+          {prop?.profile_matched_percentage>50 &&<div className="job-profile-match label small lightgreen">
+          {prop?.profile_matched_percentage}% Profile Match
+          </div>}
         </div>
         <span tabIndex={0} onClick={()=>{handleSave(prop?.id)}}>
         {
@@ -125,11 +129,18 @@ export default function JobListingCard(prop:any) {
       </div>
       <div className="flex flex-wrap xl:flex-nowrap gap-4 min-h-16 justify-between">
         <ul className='skills-wrapper flex flex-wrap gap-2 mt-3'>
-          {prop?.skills?.slice(0, 3)?.map((skill:any, index:number) => (
-            <li className='label small' key={index}>
-              {skill?.name}
-            </li>
-          ))}
+          {prop?.skills?.slice(0, 3)?.map((skill:any, index:number) => {
+              const isSkillIncluded = userSkills?.some((userSkill) => userSkill.id == skill.id);
+            return <li
+            className={`label small flex gap-2 items-center ${isSkillIncluded ? 'lightgreen' : ''}`}
+            key={index}
+          >
+            {skill?.name}
+            {isSkillIncluded && (
+              <img src="/new-assets/icons/check.svg" className='size-2' alt="" />
+            )}
+          </li>
+          })}
           {
             prop?.skills?.length > 3 && (
               <li className='label small cursor-default'>+{(prop?.skills?.length - 3).toString()} More</li>

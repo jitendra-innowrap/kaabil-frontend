@@ -61,12 +61,12 @@ export default function JobListingCardSmall({detail}:{detail:CompanyJob}) {
         </div>
         <ul className='flex flex-wrap gap-2 mt-3'>
           {
-            detail?.jobs_skills?.slice(0, parseInt(detail?.id))?.map((skill)=>(
+            detail?.jobs_skills?.slice(0, 3)?.map((skill)=>(
               <li className='label small cursor-default' title={skill?.name}>{skill?.name}</li>
             ))
           }{
-            detail?.jobs_skills?.length > 4 && (
-              <li className='label small cursor-default'>+{(detail?.jobs_skills?.length - 4).toString()} More</li>
+            detail?.jobs_skills?.length > 3 && (
+              <li className='label small cursor-default'>+{(detail?.jobs_skills?.length - 3).toString()} More</li>
             )
           }
         </ul>

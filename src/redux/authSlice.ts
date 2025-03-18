@@ -60,7 +60,6 @@ export const getDeviceToken = createAsyncThunk<
   { rejectValue: string }
 >("device/fetchToken", async (_, { rejectWithValue }) => {
   try {
-    console.clear();
     console.log("secret is " + secret);
 
     if (deviceId) {

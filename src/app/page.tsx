@@ -51,7 +51,6 @@ export default function Home() {
             }
     
             const response = await api.get("/Home/homeData");
-            console.clear();
             console.log(response);
             setHomeData(response?.data?.result);
             setJobTypes(response?.data?.result?.job_types?.map((typ: any, i: number) => ({
@@ -270,7 +269,7 @@ export default function Home() {
         <main>
             <section className=''>
                 <div className=''>
-                    <Image src='/new-assets/banners/Hero banner.png' quality={100} alt="" width={3840} height={1000}
+                    <Image src='/new-assets/home/banner.png' quality={100} alt="" width={3840} height={1000}
                     className="w-full h-auto"
                     />
                 </div>

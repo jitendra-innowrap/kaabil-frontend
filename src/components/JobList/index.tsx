@@ -191,7 +191,7 @@ const handleActive = (page: number) => {
     <TopCompaniesHiring key="top-companies" />,
   ];
   return (
-    <div style={{ width: '-webkit-fill-available' }}>
+    <div style={{ width: '-webkit-fill-available' }} className='lg:pl-3 xl:pl-4 3xl:pl-9'>
       <div className="flex justify-between mb-5 xl:mb-7 2xl:mb-10 3xl:mb-12">
         <div className="">
           {/* <pre>{JSON.stringify(user, null, 2)}</pre> */}

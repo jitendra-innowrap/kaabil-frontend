@@ -248,30 +248,52 @@ export function formatJobDuration(start: string | Date, end?: string | Date): st
   }
   return `${days} day${days !== 1 ? 's' : ''}`;
 }
+
 export function timeAgo(dateString: string): string {
+  // Parse the input date as UTC
   const past = new Date(dateString);
   if (isNaN(past.getTime())) return "Invalid date";
 
+  // Get the current time in local timezone
   const now = new Date();
-  const diff = now.getTime() - past.getTime();
 
+  // Adjust past time to local time zone
+  const pastLocal = new Date(
+    past.getUTCFullYear(),
+    past.getUTCMonth(),
+    past.getUTCDate(),
+    past.getUTCHours(),
+    past.getUTCMinutes(),
+    past.getUTCSeconds()
+  );
+
+  // Get the time difference in milliseconds
+  const diff = now.getTime() - pastLocal.getTime();
+
+  console.log("Past Local Time:", pastLocal.toString());
+  console.log("Now Local Time:", now.toString());
+  console.log("Time Difference (ms):", diff);
+  console.log("Time Difference (hours):", diff / (1000 * 60 * 60));
+
+  // Define time intervals
   const minute = 60 * 1000;
   const hour = 60 * minute;
   const day = 24 * hour;
   const month = 30 * day;
   const year = 365 * day;
 
+  // Determine the time ago string
   if (diff < minute) return "just now";
   if (diff < hour) return `${Math.floor(diff / minute)} min ago`;
-  if (diff < day) return `${Math.floor(diff / hour)} hour ago`;
+  if (diff < day) return `${Math.floor(diff / hour)} hours ago`;
   if (diff < 2 * day) return "yesterday";
-  if (diff < 30 * day) return `${Math.floor(diff / day)} day ago`;
-  if (diff < year) return `${Math.floor(diff / month)} month ago`;
-  
-  return `${Math.floor(diff / year)} year ago`;
+  if (diff < month) return `${Math.floor(diff / day)} days ago`;
+  if (diff < year) return `${Math.floor(diff / month)} months ago`;
+
+  return `${Math.floor(diff / year)} years ago`;
 }
 
-const bgColors = ['#A7226E', '#EC2049', '#F26B38', '#F7DB4F', '#2F9599'];
+
 
 export const getCompanyInitials = (name?: string): string => {
   if (!name) return '?';

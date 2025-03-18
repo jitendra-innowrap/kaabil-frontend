@@ -107,7 +107,7 @@ export default function JobListingCard(prop:any) {
           }
     }
   return (
-    <div onClick={()=>{console.log(prop)}} className='job-card h-full flex flex-col justify-between w-full border shadow-sm border-lightGrey rounded-2xl bg-white p-4 3xl:p-6'>
+    <div onClick={()=>{console.log(timeAgo(prop?.job_posted_date), prop?.job_posted_date)}} className='job-card h-full flex flex-col justify-between w-full border shadow-sm border-lightGrey rounded-2xl bg-white p-4 3xl:p-6'>
       <div className="flex gap-3 3xl:gap-4 justify-between">
           <div className="flex gap-[10px] 3xl:gap-4">
             <CompanyLogo name={prop?.company_name} logo={prop?.company_logo} index={prop?.id || 0} />

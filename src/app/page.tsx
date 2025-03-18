@@ -15,6 +15,7 @@ import ResumeBuilder from "@/components/Nudges/Home/ResumeBuilder";
 import { useEffect, useState } from "react";
 import api from "@/Services/Apiservice";
 import { getSessionData } from "@/components/utils/deviceId";
+import { useRouter } from 'next/navigation';
 export default function Home() {
     const [homeData, setHomeData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -37,6 +38,7 @@ export default function Home() {
     ])
     const [topCompanies, setTopCompanies] = useState<jobcardtype[]>([]);
     const [topIndustries, setTopIndustries] = useState<industryCard[]>([]);
+    const router = useRouter();
     // ✅ Fetch roles and job types from API
     useEffect(() => {
         const fetchHomedata = async () => {
@@ -315,7 +317,12 @@ export default function Home() {
                             />
                         </div>
                     </div>
-                    <button className="mx-auto text-xs 2xl:text-base font-normal 3xl:w-[252px] 3xl:h-[50px] mt-6 md:mt-8">View all companies</button>
+                    <button 
+                        className="mx-auto text-xs 2xl:text-base font-normal 3xl:w-[252px] 3xl:h-[50px] mt-6 md:mt-8"
+                        onClick={() => router.push('/CompanyTrading')}
+                    >
+                        View all companies
+                    </button>
                 </div>
             </section>
 

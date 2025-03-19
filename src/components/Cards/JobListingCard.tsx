@@ -1,7 +1,7 @@
 'use client'
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { CiHeart } from 'react-icons/ci'
 import { IoIosHeart, IoIosHeartEmpty } from 'react-icons/io'
 import { LiaMapMarkerAltSolid } from 'react-icons/lia'
@@ -21,6 +21,7 @@ import { VscHeart, VscHeartFilled } from 'react-icons/vsc'
 export default function JobListingCard(prop:any) {
   const token = useSelector((state: RootState) => state.user.token);
   const userSkills = useSelector((state: RootState) => state.user.skills);
+  const user = useSelector((state: RootState) => state.user);
   const [isApplied, setIsApplied] = React.useState(prop?.is_job_apply=="1"?true:false);
   const [isFavorited, setIsFavorited] = React.useState(prop?.saveJob_status=="1"?true:false);
   const dispatch = useDispatch();
@@ -50,6 +51,10 @@ export default function JobListingCard(prop:any) {
       </div>
     );
   };
+  useEffect(() => {
+    setIsFavorited(prop?.saveJob_status=="1"?true:false)
+  }, [user,prop])
+  
     const handleApply = async (id:string)=>{
       if(!isApplied){
         try {
@@ -107,7 +112,7 @@ export default function JobListingCard(prop:any) {
           }
     }
   return (
-    <div onClick={()=>{console.log(timeAgo(prop?.job_posted_date), prop?.job_posted_date)}} className='job-card h-full flex flex-col justify-between w-full border shadow-sm border-lightGrey rounded-2xl bg-white p-4 3xl:p-6'>
+    <div onClick={()=>{console.log(prop)}} className='job-card h-full flex flex-col justify-between w-full border shadow-sm border-lightGrey rounded-2xl bg-white p-4 3xl:p-6'>
       <div className="flex gap-3 3xl:gap-4 justify-between">
           <div className="flex gap-[10px] 3xl:gap-4">
             <CompanyLogo name={prop?.company_name} logo={prop?.company_logo} index={prop?.id || 0} />

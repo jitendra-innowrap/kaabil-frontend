@@ -148,4 +148,5 @@ interface ApiResponseJobDetail {
     code: number;
     result: JobResult[];
     msg: string;
+    similar_jobs: CompanyJob[]
 }

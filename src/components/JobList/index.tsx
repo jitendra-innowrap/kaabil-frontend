@@ -265,12 +265,12 @@ function JobList() {
         </div>
       </div>
       <div className="flex flex-col gap-4 md:gap-6">
-        {jobs.map((job, index) => {
+        {jobs.map((job:any, index) => {
           const items = [];
 
           // Add the job listing
           items.push(
-            <div className="flex w-[100%]" key={`job-${index}`}>
+            <div className="flex w-[100%]" key={`job-${job?.id}`}>
               <JobListingCard {...job} />
             </div>
           );

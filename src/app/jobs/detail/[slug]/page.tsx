@@ -26,6 +26,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { signOut } from "@/redux/userSlice";
 import { setProgress } from "@/redux/progressSlice";
+import { VscHeart, VscHeartFilled } from "react-icons/vsc";
 
 
 export default function Home() {
@@ -75,6 +76,8 @@ export default function Home() {
           }
           setJobDetails(responseData?.result?.[0] as JobResult);
           setSimilarJobs(responseData?.similar_jobs)
+          setIsFavorited(responseData?.result?.[0]?.saveJob_status=='1');
+          setIsApplied(responseData?.result?.[0]?.is_job_apply=="1"?true:false);
         }else{
           notFound();
         }
@@ -228,7 +231,7 @@ export default function Home() {
     <main>
       <section className="bg-[#FDEAC9] py-6 xl:py-8 sticky">
       <div className="container relative z-[1]">
-        <div className="flex justify-between flex-wrap flex-col sm:flex-row gap-5 xl:gap-7 2xl:gap-8">
+        <div className="flex justify-between flex-wrap flex-col sm:flex-row sm:items-end gap-5 xl:gap-7 2xl:gap-8">
           <div className="flex justify-between flex-col sm:flex-row gap-3 2xl:gap-5 3xl:gap-8">
               <CompanyLogo  index={1} logo={jobDetails?.logo} styles="flex-shrink-0 border border-[#07082833] size-12 2xl:size-16 rounded-full"  name={jobDetails?.company_name} />
               <div className="block">
@@ -275,7 +278,15 @@ export default function Home() {
                       className="size-4 3xl:size-6"
                     />
                     <div className="text-[#231F20] flex items-center">
-                      <strong className="block text-xs 2xl:text-sm font-normal">{showSalary(jobDetails?.is_industry_standard || "0", jobDetails?.salary_range_unit ||"0",jobDetails?.min_salary ||"0",jobDetails?.max_salary ||"0")}{` ${ jobDetails?.salary_range_unit== "1"?` month`:` year`}`}</strong>
+                      {
+                        (jobDetails?.is_industry_standard=="1" || ((jobDetails?.min_salary === null || jobDetails?.min_salary === "" || jobDetails?.min_salary === "0")) && ((jobDetails?.max_salary === null || jobDetails?.max_salary === "" || jobDetails?.max_salary === "0")))?
+                        <strong className="block text-xs 2xl:text-sm font-normal">As per Industry standards</strong>:
+                      <strong className="block text-xs 2xl:text-sm font-normal">
+                        {showSalary(jobDetails?.is_industry_standard || "0", jobDetails?.salary_range_unit ||"0",jobDetails?.min_salary ||"0",jobDetails?.max_salary ||"0")}
+                        {` ${ jobDetails?.salary_range_unit=="1"?` month`:` year`}`}
+                      </strong>
+                        
+                      }
                     </div>
                   </div>
 
@@ -289,23 +300,23 @@ export default function Home() {
                       className="size-4 3xl:size-6"
                     />
                     <div className="text-[#231F20] flex items-center">
-                      <strong className="block text-xs 2xl:text-sm font-normal max-w-[300px] line-clamp-1 truncate">{jobDetails?.jobs_location?.[0]?.job_location || "Remote"}</strong>
+                      <strong className="block text-xs 2xl:text-sm font-normal max-w-[150px] 3xl:max-w-[300px] line-clamp-1 truncate">{jobDetails?.jobs_location?.[0]?.job_location || "Remote"}</strong>
                     </div>
                   </div>
                   {skillMatchCount > 0 && <span className="label green flex font-medium 3xl:font-medium !lowercase items-center">{skillMatchCount} skills match <FaCheck className="ml-1 3xl:ml-2 text-[8px] 3xl:text-xs font-light"/> </span>}
                 </div>
               </div>
           </div>
-          <div className="flex gap-3 md:gap-4 justify-end items-end">
+          <div className="flex gap-3 md:gap-4 justify-end items-center h-fit">
             <div onClick={handleShare} className="bg-white cursor-pointer flex-shrink-0 grid place-items-center rounded-full size-6 2xl:size-8 3xl:size-10">
-              <IoShareSocialOutline className="text-[#4D4D4F] text-xs 2xl:text-sm 3xl:text-base"/>
+              <img src="/new-assets/icons/share.svg" className="text-[#4D4D4F] size-[12px] 3xl:size-[15px]"/>
             </div>
             <button onClick={()=> handleSave(jobDetails?.id || "")} className="text-[#231F20] btn-border !text-xs 2xl:!text-sm 3xl:!text-base flex h-fit items-center gap-2 !border-black">
               save {
                         !isFavorited? (
-                          <IoIosHeartEmpty className={`text-black 3xl:size-5 cursor-pointer`}/>
+                          <VscHeart className={`text-black 3xl:size-5 cursor-pointer`}/>
                         ) : (
-                          <IoIosHeart className={`text-red 3xl:size-5 cursor-pointer`}/>
+                          <VscHeartFilled className={`text-red 3xl:size-5 cursor-pointer`}/>
                         )
                       }
             </button>
@@ -444,7 +455,7 @@ export default function Home() {
         <div className="w-full flex flex-col py-5 md:py-8 xl:py-14 2xl:py-16  mx-auto">
           <div className="">                        
             <div className="container section-heading">
-                <h2 className='text-black text-start text-2xl md:text-2xl 2xl:text-3xl 3xl:text-4xl 2xl:mb-3 font-medium'>Trending jobs</h2>
+                <h2 className='text-black text-start text-2xl md:text-2xl 2xl:text-3xl 3xl:text-4xl 2xl:mb-3 font-medium'>Similar jobs</h2>
             </div>
             <div className="block container slider">
               <GallerySlider

@@ -210,10 +210,19 @@ function JobList() {
     <Interview key="interview" />,
     <TopCompaniesHiring key="top-companies" />,
   ];
-
+  const [isOpen, setIsOpen] = useState(false);
+  // Handle sort option selection
+  const handleOptionClick = (newSort: string) => {
+    handleSortChange(newSort); // Update the sort value
+    setIsOpen(false); // Close the dropdown
+  };
+  // Toggle dropdown visibility
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
   return (
     <div style={{ width: '-webkit-fill-available' }} className='lg:pl-3 xl:pl-7 3xl:pl-9'>
-      <div className="flex justify-between mb-5 xl:mb-7 2xl:mb-10 3xl:mb-12">
+      <div className="flex justify-between mb-5 xl:mb-3 3xl:mb-6">
         <div className="">
           {/* <pre>{JSON.stringify(user, null, 2)}</pre> */}
           <h2 className="font-medium text-base xl:text-lg 3xl:text-2xl 3xl:leading-7 mb-1 xl:mb-2">
@@ -221,50 +230,56 @@ function JobList() {
           </h2>
           <p className="text-[#787878] text-sm 2xl:text-sm">{totalJobs} jobs for you</p>
         </div>
-        <div className="relative h-fit group sort-by-container mt-1 3xl:mt-0">
+        <div className="relative h-fit sort-by-container mt-1 3xl:mt-0">
+          {/* Dropdown Button */}
           <button
             type="button"
             className="text-[#4D4D4F] px-3 !py-2 flex items-center !border-black btn-border"
             id="menu-button"
-            aria-expanded="true"
+            aria-expanded={isOpen}
             aria-haspopup="true"
+            onClick={toggleDropdown}
           >
-            {sort === '3' ? 'Recently posted ' : 'Best Matched'}
+            {sort === "3" ? "Recently posted" : "Best Matched"}
             <IoMdArrowDropdown className="flex-shrink-0 ml-1 xl:ml-2 3xl:ml-5 text-[#000000] size-3 3xl:size-4" />
           </button>
-          <div
-            className="opacity-0 sort-by-items-container hidden group-hover:block group-hover:opacity-100 absolute right-0 z-10 origin-top-right top-full focus:outline-hidden"
-            role="menu"
-            aria-orientation="vertical"
-            aria-labelledby="menu-button"
-            tabIndex={-1}
-          >
-            <div className="sort-items-wrapper rounded-md bg-white ring-1 shadow-lg ring-black/5 mt-1">
-              <div className="py-0 sort-items divide-y" role="none">
-                <div
-                  onClick={() => handleSortChange('1')}
-                  className="sort-item block px-4 py-2 lg:px-[10px] lg:py-[7px] 3xl:px-4 3xl:py-2 text-xs lg:text-[10px] 3xl:text-sm whitespace-nowrap text-[#6b6b6b] hover:text-gray-900 outline-hidden"
-                  role="menuitem"
-                  tabIndex={-1}
-                  id="menu-item-2"
-                >
-                  Best Matched
-                </div>
-                <div
-                  onClick={() => handleSortChange('3')}
-                  className="sort-item block px-4 py-2 lg:px-[10px] lg:py-[7px] 3xl:px-4 3xl:py-2 text-xs lg:text-[10px] 3xl:text-sm whitespace-nowrap text-[#6b6b6b] hover:text-gray-900 outline-hidden"
-                  role="menuitem"
-                  tabIndex={-1}
-                  id="menu-item-2"
-                >
-                  Recently posted
+
+          {/* Dropdown Menu */}
+          {isOpen && (
+            <div
+              className="sort-by-items-container absolute right-0 z-10 origin-top-right top-full focus:outline-hidden"
+              role="menu"
+              aria-orientation="vertical"
+              aria-labelledby="menu-button"
+              tabIndex={-1}
+            >
+              <div className="sort-items-wrapper rounded-md bg-white ring-1 shadow-lg ring-black/5 mt-1">
+                <div className="py-0 sort-items divide-y" role="none">
+                  <div
+                    onClick={() => handleOptionClick("1")}
+                    className="sort-item block px-4 py-2 lg:px-[10px] lg:py-[7px] 3xl:px-4 3xl:py-2 text-xs lg:text-[10px] 3xl:text-sm whitespace-nowrap text-[#6b6b6b] hover:text-gray-900 outline-hidden cursor-pointer"
+                    role="menuitem"
+                    tabIndex={-1}
+                    id="menu-item-2"
+                  >
+                    Best Matched
+                  </div>
+                  <div
+                    onClick={() => handleOptionClick("3")}
+                    className="sort-item block px-4 py-2 lg:px-[10px] lg:py-[7px] 3xl:px-4 3xl:py-2 text-xs lg:text-[10px] 3xl:text-sm whitespace-nowrap text-[#6b6b6b] hover:text-gray-900 outline-hidden cursor-pointer"
+                    role="menuitem"
+                    tabIndex={-1}
+                    id="menu-item-2"
+                  >
+                    Recently posted
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
-      <div className="flex flex-col gap-4 md:gap-6">
+      <div className="flex flex-col gap-4 lg:gap-3 3xl:gap-4">
         {jobs.map((job:any, index) => {
           const items = [];
 

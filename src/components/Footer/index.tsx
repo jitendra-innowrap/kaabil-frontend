@@ -28,7 +28,7 @@ const handleFetchLocation = async () => {
         <div className="container w-full flex flex-col mt-5 md:mt-8 xl:mt-14  mx-auto">
             <div className="flex justify-between mb-5 lg:mb-8 2xl:mb-[20px]">
                 <div className="block">
-                    <Image
+                    <img
                     src={"/new-assets/logos/Kaabil logo white.png"}
                     width={194}
                     height={88}
@@ -88,8 +88,8 @@ const handleFetchLocation = async () => {
                 {/* <div className="flex gap-[37px]">
                 </div> */}
                 <div className="block">
-                    <Image
-                    src={"/new-assets/logos/mahindra logo white.png"}
+                    <img
+                    src={"/new-assets/icons/black-mahindra.png"}
                     width={182}
                     height={83}
                     alt="company logo"

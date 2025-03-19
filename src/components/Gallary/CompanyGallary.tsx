@@ -13,18 +13,27 @@ const CompanyGallery: React.FC<{ galleryItems: (CompanyImage | CompanyVideo)[] }
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [videoUrl, setVideoUrl] = useState("");
-    const [open, setOpen] = useState(false)
-    const popupRef = useRef<any>(null);
+  const [mediaType, setMediaType] = useState<string>(""); // Use empty string as initial value
+  const [mediaUrl, setMediaUrl] = useState<string>("");
+  const [open, setOpen] = useState(false);
+  const popupRef = useRef<any>(null);
+
   // Handle click on a gallery item
-  const handleSlideClick = (index: number, videoUrl:string) => {
+  const handleSlideClick = (index: number, item: CompanyImage | CompanyVideo) => {
+    setMediaType(item?.media_type || ""); // Ensure media_type is set correctly
     setActiveIndex(index);
+    setMediaUrl(item?.media_url || "");
+
     setIsOpen(true);
     setOpen(true);
-    setVideoUrl(videoUrl)
   };
+
+  // Close the popup and reset states
   const closePopup = () => {
     setOpen(false);
+    setIsOpen(false);
+    setMediaType(""); // Reset mediaType
+    setMediaUrl(""); // Reset mediaUrl
     if (popupRef.current) {
       popupRef.current.close();
     }
@@ -35,7 +44,7 @@ const CompanyGallery: React.FC<{ galleryItems: (CompanyImage | CompanyVideo)[] }
     <CompanyGallerycard
       key={item.id}
       item={item}
-      onClick={() => item?.media_type=="2" ?handleSlideClick(index, item?.media_url): ""}
+      onClick={() => handleSlideClick(index, item)}
     />
   ));
 
@@ -43,7 +52,7 @@ const CompanyGallery: React.FC<{ galleryItems: (CompanyImage | CompanyVideo)[] }
   const lightboxSlides = galleryItems.map((item) => ({
     src: item.media_url,
     thumbnail: item.media_thumbnail,
-    type: item.media_type === "video" ? "video" : "image", // Specify type for videos
+    type: item.media_type === "2" ? "video" : "image", // Use "2" for video type
   }));
 
   return (
@@ -60,64 +69,56 @@ const CompanyGallery: React.FC<{ galleryItems: (CompanyImage | CompanyVideo)[] }
           freeMode={false}
           slidesPerView={1}
           breakpoints={{
-              768: {
-                slidesPerView: 1.5,
-              },
-              1024: {
-                slidesPerView: 4,
-              },
-              1280: {
-                slidesPerView: 5,
-                spaceBetween: 20,
-              },
-              1920:{
-                slidesPerView: 5,
-                spaceBetween: 24,
-              }
-            }}
+            768: {
+              slidesPerView: 1.5,
+            },
+            1024: {
+              slidesPerView: 4,
+            },
+            1280: {
+              slidesPerView: 5,
+              spaceBetween: 20,
+            },
+            1920: {
+              slidesPerView: 5,
+              spaceBetween: 24,
+            },
+          }}
         />
       </div>
 
-      {/* Lightbox */}
-      {/* <Lightbox
-        open={isOpen}
-        close={() => setIsOpen(false)}
-        slides={lightboxSlides}
-        index={activeIndex}
-        plugins={[Thumbnails]} // Add Thumbnails plugin
-        render={{
-          slide: (slide) => {
-            if (slide.type === "video") {
-              return (
-                <video
-                  controls
-                  autoPlay
-                  style={{ width: "100%", height: "auto" }}
-                >
-                  <source src={slide.src} type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
-              );
-            }
-            return <img src={slide.} alt="" style={{ width: "100%", height: "auto" }} />;
-          },
-        }}
-      /> */}
+      {/* Popup for displaying media */}
       <Popup
-              ref={popupRef}
-              open={open}
-              onClose={closePopup}
-              modal
-              className="video-payer"
-              overlayStyle={{
-                background: '#4D4D4DC2',
-                padding: '20px',
-                borderRadius: '10px',
-                overflow: 'hidden',
-              }}
-            >
-              <video src={videoUrl} controls autoPlay playsInline></video>
-            </Popup>
+        ref={popupRef}
+        open={open}
+        onClose={closePopup}
+        modal
+        className="video-payer company-gallary"
+        overlayStyle={{
+          background: "#4D4D4DC2",
+          padding: "20px",
+          borderRadius: "10px",
+          overflow: "hidden",
+        }}
+      >
+        {mediaType === "2" ? (
+          <video
+            src={mediaUrl}
+            controls
+            autoPlay
+            playsInline
+            style={{ width: "100%", height: "auto" }}
+          >
+            Your browser does not support the video tag.
+          </video>
+        ) : (
+          <img
+            src={mediaUrl}
+            alt=""
+            style={{ width: "auto", height: "70vw", maxHeight:"600px", margin:"auto" }}
+          />
+        )}
+      </Popup>
     </div>
   );
 };

@@ -146,11 +146,16 @@ export default function JobListingCard(prop:any) {
           <span className='ml-2 text-[10px] 2xl:text-sm text-[#545581]'>{showExperience(prop?.min_exp ||"0", prop?.max_exp || "0", "yrs experience")}</span>
         </div>
         <div className='ml-5 text-[10px] 2xl:text-sm text-[#545581] flex items-center'>
-          {prop?.is_industry_standard !=1&& 
+          
             <Image width={15} height={15} src={'/new-assets/icons/rupee.svg'} className='mr-1 2xl:mr-2 size-[11px] 2xl:size-[15px]' alt='rupee icon' />
+          {
+            (prop?.is_industry_standard=="1" || ((prop?.min_salary === null || prop?.min_salary === "" || prop?.min_salary === "0")) && ((prop?.max_salary === null || prop?.max_salary === "" || prop?.max_salary === "0")))?
+            <span className='text-[10px] 2xl:text-sm'>As per Industry standards</span>:
+            <>
+            <span className='text-[10px] 2xl:text-sm'>{`${showSalary(prop?.is_industry_standard || "0", prop?.salary_range_unit ||"0",prop?.min_salary ||"0",prop?.max_salary ||"0")} `} </span>
+            {prop?.is_industry_standard !=1 && <small className='text-[#B1B4B7]'> &nbsp; {` ${ prop?.salary_range_unit== "1"?` month`:` year`}`}</small>}
+            </>
           }
-          <span className='text-[10px] 2xl:text-sm'>{`${showSalary(prop?.is_industry_standard || "0", prop?.salary_range_unit ||"0",prop?.min_salary ||"0",prop?.max_salary ||"0")} `} </span>
-          {prop?.is_industry_standard !=1 && <small className='text-[#B1B4B7]'> &nbsp; {` ${ prop?.salary_range_unit== "1"?` month`:` year`}`}</small>}
         </div>
       </div>
       <div className="flex flex-wrap xl:flex-nowrap gap-4 min-h-16 justify-between">

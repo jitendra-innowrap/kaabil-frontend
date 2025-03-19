@@ -10,19 +10,25 @@ import api from "@/Services/Apiservice";
 import toast from "react-hot-toast";
 import CompanyGallery from "@/components/Gallary/CompanyGallary";
 import Tabs from "@/components/Tabs";
-import { getSessionData } from "@/components/utils/deviceId";
+import { clearSessionData, getSessionData } from "@/components/utils/deviceId";
+import ProfilePhoto from "@/components/Cards/ProfilePhoto";
+import { useDispatch } from "react-redux";
+import { setProgress } from "@/redux/progressSlice";
+import { signOut } from "@/redux/userSlice";
 
 export default function CompanyDetails() {
 const {slug} = useParams();
+const dispatch = useDispatch();
 const [isLoading, setIsLoading] = useState(true);
 const [CompanyDetails, setCompanyDetails] = useState<Company>();
 const [companyGallary, setCompanyGallary] = useState<(CompanyImage | CompanyVideo)[]>([]);
+const [isFollowed, setIsFollowed] = useState(false);
 const router = useRouter();
 const [companyJobs, setCompanyJobs] = useState<(CompanyJob | CompanyJobCategory)[]>([])
 const jobsSlides = companyJobs
   ?.filter((job): job is CompanyJob => 'id' in job) // Type guard to filter only CompanyJob
   .map((job, index) => (
-      <JobListingCardSmall key={index} detail={job} />
+      <JobListingCardSmall key={index} detail={job} isCompanyJob />
   ));
 useEffect(() => {
   async function fetchCompanyDetails() {
@@ -52,6 +58,7 @@ useEffect(() => {
       if (responseData.result?.[0]?.id !== null) {
         setCompanyDetails(responseData.result?.[0]);
         setCompanyJobs(responseData.job)
+        setIsFollowed(responseData?.result?.[0]?.company_follow_status=="1")
         setCompanyGallary([...responseData.result?.[0]?.company_image, ...responseData.result?.[0]?.company_videos ])
       }else{
         console.log("Page Not Found:", response);
@@ -67,17 +74,47 @@ useEffect(() => {
   fetchCompanyDetails();
 }, [slug]);
 
+const handleFollow = async ()=>{
+  try {
+        const formData = new FormData();
+        formData.append("company_master_id", slug as string); // Convert all values to strings
+        const response = await api.post(`/Company/followCompany?job_id=${slug}`,formData,{
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        console.log(response?.data?.status)
+        if(response.data?.status=="2"){
+          toast.success(`You unfollowed ${CompanyDetails?.company_name}!`, { position: 'bottom-right' });
+          setIsFollowed(false);
+        }else if(response.data?.status=="1"){
+          toast.success(`You followed ${CompanyDetails?.company_name}!`, { position: 'bottom-right' });
+          setIsFollowed(true);
+        }
+        if(response.data?.message=="Invalid Hash Request"){
+          toast.error("Session Expired Please login !", { position: 'bottom-right' });
+          dispatch(signOut());
+          dispatch(setProgress(1));
+          clearSessionData();
+        }
+        console.log(response);
+      } catch (error) {
+        console.error('Error fetching jobs:', error);
+      }
+}
+
 
 
 if(isLoading){
   return (
     <div className="flex justify-center items-center h-screen">
       <div className='flex space-x-6 justify-center items-center'>
-                  <span className='sr-only'>Loading...</span>
-                   <div className='h-6 w-6 bg-red rounded-full animate-bounce [animation-delay:-0.3s]'></div>
-                 <div className='h-6 w-6 bg-red rounded-full animate-bounce [animation-delay:-0.15s]'></div>
-                 <div className='h-6 w-6 bg-red rounded-full animate-bounce'></div>
-               </div>
+        <span className='sr-only'>Loading...</span>
+          <div className='h-6 w-6 bg-red rounded-full animate-bounce [animation-delay:-0.3s]'></div>
+          <div className='h-6 w-6 bg-red rounded-full animate-bounce [animation-delay:-0.15s]'></div>
+          <div className='h-6 w-6 bg-red rounded-full animate-bounce'></div>
+      </div>
     </div>
   )
 }
@@ -94,25 +131,28 @@ if(isLoading){
                 className="absolute md:max-w-[50%] h-full w-auto top-0 right-0 z-0"
                 />
           <div className="container relative z-[1]">
-            <div className="flex flex-col sm:flex-row gap-5 xl:gap-7 2xl:gap-8">
-            <Image
-                src={CompanyDetails?.company_logo || ""}
-                width={200}
-                height={97}
-                alt="company profile logo"
-                className="rounded-lg 2xl:rounded-2xl flex-shrink-0 size-16 lg:size-[105px] 2xl:size-36 3xl:size-40"
+            <div className="flex flex-col sm:flex-row sm:items-center gap-5 xl:gap-7 2xl:gap-8">
+              <ProfilePhoto 
+                logo={CompanyDetails?.company_logo} 
+                styles="rounded-lg bg-white 2xl:rounded-2xl flex-shrink-0 size-16 lg:size-[105px] 2xl:size-36 3xl:size-40" 
+                name={CompanyDetails?.company_name}
+                index={1}
                 />
                 <div className="block">
                   <div className="flex 2xl:mt-2 justify-between lg:justify-start gap-5 xl:gap-7 2xl:gap-8">
                     <div className="block">
-                      <h1 className="font-medium text-white text-2xl 3xl:text-[32px] 3xl:leading-[32px]">{CompanyDetails?.company_name}</h1>
-                      <p className="text-greyText text-xs 2xl:text-base 3xl:text-lg mt-2 2xl:mt-3">{"www.lorem.ipsum"}</p>
+                      <div className="flex items-center gap-4 3xl:gap-6">
+                        <h1 className="font-medium text-white text-2xl 3xl:text-[32px] 3xl:leading-[32px]">{CompanyDetails?.company_name}</h1>
+                        <button onClick={handleFollow} className="btn-border w-[100px] 3xl:w-[123px] justify-center text-[##F2F2F2] company-follow-btn whitespace-nowrap !text-[11px] !font-light 3xl:!text-[14px] h-[28px] flex items-center 3xl:h-[38px] !px-3 !border-[0.3px] 3xl:!border-[1px] !rounded 3xl:!rounded-md !py-0">
+                          {isFollowed? <img src="/new-assets/icons/follow-check.svg" className="mr-2" alt="check" />: <>+ &nbsp;</> }
+                          {isFollowed?"Following":"Follow"}</button>
+                      </div>
+                      {/* <p className="text-greyText text-xs 2xl:text-base 3xl:text-lg mt-2 2xl:mt-3">{"www.lorem.ipsum"}</p> */}
                     </div> 
-                    <button className="btn-border whitespace-nowrap !text-[10px] 3xl:!text-[15px] h-[25px] 3xl:h-[33px] !px-3 !rounded-md !py-0">+ Follow</button>
                   </div>
                   
                   <div className="flex flex-wrap mt-4 xl:mt-5 2xl:mt-6 gap-5 lg:gap-8 3xl:gap-10">
-                    <div className="flex gap-2 lg:gap-3 3xl:gap-4">
+                    {/* <div className="flex gap-2 lg:gap-3 3xl:gap-4">
                       <Image
                       src={'/new-assets/icons/foundation-icon.png'}
                       width={1320}
@@ -125,10 +165,10 @@ if(isLoading){
                         <strong className="block font-medium text-xs 2xl:text-base -mb-[2px] 2xl:mb">Founded</strong>
                         <span className="text-[10px] 2xl:text-sm font-light">Lorem</span>
                       </div>
-                    </div>
+                    </div> */}
                     <div className="flex gap-2 lg:gap-3 2xl:gap-4">
                       <Image
-                      src={'/new-assets/icons/employees-icon.png'}
+                      src={'/new-assets/icons/employee-icon.svg'}
                       width={1320}
                       height={1320}
                       quality={100}
@@ -142,7 +182,7 @@ if(isLoading){
                     </div>
                     <div className="flex gap-2 lg:gap-3 2xl:gap-4">
                       <Image
-                      src={'/new-assets/icons/location-icon.png'}
+                      src={'/new-assets/icons/location-icon-round.svg'}
                       width={1320}
                       height={1320}
                       quality={100}
@@ -156,7 +196,7 @@ if(isLoading){
                     </div>
                     <div className="flex gap-2 lg:gap-3 2xl:gap-4">
                       <Image
-                      src={'/new-assets/icons/industry-icon.png'}
+                      src={'/new-assets/icons/industry-icon-round.svg'}
                       width={1320}
                       height={1320}
                       quality={100}
@@ -174,11 +214,11 @@ if(isLoading){
           </div>
       </section>
       <section className="container">
-          <div className="xl:mx-10 my-5 md:my-8 3xl:my-10">
+          <div className="my-5 md:my-8 3xl:my-10">
             <Tabs tabTitles={tabTitles}/>
           </div>
-          <div id="about" className="py-5 md:py-8 xl:py-14 2xl:py-16 rounded-xl shadow-default">
-            <div className="px-5 md:px-8 xl:px-14 2xl:px-16">
+          <div id="about" className="py-3 md:py-5 xl:py-8 2xl:py-12 rounded-xl">
+            <div className="px-3 md:px-5 xl:px-8 3xl:px-11">
               <h2 className="text-sm 2xl:text-lg 3xl:text-xl font-semibold mb-2 md:mb-4 3xl:mb-6">About {CompanyDetails?.company_name}</h2>
               <p className="text-xs leading-6 3xl:text-sm 3xl:leading-[32px] mb-4 md:mb-6 xl:mb-8">{CompanyDetails?.company_description
                 }</p>
@@ -229,7 +269,7 @@ if(isLoading){
                     CompanyDetails?.benifits.map((benefit)=>(
                       <div className="block">
                      <Image
-                        src={"/new-assets/icons/employee-benefit1.png"}
+                        src={"/new-assets/icons/benefit-icon.svg"}
                         width={45}
                         height={45}
                         alt="company profile logo"
@@ -245,7 +285,7 @@ if(isLoading){
             </div>
           </div>
       </section>
-      <section className="py-5 xl:py-6">
+      <section className="pt-7 pb-2">
           <PlayStoreAppAd />
       </section>
     </main>

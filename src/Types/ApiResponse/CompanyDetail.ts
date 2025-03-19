@@ -2,6 +2,7 @@ interface CompanyDetailResponse {
     code: number;
     result: Company[];
     job: (CompanyJob | CompanyJobCategory)[];
+    similar_company: (CompanyJob | CompanyJobCategory)[];
   }
   
   interface Company {

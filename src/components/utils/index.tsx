@@ -56,7 +56,7 @@ export const showSalary = (
 
   // Check if both min and max salary are null or empty
   if (((minSalary === null || minSalary === "" || minSalary === "0")) && ((maxSalary === null || maxSalary === "" || maxSalary === "0"))) {
-    return "-";
+    return "As per Industry standards";
   }
 
   // Determine the salary unit
@@ -92,7 +92,7 @@ export const showSalarySimilarJob = (
 
   // Check if both min and max salary are null or empty
   if (((minSalary === null || minSalary === "" || minSalary === "0")) && ((maxSalary === null || maxSalary === "" || maxSalary === "0"))) {
-    return "-";
+    return "As per Industry standards";
   }
 
   // Determine the salary unit

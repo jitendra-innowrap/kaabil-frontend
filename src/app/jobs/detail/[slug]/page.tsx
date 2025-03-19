@@ -43,7 +43,6 @@ export default function Home() {
   const [isFavorited, setIsFavorited] = useState(jobDetails?.saveJob_status=="1"?true:false);
   const [similarJobs, setSimilarJobs] = useState<CompanyJob[]>([]);
   const router = useRouter();
-  
     useEffect(() => {
       setIsFavorited(jobDetails?.saveJob_status=='1');
       setIsApplied(jobDetails?.is_job_apply=="1"?true:false);
@@ -72,7 +71,7 @@ export default function Home() {
         if (responseData.code === 1) {
           if(responseData.result?.[0]?.id==null){
             toast.error("page not found", { position: "bottom-right" });
-            notFound();
+            router.push("/");
           }
           setJobDetails(responseData?.result?.[0] as JobResult);
           setSimilarJobs(responseData?.similar_jobs)
@@ -100,7 +99,7 @@ export default function Home() {
     setSkillMatchCount(matchedSkillsCount);
   }, [jobDetails, token, userSkills])
   
-  const jobsSlides = similarJobs.map((job, index) => (
+  const jobsSlides = similarJobs?.map((job, index) => (
     <JobListingCardSmall key={index} detail={job} />
   ));
   const style = {
@@ -349,7 +348,7 @@ export default function Home() {
                 Education</h2>
               <div className="flex flex-wrap gap-1 md:gap-2">
                 {
-                  jobDetails?.education.split(",").map((education)=>(
+                  jobDetails?.education.split(",")?.map((education)=>(
                     <div className="label grey lightgreen">{education}</div>
                   ))
                 }

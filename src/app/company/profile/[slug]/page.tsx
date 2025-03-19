@@ -5,7 +5,7 @@ import GallerySlider from "@/components/JobDetail/Slider/GallarySlider";
 import JobListingCardSmall from "@/components/Cards/JobListingCardSmall";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { notFound, useParams } from "next/navigation";
+import { notFound, useParams, useRouter } from "next/navigation";
 import api from "@/Services/Apiservice";
 import toast from "react-hot-toast";
 import CompanyGallery from "@/components/Gallary/CompanyGallary";
@@ -17,7 +17,7 @@ const {slug} = useParams();
 const [isLoading, setIsLoading] = useState(true);
 const [CompanyDetails, setCompanyDetails] = useState<Company>();
 const [companyGallary, setCompanyGallary] = useState<(CompanyImage | CompanyVideo)[]>([]);
-
+const router = useRouter();
 const [companyJobs, setCompanyJobs] = useState<(CompanyJob | CompanyJobCategory)[]>([])
 const jobsSlides = companyJobs
   ?.filter((job): job is CompanyJob => 'id' in job) // Type guard to filter only CompanyJob
@@ -55,7 +55,8 @@ useEffect(() => {
         setCompanyGallary([...responseData.result?.[0]?.company_image, ...responseData.result?.[0]?.company_videos ])
       }else{
         console.log("Page Not Found:", response);
-        notFound();
+        // notFound();
+        router.push('/')
       }
     } catch (error: any) {
       console.error(error);

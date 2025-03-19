@@ -32,7 +32,7 @@ export default function CompanyTrading() {
     { name: "Deloitte", icon: "/new-assets/company-icons/deolite.png" },
     { name: "Mahindra Holidays and Resorts India Ltd", icon: "/new-assets/company-icons/club.png" },
     { name: "Swiggy", icon: "/new-assets/company-icons/swiggy.png" },
-    { name: "Flipkart", icon: "/new-assets/company-icons/flipkart.png" },
+    { name: "Flipkart", icon: "/new-assets/company-icons/flip.png" },
     { name: "Contempo Technologies", icon: "/new-assets/company-icons/contempo.png" },
     { name: "Quickinsure", icon: "/new-assets/company-icons/quickinsure.png" },
     { name: "Tech Mahindra Ltd", icon: "/new-assets/company-icons/mahindra.png" },
@@ -40,21 +40,21 @@ export default function CompanyTrading() {
 
   // Following companies data
   const followingCompanies = [
-    { name: "Jio", icon: "/new-assets/company-icons/jio.png", bgColor: "bg-gray-100" },
-    { name: "Tata Consultancy Services", icon: "/new-assets/company-icons/tcs.png", bgColor: "bg-gray-100" },
-    { name: "Tech Mahindra Ltd", icon: "/new-assets/company-icons/mahindra.png", bgColor: "bg-gray-100" },
+    { name: "Jio", icon: "/new-assets/company-icons/jio.png" },
+    { name: "Tata Consultancy Services", icon: "/new-assets/company-icons/tcs.png" },
+    { name: "Tech Mahindra Ltd", icon: "/new-assets/company-icons/mahindra.png" },
   ];
 
   // Industries data
   const industries = [
-    { name: "Retail", icon: "/icons/retail.svg" },
-    { name: "Media", icon: "/icons/media.svg" },
-    { name: "Healthcare", icon: "/icons/healthcare.svg" },
-    { name: "Education", icon: "/icons/education.svg" },
-    { name: "IPO", icon: "/icons/ipo.svg" },
-    { name: "Hospitality", icon: "/icons/hospitality.svg" },
-    { name: "IT Services", icon: "/icons/it-services.svg" },
-    { name: "Manufacturing", icon: "/icons/manufacturing.svg" },
+    { name: "Flexsin Technologies", icon: "/new-assets/company-icons/flexsin.png" },
+    { name: "XpressBees", icon: "/new-assets/company-icons/image-6.png" },
+    { name: "The Higher Pitch", icon: "/new-assets/company-icons/image-7.png" },
+    { name: "NoBroker", icon: "/new-assets/company-icons/image-4.png" },
+    { name: "FourthPointer Services", icon: "/new-assets/company-icons/image-8.png" },
+    { name: "ixigo", icon: "/new-assets/company-icons/ixigo.png" },
+    { name: "Axis Finance (AFL)", icon: "/new-assets/company-icons/axis.png" },
+    { name: "Porter", icon: "/new-assets/company-icons/porter.png" },
   ];
 
   return (
@@ -117,12 +117,12 @@ export default function CompanyTrading() {
       {/* Search Section */}
       {selectedTab === "Industry" && (
         <div className="mb-6">
-          <div className="flex flex-wrap ml-40 gap-2">
+          <div className="flex flex-wrap mt-4 ml-40 gap-2">
             {["All", "Retail", "Media", "Healthcare", "Education", "IPO", "Hospitality", "IT Services", "Manufacturing"].map((industry) => (
               <span
                 key={industry}
                 className={`px-4 py-2 rounded-lg shadow-sm border border-gray-100 cursor-pointer ${
-                  selectedIndustry === industry ? "bg-black text-white" : "bg-gray-100"
+                  selectedIndustry === industry ? "bg-black text-white" : "bg-gray-200"
                 }`}
                 onClick={() => setSelectedIndustry(industry)}
               >
@@ -246,7 +246,6 @@ export default function CompanyTrading() {
                   key={index}
                   logo={company.icon}
                   name={company.name}
-                  bgColor={company.bgColor}
                 />
               ))}
             </div>
@@ -289,7 +288,7 @@ export default function CompanyTrading() {
               {industries.map((industry, index) => (
                 <div key={index} className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden flex flex-col">
                   <div className="p-4 flex justify-center items-center">
-                    <div className="w-16 h-16 rounded-md flex items-center justify-center bg-gray-100">
+                    <div className="w-16 h-16 rounded-md flex items-center justify-center ">
                       <Image
                         src={industry.icon}
                         alt={`${industry.name} icon`}

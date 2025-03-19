@@ -42,42 +42,78 @@ export function formatToK(number: number | string): string {
         return num.toString(); // Return the number as is for values less than 1000
     }
 }
-  export const showSalary = (
-    isIndustryStandard: string,
-    salaryRangeUnit: string,
-    minSalary: string | null,
-    maxSalary: string | null,
-    text?: string
-  ): string => {
-    // Check if salary is as per industry standards
-    if (isIndustryStandard == "1") {
-      return "As per Industry standards";
-    }
+export const showSalary = (
+  isIndustryStandard: string,
+  salaryRangeUnit: string,
+  minSalary: string | null,
+  maxSalary: string | null,
+  text?: string
+): string => {
+  // Check if salary is as per industry standards
+  if (isIndustryStandard == "1") {
+    return "As per Industry standards";
+  }
+
+  // Check if both min and max salary are null or empty
+  if (((minSalary === null || minSalary === "" || minSalary === "0")) && ((maxSalary === null || maxSalary === "" || maxSalary === "0"))) {
+    return "-";
+  }
+
+  // Determine the salary unit
+  const unit = salaryRangeUnit == "1" ? "Monthly" : "Yearly";
+
+  // Check if min salary is null or empty or "0" and max salary is not null or empty or "0"
+  if ((minSalary === null || minSalary === "" || minSalary === "0") && (maxSalary !== null && maxSalary !== "" && maxSalary !== "0")) {
+    return `${formatToK(maxSalary)} / `;
+  }
+
+  // Check if max salary is null or empty or "0" and min salary is not null or empty or "0"
+  if ((maxSalary === null || maxSalary === "" || maxSalary === "0") && (minSalary !== null && minSalary !== "" && minSalary !== "0")) {
+    return `${formatToK(minSalary)} / `;
+  }
+  if (((minSalary !== null)) && ((maxSalary !== null))) {
+    // Default case: show salary range
+    return `${formatToK(minSalary)} - ${formatToK(maxSalary)} / `;
+  }
   
-    // Check if both min and max salary are null or empty
-    if (((minSalary === null || minSalary === "" || minSalary === "0")) && ((maxSalary === null || maxSalary === "" || maxSalary === "0"))) {
-      return "-";
-    }
+  return "As per Industry standards"
+};
+export const showSalarySimilarJob = (
+  isIndustryStandard: string,
+  salaryRangeUnit: string,
+  minSalary: string | null,
+  maxSalary: string | null,
+  text?: string
+): string => {
+  // Check if salary is as per industry standards
+  if (isIndustryStandard == "1") {
+    return "As per Industry standards";
+  }
+
+  // Check if both min and max salary are null or empty
+  if (((minSalary === null || minSalary === "" || minSalary === "0")) && ((maxSalary === null || maxSalary === "" || maxSalary === "0"))) {
+    return "-";
+  }
+
+  // Determine the salary unit
+  const unit = salaryRangeUnit == "1" ? "Monthly" : "Yearly";
+
+  // Check if min salary is null or empty or "0" and max salary is not null or empty or "0"
+  if ((minSalary === null || minSalary === "" || minSalary === "0") && (maxSalary !== null && maxSalary !== "" && maxSalary !== "0")) {
+    return `${maxSalary} / `;
+  }
+
+  // Check if max salary is null or empty or "0" and min salary is not null or empty or "0"
+  if ((maxSalary === null || maxSalary === "" || maxSalary === "0") && (minSalary !== null && minSalary !== "" && minSalary !== "0")) {
+    return `${minSalary} / `;
+  }
+  if (((minSalary !== null)) && ((maxSalary !== null))) {
+    // Default case: show salary range
+    return `${minSalary} - ${maxSalary} / `;
+  }
   
-    // Determine the salary unit
-    const unit = salaryRangeUnit == "1" ? "Monthly" : "Yearly";
-  
-    // Check if min salary is null or empty or "0" and max salary is not null or empty or "0"
-    if ((minSalary === null || minSalary === "" || minSalary === "0") && (maxSalary !== null && maxSalary !== "" && maxSalary !== "0")) {
-      return `${formatToK(maxSalary)} / `;
-    }
-  
-    // Check if max salary is null or empty or "0" and min salary is not null or empty or "0"
-    if ((maxSalary === null || maxSalary === "" || maxSalary === "0") && (minSalary !== null && minSalary !== "" && minSalary !== "0")) {
-      return `${formatToK(minSalary)} / `;
-    }
-    if (((minSalary !== null)) && ((maxSalary !== null))) {
-      // Default case: show salary range
-      return `${formatToK(minSalary)} - ${formatToK(maxSalary)} / `;
-    }
-    
-    return "As per Industry standards"
-  };
+  return "As per Industry standards"
+};
   
 
   export const showExperience = (
@@ -103,7 +139,7 @@ export function formatToK(number: number | string): string {
       (minExp !== null && minExp !== "1") &&
       (maxExp === null || maxExp === "" || maxExp === "0")
     ) {
-      return `Min ${minExp} years`;
+      return `Min ${minExp} ${text}`;
     }
   
     // Check if min experience is null or "0" and max experience is not null or empty or "0"
@@ -111,11 +147,11 @@ export function formatToK(number: number | string): string {
       (minExp === null || minExp === "" || minExp === "0") &&
       (maxExp !== null && maxExp !== "" && maxExp !== "0")
     ) {
-      return `Max ${maxExp} years`;
+      return `Max ${maxExp} ${text}`;
     }
   
     // Default case: show experience range
-    return `${minExp}-${maxExp} ${text ? text : "yrs experience"}`;
+    return `${minExp}-${maxExp} ${text ? text : `${text}`}`;
   };
   
   

@@ -8,7 +8,7 @@ import { IoIosHeart, IoIosHeartEmpty } from 'react-icons/io'
 import { LiaMapMarkerAltSolid } from 'react-icons/lia'
 import { MdOutlineLocationOn } from 'react-icons/md'
 import { TbBriefcase2 } from 'react-icons/tb'
-import { showExperience, showSalary, timeAgo } from '../utils'
+import { showExperience, showSalary, showSalarySimilarJob, timeAgo } from '../utils'
 import ProfilePhoto from './ProfilePhoto'
 import { VscHeart, VscHeartFilled } from 'react-icons/vsc'
 import { useDispatch, useSelector } from 'react-redux'
@@ -110,19 +110,21 @@ export default function JobListingCardSmall({detail}:{detail:CompanyJob}) {
         <h3 className='text-sm 3xl:text-base min-h-10 2xl:text-lg 3xl:min-h-14 font-medium my-[6px] 3xl:my-3 line-clamp-2'>{detail?.job_title}</h3>
         <div className="flex mb-1 md:mb-2">
           <img src={'/new-assets/icons/location-pin-dot.svg'} alt='Map pin' width={100} height={100} className='size-3 2xl:size-5' />
-          <span className='ml-2 text-[10px] 2xl:text-sm text-[#545581] line-clamp-1' title={detail?.job_location?.[0]?.job_location || "Remote"}>{detail?.job_location?.[0]?.job_location || "Remote"}</span>
+          <span className='ml-2 text-[10px] 2xl:text-sm text-[#545581] line-clamp-1' title={detail?.job_location || "Remote"}>{detail?.job_location || "Remote"}</span>
         </div>
         <div className="flex justify-between gap-2">
           <div className="flex flex-1">
             <Image width={12} height={12} src={'/new-assets/icons/job-case.svg'} className='text-[#545581] size-3 2xl:size-5' alt='rupee icon' />
             <span className='ml-2 text-[10px] 2xl:text-sm text-[#545581]'>{showExperience(detail?.min_exp ||"0", detail?.max_exp || "0", "yrs experience")}</span>
           </div>
-          <div className='ml-5 text-[10px] 2xl:text-sm text-[#545581] flex items-center'>
-          {detail?.is_industry_standard !='1'&& 
-            <Image width={15} height={15} src={'/new-assets/icons/rupee.svg'} className='mr-1 2xl:mr-2 size-[11px] 2xl:size-[15px]' alt='rupee icon' />
-          }
-          <span className='text-[10px] 2xl:text-sm'>{`${showSalary(detail?.is_industry_standard || "0", detail?.salary_range_unit ||"0",detail?.min_salary ||"0",detail?.max_salary ||"0")} `} </span>
-          {detail?.is_industry_standard !='1' && <small className='text-[#B1B4B7]'> &nbsp; {` ${ detail?.salary_range_unit== "1"?` month`:` year`}`}</small>}
+          <div className='ml-5 flex-1 flex-wrap justify-end text-end text-[10px] 2xl:text-sm text-[#545581] flex items-center'>
+            <p className='flex flex-nowrap'>
+              {detail?.is_industry_standard !='1'&& 
+                <Image width={15} height={15} src={'/new-assets/icons/rupee.svg'} className='mr-1 2xl:mr-2 size-[11px] 2xl:size-[15px]' alt='rupee icon' />
+              }
+              <span className={`text-[10px] 2xl:text-sm ${detail?.is_industry_standard !='1'?'whitespace-nowrap':''}`}>{`${showSalarySimilarJob(detail?.is_industry_standard || "0", detail?.salary_range_unit ||"0",detail?.min_salary ||"0",detail?.max_salary ||"0")} `} </span>
+            </p>
+            {detail?.is_industry_standard !='1' && <small className='text-[#B1B4B7]'> &nbsp; {` ${ detail?.salary_range_unit== "1"?` month`:` year`}`}</small>}
           </div>        
         </div>
         <ul className='flex flex-wrap gap-2 mt-3'>
@@ -140,7 +142,7 @@ export default function JobListingCardSmall({detail}:{detail:CompanyJob}) {
 
       {/* Action Buttons */}
       <div className="flex flex-wrap gap-4 min-h-16 justify-between">
-        <div className="flex action-btns gap-4 flex-wrap justify-end items-end">
+        <div className="flex action-btns gap-4 flex-wrap justify-end items-end 3xl:pt-4">
         <Link href="/jobs/detail/2838" className='grid place-items-center btn-border whitespace-nowrap !p-0 h-[30px] 3xl:h-[44px] flex-1 text-[10px] 2xl:text-xs 3xl:text-sm text-red !border-red'>view Job</Link>
         <button onClick={()=>{handleApply(detail?.id)}} className={`grid place-items-center btn-border whitespace-nowrap !p-0 h-[30px] 3xl:h-[44px] flex-1 text-[10px] 2xl:text-xs 3xl:text-sm text-white !bg-red !border-red  ${isApplied?"!bg-[#eef2fe] job-applied-btn !border-[#eef2fe] !text-black cursor-default":""}`}>quick Apply</button>
         </div>

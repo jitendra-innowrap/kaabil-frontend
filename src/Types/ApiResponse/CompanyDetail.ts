@@ -92,7 +92,7 @@ interface CompanyGalleryCardProps {
     job_posted_date: string;
     company_master_id: string;
     job_distance: string;
-    job_location: any[];
+    job_location: string;
     min_salary: string;
     max_salary: string;
     additional_info: string;

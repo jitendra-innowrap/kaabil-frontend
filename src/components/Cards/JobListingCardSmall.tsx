@@ -143,7 +143,7 @@ export default function JobListingCardSmall({detail}:{detail:CompanyJob}) {
       {/* Action Buttons */}
       <div className="flex flex-wrap gap-4 min-h-16 justify-between">
         <div className="flex action-btns gap-4 flex-wrap justify-end items-end 3xl:pt-4">
-        <Link href="/jobs/detail/2838" className='grid place-items-center btn-border whitespace-nowrap !p-0 h-[30px] 3xl:h-[44px] flex-1 text-[10px] 2xl:text-xs 3xl:text-sm text-red !border-red'>view Job</Link>
+        <Link href={`/jobs/detail/${detail?.id}`} className='grid place-items-center btn-border whitespace-nowrap !p-0 h-[30px] 3xl:h-[44px] flex-1 text-[10px] 2xl:text-xs 3xl:text-sm text-red !border-red'>view Job</Link>
         <button onClick={()=>{handleApply(detail?.id)}} className={`grid place-items-center btn-border whitespace-nowrap !p-0 h-[30px] 3xl:h-[44px] flex-1 text-[10px] 2xl:text-xs 3xl:text-sm text-white !bg-red !border-red  ${isApplied?"!bg-[#eef2fe] job-applied-btn !border-[#eef2fe] !text-black cursor-default":""}`}>quick Apply</button>
         </div>
       </div>

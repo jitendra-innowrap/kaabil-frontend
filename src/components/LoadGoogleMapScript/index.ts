@@ -10,6 +10,7 @@ import { setUserDesignation, setUserName, setUserPhotoUrl, setUserProfilePercent
 export default function LoadGoogleMapsScript() {
   const dispatch = useDispatch();
   const {token} = useAppSelector((state) => state.auth);
+  const {id} = useAppSelector((state) => state.user);
 
   useEffect(() => {
     // Load Google Maps script
@@ -59,7 +60,7 @@ export default function LoadGoogleMapsScript() {
     };
     fetchUserSkills();
 
-    }, [dispatch]);
+    }, [dispatch, id]);
 
   return null; // This component doesn't render anything
 }

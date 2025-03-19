@@ -15,6 +15,7 @@ import ResumeBuilder from "@/components/Nudges/Home/ResumeBuilder";
 import { useEffect, useState } from "react";
 import api from "@/Services/Apiservice";
 import { getSessionData } from "@/components/utils/deviceId";
+import Link from "next/link";
 export default function Home() {
     const [homeData, setHomeData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -268,11 +269,11 @@ export default function Home() {
     return (
         <main>
             <section className=''>
-                <div className=''>
+                <Link href={'/jobs'} className='block'>
                     <Image src='/new-assets/home/banner.png' quality={100} alt="" width={3840} height={1000}
                     className="w-full h-auto"
                     />
-                </div>
+                </Link>
                 <div className="bg-[#F5F5F5]">
                     <div className="container search-section px-5 py-8 md:px-14 md:py-12 xl:px-24 xl:py-14 2xl:px-20">
                         <h2 className='text-black text-center text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[64px] mb-5 xl:mb-8 font-medium'>Find your dream job with <span className="font-kalam font-bold text-red">Kaabil!</span></h2>

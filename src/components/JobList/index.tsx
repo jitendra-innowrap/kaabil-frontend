@@ -13,7 +13,7 @@ import RegisterInMinutes from '../Nudges/Listing/RegisterInMinutes';
 import { api2 } from '@/Services/Apiservice';
 import { useAppSelector } from '@/redux/hooks';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { getSessionData } from '../utils/deviceId';
+import { getAuthUser, getSessionData } from '../utils/deviceId';
 import { setJobFiltersMaster } from '@/redux/jobsFilterSlice';
 import { useDispatch } from 'react-redux';
 import TopCompaniesHiring from '../Nudges/Listing/TopCompaniesHiring';
@@ -29,18 +29,38 @@ function JobList() {
   const [totalPages, setTotalPages] = useState(0);
   const maxPagesToShow = 5; // Maximum pages to display
   const user = useAppSelector((state) => state.user);
-  const {token} = useAppSelector((state) => state.auth);
+  const { token } = useAppSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [jobs, setJobs] = useState<object[]>([]);
 
   const sort = searchParams.get('sort') || '1'; // Default to '1' (Relevance)
 
+  // Reset page to 1 when filters change
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('page', '1'); // Update the sort parameter in the URL
+    router.push(`?${params.toString()}`, { scroll: false });
+    setCurrentPage(1);
+  }, [
+    searchParams.get('job_types_filter'),
+    searchParams.get('location_filter'),
+    searchParams.get('industries_filter'),
+    searchParams.get('experience'),
+    searchParams.get('job_location_types_filter'),
+    searchParams.get('benefits_filter'),
+    searchParams.get('minSalary'),
+    searchParams.get('maxSalary'),
+    searchParams.get('search'),
+  ]);
+
   // Handle sort option selection
   const handleSortChange = (newSort: string) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set('sort', newSort); // Update the sort parameter in the URL
+    params.set('page', '1'); // Reset page to 1 when sort changes
     router.push(`?${params.toString()}`, { scroll: false }); // Update the URL without refreshing the page
   };
+
   // Fetch jobs based on the current page
   useEffect(() => {
     const fetchJobs = async () => {
@@ -56,18 +76,18 @@ function JobList() {
       const latitude = searchParams.get('latitude')?.split('|') || []; // Parse latitude as an array
       const longitude = searchParams.get('longitude')?.split('|') || []; // Parse longitude as an array
       const search = searchParams.get('search') || '';
-  
+
       // Check if any filters are applied
       const hasFilters =
-      jobTypesFilter.length > 0 ||
-      locationFilter.length > 0 ||
-      industriesFilter.length > 0 ||
-      experienceFilter.length > 0 ||
-      jobLocationTypesFilter.length > 0 ||
-      benefitsFilter.length > 0 ||
-      minSalary ||
-      maxSalary ||
-      search;
+        jobTypesFilter.length > 0 ||
+        locationFilter.length > 0 ||
+        industriesFilter.length > 0 ||
+        experienceFilter.length > 0 ||
+        jobLocationTypesFilter.length > 0 ||
+        benefitsFilter.length > 0 ||
+        minSalary ||
+        maxSalary ||
+        search;
 
       // Format location_filter as an array of objects with latitude and longitude
       const formattedLocationFilter = locationFilter.map((location, index) => {
@@ -87,10 +107,10 @@ function JobList() {
 
         return locationObj;
       });
-  
+
       // Construct payload
       let payload = {
-        recommendate: token?!hasFilters:false, // Set recommendate to true if no filters are applied, else false
+        recommendate: token ? !hasFilters : false, // Set recommendate to true if no filters are applied, else false
         soft_skill_filter: [],
         skill_filter: [],
         job_location_types_filter: jobLocationTypesFilter,
@@ -102,18 +122,18 @@ function JobList() {
         min_salary: minSalary ? Number(minSalary) : null,
         max_salary: maxSalary ? Number(maxSalary) : null,
         search: search,
-        sort: sort,
+        sort: sort == '3' ? 3 : 1,
       };
-  
+
       const { deviceId, secret, salt } = getSessionData();
-  
+
       // Ensure session data is available
       if (!deviceId || !secret || !salt) {
         console.log("Session data not available, retrying...");
         setTimeout(fetchJobs, 1000); // Retry after 1 second
         return;
       }
-  
+
       try {
         const response = await api2.post(
           `/api/job/list?page=${currentPage}&pageLength=10&userId=${user?.id || 0}`,
@@ -125,7 +145,7 @@ function JobList() {
           }
         );
         setJobs(response.data?.data?.jobs as object[]);
-  
+
         // Calculate total pages based on total jobs and jobs per page
         const totalJobs = response.data?.data?.total;
         const jobsPerPage = 10;
@@ -152,9 +172,9 @@ function JobList() {
         console.error('Error fetching jobs:', error);
       }
     };
-  
+
     fetchJobs();
-  }, [page, user?.id, searchParams]);
+  }, [page, user?.id, searchParams, currentPage]);
 
   // Function to get the pagination group
   const getPaginationGroup = () => {
@@ -171,9 +191,17 @@ function JobList() {
   // Handle pagination button click
   const handleActive = (page: number) => {
     setCurrentPage(page);
-    router.push(`?page=${page}`); // Update the URL with the new page
+
+    // Create a new URLSearchParams object from the current search parameters
+    const params = new URLSearchParams(searchParams.toString());
+
+    // Update the 'page' parameter
+    params.set('page', page.toString());
+
+    // Push the updated query parameters to the URL
+    router.push(`?${params.toString()}`, { scroll: false });
   };
-  
+
   const nudges = [
     <Interview key="interview" />,
     <RegisterInMinutes key="register" />,
@@ -182,17 +210,18 @@ function JobList() {
     <Interview key="interview" />,
     <TopCompaniesHiring key="top-companies" />,
   ];
+
   return (
-    <div style={{ width: '-webkit-fill-available' }}>
+    <div style={{ width: '-webkit-fill-available' }} className='lg:pl-3 xl:pl-7 3xl:pl-9'>
       <div className="flex justify-between mb-5 xl:mb-7 2xl:mb-10 3xl:mb-12">
         <div className="">
           {/* <pre>{JSON.stringify(user, null, 2)}</pre> */}
-          <h2 className="font-medium text-lg xl:text-xl 3xl:text-2xl 3xl:leading-7 mb-1 xl:mb-2">
+          <h2 className="font-medium text-base xl:text-lg 3xl:text-2xl 3xl:leading-7 mb-1 xl:mb-2">
             {token?"Recommended jobs for you":"All Jobs"}
           </h2>
           <p className="text-[#787878] text-sm 2xl:text-sm">{totalJobs} jobs for you</p>
         </div>
-        <div className="relative h-fit group sort-by-container">
+        <div className="relative h-fit group sort-by-container mt-1 3xl:mt-0">
           <button
             type="button"
             className="text-[#4D4D4F] px-3 !py-2 flex items-center !border-black btn-border"
@@ -200,8 +229,8 @@ function JobList() {
             aria-expanded="true"
             aria-haspopup="true"
           >
-            {sort === '1' ? 'Relevance' : sort === '2' ? 'Salary' : 'Sort By'}
-            <IoMdArrowDropdown className="flex-shrink-0 ml-1 xl:ml-5 text-[#000000] size-4 3xl:size-5" />
+            {sort === '3' ? 'Recently posted ' : 'Best Matched'}
+            <IoMdArrowDropdown className="flex-shrink-0 ml-1 xl:ml-2 3xl:ml-5 text-[#000000] size-3 3xl:size-4" />
           </button>
           <div
             className="opacity-0 sort-by-items-container hidden group-hover:block group-hover:opacity-100 absolute right-0 z-10 origin-top-right top-full focus:outline-hidden"
@@ -211,24 +240,24 @@ function JobList() {
             tabIndex={-1}
           >
             <div className="sort-items-wrapper rounded-md bg-white ring-1 shadow-lg ring-black/5 mt-1">
-              <div className="py-0 sort-items" role="none">
+              <div className="py-0 sort-items divide-y" role="none">
                 <div
                   onClick={() => handleSortChange('1')}
-                  className="sort-item block px-4 py-2 text-xs 2xl:text-sm hover:bg-gray-100 text-gray-700 hover:text-gray-900 outline-hidden"
+                  className="sort-item block px-4 py-2 lg:px-[10px] lg:py-[7px] 3xl:px-4 3xl:py-2 text-xs lg:text-[10px] 3xl:text-sm whitespace-nowrap text-[#6b6b6b] hover:text-gray-900 outline-hidden"
                   role="menuitem"
                   tabIndex={-1}
                   id="menu-item-2"
                 >
-                  Relevance
+                  Best Matched
                 </div>
                 <div
-                  onClick={() => handleSortChange('2')}
-                  className="sort-item block px-4 py-2 text-xs 2xl:text-sm hover:bg-gray-100 text-gray-700 hover:text-gray-900 outline-hidden"
+                  onClick={() => handleSortChange('3')}
+                  className="sort-item block px-4 py-2 lg:px-[10px] lg:py-[7px] 3xl:px-4 3xl:py-2 text-xs lg:text-[10px] 3xl:text-sm whitespace-nowrap text-[#6b6b6b] hover:text-gray-900 outline-hidden"
                   role="menuitem"
                   tabIndex={-1}
                   id="menu-item-2"
                 >
-                  Salary
+                  Recently posted
                 </div>
               </div>
             </div>
@@ -247,10 +276,18 @@ function JobList() {
           );
 
           // Add a nudge after every 2 job listings
-          if ((index + 1) % 2 === 0 && Math.floor((index + 1) / 2) - 1 < (user?.token? nudgesForLoggedInUser.length : nudges.length)) {
+          if ((index + 1) % 2 === 0) {
             const nudgeIndex = Math.floor((index + 1) / 2) - 1;
-            if (user?.token? nudgesForLoggedInUser : nudges[nudgeIndex]) {
-              items.push(user?.token? nudgesForLoggedInUser : nudges[nudgeIndex]);
+
+            // Check if the nudgeIndex is within the bounds of the nudges array
+            if (user?.token) {
+              if (nudgeIndex < nudgesForLoggedInUser.length) {
+                items.push(nudgesForLoggedInUser[nudgeIndex]);
+              }
+            } else {
+              if (nudgeIndex < nudges.length) {
+                items.push(nudges[nudgeIndex]);
+              }
             }
           }
 
@@ -270,10 +307,11 @@ function JobList() {
     </div>
   );
 }
+
 export default function Page() {
-    return (
-        <Suspense fallback={<div>Loading...</div>}>
-            <JobList />
-        </Suspense>
-    );
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <JobList />
+    </Suspense>
+  );
 }

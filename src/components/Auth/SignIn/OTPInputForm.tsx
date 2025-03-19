@@ -54,10 +54,10 @@ export default function OTPInputForm({ onClose }: prop) {
   
       try {
         const response: any = await dispatch(verifyOTP({ otp: otpValue, company_id: "", company_offices_id: "" })).unwrap();
-        console.log(response);
         if (response?.code == 1) {
           dispatch(setAuthToken(response?.token));
           dispatch(setUserId(response?.result?.id));
+          storeAuthUser({ ...user, id: response?.result?.id });
           dispatch(setUserPhotoUrl(response?.result?.photo_url));
           dispatch(setUserName(response?.result?.name));
           dispatch(setUserIsProfileVerified(response?.result?.is_profile_verify));

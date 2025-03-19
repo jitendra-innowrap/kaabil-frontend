@@ -71,7 +71,7 @@ export default function Home() {
       </section>
       {/* <pre>{JSON.stringify([jobs[0]], null, 2)}</pre> */}
       <section className="container">
-        <div className="mt-8 lg:mt-10 2xl:mt-14 mb-5 md:mb-8 xl:mb-14 2xl:mb-16 flex flex-col lg:flex-row gap-5 md:gap-7 xl:gap-10">
+        <div className="mt-8 lg:mt-10 2xl:mt-14 mb-5 md:mb-8 xl:mb-14 2xl:mb-16 flex flex-col lg:flex-row gap-5 md:gap-7 lg:gap-4 xl:gap-4 3xl:gap-5">
             <FilterSidebar/>
             <Suspense fallback={<>... Loading</>}>
               <JobList />

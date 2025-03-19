@@ -23,7 +23,25 @@ export function handleCommaForQuery(string: string){
     // Return the original salary if no trailing zeros
     return salary;
   };
-  
+export function formatToK(number: number | string): string {
+    // Convert string input to number
+    const num = typeof number === 'string' ? parseFloat(number) : number;
+
+    // Check if the parsed number is valid
+    if (isNaN(num)) {
+        throw new Error("Invalid number input");
+    }
+
+    if (num >= 1000 && num < 1000000) {
+        return (num / 1000).toFixed(1).replace('.0', '') + 'k'; // Format as thousands
+    } else if (num >= 1000000 && num < 1000000000) {
+        return (num / 1000000).toFixed(1).replace('.0', '') + 'M'; // Format as millions
+    } else if (num >= 1000000000) {
+        return (num / 1000000000).toFixed(1).replace('.0', '') + 'B'; // Format as billions
+    } else {
+        return num.toString(); // Return the number as is for values less than 1000
+    }
+}
   export const showSalary = (
     isIndustryStandard: string,
     salaryRangeUnit: string,
@@ -32,7 +50,7 @@ export function handleCommaForQuery(string: string){
     text?: string
   ): string => {
     // Check if salary is as per industry standards
-    if (isIndustryStandard === "1") {
+    if (isIndustryStandard == "1") {
       return "As per Industry standards";
     }
   
@@ -42,20 +60,23 @@ export function handleCommaForQuery(string: string){
     }
   
     // Determine the salary unit
-    const unit = salaryRangeUnit === "1" ? "Monthly" : "Yearly";
+    const unit = salaryRangeUnit == "1" ? "Monthly" : "Yearly";
   
     // Check if min salary is null or empty or "0" and max salary is not null or empty or "0"
     if ((minSalary === null || minSalary === "" || minSalary === "0") && (maxSalary !== null && maxSalary !== "" && maxSalary !== "0")) {
-      return `₹${maxSalary} Max / ${unit}`;
+      return `${formatToK(maxSalary)} / `;
     }
   
     // Check if max salary is null or empty or "0" and min salary is not null or empty or "0"
     if ((maxSalary === null || maxSalary === "" || maxSalary === "0") && (minSalary !== null && minSalary !== "" && minSalary !== "0")) {
-      return `₹${minSalary} Max / ${unit}`;
+      return `${formatToK(minSalary)} / `;
     }
-  
-    // Default case: show salary range
-    return `₹${minSalary} - ₹${maxSalary} Max / ${unit}`;
+    if (((minSalary !== null)) && ((maxSalary !== null))) {
+      // Default case: show salary range
+      return `${formatToK(minSalary)} - ${formatToK(maxSalary)} / `;
+    }
+    
+    return "As per Industry standards"
   };
   
 
@@ -228,20 +249,58 @@ export function formatJobDuration(start: string | Date, end?: string | Date): st
   return `${days} day${days !== 1 ? 's' : ''}`;
 }
 
-export function timeAgo(timestamp: string | number | Date): string {
-  const now = new Date();
-  const past = new Date(timestamp);
-  const seconds = Math.floor((now.getTime() - past.getTime()) / 1000);
+export function timeAgo(dateString: string): string {
+  // Parse the input date as UTC
+  const past = new Date(dateString);
+  if (isNaN(past.getTime())) return "Invalid date";
 
-  if (seconds < 60) return `${seconds} seconds ago`;
-  const minutes = Math.floor(seconds / 60);
-  if (minutes < 60) return `${minutes} minutes ago`;
-  const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `${hours} hours ago`;
-  const days = Math.floor(hours / 24);
-  if (days < 30) return `${days} days ago`;
-  const months = Math.floor(days / 30);
-  if (months < 12) return `${months} months ago`;
-  const years = Math.floor(days / 365);
-  return `${years} years ago`;
+  // Get the current time in local timezone
+  const now = new Date();
+
+  // Adjust past time to local time zone
+  const pastLocal = new Date(
+    past.getUTCFullYear(),
+    past.getUTCMonth(),
+    past.getUTCDate(),
+    past.getUTCHours(),
+    past.getUTCMinutes(),
+    past.getUTCSeconds()
+  );
+
+  // Get the time difference in milliseconds
+  const diff = now.getTime() - pastLocal.getTime();
+
+  console.log("Past Local Time:", pastLocal.toString());
+  console.log("Now Local Time:", now.toString());
+  console.log("Time Difference (ms):", diff);
+  console.log("Time Difference (hours):", diff / (1000 * 60 * 60));
+
+  // Define time intervals
+  const minute = 60 * 1000;
+  const hour = 60 * minute;
+  const day = 24 * hour;
+  const month = 30 * day;
+  const year = 365 * day;
+
+  // Determine the time ago string
+  if (diff < minute) return "just now";
+  if (diff < hour) return `${Math.floor(diff / minute)} min ago`;
+  if (diff < day) return `${Math.floor(diff / hour)} hours ago`;
+  if (diff < 2 * day) return "yesterday";
+  if (diff < month) return `${Math.floor(diff / day)} days ago`;
+  if (diff < year) return `${Math.floor(diff / month)} months ago`;
+
+  return `${Math.floor(diff / year)} years ago`;
 }
+
+
+
+export const getCompanyInitials = (name?: string): string => {
+  if (!name) return '?';
+
+  const words = name.trim().split(' ');
+  if (words.length > 1) {
+    return words[0][0].toUpperCase() + words[1][0].toUpperCase();
+  }
+  return words[0][0].toUpperCase();
+};

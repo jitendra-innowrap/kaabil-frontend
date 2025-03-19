@@ -29,18 +29,38 @@ function JobList() {
   const [totalPages, setTotalPages] = useState(0);
   const maxPagesToShow = 5; // Maximum pages to display
   const user = useAppSelector((state) => state.user);
-  const {token} = useAppSelector((state) => state.auth);
+  const { token } = useAppSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [jobs, setJobs] = useState<object[]>([]);
 
   const sort = searchParams.get('sort') || '1'; // Default to '1' (Relevance)
 
+  // Reset page to 1 when filters change
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('page', '1'); // Update the sort parameter in the URL
+    router.push(`?${params.toString()}`, { scroll: false });
+    setCurrentPage(1);
+  }, [
+    searchParams.get('job_types_filter'),
+    searchParams.get('location_filter'),
+    searchParams.get('industries_filter'),
+    searchParams.get('experience'),
+    searchParams.get('job_location_types_filter'),
+    searchParams.get('benefits_filter'),
+    searchParams.get('minSalary'),
+    searchParams.get('maxSalary'),
+    searchParams.get('search'),
+  ]);
+
   // Handle sort option selection
   const handleSortChange = (newSort: string) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set('sort', newSort); // Update the sort parameter in the URL
+    params.set('page', '1'); // Reset page to 1 when sort changes
     router.push(`?${params.toString()}`, { scroll: false }); // Update the URL without refreshing the page
   };
+
   // Fetch jobs based on the current page
   useEffect(() => {
     const fetchJobs = async () => {
@@ -56,18 +76,18 @@ function JobList() {
       const latitude = searchParams.get('latitude')?.split('|') || []; // Parse latitude as an array
       const longitude = searchParams.get('longitude')?.split('|') || []; // Parse longitude as an array
       const search = searchParams.get('search') || '';
-  
+
       // Check if any filters are applied
       const hasFilters =
-      jobTypesFilter.length > 0 ||
-      locationFilter.length > 0 ||
-      industriesFilter.length > 0 ||
-      experienceFilter.length > 0 ||
-      jobLocationTypesFilter.length > 0 ||
-      benefitsFilter.length > 0 ||
-      minSalary ||
-      maxSalary ||
-      search;
+        jobTypesFilter.length > 0 ||
+        locationFilter.length > 0 ||
+        industriesFilter.length > 0 ||
+        experienceFilter.length > 0 ||
+        jobLocationTypesFilter.length > 0 ||
+        benefitsFilter.length > 0 ||
+        minSalary ||
+        maxSalary ||
+        search;
 
       // Format location_filter as an array of objects with latitude and longitude
       const formattedLocationFilter = locationFilter.map((location, index) => {
@@ -87,10 +107,10 @@ function JobList() {
 
         return locationObj;
       });
-  
+
       // Construct payload
       let payload = {
-        recommendate: token?!hasFilters:false, // Set recommendate to true if no filters are applied, else false
+        recommendate: token ? !hasFilters : false, // Set recommendate to true if no filters are applied, else false
         soft_skill_filter: [],
         skill_filter: [],
         job_location_types_filter: jobLocationTypesFilter,
@@ -102,18 +122,18 @@ function JobList() {
         min_salary: minSalary ? Number(minSalary) : null,
         max_salary: maxSalary ? Number(maxSalary) : null,
         search: search,
-        sort: sort == '3'? 3 : 1,
+        sort: sort == '3' ? 3 : 1,
       };
-  
+
       const { deviceId, secret, salt } = getSessionData();
-  
+
       // Ensure session data is available
       if (!deviceId || !secret || !salt) {
         console.log("Session data not available, retrying...");
         setTimeout(fetchJobs, 1000); // Retry after 1 second
         return;
       }
-  
+
       try {
         const response = await api2.post(
           `/api/job/list?page=${currentPage}&pageLength=10&userId=${user?.id || 0}`,
@@ -125,7 +145,7 @@ function JobList() {
           }
         );
         setJobs(response.data?.data?.jobs as object[]);
-  
+
         // Calculate total pages based on total jobs and jobs per page
         const totalJobs = response.data?.data?.total;
         const jobsPerPage = 10;
@@ -152,9 +172,9 @@ function JobList() {
         console.error('Error fetching jobs:', error);
       }
     };
-  
+
     fetchJobs();
-  }, [page, user?.id, searchParams]);
+  }, [page, user?.id, searchParams, currentPage]);
 
   // Function to get the pagination group
   const getPaginationGroup = () => {
@@ -169,19 +189,19 @@ function JobList() {
   };
 
   // Handle pagination button click
-const handleActive = (page: number) => {
-  setCurrentPage(page);
+  const handleActive = (page: number) => {
+    setCurrentPage(page);
 
-  // Create a new URLSearchParams object from the current search parameters
-  const params = new URLSearchParams(searchParams.toString());
+    // Create a new URLSearchParams object from the current search parameters
+    const params = new URLSearchParams(searchParams.toString());
 
-  // Update the 'page' parameter
-  params.set('page', page.toString());
+    // Update the 'page' parameter
+    params.set('page', page.toString());
 
-  // Push the updated query parameters to the URL
-  router.push(`?${params.toString()}`, { scroll: false });
-};
-  
+    // Push the updated query parameters to the URL
+    router.push(`?${params.toString()}`, { scroll: false });
+  };
+
   const nudges = [
     <Interview key="interview" />,
     <RegisterInMinutes key="register" />,
@@ -190,6 +210,7 @@ const handleActive = (page: number) => {
     <Interview key="interview" />,
     <TopCompaniesHiring key="top-companies" />,
   ];
+
   return (
     <div style={{ width: '-webkit-fill-available' }} className='lg:pl-3 xl:pl-7 3xl:pl-9'>
       <div className="flex justify-between mb-5 xl:mb-7 2xl:mb-10 3xl:mb-12">
@@ -286,10 +307,11 @@ const handleActive = (page: number) => {
     </div>
   );
 }
+
 export default function Page() {
-    return (
-        <Suspense fallback={<div>Loading...</div>}>
-            <JobList />
-        </Suspense>
-    );
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <JobList />
+    </Suspense>
+  );
 }

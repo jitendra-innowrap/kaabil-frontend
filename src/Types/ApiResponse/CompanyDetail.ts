@@ -87,9 +87,12 @@ interface CompanyGalleryCardProps {
   
   interface CompanyJob {
     id: string;
+    company_logo: string;
+    company_name: string;
+    job_posted_date: string;
     company_master_id: string;
     job_distance: string;
-    job_location: string;
+    job_location: any[];
     min_salary: string;
     max_salary: string;
     additional_info: string;

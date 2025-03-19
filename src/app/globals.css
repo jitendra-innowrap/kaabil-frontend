@@ -771,7 +771,11 @@ button, .btn, a.btn{
     border-radius: 12px;
   }
   .job-detail-sidebar {
-    max-width: 280px;
+    width: 280px;
+  }
+  .job-description{
+    width: -webkit-fill-available;
+    max-width: calc(100% - 297px);
   }
   .filters-sidebar {
     max-width: 220px;
@@ -1036,7 +1040,10 @@ button, .btn, a.btn{
     border-radius: 12px;
   }
   .job-detail-sidebar{
-    max-width: 350px;
+    width: 350px;
+  }
+  .job-description{
+    max-width: calc(100% - 390px);
   }
 }
 
@@ -1186,7 +1193,11 @@ button, .btn, a.btn{
   }
   
   .job-detail-sidebar{
-    max-width: 439px;
+    width: 439px;
+  }
+  
+  .job-description{
+    max-width: calc(100% - 490px);
   }
   
   .filters-sidebar .filter-accordian button.filter-range-btn{
@@ -1242,4 +1253,9 @@ button, .btn, a.btn{
 
 .label.job-profile-match{
   padding-block: 2px !important;
+}
+
+.job-card .job-applied-btn{
+  background-color: #eef2fe !important;
+  border-color: #eef2fe !important;
 }

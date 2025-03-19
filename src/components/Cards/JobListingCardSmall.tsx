@@ -8,12 +8,79 @@ import { IoIosHeart, IoIosHeartEmpty } from 'react-icons/io'
 import { LiaMapMarkerAltSolid } from 'react-icons/lia'
 import { MdOutlineLocationOn } from 'react-icons/md'
 import { TbBriefcase2 } from 'react-icons/tb'
-import { showExperience, showSalary } from '../utils'
+import { showExperience, showSalary, timeAgo } from '../utils'
+import ProfilePhoto from './ProfilePhoto'
+import { VscHeart, VscHeartFilled } from 'react-icons/vsc'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from '@/redux/store'
+import api from '@/Services/Apiservice'
+import toast from 'react-hot-toast'
+import { signOut } from '@/redux/userSlice'
+import { setProgress } from '@/redux/progressSlice'
+import { clearSessionData } from '../utils/deviceId'
 
 export default function JobListingCardSmall({detail}:{detail:CompanyJob}) {
-  const [isFavorited, setIsFavorited] = React.useState(detail?.saveJob_status=='2')
-  const handleSave = () => {
-    setIsFavorited(!isFavorited)
+  const token = useSelector((state: RootState) => state.user.token);
+  const userSkills = useSelector((state: RootState) => state.user.skills);
+  const user = useSelector((state: RootState) => state.user);
+  const [isApplied, setIsApplied] = React.useState(detail?.is_job_apply=="1"?true:false);
+  const [isFavorited, setIsFavorited] = React.useState(detail?.saveJob_status=="1"?true:false);
+  const dispatch = useDispatch();  
+  const handleApply = async (id:string)=>{
+    if(!isApplied){
+      try {
+            const formData = new FormData();
+            formData.append("job_id", id); // Convert all values to strings
+            formData.append("token", token); // Convert all values to strings
+            const response = await api.post(`/Company/applyJob?job_id=${id}`,formData,{
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                },
+              }
+            );
+            if(response.data?.code==1){
+              toast.success('Applied Successfully!', { position: 'bottom-right' });
+              setIsApplied(true);
+            }
+            if(response.data?.message=="Invalid Hash Request"){
+              toast.error("Session Expired Please login !", { position: 'bottom-right' });
+              dispatch(signOut());
+              dispatch(setProgress(1));
+              clearSessionData();
+            }
+            console.log(response);
+          } catch (error) {
+            console.error('Error fetching jobs:', error);
+          }
+        }
+  }
+  const handleSave = async (id:string)=>{
+    try {
+          const formData = new FormData();
+          formData.append("job_id", id); // Convert all values to strings
+          const response = await api.post(`/Company/saveJob?job_id=${id}`,formData,{
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          );
+          if(response.data?.status=="2"){
+            toast.success('Job Unsaved!', { position: 'bottom-right' });
+            setIsFavorited(false);
+          }else if(response.data?.status=="1"){
+            toast.success('Job saved!', { position: 'bottom-right' });
+            setIsFavorited(true);
+          }
+          if(response.data?.message=="Invalid Hash Request"){
+            toast.error("Session Expired Please login !", { position: 'bottom-right' });
+            dispatch(signOut());
+            dispatch(setProgress(1));
+            clearSessionData();
+          }
+          console.log(response);
+        } catch (error) {
+          console.error('Error fetching jobs:', error);
+        }
   }
   useEffect(() => {
     setIsFavorited(detail?.saveJob_status=='1')
@@ -24,40 +91,39 @@ export default function JobListingCardSmall({detail}:{detail:CompanyJob}) {
       <div className="">
         <div className="flex gap-3 3xl:gap-4 justify-between">
           <div className="flex gap-[10px] 3xl:gap-4">
-          <Image
-            src={"/new-assets/images/job-listing-icon.png"}
-            width={44}
-            height={44}
-            alt="company profile logo"
-            className="rounded-full size-9 3xl:size-11"
-            />
+            <ProfilePhoto  index={1} logo={detail?.company_logo} styles="flex-shrink-0 border border-[#07082833] rounded-full size-9 3xl:size-11"  name={detail?.company_name} />
             <div className="">
-              <h3 className='text-xs 3xl:text-sm text-[#070828]'>{"Lorem Ipsum"}</h3>
-              <p className='text-[8px] mt-1 3xl:text-xs text-[#B9B9B9]'>{detail?.job_created_date}</p>
+              <h3 className='text-xs 3xl:text-sm text-[#070828]'>{detail?.company_name}</h3>
+              <p className='text-[8px] mt-1 3xl:text-xs text-[#B9B9B9]'>{timeAgo(detail?.job_posted_date)}</p>
             </div>
           </div>
-          <span tabIndex={0} onClick={handleSave}>
-          {
-            !isFavorited? (
-              <IoIosHeartEmpty className={`text-[#717B9E] size-4 3xl:size-5 cursor-pointer`}/>
-            ) : (
-              <IoIosHeart className={`text-red size-4 3xl:size-5 cursor-pointer`}/>
-            )
-          }
+          <span tabIndex={0} onClick={()=>{handleSave(detail?.id)}}>
+            {
+              !isFavorited? (
+                <VscHeart className={`text-[#717B9E] size-4 3xl:size-5 cursor-pointer`}/>
+              ) : (
+                <VscHeartFilled className={`text-red size-4 3xl:size-5 cursor-pointer`}/>
+              )
+            }
           </span>
         </div>
         <h3 className='text-sm 3xl:text-base min-h-10 2xl:text-lg 3xl:min-h-14 font-medium my-[6px] 3xl:my-3 line-clamp-2'>{detail?.job_title}</h3>
         <div className="flex mb-1 md:mb-2">
-          <img src={'/new-assets/icons/location-pin-dot.svg'} alt='Map pin' width={100} height={100} className='size-3 2xl:size-[19px]' />
-          {/* <LiaMapMarkerAltSolid className='text-[#545581] size-3 2xl:size-5'/> */}
-          <span className='ml-2 text-[10px] 2xl:text-sm text-[#545581]'>{detail?.job_location || "Kandivali, Mumbai"}</span>
+          <img src={'/new-assets/icons/location-pin-dot.svg'} alt='Map pin' width={100} height={100} className='size-3 2xl:size-5' />
+          <span className='ml-2 text-[10px] 2xl:text-sm text-[#545581] line-clamp-1' title={detail?.job_location?.[0]?.job_location || "Remote"}>{detail?.job_location?.[0]?.job_location || "Remote"}</span>
         </div>
         <div className="flex justify-between gap-2">
           <div className="flex flex-1">
-            <TbBriefcase2 className='text-[#545581] size-3 2xl:size-5'/>
-            <span className='ml-2 text-[10px] 2xl:text-sm text-[#545581]'>{showExperience(detail?.min_exp, detail?.max_exp)}</span>
+            <Image width={12} height={12} src={'/new-assets/icons/job-case.svg'} className='text-[#545581] size-3 2xl:size-5' alt='rupee icon' />
+            <span className='ml-2 text-[10px] 2xl:text-sm text-[#545581]'>{showExperience(detail?.min_exp ||"0", detail?.max_exp || "0", "yrs experience")}</span>
           </div>
-          <div className='ml-5 text-[10px] flex-1 2xl:text-sm text-[#545581] text-end'>{showSalary(detail?.is_industry_standard, detail?.salary_range_unit, detail?.min_salary, detail?.max_salary)}</div>
+          <div className='ml-5 text-[10px] 2xl:text-sm text-[#545581] flex items-center'>
+          {detail?.is_industry_standard !='1'&& 
+            <Image width={15} height={15} src={'/new-assets/icons/rupee.svg'} className='mr-1 2xl:mr-2 size-[11px] 2xl:size-[15px]' alt='rupee icon' />
+          }
+          <span className='text-[10px] 2xl:text-sm'>{`${showSalary(detail?.is_industry_standard || "0", detail?.salary_range_unit ||"0",detail?.min_salary ||"0",detail?.max_salary ||"0")} `} </span>
+          {detail?.is_industry_standard !='1' && <small className='text-[#B1B4B7]'> &nbsp; {` ${ detail?.salary_range_unit== "1"?` month`:` year`}`}</small>}
+          </div>        
         </div>
         <ul className='flex flex-wrap gap-2 mt-3'>
           {
@@ -76,7 +142,7 @@ export default function JobListingCardSmall({detail}:{detail:CompanyJob}) {
       <div className="flex flex-wrap gap-4 min-h-16 justify-between">
         <div className="flex action-btns gap-4 flex-wrap justify-end items-end">
         <Link href="/jobs/detail/2838" className='grid place-items-center btn-border whitespace-nowrap !p-0 h-[30px] 3xl:h-[44px] flex-1 text-[10px] 2xl:text-xs 3xl:text-sm text-red !border-red'>view Job</Link>
-        <Link href="/jobs/detail/2838" className='grid place-items-center btn-border whitespace-nowrap !p-0 h-[30px] 3xl:h-[44px] flex-1 text-[10px] 2xl:text-xs 3xl:text-sm text-white !bg-red !border-red'>quick Apply</Link>
+        <button onClick={()=>{handleApply(detail?.id)}} className={`grid place-items-center btn-border whitespace-nowrap !p-0 h-[30px] 3xl:h-[44px] flex-1 text-[10px] 2xl:text-xs 3xl:text-sm text-white !bg-red !border-red  ${isApplied?"!bg-[#eef2fe] job-applied-btn !border-[#eef2fe] !text-black cursor-default":""}`}>quick Apply</button>
         </div>
       </div>
     </div>

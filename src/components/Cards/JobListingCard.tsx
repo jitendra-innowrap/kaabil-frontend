@@ -146,11 +146,16 @@ export default function JobListingCard(prop:any) {
           <span className='ml-2 text-[10px] 2xl:text-sm text-[#545581]'>{showExperience(prop?.min_exp ||"0", prop?.max_exp || "0", "yrs experience")}</span>
         </div>
         <div className='ml-5 text-[10px] 2xl:text-sm text-[#545581] flex items-center'>
-          {prop?.is_industry_standard !=1&& 
+          
             <Image width={15} height={15} src={'/new-assets/icons/rupee.svg'} className='mr-1 2xl:mr-2 size-[11px] 2xl:size-[15px]' alt='rupee icon' />
+          {
+            (prop?.is_industry_standard=="1" || ((prop?.min_salary === null || prop?.min_salary === "" || prop?.min_salary === "0")) && ((prop?.max_salary === null || prop?.max_salary === "" || prop?.max_salary === "0")))?
+            <span className='text-[10px] 2xl:text-sm'>As per Industry standards</span>:
+            <>
+            <span className='text-[10px] 2xl:text-sm'>{`${showSalary(prop?.is_industry_standard || "0", prop?.salary_range_unit ||"0",prop?.min_salary ||"0",prop?.max_salary ||"0")} `} </span>
+            {prop?.is_industry_standard !=1 && <small className='text-[#B1B4B7]'> &nbsp; {` ${ prop?.salary_range_unit== "1"?` month`:` year`}`}</small>}
+            </>
           }
-          <span className='text-[10px] 2xl:text-sm'>{`${showSalary(prop?.is_industry_standard || "0", prop?.salary_range_unit ||"0",prop?.min_salary ||"0",prop?.max_salary ||"0")} `} </span>
-          {prop?.is_industry_standard !=1 && <small className='text-[#B1B4B7]'> &nbsp; {` ${ prop?.salary_range_unit== "1"?` month`:` year`}`}</small>}
         </div>
       </div>
       <div className="flex flex-wrap xl:flex-nowrap gap-4 min-h-16 justify-between">
@@ -174,7 +179,7 @@ export default function JobListingCard(prop:any) {
           }
         </ul>
         <div className="flex action-btns gap-2 3xl:gap-4 flex-wrap xl:max-w-[170px] xl:flex-nowrap justify-end items-end">
-        <Link href={token?`/jobs/detail/${prop?.id}`:`#`} className='grid place-items-center btn-border whitespace-nowrap !py-0 xl:!px-5 3xl:!px-8 h-[30px] 3xl:h-[44px] flex-1 text-[10px] 2xl:text-xs 3xl:text-sm text-red !border-red'>view Job</Link>
+        <Link href={`/jobs/detail/${prop?.id}`} className='grid place-items-center btn-border whitespace-nowrap !py-0 xl:!px-5 3xl:!px-8 h-[30px] 3xl:h-[44px] flex-1 text-[10px] 2xl:text-xs 3xl:text-sm text-red !border-red'>view Job</Link>
         <button type='button' onClick={()=>{handleApply(prop?.id)}} className={`grid place-items-center btn-border whitespace-nowrap !py-0 xl:!px-5 3xl:!px-8 h-[30px] 3xl:h-[44px] flex-1 text-[10px] 2xl:text-xs 3xl:text-sm text-white !bg-red !border-red ${isApplied?"!bg-[#eef2fe] job-applied-btn !border-[#eef2fe] !text-black cursor-default":""}`}>{isApplied?"Applied":"quick Apply"}</button>
         </div>
       </div>

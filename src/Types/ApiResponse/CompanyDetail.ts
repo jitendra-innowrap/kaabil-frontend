@@ -2,6 +2,7 @@ interface CompanyDetailResponse {
     code: number;
     result: Company[];
     job: (CompanyJob | CompanyJobCategory)[];
+    similar_company: (CompanyJob | CompanyJobCategory)[];
   }
   
   interface Company {
@@ -21,6 +22,7 @@ interface CompanyDetailResponse {
     share_url: string;
     applied_job_date: string;
     salary_range_unit: string;
+    industry_name:string;
     is_industry_standard: string;
     job_title: string;
     job_count: string;

@@ -73,7 +73,7 @@ export default function Header() {
                                     height={100}
                                     width={412}
                                     quality={100}
-                                    src="/new-assets/icons/empowered by mahindra logo.png"
+                                    src="/new-assets/icons/mahindra-logo.svg"
                                     className='w-auto max-w-[113px] h-[22px] xl:h-[20px] 3xl:h-[31px]'
                                     alt='kaabil logo'
                                     />

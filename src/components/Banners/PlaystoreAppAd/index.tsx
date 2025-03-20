@@ -10,7 +10,7 @@ export default function PlayStoreAppAd() {
             with the <span className='font-kalam font-bold'>Kaabil</span></h2>
             <p className='md:text-sm text-white 2xl:text-[22px] 2xl:leading-[30px] mb-2 max-w-[452px]'>Download now and enjoy a seamless job-hunting experience.</p>
             <Image
-                  src={"/new-assets/images/google-paly-black.png"}
+                  src={"/new-assets/images/google-play-black.svg"}
                   width={215}
                   height={62}
                   alt="company logo"
@@ -19,9 +19,9 @@ export default function PlayStoreAppAd() {
           </div>
           <div className="block w-1/2 max-w-[563px] flex-1">
           </div>
-          <div className="absolute left-1/2 -translate-x-1/2 md:translate-x-0 md:top-[-65px] xl:translate-x-10 2xl:translate-x-0 3xl:translate-x-8 shrink-0 md:left-[8%] top-[-50px] md:bottom-0 block h-[300px] md:h-[120%] w-[300px] md:w-[328px] flex-1 xl:w-[327.2px] 2xl:w-[460px] 2xl:top-[-90px]">
+          <div className="absolute left-1/2 -translate-x-1/2 md:translate-x-0 md:top-[-65px] xl:translate-x-10 2xl:translate-x-0 3xl:translate-x-8 shrink-0 md:left-[8%] top-[-50px] md:bottom-0 block h-[300px] md:h-[120%] w-[300px] md:w-[328px] flex-1 xl:w-[327.6px] 2xl:w-[460px] 2xl:top-[-90px]">
             <Image
-            src={"/new-assets/images/footer-mobile.png"}
+            src={"/new-assets/images/footer-mobile.svg"}
             width={1716}
             height={1600}
             quality={100}

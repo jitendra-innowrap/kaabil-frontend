@@ -23,87 +23,60 @@ function SearchSection() {
   const autocompleteService = useSelector((state: RootState) => state.search.autocompleteService);
   const isScriptLoaded = useSelector((state: RootState) => state.search.isScriptLoaded);
   useEffect(() => {
-    const fetchIndustries = async () => {
-      try {
-        const { deviceId, secret, salt } = getSessionData();
-        
-        // Ensure session data is available
-        if (!deviceId || !secret || !salt) {
-          console.log("Session data not available, retrying...");
-          setTimeout(fetchIndustries, 1000); // Retry after 1 second
-          return;
-        }
-
-        const response = await api.post("/MasterData/getIndustry");
-        console.log(response);
-        setIndustryOptions(response.data?.result.map((ind:{id:string, name:string}) => ({ value: ind.id, label: ind.name })))
-       
-      } catch (error) {
-        console.error("Error fetching job types:", error);
-      }
-    };
-    const fetchLocations = async () => {
-      try {
-        const { deviceId, secret, salt } = getSessionData();
-        
-        // Ensure session data is available
-        if (!deviceId || !secret || !salt) {
-          console.log("Session data not available, retrying...");
-          setTimeout(fetchIndustries, 1000); // Retry after 1 second
-          return;
-        }
-
-        const response = await api.get("/MasterData/getCity");
-        console.log(response);
-        setLocationOptions(response.data?.result.map((ind:{id:string, name:string}) => ({ value: ind.id, label: ind.name })))
-       
-      } catch (error) {
-        console.error("Error fetching job types:", error);
-      }
-    };
-
     fetchIndustries();
     fetchLocations();
   }, []);
-  const handleLocationInputChange = (inputValue: string) => {
-    if (autocompleteService && inputValue) {
-      autocompleteService.getPlacePredictions({ input: inputValue }, (predictions: any, status: any) => {
-        if (status === 'OK') {
-          setLocationOptions(predictions.map((prediction: any) => ({
-            value: prediction.place_id,
-            label: prediction.description,
-          })));
-        } else {
-          setLocationOptions([]);
-        }
-      });
-    } else {
-      setLocationOptions([]);
-    }
-  };
 
-  const handleLocationChange = async (selectedOption: optionType | null) => {
-    if (selectedOption) {
-      const locationName = selectedOption.label;
-      setLocation(locationName);
+  // Sync state with URL parameters
+  useEffect(() => {
+    const searchParam = searchParams.get('search') || '';
+    const locationParam = searchParams.get('location_filter') || '';
+    const industryParam = searchParams.get('industries_filter') || '';
 
-      // Fetch latitude and longitude using the Geocoding API
-      const response = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(locationName)}&key=AIzaSyCp-H598wbMhBWMz9I_zbvdcknH-fiBVCo`
-      );
-      const data = await response.json();
-      if (data.status === 'OK' && data.results.length > 0) {
-        const { lat, lng } = data.results[0].geometry.location;
-        setLatitude(lat.toString());
-        setLongitude(lng.toString());
+    setSearch(searchParam);
+    setLocation(locationParam);
+    setIndustry(industryParam);
+  }, [searchParams?.toString()]);
+  
+
+  const fetchIndustries = async () => {
+    try {
+      const { deviceId, secret, salt } = getSessionData();
+      
+      // Ensure session data is available
+      if (!deviceId || !secret || !salt) {
+        console.log("Session data not available, retrying...");
+        setTimeout(fetchIndustries, 1000); // Retry after 1 second
+        return;
       }
-    } else {
-      setLocation('');
-      setLatitude('');
-      setLongitude('');
+
+      const response = await api.post("/MasterData/getIndustry");
+      console.log(response);
+      setIndustryOptions(response.data?.result.map((ind:{id:string, name:string}) => ({ value: ind.id, label: ind.name })))
+     
+    } catch (error) {
+      console.error("Error fetching job types:", error);
     }
   };
+  const fetchLocations = async () => {
+    try {
+      const { deviceId, secret, salt } = getSessionData();
+      
+      // Ensure session data is available
+      if (!deviceId || !secret || !salt) {
+        console.log("Session data not available, retrying...");
+        setTimeout(fetchIndustries, 1000); // Retry after 1 second
+        return;
+      }
 
+      const response = await api.get("/MasterData/getCity");
+      console.log(response);
+      setLocationOptions(response.data?.result.map((ind:{id:string, name:string}) => ({ value: ind.id, label: ind.name })))
+     
+    } catch (error) {
+      console.error("Error fetching job types:", error);
+    }
+  };
   const handleSearch = (e: any) => {
     e.preventDefault();
     const params = new URLSearchParams();
@@ -131,7 +104,7 @@ function SearchSection() {
       />
       <div className="relative w-full z-[10] lg:w-[220px] 2xl:w-[250px] 3xl:w-[345px] rounded-[40px]">
         <Select
-          value={locationOptions.find(opt => opt.label === location)}
+          value={location ? locationOptions.find(opt => opt.label === location) : null}
           options={locationOptions}
           placeholder="Select Location"
           className="text-xs 2xl:text-base"
@@ -149,7 +122,7 @@ function SearchSection() {
       </div>
       <div className="relative w-full z-[10] rounded-[40px] lg:w-[190px] 2xl:w-[220px] 3xl:w-[295px]">
         <Select
-          value={industryOptions.find(opt => opt.value === industry)}
+          value={industry?industryOptions.find(opt => opt.value === industry):null}
           options={industryOptions}
           placeholder="Select Industry"
           className="text-xs 2xl:text-base"

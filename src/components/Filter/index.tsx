@@ -38,25 +38,6 @@ export default function FilterSidebar() {
         // Remove all search parameters and navigate to the base URL
         router.push('/jobs', { scroll: false }); // Replace '/jobs' with your base route
     };
-
-    // Function to fetch location options from Google Maps API
-    const fetchLocationOptions = async (keyword: string) => {
-        if (!autocompleteService || !keyword) return [];
-
-        return new Promise<Array<{ key: string; doc_count: number }>>((resolve) => {
-            autocompleteService.getPlacePredictions({ input: keyword }, (predictions: any, status: any) => {
-                if (status === 'OK') {
-                    const options = predictions.map((prediction: any) => ({
-                        key: prediction.description,
-                        doc_count: -1, // Add a dummy count
-                    }));
-                    resolve(options);
-                } else {
-                    resolve([]);
-                }
-            });
-        });
-    };
   return (
     <>
     {open && <div className="block bg-black z-10 opacity-20 w-screen h-screen fixed top-0 left-0" onClick={()=>setOpen(false)}></div>}

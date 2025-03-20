@@ -1,18 +1,26 @@
-'use client';
+"use client";
 
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { setProgress } from '@/redux/progressSlice';
-import api from '@/Services/Apiservice';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import React from 'react';
-import toast from 'react-hot-toast';
-import { setIsFresher, setUserEducation, setUserExperience, setUserLocation, setUserName, setUserRole, setUserSkills, setUserWAConsent } from '@/redux/userSlice';
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { setProgress } from "@/redux/progressSlice";
+import api from "@/Services/Apiservice";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import React from "react";
+import toast from "react-hot-toast";
+import {
+  setIsFresher,
+  setUserEducation,
+  setUserExperience,
+  setUserLocation,
+  setUserName,
+  setUserRole,
+  setUserSkills,
+  setUserWAConsent,
+} from "@/redux/userSlice";
 
 export default function EnterName() {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user);
-  
 
   // ✅ Yup Validation Schema
   const validationSchema = Yup.object().shape({
@@ -26,7 +34,7 @@ export default function EnterName() {
 
   // ✅ Formik hook
   const formik = useFormik({
-    initialValues: { name: user.name || "", },
+    initialValues: { name: user.name || "" },
     validationSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
@@ -34,44 +42,80 @@ export default function EnterName() {
         formData.append("first_name", values.name);
 
         // ✅ API Call
-        const response:any = await api.post('/Auth/addJobseekerProfile', formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
-        console.log('repsonse:',response);
+        const response: any = await api.post(
+          "/Auth/addJobseekerProfile",
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        );
+        console.log("repsonse:", response);
         if (response?.data?.code === 1) {
           // ✅ Redux Updates
           dispatch(setProgress(5));
           dispatch(setUserName(values.name));
-          dispatch(setUserRole({
-            job_type_master_id: response?.data?.result?.[0]?.jobs_types?.map((type:any,i:number)=>{
-              return type?.id
-            }),
-            role_id: response?.data?.result?.[0]?.user_job_roles?.map((role:any,i:number)=>{
-              return role?.id
-            }),
-          }));
+          dispatch(
+            setUserRole({
+              job_type_master_id: response?.data?.result?.[0]?.jobs_types?.map(
+                (type: any, i: number) => {
+                  return type?.id;
+                }
+              ),
+              role_id: response?.data?.result?.[0]?.user_job_roles?.map(
+                (role: any, i: number) => {
+                  return role?.id;
+                }
+              ),
+            })
+          );
           dispatch(setUserSkills(response?.data?.result?.[0]?.skills));
-          dispatch(setUserLocation(response?.data?.result?.[0]?.user_willing_to_relocate?.map((loc:any,i:number)=>{
-            return loc?.id
-          }),));
-          dispatch(setUserEducation([response?.data?.result?.[0]?.education_master_id]));
+          dispatch(
+            setUserLocation(
+              response?.data?.result?.[0]?.user_willing_to_relocate?.map(
+                (loc: any, i: number) => {
+                  return loc?.id;
+                }
+              )
+            )
+          );
+          dispatch(
+            setUserEducation([response?.data?.result?.[0]?.education_master_id])
+          );
           dispatch(setIsFresher(response?.data?.result?.[0]?.is_fresher));
           dispatch(setIsFresher(response?.data?.result?.[0]?.is_fresher));
-          dispatch(setUserWAConsent(response?.data?.result?.[0]?.is_whatsapp_show=="1"?true:false));
-          dispatch(setUserExperience(response?.data?.result?.[0]?.user_experiences?.map((exp:any,i:number)=>{
-            return {
-              ...exp,
-              designation_name: exp?.designation,
-              job_type_name: exp?.job_type,
-            }
-          })));
-          toast.success("Name submitted successfully!", { position: "bottom-right" });
+          dispatch(
+            setUserWAConsent(
+              response?.data?.result?.[0]?.is_whatsapp_show == "1"
+                ? true
+                : false
+            )
+          );
+          dispatch(
+            setUserExperience(
+              response?.data?.result?.[0]?.user_experiences?.map(
+                (exp: any, i: number) => {
+                  return {
+                    ...exp,
+                    designation_name: exp?.designation,
+                    job_type_name: exp?.job_type,
+                  };
+                }
+              )
+            )
+          );
+          toast.success("Name submitted successfully!", {
+            position: "bottom-right",
+          });
         } else {
-          toast.error(response?.message || "Something went wrong. Try again!", { position: "bottom-right" });
+          toast.error(response?.message || "Something went wrong. Try again!", {
+            position: "bottom-right",
+          });
         }
       } catch (error: any) {
         console.error("Error submitting name:", error);
-        toast.error(error?.message || "Something went wrong!", { position: "bottom-right" });
+        toast.error(error?.message || "Something went wrong!", {
+          position: "bottom-right",
+        });
       } finally {
         setSubmitting(false);
       }
@@ -81,11 +125,13 @@ export default function EnterName() {
   return (
     <div>
       <h2 className="text-center font-semibold text-lg md:text-xl 2xl:text-[28px] 2xl:leading-[36px]">
-        Welcome to <span className="text-red font-kalam">Kaabil</span>
+        Welcome to <span className="text-red">Kaabil</span>
       </h2>
       {/* ✅ Formik Form */}
       <form onSubmit={formik.handleSubmit} className="block mt-8 3xl:mt-16">
-        <label htmlFor="name">Enter your full name</label>
+        <label htmlFor="name" className="text-[#231F20] font-semibold">
+          Enter your full name
+        </label>
         <input
           type="text"
           id="name"
@@ -94,23 +140,31 @@ export default function EnterName() {
           value={formik.values.name}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          className={`border p-2 w-full ${formik.errors.name && formik.touched.name ? 'border-red-500' : 'border-gray-300'}`}
+          className={`border p-2 w-full ${
+            formik.errors.name && formik.touched.name
+              ? "border-red-500"
+              : "border-gray-300"
+          } ${formik.values.name ? "font-semibold" : "font-normal"}`}
         />
-
         {/* ✅ Display Validation Error */}
-        {formik.errors.name && formik.touched.name && (
-              <div className="text-red-500 text-sm text-red mt-1">{formik.errors.name}</div>
-            )}
-
-        <button
-          type="submit"
-          className={`mt-4 px-6 py-2 bg-red text-white rounded ${
-            !formik.isValid || formik.isSubmitting ? "!opacity-50 !cursor-default" : ""
-          }`}
-          disabled={!formik.isValid || formik.isSubmitting}
-        >
-          {formik.isSubmitting ? "Submitting..." : "Next"}
-        </button>
+        <div>
+          {formik.errors.name && formik.touched.name && (
+            <p className="text-red-500 text-sm">{formik.errors.name}</p>
+          )}
+        </div>
+        <div className="mt-4">
+          <button
+            type="submit"
+            className={`no-margin px-6 py-2 bg-red text-white rounded ${
+              !formik.isValid || formik.isSubmitting
+                ? "!opacity-50 !cursor-default"
+                : ""
+            }`}
+            disabled={!formik.isValid || formik.isSubmitting}
+          >
+            {formik.isSubmitting ? "Submitting..." : "Next"}
+          </button>
+        </div>
       </form>
     </div>
   );

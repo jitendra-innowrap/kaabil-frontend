@@ -1,14 +1,25 @@
-'use client'
-import { resendOTP, verifyOTP } from '@/redux/authSlice';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { setProgress } from '@/redux/progressSlice';
-import Image from 'next/image';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import React, { useEffect, useRef, useState } from 'react';
-import toast from 'react-hot-toast';
-import { getAuthUser, storeAuthToken, storeAuthUser, storeProgress } from '@/components/utils/deviceId';
-import { setAuthToken, setUserId, setUserIsProfileVerified, setUserName, setUserPhotoUrl } from '@/redux/userSlice';
+"use client";
+import { resendOTP, verifyOTP } from "@/redux/authSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { setProgress } from "@/redux/progressSlice";
+import Image from "next/image";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import React, { useEffect, useRef, useState } from "react";
+import toast from "react-hot-toast";
+import {
+  getAuthUser,
+  storeAuthToken,
+  storeAuthUser,
+  storeProgress,
+} from "@/components/utils/deviceId";
+import {
+  setAuthToken,
+  setUserId,
+  setUserIsProfileVerified,
+  setUserName,
+  setUserPhotoUrl,
+} from "@/redux/userSlice";
 
 interface prop {
   onClose: () => void;
@@ -40,44 +51,52 @@ export default function OTPInputForm({ onClose }: prop) {
 
   // Formik for OTP input handling
   const formik = useFormik({
-    initialValues: { otp: ['', '', '', ''] },
+    initialValues: { otp: ["", "", "", ""] },
     validationSchema: Yup.object({
       otp: Yup.array()
-      .test('complete-otp', 'Mobile otp is required', (value) =>
-        value?.some((digit) => digit.trim() !== '')
-      ).test('required-otp', 'Please enter all digits', (value) =>
-        value?.every((digit) => digit.trim() !== '')
-      ),
+        .test("complete-otp", "Mobile otp is required", (value) =>
+          value?.some((digit) => digit.trim() !== "")
+        )
+        .test("required-otp", "Please enter all digits", (value) =>
+          value?.every((digit) => digit.trim() !== "")
+        ),
     }),
     onSubmit: async (values) => {
-      const otpValue = values.otp.join(''); // Join OTP digits
-  
+      const otpValue = values.otp.join(""); // Join OTP digits
+
       try {
-        const response: any = await dispatch(verifyOTP({ otp: otpValue, company_id: "", company_offices_id: "" })).unwrap();
+        const response: any = await dispatch(
+          verifyOTP({ otp: otpValue, company_id: "", company_offices_id: "" })
+        ).unwrap();
         if (response?.code == 1) {
           dispatch(setAuthToken(response?.token));
           dispatch(setUserId(response?.result?.id));
           storeAuthUser({ ...user, id: response?.result?.id });
           dispatch(setUserPhotoUrl(response?.result?.photo_url));
           dispatch(setUserName(response?.result?.name));
-          dispatch(setUserIsProfileVerified(response?.result?.is_profile_verify));
-          if(response?.result?.is_profile_verify=="1"){
+          dispatch(
+            setUserIsProfileVerified(response?.result?.is_profile_verify)
+          );
+          if (response?.result?.is_profile_verify == "1") {
             dispatch(setProgress(11));
             onClose();
-          }else{
+          } else {
             dispatch(setProgress(3));
-            toast.success("Logged In Successfully!", { position: "bottom-right" });
+            toast.success("Logged In Successfully!", {
+              position: "bottom-right",
+            });
           }
         } else {
           throw new Error("Invalid OTP");
         }
       } catch (error: any) {
         console.error("OTP Verification Failed:", error);
-        toast.error(error?.message || "Invalid OTP, please try again!", { position: "bottom-right" });
+        toast.error(error?.message || "Invalid OTP, please try again!", {
+          position: "bottom-right",
+        });
       }
     },
   });
-  
 
   // Handle OTP input change
   const handleOtpChange = (index: number, value: string) => {
@@ -93,37 +112,40 @@ export default function OTPInputForm({ onClose }: prop) {
   };
 
   // Handle backspace navigation
-  const handleKeyDown = (index: number, event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Backspace' && index > 0 && !formik.values.otp[index]) {
+  const handleKeyDown = (
+    index: number,
+    event: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (event.key === "Backspace" && index > 0 && !formik.values.otp[index]) {
       inputRefs.current[index - 1]?.focus();
     }
   };
 
   const handleResendOtp = async (event: React.FormEvent) => {
-    if(isResending || timer > 0){
+    if (isResending || timer > 0) {
       return;
     }
     try {
       setIsResending(true);
       // formData.append('email', formik.values.email);
       // Call the API to register the user
-      const response:any = await dispatch(resendOTP())
-        if (response?.payload?.code == 1) {
+      const response: any = await dispatch(resendOTP());
+      if (response?.payload?.code == 1) {
         toast.success(`OTP resent successfully!`, {
           position: "bottom-right",
-        })
+        });
         // Start the timer countdown
         setTimer(60);
-      }else{
+      } else {
         toast.error(`Something Went Wrong, Try Again!`, {
           position: "bottom-right",
-        })
+        });
       }
     } catch (err: any) {
-      console.error('Registration Error:', err);
-      toast.error(err.data.message || 'An error occurred, Try again later!', {
-        position: "bottom-right"
-      })
+      console.error("Registration Error:", err);
+      toast.error(err.data.message || "An error occurred, Try again later!", {
+        position: "bottom-right",
+      });
     } finally {
       setIsResending(false);
     }
@@ -135,39 +157,44 @@ export default function OTPInputForm({ onClose }: prop) {
     let interval: NodeJS.Timeout | null = null;
 
     if (timer > 0) {
-        interval = setInterval(() => {
-            setTimer(prevTimer => prevTimer - 1);
-        }, 1000);
+      interval = setInterval(() => {
+        setTimer((prevTimer) => prevTimer - 1);
+      }, 1000);
     }
 
     return () => {
-        if (interval) clearInterval(interval);
+      if (interval) clearInterval(interval);
     };
-}, [timer]);
+  }, [timer]);
 
-
-useEffect(() => {
-  
-  return () => {
-    setTimer(60)
-  }
-}, [])
+  useEffect(() => {
+    return () => {
+      setTimer(60);
+    };
+  }, []);
 
   return (
-    <div>
-      <h2 className='text-center font-semibold text-lg md:text-xl 2xl:text-[28px] 2xl:leading-[36px]'>
+    <>
+      <h2 className="text-center text-[#231F20] font-semibold text-lg md:text-xl 2xl:text-[28px] 2xl:leading-[36px]">
         OTP Verification
       </h2>
-      <p className='text-center mt-2'>We have sent a verification code to your number</p>
+      <p className="text-center mt-2 text-[#000000]">
+        We have sent the code verification to your number
+      </p>
       <Image
         src="/new-assets/icons/otp-icon.png"
         alt="OTP verification form"
         width={60}
         height={60}
-        className='mx-auto mt-5'
+        className="mx-auto mt-5"
       />
       <form className="block mt-8 md:mt-10" onSubmit={formik.handleSubmit}>
-        <label htmlFor="mobile">Mobile Number</label>
+        <label
+          htmlFor="mobile"
+          className="text-[#231F20] mobile-text text-lg md:text-xl 2xl:text-[16px]"
+        >
+          Mobile Number
+        </label>
         <input
           type="tel"
           id="mobile"
@@ -176,12 +203,15 @@ useEffect(() => {
           placeholder="Enter your mobile number to receive OTP"
           readOnly
           required
+          className={`text-[#231F20] ${
+            user?.mobile ? "font-semibold" : "font-normal"
+          }`}
         />
-        <div className="flex gap-6 sm:gap-10 mt-2 xl:mt-[10px] justify-between">
+        <div className="flex gap-6 sm:gap-10 mt-2 xl:mt-[10px]  justify-between">
           {formik.values.otp.map((digit, index) => (
             <div className="relative" key={index}>
               <input
-                className="otp-input w-full border border-borderBlue text-center text-lg md:text-xl font-semibold"
+                className="otp-input w-full  border border-borderBlue text-center text-lg md:text-xl font-semibold"
                 name={`otp${index}`}
                 type="tel"
                 maxLength={1}
@@ -189,23 +219,45 @@ useEffect(() => {
                 value={digit}
                 onChange={(e) => handleOtpChange(index, e.target.value)}
                 onKeyDown={(e) => handleKeyDown(index, e)}
-                ref={(ref) => { inputRefs.current[index] = ref; }}
+                ref={(ref) => {
+                  inputRefs.current[index] = ref;
+                }}
               />
-              {index < 3 && <span className='text-[#98A2B3] top-3 -right-5 sm:-right-7 text-3xl absolute'>-</span>}
+              {index < 3 && (
+                <span className="text-[#98A2B3] top-3 -right-5 sm:-right-7 text-3xl absolute">
+                  -
+                </span>
+              )}
             </div>
           ))}
         </div>
-        {formik.errors.otp && <p className="text-red-500 mt-2">{formik.errors.otp}</p>}
-        <button className={`mt-4 ${formik.isValid ? '' : 'opacity-50 cursor-not-allowed'}`} type="submit" disabled={!formik.isValid}>
-          Next
-        </button>
-        <p className='mt-4 2xl:mt-5 text-center'>Didn’t receive code? 
-          <span tabIndex={0} onClick={handleResendOtp} className={`font-medium text-red ml-1 cursor-pointer ${isResending || timer > 0? 'opacity-50':''}`}
-            >
-                {isResending || timer > 0 ? `Resend OTP (${timer}s)` : 'Resend OTP'}
+        {formik.errors.otp && (
+          <p className="text-red-500 mt-2">{formik.errors.otp}</p>
+        )}
+        <div className="mt-5">
+          <button
+            className={`no-margin ${
+              formik.isValid ? "" : "opacity-50 cursor-not-allowed"
+            }`}
+            type="submit"
+            disabled={!formik.isValid || formik.isSubmitting}
+          >
+            Verify
+          </button>
+        </div>
+        <p className="mt-4 2xl:mt-5 text-center text-[#000000]">
+          Didn’t receive code?
+          <span
+            tabIndex={0}
+            onClick={handleResendOtp}
+            className={`font-medium text-red ml-1 cursor-pointer ${
+              isResending || timer > 0 ? "opacity-50" : ""
+            }`}
+          >
+            {isResending || timer > 0 ? `Resend OTP (${timer}s)` : "Resend OTP"}
           </span>
         </p>
       </form>
-    </div>
+    </>
   );
 }

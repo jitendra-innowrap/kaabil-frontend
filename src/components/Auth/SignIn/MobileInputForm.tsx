@@ -1,15 +1,20 @@
-'use client'
-import { login } from '@/redux/authSlice';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { setProgress } from '@/redux/progressSlice';
-import React, { useState } from 'react'
-import toast from 'react-hot-toast';
-import { useFormik } from "formik";
+"use client";
+import React from "react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { setUserMobile, signOut } from '@/redux/userSlice';
-import { clearSessionData } from '@/components/utils/deviceId';
+import { useAppDispatch } from "@/redux/hooks";
+import { login } from "@/redux/authSlice";
+import { setProgress } from "@/redux/progressSlice";
+import { setUserMobile, signOut } from "@/redux/userSlice";
+import { clearSessionData } from "@/components/utils/deviceId";
+import toast from "react-hot-toast";
+
+// Toast ID tracker outside the component
+let toastId: string | null = null;
+
 export default function MobileInputForm() {
   const dispatch = useAppDispatch();
+
   // ✅ Validation schema
   const validationSchema = Yup.object().shape({
     mobile: Yup.string()
@@ -17,80 +22,123 @@ export default function MobileInputForm() {
       .required("Mobile number is required"),
   });
 
-  // ✅ Formik hook
-  const formik = useFormik({
-    initialValues: { mobile: "" },
-    validationSchema,
-    onSubmit: async (values) => {
-      try {
-        const { mobile } = values;
-  
-        // ✅ Use `unwrap()` to get the resolved payload or catch errors
-        const response = await dispatch(login({ mobile, name: "", login_type: 1, role_id: 4 })).unwrap();  
-        if (response?.code === 1) {
-          dispatch(setProgress(2));
-          dispatch(setUserMobile(mobile));
-          toast.success("An OTP has been sent!", { position: "bottom-right" });
-        } else {
-          toast.error(response?.msg || "Login failed. Try again!", { position: "bottom-right" });
+  // ✅ Handle form submission
+  const handleSubmit = async (
+    values: { mobile: string },
+    { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
+  ) => {
+    try {
+      const { mobile } = values;
+      const response = await dispatch(
+        login({ mobile, name: "", login_type: 1, role_id: 4 })
+      ).unwrap();
+
+      if (response?.code === 1) {
+        dispatch(setProgress(2));
+        dispatch(setUserMobile(mobile));
+        if (!toastId) {
+          toastId = toast.success("An OTP has been sent!", {
+            position: "bottom-right",
+            duration: 2000, // Optional: control toast duration
+          });
         }
-        if(response.data?.msg=="Invalid Hash Request"){
-          toast.error("Session Expired Please login !", { position: 'bottom-right' });
-          dispatch(signOut());
-          dispatch(setProgress(1));
-          clearSessionData();
-        }
-      } catch (error: any) {
-        console.error("Login Error:", error);
-        if(error.data?.msg=="Invalid Hash Request"){
-          toast.error("Session Expired Please login !", { position: 'bottom-right' });
-          dispatch(signOut());
-          dispatch(setProgress(1));
-          clearSessionData();
-        }else{
-          toast.error(error?.message || "Something went wrong!", { position: "bottom-right" });
+      } else {
+        if (!toastId) {
+          toastId = toast.error(response?.msg || "Login failed. Try again!", {
+            position: "bottom-right",
+            duration: 2000,
+          });
         }
       }
-  
-    },
-  });
-  const handleInput = (e:any) => {
-    const { value } = e.target;
-    const numericValue = value.replace(/\D+/g, ''); // Remove non-numeric characters
-    if (numericValue.length <= 10) {
-      formik.setFieldValue('mobile', numericValue);
-    } else {
-      formik.setFieldValue('mobile', numericValue.slice(0, 10));
+      if (response.data?.msg === "Invalid Hash Request") {
+        if (!toastId) {
+          toastId = toast.error("Session Expired. Please login!", {
+            position: "bottom-right",
+            duration: 2000,
+          });
+        }
+        dispatch(signOut());
+        dispatch(setProgress(1));
+        clearSessionData();
+      }
+    } catch (error: any) {
+      console.error("Login Error:", error);
+      if (error.data?.msg === "Invalid Hash Request") {
+        if (!toastId) {
+          toastId = toast.error("Session Expired. Please login!", {
+            position: "bottom-right",
+            duration: 2000,
+          });
+        }
+        dispatch(signOut());
+        dispatch(setProgress(1));
+        clearSessionData();
+      } else {
+        if (!toastId) {
+          toastId = toast.error(error?.message || "Something went wrong!", {
+            position: "bottom-right",
+            duration: 2000,
+          });
+        }
+      }
+    } finally {
+      setSubmitting(false);
+      toastId = null; // Reset toast ID for next submission
     }
   };
+
   return (
     <div>
-        <h2 className='text-center font-semibold text-lg md:text-xl 2xl:text-[28px] 2xl:leading-[36px]'>Lets start with your mobile number</h2>
-        <form onSubmit={formik.handleSubmit} className="block mt-8 md:mt-10 xl:mt-14 2xl:mt-16">
-            <label htmlFor="mobile">Mobile Number</label>
-            <input
+      <h2 className="text-center text-[#231F20] font-semibold text-lg md:text-xl 2xl:text-[28px] 2xl:leading-[36px]">
+        Let's start with your mobile number
+      </h2>
+      <Formik
+        initialValues={{ mobile: "" }}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
+      >
+        {({ isSubmitting, isValid, dirty, setFieldValue, values }) => (
+          <Form className="block mt-8 md:mt-10 xl:mt-14 2xl:mt-16">
+            <label
+              htmlFor="mobile"
+              className="text-[#231F20] mobile-text text-lg md:text-xl 2xl:text-[16px]"
+            >
+              Mobile Number
+            </label>
+            <Field
               type="tel"
               id="mobile"
               name="mobile"
+              value={values?.mobile}
               placeholder="Enter your mobile number to receive OTP"
-              className="border p-2 w-full rounded"
-              value={formik.values.mobile}
-              onChange={handleInput}
-              onBlur={formik.handleBlur}
+              className={`border p-2 w-full rounded-[12px] text-[#231F20] ${
+                values?.mobile ? "font-semibold" : "font-normal"
+              }`}
+              maxLength={10} // Restricts input to 10 characters
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                const numericValue = e.target.value.replace(/\D+/g, "");
+                if (numericValue.length <= 10) {
+                  setFieldValue("mobile", numericValue);
+                } else {
+                  setFieldValue("mobile", numericValue.slice(0, 10));
+                }
+              }}
             />
-            {formik.touched.mobile && formik.errors.mobile && (
-              <div className="text-red-500 text-sm text-red mt-1">{formik.errors.mobile}</div>
-            )}
+            <div className="min-h-[11px] text-sm text-red mt-1">
+              <ErrorMessage name="mobile" />
+            </div>  
             <button
               type="submit"
-              disabled={!formik.isValid || !formik.dirty}
-              className={`mt-4 px-6 py-2 bg-red text-white rounded ${
-                !formik.isValid || !formik.dirty ? "opacity-50 cursor-not-allowed" : ""
+              disabled={!isValid || !dirty || isSubmitting}
+              className={`mt-1 no-margin px-6 py-2 bg-red text-white rounded-full ${
+                !isValid || !dirty ? "opacity-50 cursor-not-allowed" : ""
               }`}
             >
-              {formik.isSubmitting ? "Submitting..." : "Next"}
+              {isSubmitting ? "Submitting..." : "Next"}
             </button>
-        </form>
+          </Form>
+        )}
+      </Formik>
     </div>
-  )
+  );
 }

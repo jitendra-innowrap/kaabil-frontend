@@ -15,10 +15,24 @@ import { setUserRole } from "@/redux/userSlice";
 export default function AddJobRole() {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user);
-  const [selectedRoles, setSelectedRoles] = useState<{ value: string; label: string }[]>([]);
+  const [selectedRoles, setSelectedRoles] = useState<
+    { value: string; label: string }[]
+  >([]);
   const [selectedJobType, setSelectedJobType] = useState<string[]>([]);
-  const [rolesList, setRolesList] = useState<{ value: string; label: string }[]>([]);
-  const [jobTypes, setJobTypes] = useState<{ value: string; label: string }[]>([]);
+  const [rolesList, setRolesList] = useState<
+    { value: string; label: string }[]
+  >([]);
+  const [jobTypes, setJobTypes] = useState<{ value: string; label: string }[]>(
+    []
+  );
+
+  const isOptionDisabled = (option: { value: string; label: string }) => {
+    // Disable the option if more than 2 are selected and this option is not already selected
+    return (
+      selectedRoles.length >= 2 &&
+      !selectedRoles.some((role) => role.value === option.value)
+    );
+  };
 
   // ✅ Fetch roles and job types from API
   useEffect(() => {
@@ -29,17 +43,23 @@ export default function AddJobRole() {
   const fetchRoles = async () => {
     try {
       const response = await api.get("/MasterData/getDesignation");
-      const roles = response?.data?.result?.map((role: any) => ({
-        value: role.id,
-        label: role.name,
-        ...role,
-      })) || [];
+      const roles =
+        response?.data?.result?.map((role: any) => ({
+          value: role.id,
+          label: role.name,
+          ...role,
+        })) || [];
 
       // Set initial selected roles if user has existing roles
       if (user.role_id) {
-        const preselectedRoles = roles.filter((role: any) => user?.role_id?.includes(role.value));
+        const preselectedRoles = roles.filter((role: any) =>
+          user?.role_id?.includes(role.value)
+        );
         setSelectedRoles(preselectedRoles);
-        formik.setFieldValue("role_id", preselectedRoles.map((role:any) => role.value));
+        formik.setFieldValue(
+          "role_id",
+          preselectedRoles.map((role: any) => role.value)
+        );
       }
 
       setRolesList(roles);
@@ -51,15 +71,19 @@ export default function AddJobRole() {
   const fetchJobTypes = async () => {
     try {
       const response = await api.get("/MasterData/getJobType");
-      const jobTypes = response?.data?.result?.map((type: any) => ({
-        value: type.id.toString(),
-        label: type.name,
-      })) || [];
+      const jobTypes =
+        response?.data?.result?.map((type: any) => ({
+          value: type.id.toString(),
+          label: type.name,
+        })) || [];
 
       // Set initial job type selection if user has existing job types
       if (user.job_type_master_id) {
         setSelectedJobType(user.job_type_master_id.map((id) => id.toString()));
-        formik.setFieldValue("job_type_master_id", user.job_type_master_id.map((id) => id.toString()));
+        formik.setFieldValue(
+          "job_type_master_id",
+          user.job_type_master_id.map((id) => id.toString())
+        );
       }
 
       setJobTypes(jobTypes);
@@ -93,9 +117,9 @@ export default function AddJobRole() {
         const formData = new FormData();
         // ✅ Automatically append all fields from the object
         Object.entries(values).forEach(([key, value]) => {
-          if(typeof value !== 'string'){
+          if (typeof value !== "string") {
             let valueAsString = JSON.stringify(value);
-            formData.append(key, valueAsString ); // Convert all values to strings
+            formData.append(key, valueAsString); // Convert all values to strings
           }
         });
         // ✅ Submit selected roles & job type
@@ -106,13 +130,19 @@ export default function AddJobRole() {
         if (response?.data?.code === 1) {
           dispatch(setProgress(6));
           dispatch(setUserRole(values));
-          toast.success("Job role submitted successfully!", { position: "bottom-right" });
+          toast.success("Job role submitted successfully!", {
+            position: "bottom-right",
+          });
         } else {
-          toast.error(response?.data?.message || "Submission failed!", { position: "bottom-right" });
+          toast.error(response?.data?.message || "Submission failed!", {
+            position: "bottom-right",
+          });
         }
       } catch (error: any) {
         console.error("Error submitting job role:", error);
-        toast.error(error?.message || "Something went wrong!", { position: "bottom-right" });
+        toast.error(error?.message || "Something went wrong!", {
+          position: "bottom-right",
+        });
       } finally {
         setSubmitting(false);
       }
@@ -121,33 +151,56 @@ export default function AddJobRole() {
 
   return (
     <div className="">
-      <h2 className="text-center font-semibold text-lg md:text-xl xl:text-[28px] xl:leading-[36px]">
+      <h2 className="text-center font-semibold  text-lg md:text-xl xl:text-[28px] xl:leading-[36px]">
         <span className="text-red">Hi {user?.name}!</span> <br />
-        Take the first step to find a job
+        <span className="text-[#231F20]">
+          Take the first step to find a job
+        </span>
       </h2>
 
       {/* ✅ Formik Form */}
-      <form onSubmit={formik.handleSubmit} className="block mt-8 md:mt-10 xl:mt-14 2xl:mt-16">
-        <h4 className="text-lg font-medium">What job role are you looking for?</h4>
-        <p className="text-sm text-[#249D64]">(You can select up to 2 job roles)</p>
+      <form
+        onSubmit={formik.handleSubmit}
+        className="block mt-8 md:mt-10 xl:mt-14 2xl:mt-16"
+      >
+        <h4 className="text-lg font-medium text-[#231F20]">
+          What job role are you looking for?
+        </h4>
+        <p className="text-sm text-[#249D64]">
+          (You can select up to 2 job roles)
+        </p>
 
         {/* ✅ MultiSelect for Job Roles */}
-        <div className="my-4">
+        <div className="my-3">
           <MultiSelect
-            options={rolesList}
+            options={rolesList.map((role) => ({
+              ...role,
+              disabled: isOptionDisabled(role), // Dynamically set disabled based on selection
+            }))}
             placeholder="Select Role"
             isMulti
             onChange={(selectedRoles: { value: string; label: string }[]) =>
-              formik.setFieldValue("role_id", selectedRoles.map((role) => role.value))
+              formik.setFieldValue(
+                "role_id",
+                selectedRoles.map((role) => role.value)
+              )
             }
-            selectedValues={rolesList.filter((role) => formik.values.role_id.includes(role.value))}
-            icon={<FaMagnifyingGlass className="absolute left-[15px] top-[20px] size-4 text-[#808080]" />}
+            selectedValues={rolesList?.filter((role) =>
+              formik.values.role_id.includes(role.value)
+            )}
+            maxSelections={2}
+            // hasSelectAll={false}
+            icon={
+              <FaMagnifyingGlass className="absolute left-[15px] top-[20px] size-4 text-[#808080]" />
+            }
           />
         </div>
 
         {/* ✅ Display Selected Job Roles */}
         <SelectedChips
-          selectedValues={rolesList.filter((role) => formik.values.role_id.includes(role.value))}
+          selectedValues={rolesList.filter((role) =>
+            formik.values.role_id.includes(role.value)
+          )}
           onRemove={(value: string) =>
             formik.setFieldValue(
               "role_id",
@@ -161,7 +214,9 @@ export default function AddJobRole() {
           <p className="text-red text-sm mt-1">{formik.errors.role_id}</p>
         )}
 
-        <h4 className="text-lg font-medium my-4">What type of job are you looking for?</h4>
+        <h4 className="text-lg font-medium my-4 text-[#231F20]">
+          What type of job required?
+        </h4>
 
         {/* ✅ Job Type Selection */}
         <div className="grid sm:grid-cols-3 gap-4">
@@ -169,7 +224,9 @@ export default function AddJobRole() {
             <div
               key={type.value}
               className={`col-span-1 label-option cursor-pointer px-4 py-2 rounded ${
-                formik.values.job_type_master_id.includes(type.value) ? "bg-red text-white" : ""
+                formik.values.job_type_master_id.includes(type.value)
+                  ? "bg-red text-white"
+                  : ""
               }`}
               onClick={() => {
                 const currentValues = formik.values.job_type_master_id;
@@ -186,9 +243,12 @@ export default function AddJobRole() {
         </div>
 
         {/* ✅ Validation Error */}
-        {formik.errors.job_type_master_id && formik.touched.job_type_master_id && (
-          <p className="text-red text-sm mt-1">{formik.errors.job_type_master_id}</p>
-        )}
+        {formik.errors.job_type_master_id &&
+          formik.touched.job_type_master_id && (
+            <p className="text-red text-sm mt-1">
+              {formik.errors.job_type_master_id}
+            </p>
+          )}
 
         <div className="flex w-full justify-between items-end">
           <div className="whitespace-nowrap">
@@ -197,7 +257,9 @@ export default function AddJobRole() {
           <button
             type="submit"
             className={`max-w-[100px] sm:max-w-[250px] ${
-              formik.isValid ? "bg-red text-white" : "!opacity-50 !cursor-default"
+              formik.isValid
+                ? "bg-red text-white"
+                : "!opacity-50 !cursor-default"
             }`}
             disabled={formik.isSubmitting}
           >

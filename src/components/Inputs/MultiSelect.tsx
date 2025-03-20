@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { default as ReactSelect, components, MultiValue, ActionMeta } from "react-select";
-import { FaMagnifyingGlass } from "react-icons/fa6";
+import { default as ReactSelect, components } from "react-select";
+import { FaMagnifyingGlass, FaChevronDown, FaChevronUp } from "react-icons/fa6";
 
 export interface OptionType {
   value: string;
@@ -32,39 +32,65 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
 
     // Toggle selection
     if (updatedSelections.some((opt) => opt.value === selectedOption.value)) {
-      updatedSelections = updatedSelections.filter((opt) => opt.value !== selectedOption.value);
+      updatedSelections = updatedSelections.filter(
+        (opt) => opt.value !== selectedOption.value
+      );
     } else {
       if (!maxSelections || updatedSelections.length < maxSelections) {
         updatedSelections.push(selectedOption);
       }
     }
-
     setTimeout(() => setMenuOpen(true), 0.01); // Keep menu open
     onChange(updatedSelections);
   };
 
   // Custom option with checkbox
   const Option = (props: any) => {
-    const { data, innerRef, innerProps } = props;
+    const { data, innerRef, innerProps, isDisabled } = props;
     const isSelected = selectedValues.some((opt) => opt.value === data.value);
 
     return (
       <components.Option {...props}>
-      <div ref={innerRef} {...innerProps} onClick={() => handleChange(data)}>
-        <div className="relative flex items-center gap-2">
-          <input type="checkbox" className="!w-4 !h-4" checked={isSelected} readOnly />
-          <label className="!mb-0">{data.label}</label>
+        <div
+          ref={innerRef}
+          {...innerProps}
+          onClick={() => {
+            if (!isDisabled) handleChange(data);
+          }}
+          className={`relative flex items-center gap-2 ${
+            isDisabled ? "opacity-90 cursor-not-allowed" : "cursor-pointer"
+          }`}
+        >
+          <input
+            type="checkbox"
+            className={`!w-4 !h-4 ${
+              isDisabled ? "opacity-60 cursor-not-allowed" : "cursor-pointer"
+            }`}
+            checked={isSelected}
+            readOnly
+          />
+          <label className="!mb-0 !p-0">{data.label}</label>
         </div>
-      </div>
       </components.Option>
     );
   };
 
+  // Override DropdownIndicator to hide it
+  const DropdownIndicator = () => null;
+
+  const updatedOptions = options.map((opt) => ({
+    ...opt,
+    isDisabled:
+      maxSelections &&
+      selectedValues.length >= maxSelections &&
+      !selectedValues.some((sel) => sel.value === opt.value),
+  }));
+
   return (
     <div className="relative w-full">
       <ReactSelect
-        options={options}
-        components={{ Option }}
+        options={updatedOptions}
+        components={{ Option, DropdownIndicator }}
         closeMenuOnSelect={false}
         hideSelectedOptions={false}
         placeholder={placeholder}
@@ -74,8 +100,20 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
         menuIsOpen={menuOpen}
         onMenuOpen={() => setMenuOpen(true)}
         onMenuClose={() => setMenuOpen(false)}
+        menuPlacement="auto"
+        menuPortalTarget={document.body}
+        styles={{
+          menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+        }}
       />
-      {icon ? icon : <FaMagnifyingGlass className="absolute left-[15px] top-[20px] size-4 text-[#808080]" />}
+      <div className="absolute right-[20px] top-[21px]">
+        {menuOpen ? (
+          <FaChevronUp className="size-4 text-[#333333]" />
+        ) : (
+          <FaChevronDown className="size-4 text-[#333333]" />
+        )}
+      </div>
+      {icon && <div className="absolute left-[0px] top-[0px]">{icon}</div>}
     </div>
   );
 };

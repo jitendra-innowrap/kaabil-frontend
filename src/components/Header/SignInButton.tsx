@@ -1,17 +1,20 @@
-'use client';
-import React, { useEffect, useRef } from 'react';
-import Popup from 'reactjs-popup';
-import 'reactjs-popup/dist/index.css';
-import SignIn from '@/components/Auth/SignIn';
-import { useDispatch } from 'react-redux';
-import { useAppSelector } from '@/redux/hooks';
-import { PiBellBold } from 'react-icons/pi';
-import { BiChevronDown } from 'react-icons/bi';
-import Image from 'next/image';
-import { signOut } from '@/redux/userSlice';
-import { setProgress } from '@/redux/progressSlice';
-import { clearSessionData } from '../utils/deviceId';
-import { closeLoginDialog, openLoginDialog } from '@/redux/loginDialogSlice';
+"use client";
+import React, { useEffect, useRef, useState } from "react";
+import Popup from "reactjs-popup";
+import "reactjs-popup/dist/index.css";
+import SignIn from "@/components/Auth/SignIn";
+import { useDispatch } from "react-redux";
+import { useAppSelector } from "@/redux/hooks";
+import { PiBellBold } from "react-icons/pi";
+import { BiChevronDown } from "react-icons/bi";
+import Link from "next/link";
+import Image from "next/image";
+import { signOut } from "@/redux/userSlice";
+import { setProgress } from "@/redux/progressSlice";
+import { clearSessionData } from "../utils/deviceId";
+import { AiOutlineClose } from "react-icons/ai";
+import { IoClose } from "react-icons/io5";
+import { closeLoginDialog, openLoginDialog } from "@/redux/loginDialogSlice";
 
 interface prop {
   closeSideMenu?: () => void;
@@ -22,15 +25,18 @@ export default function SignInButton({ closeSideMenu }: prop) {
   const isOpen = useAppSelector((state) => state.loginDialog.isOpen);
   const isUser = useAppSelector((state) => state.auth.token);
   const { is_profile_verify } = useAppSelector((state) => state.user);
+  const [open, setOpen] = useState(false);
   const popupRef = useRef<any>(null);
 
   const closePopup = () => {
     dispatch(closeLoginDialog());
+    setOpen(false);
   };
 
   const handleSignIn = () => {
     closeSideMenu?.();
     dispatch(openLoginDialog());
+    setOpen(true);
   };
 
   const logout = () => {
@@ -41,49 +47,48 @@ export default function SignInButton({ closeSideMenu }: prop) {
 
   const handleOverlayClick = (e: MouseEvent) => {
     const target = e.target as HTMLElement;
-    if (target.classList.contains('onboarding-overlay')) {
+    if (target.classList.contains("onboarding-overlay")) {
       closePopup();
     }
   };
 
   useEffect(() => {
-    if (isOpen) {
-      document.addEventListener('click', handleOverlayClick);
+    // Add or remove 'no-scroll' class to body when popup is open or closed
+    if (open) {
+      document.addEventListener("click", handleOverlayClick);
+      document.body.classList.add("no-scroll");
     } else {
-      document.removeEventListener('click', handleOverlayClick);
+      document.removeEventListener("click", handleOverlayClick);
+      document.body.classList.remove("no-scroll");
     }
-
     return () => {
-      document.removeEventListener('click', handleOverlayClick);
+      document.removeEventListener("click", handleOverlayClick);
+      document.body.classList.remove("no-scroll"); 
     };
-  }, [isOpen]);
+  }, [open]);
 
   return (
     <div className="flex">
-      {/* Always render the popup but control its visibility */}
-      {isOpen && (
+      {true && (
         <Popup
           ref={popupRef}
-          open={true}
-          // onClose={closePopup}
+          open={open}
           closeOnDocumentClick={false}
+          onClose={closePopup}
           modal
-          className="onboarding"
+          className="onboarding relative"
           overlayStyle={{
-            background: '#4D4D4DC2',
-            padding: '20px',
-            borderRadius: '10px',
-            overflow: 'hidden',
-            // cursor: 'pointer'
+            background: "#4D4D4DC2",
+            padding: "20px",
+            borderRadius: "10px",
+            overflow: "hidden",
           }}
         >
-          {/* Custom overlay click handler */}
           <SignIn onClose={closePopup} />
         </Popup>
       )}
       {!isUser ? (
         <button
-          id="sign-in-button"
           onClick={handleSignIn}
           className="bg-red text-white text-xs !p-0 2xl:text-sm lg:w-[70px] 2xl:w-[84px] h-[32px] 2xl:h-[38px] grid place-items-center rounded-[9px]"
         >
@@ -123,7 +128,9 @@ export default function SignInButton({ closeSideMenu }: prop) {
                   onClick={handleSignIn}
                   className="block text-Grey hover:text-black py-3 2xl:py-4 font-medium hover:font-semibold text-xs 2xl:text-base px-5 cursor-pointer"
                 >
-                  {is_profile_verify === "1" ? "Update Profile" : "Complete Profile"}
+                  {is_profile_verify === "1"
+                    ? "Update Profile"
+                    : "Complete Profile"}
                 </div>
               </div>
             </div>

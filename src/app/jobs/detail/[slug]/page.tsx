@@ -44,6 +44,9 @@ export default function Home() {
   const [isFavorited, setIsFavorited] = useState(jobDetails?.saveJob_status=="1"?true:false);
   const [similarJobs, setSimilarJobs] = useState<CompanyJob[]>([]);
   const router = useRouter();
+  const handleSignIn=()=>{
+
+  }
     useEffect(() => {
       setIsFavorited(jobDetails?.saveJob_status=='1');
       setIsApplied(jobDetails?.is_job_apply=="1"?true:false);
@@ -307,11 +310,13 @@ export default function Home() {
                 </div>
               </div>
           </div>
-          <div className="flex gap-3 md:gap-4 justify-end items-center h-fit">
-            <div onClick={handleShare} className="bg-white cursor-pointer flex-shrink-0 grid place-items-center rounded-full size-6 2xl:size-8 3xl:size-10">
-              <img src="/new-assets/icons/share.svg" className="text-[#4D4D4F] size-[12px] 3xl:size-[15px]"/>
+          {
+            token?
+            <div className="flex gap-2 3xl:gap-3 justify-end items-center h-fit">
+            <div onClick={handleShare} className="bg-white cursor-pointer flex-shrink-0 grid place-items-center rounded-full size-8 3xl:size-[50px]">
+              <img src="/new-assets/icons/share.svg" className="text-[#4D4D4F] size-[14px] 3xl:size-[17px]"/>
             </div>
-            <button onClick={()=> handleSave(jobDetails?.id || "")} className="text-[#231F20] btn-border !text-xs 2xl:!text-sm 3xl:!text-base flex h-fit items-center gap-2 !border-black">
+            <button onClick={()=> handleSave(jobDetails?.id || "")} className="text-[#231F20] btn-border h-[35px] 3xl:h-[50px] !text-xs 3xl:!text-sm flex items-center gap-2 !border-black">
               save {
                         !isFavorited? (
                           <VscHeart className={`text-black 3xl:size-5 cursor-pointer`}/>
@@ -320,8 +325,13 @@ export default function Home() {
                         )
                       }
             </button>
-            <button onClick={()=> handleApply(jobDetails?.id || "")} className={`h-fit whitespace-nowrap !text-xs 2xl:!text-sm 3xl:!text-base ${isApplied?"!bg-[#f2f2f2] text-black cursor-default":""}`}>{isApplied?"Applied":"apply now"}</button>
+            <button onClick={()=> handleApply(jobDetails?.id || "")} className={`whitespace-nowrap h-[35px] 3xl:h-[50px] w-[130px] 3xl:w-[176px] !text-xs 3xl:!text-sm ${isApplied?"opacity-60 disabled cursor-default":""}`}>{isApplied?"Job Applied":"apply now"}</button>
           </div>
+          :
+          <div className="flex gap-3 md:gap-4 justify-end items-center h-fit">
+            <button onClick={handleSignIn} className={`whitespace-nowrap flex items-center h-[35px] 3xl:h-[50px] !text-xs 3xl:!text-sm ${isApplied?"!bg-[#f2f2f2] text-black cursor-default":""}`}>Sign in to apply for this Job</button>
+          </div>
+          }
         </div>
       </div>
       </section>

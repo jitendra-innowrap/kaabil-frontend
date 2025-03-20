@@ -1,11 +1,17 @@
+'use client'
 import Image from 'next/image'
 import React from 'react'
 import { MdArrowOutward } from 'react-icons/md'
 import { jobcardtype } from './CompanyCard'
+import { useRouter } from 'next/navigation'
 
 export default function JobtypeCard({icon, title, jobUrl}:jobcardtype) {
+  const router = useRouter();
+  const handleClick =()=>{
+    router.push(`/jobs?job_types_filter=${title}`)
+  }
   return (
-    <div className="job-type-card p-3 group cursor-pointer 3xl:max-h-[115px] 2xl:p-4 3xl:p-6 gap-4 flex rounded-2xl 2xl:rounded-3xl items-center justify-between bg-lightGrey">
+    <div onClick={handleClick} className="job-type-card p-3 group cursor-pointer 3xl:max-h-[115px] 2xl:p-4 3xl:p-6 gap-4 flex rounded-2xl 2xl:rounded-3xl items-center justify-between bg-lightGrey">
         <div className="flex items-center">
         <Image
             className="size-[40px] xl:size-[60px] 2xl:size-[76px] cursor-pointer mx-auto"

@@ -153,7 +153,7 @@ export default function JobListingCardSmall({detail, isCompanyJob=false}:{detail
       <div className="flex flex-wrap gap-4 min-h-16 justify-between">
         <div className="flex action-btns gap-4 flex-wrap justify-end items-end 3xl:pt-4">
         <Link href={`/jobs/detail/${detail?.id}`} className='grid place-items-center btn-border whitespace-nowrap !p-0 h-[30px] 3xl:h-[44px] flex-1 text-[10px] 2xl:text-xs 3xl:text-sm text-red !border-red'>view Job</Link>
-        <button onClick={()=>{handleApply(detail?.id)}} className={`grid place-items-center btn-border whitespace-nowrap !p-0 h-[30px] 3xl:h-[44px] flex-1 text-[10px] 2xl:text-xs 3xl:text-sm text-white !bg-red !border-red  ${isApplied?"!bg-[#eef2fe] job-applied-btn !border-[#eef2fe] !text-black cursor-default":""}`}>{isApplied?"Applied":"Quick Apply"}</button>
+        <button onClick={()=>{handleApply(detail?.id)}} className={`grid place-items-center btn-border whitespace-nowrap !p-0 h-[30px] 3xl:h-[44px] flex-1 text-[10px] 2xl:text-xs 3xl:text-sm text-white !bg-red !border-red  ${isApplied?"opacity-60 disabled cursor-default":""}`}>{isApplied?"Job Applied":"Quick Apply"}</button>
         </div>
       </div>
     </div>

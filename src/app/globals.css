@@ -129,6 +129,10 @@ button:hover, .btn:hover, a.btn:hover{
   background-color: var(--primary-red-hover);
   transition: background-color 0.3s ease;
 }
+button.disabled:hover, .btn.disabled:hover, a.btn.disabled:hover{
+  background-color: var(--primary-red);
+  transition: none;
+}
 .btn-border:hover{
   background: transparent;
 }

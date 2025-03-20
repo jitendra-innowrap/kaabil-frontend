@@ -124,7 +124,7 @@ export default function JobListingCardSmall({detail, isCompanyJob=false}:{detail
               <span className={`text-[9px] 3xl:text-xs text-[#545581] line-clamp-1  ${detail?.is_industry_standard !='1'?'whitespace-nowrap':''}`}>{`${showSalarySimilarJob(detail?.is_industry_standard || "0", detail?.salary_range_unit ||"0",detail?.min_salary ||"0",detail?.max_salary ||"0")} `} </span>
             </p>
             :
-            <div className='ml-5 flex-1 flex-nowrap justify-center text-end text-[9px] 3xl:text-xs text-[#545581] flex items-center'>
+            <div className='ml-2 3xl:ml-5 flex-1 flex-nowrap justify-center text-end text-[9px] 3xl:text-xs text-[#545581] flex items-center'>
               <p className='flex flex-nowrap'>
                 {/* {detail?.is_industry_standard !='1'&&  */}
                   <Image width={15} height={15} src={'/new-assets/icons/rupee.svg'} className='mr-1 2xl:mr-1 size-[11px] 2xl:size-[12px]' alt='rupee icon' />

@@ -22,6 +22,7 @@ interface CompanyDetailResponse {
     share_url: string;
     applied_job_date: string;
     salary_range_unit: string;
+    industry_name:string;
     is_industry_standard: string;
     job_title: string;
     job_count: string;

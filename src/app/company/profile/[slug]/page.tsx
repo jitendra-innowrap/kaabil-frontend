@@ -205,7 +205,7 @@ if(isLoading){
                       />
                       <div className="text-white">
                         <strong className="block font-medium text-xs 2xl:text-base -mb-[2px] 2xl:mb">Industry</strong>
-                        <span className="text-[10px] 2xl:text-sm font-light">Lorem</span>
+                        <span className="text-[10px] 2xl:text-sm font-light">{CompanyDetails?.industry_name}</span>
                       </div>
                     </div>
                   </div>

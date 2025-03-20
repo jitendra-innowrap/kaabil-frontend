@@ -4,6 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
+import { RxTriangleDown } from "react-icons/rx";
+
 export default function CompanyTrading() {
   const [sortBy, setSortBy] = useState("1");
   const [selectedTab, setSelectedTab] = useState("Trending");
@@ -73,15 +75,15 @@ export default function CompanyTrading() {
         </div>
       </div>
 
-      {/* Navigation Tabs */}
-      <div className="border-b bg-gray-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex">
+   {/* Navigation Tabs */}
+   <div className="bg-gray-50 mt-6">
+        <div className="max-w-[1120px] mx-auto  border-b border-gray-200">
+          <div className="flex  gap-16 justify-start text-start items-start">
             <Link
-              className={`px-6 py-3 text-sm font-medium ${
+              className={`px-0 py-3 inline-flex items-center  text-sm font-meduim ${
                 selectedTab === "Trending"
-                  ? "border-b-2 border-red-500 text-red-500"
-                  : "text-black hover:border-b-2 hover:border-red-500"
+                  ? "border-b-4 border-red text-red-500 font-bold  -mb-[1px]"
+                  : "text-black hover:text-red-500"
               }`}
               href="#"
               onClick={() => setSelectedTab("Trending")}
@@ -89,10 +91,10 @@ export default function CompanyTrading() {
               Trending
             </Link>
             <Link
-              className={`px-6 py-3 text-sm font-medium ${
+              className={`px-0 py-3 inline-flex items-center text-sm  ${
                 selectedTab === "Following"
-                  ? "border-b-2 border-red-500 text-red-500"
-                  : "text-black hover:border-b-2 hover:border-red-500"
+                  ? "border-b-4 border-red text-red-500 font-bold -mb-[1px]"
+                  : "text-black hover:text-red-500"
               }`}
               href="#"
               onClick={() => setSelectedTab("Following")}
@@ -100,10 +102,10 @@ export default function CompanyTrading() {
               Following
             </Link>
             <Link
-              className={`px-6 py-3 text-sm font-medium ${
+              className={`px-0 py-3 inline-flex items-center text-sm   ${
                 selectedTab === "Industry"
-                  ? "border-b-2 border-red-500 text-red-500"
-                  : "text-black hover:border-b-2 hover:border-red-500"
+                  ? "border-b-4 border-red text-red-500 font-bold -mb-[0px]"
+                  : "text-black hover:text-red-500"
               }`}
               href="#"
               onClick={() => setSelectedTab("Industry")}
@@ -117,12 +119,22 @@ export default function CompanyTrading() {
       {/* Search Section */}
       {selectedTab === "Industry" && (
         <div className="mb-6">
-          <div className="flex flex-wrap mt-4 ml-40 gap-2">
-            {["All", "Retail", "Media", "Healthcare", "Education", "IPO", "Hospitality", "IT Services", "Manufacturing"].map((industry) => (
+          <div className="flex flex-wrap mt-4  ml-40 gap-2">
+            {[
+              "All",
+              "Retail",
+              "Media",
+              "Healthcare",
+              "Education",
+              "IPO",
+              "Hospitality",
+              "IT Services",
+              "Manufacturing",
+            ].map((industry) => (
               <span
                 key={industry}
-                className={`px-4 py-2 rounded-lg shadow-sm border border-gray-100 cursor-pointer ${
-                  selectedIndustry === industry ? "bg-black text-white" : "bg-gray-200"
+                className={`px-6 py-2 rounded-lg  border-gray-0 cursor-pointer ${
+                  selectedIndustry === industry ? "bg-black text-white" : "bg-gray-100"
                 }`}
                 onClick={() => setSelectedIndustry(industry)}
               >
@@ -135,12 +147,13 @@ export default function CompanyTrading() {
 
       <div className="w-full bg-gray-50 py-6">
         <div className="max-w-6xl mx-auto px-4">
-          <div className="flex overflow-hidden rounded-lg shadow-sm">
+          <div className="flex shadow-sm">
+            {/* Remove parent rounded, shape corners individually on input & button */}
             <input
               placeholder="Company Name"
-              className="w-full h-[58px] rounded-l-lg border-0 px-6 text-base focus:outline-none flex-1"
+              className="w-full h-[58px] border-0 px-6 text-base focus:outline-none flex-1 rounded-l-lg"
             />
-            <button className="h-[56px] bg-red-500 hover:bg-red-600 text-white px-6 flex items-center justify-center gap-3 min-w-[180px] rounded-lg shadow-md">
+            <button className="h-[58px] bg-red-500 hover:bg-red-600 text-white px-6 flex items-center justify-center gap-3 min-w-[180px] shadow-md rounded-r-lg rounded-l-none">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="22"
@@ -171,38 +184,24 @@ export default function CompanyTrading() {
                 <h2 className="text-xl font-semibold">Trending companies</h2>
                 <p className="text-sm text-gray-500">120 Companies found!</p>
               </div>
-              <div className="flex items-center">
-                <div className="relative">
-                  <select
-                    className="appearance-none w-[120px] h-10 pl-3 pr-10 border border-gray-300 rounded-md text-sm text-gray-700 bg-white hover:border-gray-400 focus:outline-none focus:border-red-500"
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value)}
-                  >
-                    <option value="1">Sort by</option>
-                    <option value="2">A-Z</option>
-                    <option value="3">Z-A</option>
-                  </select>
-                  <svg
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 pointer-events-none text-gray-500"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                  </svg>
-                </div>
+              <div className="flex items-center relative">
+                <select
+                  className="appearance-none w-[120px] h-10 pl-3 pr-10 border border-gray-500 rounded-md text-sm text-gray-700 bg-white hover:border-gray-600 focus:outline-none focus:border-red-500"
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                >
+                  <option value="1">Sort by</option>
+                  <option value="2">A-Z</option>
+                  <option value="3">Z-A</option>
+                </select>
+                <RxTriangleDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 pointer-events-none text-gray-500" />
               </div>
             </div>
 
             {/* Company Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
               {companies.map((company, index) => (
-                <CompanyCard
-                  key={index}
-                  logo={company.icon}
-                  name={company.name}
-                />
+                <CompanyCard key={index} logo={company.icon} name={company.name} />
               ))}
             </div>
           </>
@@ -215,38 +214,24 @@ export default function CompanyTrading() {
                 <h2 className="text-xl font-semibold">Following companies</h2>
                 <p className="text-sm text-gray-500">3 Companies found!</p>
               </div>
-              <div className="flex items-center">
-                <div className="relative">
-                  <select
-                    className="appearance-none w-[120px] h-10 pl-3 pr-10 border border-gray-300 rounded-md text-sm text-gray-700 bg-white hover:border-gray-400 focus:outline-none focus:border-red-500"
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value)}
-                  >
-                    <option value="1">Sort by</option>
-                    <option value="2">A-Z</option>
-                    <option value="3">Z-A</option>
-                  </select>
-                  <svg
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 pointer-events-none text-gray-500"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                  </svg>
-                </div>
+              <div className="flex items-center relative">
+                <select
+                  className="appearance-none w-[120px] h-10 pl-3 pr-10 border border-gray-500 rounded-md text-sm text-gray-700 bg-white hover:border-gray-600 focus:outline-none focus:border-red-500"
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                >
+                  <option value="1">Sort by</option>
+                  <option value="2">A-Z</option>
+                  <option value="3">Z-A</option>
+                </select>
+                <RxTriangleDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 pointer-events-none text-gray-500" />
               </div>
             </div>
 
             {/* Following Company Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
               {followingCompanies.map((company, index) => (
-                <CompanyCard
-                  key={index}
-                  logo={company.icon}
-                  name={company.name}
-                />
+                <CompanyCard key={index} logo={company.icon} name={company.name} />
               ))}
             </div>
           </>
@@ -259,50 +244,46 @@ export default function CompanyTrading() {
                 <h2 className="text-xl font-semibold">Industries</h2>
                 <p className="text-sm text-gray-500">8 Industries found!</p>
               </div>
-              <div className="flex items-center">
-                <div className="relative">
-                  <select
-                    className="appearance-none w-[120px] h-10 pl-3 pr-10 border border-gray-300 rounded-md text-sm text-gray-700 bg-white hover:border-gray-400 focus:outline-none focus:border-red-500"
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value)}
-                  >
-                    <option value="1">Sort by</option>
-                    <option value="2">A-Z</option>
-                    <option value="3">Z-A</option>
-                  </select>
-                  <svg
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 pointer-events-none text-gray-500"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                  </svg>
-                </div>
+              <div className="flex items-center relative">
+                <select
+                  className="appearance-none w-[120px] h-10 pl-3 pr-10 border border-gray-500 rounded-md text-sm text-gray-700 bg-white hover:border-gray-600 focus:outline-none focus:border-red-500"
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                >
+                  <option value="1">Sort by</option>
+                  <option value="2">A-Z</option>
+                  <option value="3">Z-A</option>
+                </select>
+                <RxTriangleDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 pointer-events-none text-gray-500" />
               </div>
             </div>
 
             {/* Industry Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-3 lg:grid-cols-5 gap-6">
               {industries.map((industry, index) => (
-                <div key={index} className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden flex flex-col">
+                <div
+                  key={index}
+                  className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden flex flex-col w-[180px] h-[200px]"
+                >
                   <div className="p-4 flex justify-center items-center">
-                    <div className="w-16 h-16 rounded-md flex items-center justify-center ">
+                    <div className="w-16 h-16 rounded-md flex items-center justify-center">
                       <Image
                         src={industry.icon}
                         alt={`${industry.name} icon`}
-                        width={40}
-                        height={40}
+                        width={60}
+                        height={60}
                         className="object-contain"
                       />
                     </div>
                   </div>
                   <div className="px-4 pb-2 text-center">
-                    <h3 className="text-sm font-medium truncate">{industry.name}</h3>
+                    <h3 className="text-sm font-medium">{industry.name}</h3>
                   </div>
                   <div className="mt-auto p-4 pt-2 text-center">
-                    <Link className="text-xs w-full 2xl:text-lg font-semibold justify-self-end" href={`/industry/profile/${industry.name}`}>
+                    <Link
+                      className="text-xs w-full 2xl:text-lg font-semibold justify-self-end"
+                      href={`/industry/profile/${industry.name}`}
+                    >
                       View Jobs
                     </Link>
                   </div>
@@ -324,23 +305,26 @@ interface CompanyCardProps {
 
 function CompanyCard({ logo, name, bgColor }: CompanyCardProps) {
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden flex flex-col">
+    <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden flex flex-col w-[180px] h-[220px]">
       <div className="p-4 flex justify-center items-center">
-        <div className={`w-16 h-16 rounded-md flex items-center justify-center ${bgColor}`}>
+        <div className={`w-16 h-16 rounded-md flex items-center justify-center ${bgColor || ""}`}>
           <Image
             src={logo || "/placeholder.svg"}
             alt={`${name} logo`}
             width={40}
-            height={40}
+            height={60}
             className="object-contain"
           />
         </div>
       </div>
       <div className="px-4 pb-2 text-center">
-        <h3 className="text-sm font-medium truncate">{name}</h3>
+        <h3 className="text-sm font-medium">{name}</h3>
       </div>
       <div className="mt-auto p-4 pt-2 text-center">
-        <Link className="text-xs w-full 2xl:text-lg font-semibold justify-self-end" href={`/company/profile/${name}`}>
+        <Link
+          className="text-xs w-full 2xl:text-lg font-semibold justify-self-end"
+          href={`/company/profile/${name}`}
+        >
           View Jobs
         </Link>
       </div>

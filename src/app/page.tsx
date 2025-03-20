@@ -70,7 +70,7 @@ export default function Home() {
               icon: ind?.industry_icon || "/new-assets/icons/company_icon_placeholder.png",
               title: ind?.name,
               companyId: '/',
-              jobUrl: '/',
+              jobUrl: `/jobs?industries_filter=${ind?.name}`,
               color: colors[i % colors.length], // Assign color cyclically
             })));
           } catch (error) {

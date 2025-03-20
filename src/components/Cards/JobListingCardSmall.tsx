@@ -2,12 +2,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useEffect } from 'react'
-import { BsHeartFill } from 'react-icons/bs'
-import { CiHeart } from 'react-icons/ci'
-import { IoIosHeart, IoIosHeartEmpty } from 'react-icons/io'
-import { LiaMapMarkerAltSolid } from 'react-icons/lia'
-import { MdOutlineLocationOn } from 'react-icons/md'
-import { TbBriefcase2 } from 'react-icons/tb'
 import { showExperience, showSalary, showSalarySimilarJob, timeAgo } from '../utils'
 import ProfilePhoto from './ProfilePhoto'
 import { VscHeart, VscHeartFilled } from 'react-icons/vsc'
@@ -18,6 +12,7 @@ import toast from 'react-hot-toast'
 import { signOut } from '@/redux/userSlice'
 import { setProgress } from '@/redux/progressSlice'
 import { clearSessionData } from '../utils/deviceId'
+import { openLoginDialog } from '@/redux/loginDialogSlice'
 
 export default function JobListingCardSmall({detail, isCompanyJob=false}:{detail:CompanyJob, isCompanyJob?:boolean}) {
   const token = useSelector((state: RootState) => state.user.token);
@@ -27,6 +22,11 @@ export default function JobListingCardSmall({detail, isCompanyJob=false}:{detail
   const [isFavorited, setIsFavorited] = React.useState(detail?.saveJob_status=="1"?true:false);
   const dispatch = useDispatch();  
   const handleApply = async (id:string)=>{
+    if(!token){
+      dispatch(setProgress(1))
+      dispatch(openLoginDialog())
+      return
+    }
     if(!isApplied){
       try {
             const formData = new FormData();
@@ -55,6 +55,11 @@ export default function JobListingCardSmall({detail, isCompanyJob=false}:{detail
         }
   }
   const handleSave = async (id:string)=>{
+    if(!token){
+      dispatch(setProgress(1))
+      dispatch(openLoginDialog())
+      return
+    }
     try {
           const formData = new FormData();
           formData.append("job_id", id); // Convert all values to strings
@@ -153,7 +158,7 @@ export default function JobListingCardSmall({detail, isCompanyJob=false}:{detail
       <div className="flex flex-wrap gap-4 min-h-16 justify-between">
         <div className="flex action-btns gap-4 flex-wrap justify-end items-end 3xl:pt-4">
         <Link href={`/jobs/detail/${detail?.id}`} className='grid place-items-center btn-border whitespace-nowrap !p-0 h-[30px] 3xl:h-[44px] flex-1 text-[10px] 2xl:text-xs 3xl:text-sm text-red !border-red'>view Job</Link>
-        <button onClick={()=>{handleApply(detail?.id)}} className={`grid place-items-center btn-border whitespace-nowrap !p-0 h-[30px] 3xl:h-[44px] flex-1 text-[10px] 2xl:text-xs 3xl:text-sm text-white !bg-red !border-red  ${isApplied?"!bg-[#eef2fe] job-applied-btn !border-[#eef2fe] !text-black cursor-default":""}`}>{isApplied?"Applied":"Quick Apply"}</button>
+        <button onClick={()=>{handleApply(detail?.id)}} className={`grid place-items-center btn-border whitespace-nowrap !p-0 h-[30px] 3xl:h-[44px] flex-1 text-[10px] 2xl:text-xs 3xl:text-sm text-white !bg-red !border-red  ${isApplied?"opacity-60 disabled cursor-default":""}`}>{isApplied?"Job Applied":"Quick Apply"}</button>
         </div>
       </div>
     </div>

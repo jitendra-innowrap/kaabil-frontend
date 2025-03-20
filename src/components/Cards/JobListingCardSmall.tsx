@@ -2,12 +2,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useEffect } from 'react'
-import { BsHeartFill } from 'react-icons/bs'
-import { CiHeart } from 'react-icons/ci'
-import { IoIosHeart, IoIosHeartEmpty } from 'react-icons/io'
-import { LiaMapMarkerAltSolid } from 'react-icons/lia'
-import { MdOutlineLocationOn } from 'react-icons/md'
-import { TbBriefcase2 } from 'react-icons/tb'
 import { showExperience, showSalary, showSalarySimilarJob, timeAgo } from '../utils'
 import ProfilePhoto from './ProfilePhoto'
 import { VscHeart, VscHeartFilled } from 'react-icons/vsc'
@@ -18,6 +12,7 @@ import toast from 'react-hot-toast'
 import { signOut } from '@/redux/userSlice'
 import { setProgress } from '@/redux/progressSlice'
 import { clearSessionData } from '../utils/deviceId'
+import { openLoginDialog } from '@/redux/loginDialogSlice'
 
 export default function JobListingCardSmall({detail, isCompanyJob=false}:{detail:CompanyJob, isCompanyJob?:boolean}) {
   const token = useSelector((state: RootState) => state.user.token);
@@ -27,6 +22,11 @@ export default function JobListingCardSmall({detail, isCompanyJob=false}:{detail
   const [isFavorited, setIsFavorited] = React.useState(detail?.saveJob_status=="1"?true:false);
   const dispatch = useDispatch();  
   const handleApply = async (id:string)=>{
+    if(!token){
+      dispatch(setProgress(1))
+      dispatch(openLoginDialog())
+      return
+    }
     if(!isApplied){
       try {
             const formData = new FormData();
@@ -55,6 +55,11 @@ export default function JobListingCardSmall({detail, isCompanyJob=false}:{detail
         }
   }
   const handleSave = async (id:string)=>{
+    if(!token){
+      dispatch(setProgress(1))
+      dispatch(openLoginDialog())
+      return
+    }
     try {
           const formData = new FormData();
           formData.append("job_id", id); // Convert all values to strings

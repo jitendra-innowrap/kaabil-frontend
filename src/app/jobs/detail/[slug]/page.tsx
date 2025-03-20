@@ -27,6 +27,7 @@ import { RootState } from "@/redux/store";
 import { signOut } from "@/redux/userSlice";
 import { setProgress } from "@/redux/progressSlice";
 import { VscHeart, VscHeartFilled } from "react-icons/vsc";
+import { openLoginDialog } from "@/redux/loginDialogSlice";
 
 
 export default function Home() {
@@ -45,7 +46,11 @@ export default function Home() {
   const [similarJobs, setSimilarJobs] = useState<CompanyJob[]>([]);
   const router = useRouter();
   const handleSignIn=()=>{
-
+    if(!token){
+      dispatch(setProgress(1))
+      dispatch(openLoginDialog())
+      return
+    }
   }
     useEffect(() => {
       setIsFavorited(jobDetails?.saveJob_status=='1');

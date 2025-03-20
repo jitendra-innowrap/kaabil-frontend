@@ -12,24 +12,24 @@ export default function LoadGoogleMapsScript() {
   const {token} = useAppSelector((state) => state.auth);
   const {id} = useAppSelector((state) => state.user);
 
-  useEffect(() => {
-    // Load Google Maps script
-    const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyCp-H598wbMhBWMz9I_zbvdcknH-fiBVCo&libraries=places`;
-    script.async = true;
-    script.onload = () => {
-      // Initialize the autocomplete service
-      const autocompleteService = new window.google.maps.places.AutocompleteService();
-      dispatch(setAutocompleteService(autocompleteService)); // Store in Redux
-      dispatch(setScriptLoaded(true)); // Mark script as loaded
-    };
-    document.body.appendChild(script);
+  // useEffect(() => {
+  //   // Load Google Maps script
+  //   const script = document.createElement('script');
+  //   script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyCp-H598wbMhBWMz9I_zbvdcknH-fiBVCo&libraries=places`;
+  //   script.async = true;
+  //   script.onload = () => {
+  //     // Initialize the autocomplete service
+  //     const autocompleteService = new window.google.maps.places.AutocompleteService();
+  //     dispatch(setAutocompleteService(autocompleteService)); // Store in Redux
+  //     dispatch(setScriptLoaded(true)); // Mark script as loaded
+  //   };
+  //   document.body.appendChild(script);
 
-    // Cleanup
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, [dispatch]);
+  //   // Cleanup
+  //   return () => {
+  //     document.body.removeChild(script);
+  //   };
+  // }, [dispatch]);
 
   useEffect(() => {
     const fetchUserSkills = async () => {

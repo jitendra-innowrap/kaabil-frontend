@@ -1,39 +1,36 @@
-'use client'
-import React, { useRef, useState } from 'react'
-import Popup from 'reactjs-popup'
+'use client';
+import React, { useEffect, useRef } from 'react';
+import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import SignIn from '@/components/Auth/SignIn';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '@/redux/hooks';
 import { PiBellBold } from 'react-icons/pi';
 import { BiChevronDown } from 'react-icons/bi';
-import Link from 'next/link';
 import Image from 'next/image';
 import { signOut } from '@/redux/userSlice';
 import { setProgress } from '@/redux/progressSlice';
 import { clearSessionData } from '../utils/deviceId';
+import { closeLoginDialog, openLoginDialog } from '@/redux/loginDialogSlice';
 
 interface prop {
-  closeSideMenu?: () => void;  
+  closeSideMenu?: () => void;
 }
 
 export default function SignInButton({ closeSideMenu }: prop) {
   const dispatch = useDispatch();
+  const isOpen = useAppSelector((state) => state.loginDialog.isOpen);
   const isUser = useAppSelector((state) => state.auth.token);
-  const {is_profile_verify} = useAppSelector((state) => state.user);
-  const [open, setOpen] = useState(false)
+  const { is_profile_verify } = useAppSelector((state) => state.user);
   const popupRef = useRef<any>(null);
 
   const closePopup = () => {
-    setOpen(false);
-    if (popupRef.current) {
-      popupRef.current.close();
-    }
+    dispatch(closeLoginDialog());
   };
 
   const handleSignIn = () => {
-    setOpen(true);
     closeSideMenu?.();
+    dispatch(openLoginDialog());
   };
 
   const logout = () => {
@@ -42,63 +39,91 @@ export default function SignInButton({ closeSideMenu }: prop) {
     clearSessionData();
   };
 
+  const handleOverlayClick = (e: MouseEvent) => {
+    const target = e.target as HTMLElement;
+    if (target.classList.contains('onboarding-overlay')) {
+      closePopup();
+    }
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      document.addEventListener('click', handleOverlayClick);
+    } else {
+      document.removeEventListener('click', handleOverlayClick);
+    }
+
+    return () => {
+      document.removeEventListener('click', handleOverlayClick);
+    };
+  }, [isOpen]);
+
   return (
     <div className="flex">
       {/* Always render the popup but control its visibility */}
-      <Popup
-        ref={popupRef}
-        open={open}
-        onClose={closePopup}
-        modal
-        className='onboarding'
-        overlayStyle={{
-          background: '#4D4D4DC2',
-          padding: '20px',
-          borderRadius: '10px',
-          overflow: 'hidden',
-        }}
-      >
-        <SignIn onClose={closePopup} />
-      </Popup>
-
+      {isOpen && (
+        <Popup
+          ref={popupRef}
+          open={true}
+          // onClose={closePopup}
+          closeOnDocumentClick={false}
+          modal
+          className="onboarding"
+          overlayStyle={{
+            background: '#4D4D4DC2',
+            padding: '20px',
+            borderRadius: '10px',
+            overflow: 'hidden',
+            // cursor: 'pointer'
+          }}
+        >
+          {/* Custom overlay click handler */}
+          <SignIn onClose={closePopup} />
+        </Popup>
+      )}
       {!isUser ? (
-        <button 
+        <button
+          id="sign-in-button"
           onClick={handleSignIn}
-          className='bg-red text-white text-xs !p-0 2xl:text-sm lg:w-[70px] 2xl:w-[84px] h-[32px] 2xl:h-[38px] grid place-items-center rounded-[9px]'
+          className="bg-red text-white text-xs !p-0 2xl:text-sm lg:w-[70px] 2xl:w-[84px] h-[32px] 2xl:h-[38px] grid place-items-center rounded-[9px]"
         >
           Sign In
         </button>
       ) : (
         <div className="flex items-center gap-3 2xl:gap-7">
           <div className="relative" tabIndex={0}>
-            <span className='size-2 xl:size-[14px] bg-success text-white rounded-full absolute text-[10px] grid place-items-center leading-none -top-[4px] -right-[4px] border-[1.5px] border-white'>5</span>
-            <PiBellBold className='size-4 3xl:size-5'/>
+            <span className="size-2 xl:size-[14px] bg-success text-white rounded-full absolute text-[10px] grid place-items-center leading-none -top-[4px] -right-[4px] border-[1.5px] border-white">
+              5
+            </span>
+            <PiBellBold className="size-4 3xl:size-5" />
           </div>
-          <div className='relative group/menu flex items-center cursor-pointer'>
+          <div className="relative group/menu flex items-center cursor-pointer">
             <div tabIndex={0} className="relative">
-              <span className='size-2 xl:size-[14px] bg-success text-white rounded-full absolute text-[10px] grid place-items-center leading-none top-[1px] -right-[2px] border-[1.5px] border-white'>5</span>
+              <span className="size-2 xl:size-[14px] bg-success text-white rounded-full absolute text-[10px] grid place-items-center leading-none top-[1px] -right-[2px] border-[1.5px] border-white">
+                5
+              </span>
               <Image
                 height={100}
                 width={100}
                 src="/new-assets/icons/avatar.svg"
-                className='w-auto max-w-fit h-[30px] xl:h-[40px] 2xl:h-[50px]'
-                alt='kaabil logo'
+                className="w-auto max-w-fit h-[30px] xl:h-[40px] 2xl:h-[50px]"
+                alt="kaabil logo"
               />
             </div>
-            <BiChevronDown className='font-medium text-xl 3xl:text-2xl text-black'/>
+            <BiChevronDown className="font-medium text-xl 3xl:text-2xl text-black" />
             <div className="absolute z-30 hidden group-focus-within/menu:block group-hover/menu:block top-0 right-0">
               <div className="bg-white shadow-default mt-[52px] 2xl:mt-[76px] rounded-xl w-[200px] border border-lightGrey divide-y divide-lightGrey">
-                <div 
-                  onClick={logout} 
-                  className='block text-Grey hover:text-black py-3 2xl:py-4 font-medium hover:font-semibold text-xs 2xl:text-base px-5 cursor-pointer'
+                <div
+                  onClick={logout}
+                  className="block text-Grey hover:text-black py-3 2xl:py-4 font-medium hover:font-semibold text-xs 2xl:text-base px-5 cursor-pointer"
                 >
                   Logout
                 </div>
-                <div 
-                  onClick={() => setOpen(true)}
-                  className='block text-Grey hover:text-black py-3 2xl:py-4 font-medium hover:font-semibold text-xs 2xl:text-base px-5 cursor-pointer'
+                <div
+                  onClick={handleSignIn}
+                  className="block text-Grey hover:text-black py-3 2xl:py-4 font-medium hover:font-semibold text-xs 2xl:text-base px-5 cursor-pointer"
                 >
-                  {is_profile_verify==="1"?"Update Profile":"Complete Profile"}
+                  {is_profile_verify === "1" ? "Update Profile" : "Complete Profile"}
                 </div>
               </div>
             </div>
@@ -106,5 +131,5 @@ export default function SignInButton({ closeSideMenu }: prop) {
         </div>
       )}
     </div>
-  )
+  );
 }

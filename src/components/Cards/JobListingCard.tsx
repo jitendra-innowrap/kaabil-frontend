@@ -17,6 +17,7 @@ import { clearSessionData } from '../utils/deviceId'
 import { signOut } from '@/redux/userSlice'
 import { FaHeart } from 'react-icons/fa6'
 import { VscHeart, VscHeartFilled } from 'react-icons/vsc'
+import { openLoginDialog } from '@/redux/loginDialogSlice'
 
 export default function JobListingCard(prop:any) {
   const token = useSelector((state: RootState) => state.user.token);
@@ -56,6 +57,11 @@ export default function JobListingCard(prop:any) {
   }, [user,prop])
   
   const handleApply = async (id:string)=>{
+    if(!token){
+      dispatch(setProgress(1))
+      dispatch(openLoginDialog())
+      return
+    }
     if(!isApplied){
       try {
             const formData = new FormData();
@@ -84,6 +90,11 @@ export default function JobListingCard(prop:any) {
         }
   }
   const handleSave = async (id:string)=>{
+    if(!token){
+      dispatch(setProgress(1))
+      dispatch(openLoginDialog())
+      return
+    }
     try {
           const formData = new FormData();
           formData.append("job_id", id); // Convert all values to strings

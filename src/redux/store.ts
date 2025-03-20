@@ -4,6 +4,7 @@ import userReducer from './userSlice';
 import searchReducer from './searchSlice';
 import authReducer from './authSlice';
 import jobFiltersMasterReducer from './jobsFilterSlice';
+import loginPopupReducer from './loginDialogSlice';
 
 // Create the store
 export const makeStore = () => {
@@ -14,6 +15,7 @@ export const makeStore = () => {
       search: searchReducer,
       auth: authReducer,
       jobFiltersMaster: jobFiltersMasterReducer,
+      loginDialog: loginPopupReducer
     },
   });
 };

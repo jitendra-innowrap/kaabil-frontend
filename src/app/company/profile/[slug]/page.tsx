@@ -121,13 +121,8 @@ const handleFollow = async ()=>{
 if(isLoading){
   return (
     <div className="flex justify-center items-center h-screen">
-      <div className='flex space-x-6 justify-center items-center'>
-        <span className='sr-only'>Loading...</span>
-          <div className='h-6 w-6 bg-red rounded-full animate-bounce [animation-delay:-0.3s]'></div>
-          <div className='h-6 w-6 bg-red rounded-full animate-bounce [animation-delay:-0.15s]'></div>
-          <div className='h-6 w-6 bg-red rounded-full animate-bounce'></div>
+        <div className="flex animate-spin h-7 w-7 rounded-full border-l-0 border-b-0 border-red border-[3px]"></div>
       </div>
-    </div>
   )
 }
  const tabTitles = ["About", "Jobs", "Perks & Benefits"]
@@ -229,16 +224,15 @@ if(isLoading){
           <div className="my-5 md:my-8 3xl:my-10">
             <Tabs tabTitles={tabTitles}/>
           </div>
-          <div id="about" className="py-3 md:py-5 xl:py-8 2xl:py-12 rounded-xl">
+          {(CompanyDetails?.company_description || companyGallary.length>0) &&<div id="about" className="py-3 md:py-5 xl:py-8 2xl:py-12 rounded-xl">
             <div className="px-3 md:px-5 xl:px-8 3xl:px-11">
-              <h2 className="text-sm 2xl:text-lg 3xl:text-xl font-semibold mb-2 md:mb-4 3xl:mb-6">About {CompanyDetails?.company_name}</h2>
-              <p className="text-xs leading-6 3xl:text-sm 3xl:leading-[32px] mb-4 md:mb-6 xl:mb-8">{CompanyDetails?.company_description
-                }</p>
-              <h2 className="text-sm 2xl:text-lg 3xl:text-xl font-semibold">Gallery</h2>
+              {CompanyDetails?.company_description && <h2 className="text-sm 2xl:text-lg 3xl:text-xl font-semibold mb-2 md:mb-4 3xl:mb-6">About {CompanyDetails?.company_name}</h2>}
+              {CompanyDetails?.company_description && <p className="text-xs leading-6 3xl:text-sm 3xl:leading-[32px] mb-4 md:mb-6 xl:mb-8">{CompanyDetails?.company_description}</p>}
+              {companyGallary.length>0 && <h2 className="text-sm 2xl:text-lg 3xl:text-xl font-semibold">Gallery</h2>}
             </div>
-            <CompanyGallery galleryItems={companyGallary} />
-          </div>
-          <div id="jobs" className="my-5 md:my-8 xl:my-10 py-5 md:py-8 xl:py-14 2xl:py-16 rounded-xl shadow-default">
+            {companyGallary.length>0 && <CompanyGallery galleryItems={companyGallary} />}
+          </div>}
+          {jobsSlides.length>0 && <div id="jobs" className="my-5 md:my-8 xl:my-10 py-5 md:py-8 xl:py-14 2xl:py-16 rounded-xl shadow-default">
             <div className="px-5 md:px-8 xl:px-14 2xl:px-16">
               <h2 className="text-sm 2xl:text-lg 3xl:text-xl font-semibold ">{CompanyDetails?.job_count} Jobs in {CompanyDetails?.company_name}</h2>
             </div>
@@ -272,8 +266,8 @@ if(isLoading){
                   }}
                 />
             </div>
-          </div>
-          <div id="perks-&-benefits" className="my-5 md:my-8 xl:my-10 py-5 md:py-8 xl:py-14 2xl:py-16 rounded-xl shadow-default">
+          </div>}
+          {CompanyDetails?.benifits && CompanyDetails?.benifits?.length>0 && <div id="perks-&-benefits" className="my-5 md:my-8 xl:my-10 py-5 md:py-8 xl:py-14 2xl:py-16 rounded-xl shadow-default">
             <div className="px-5 md:px-8 xl:px-14 2xl:px-16">
               <h2 className="text-sm 2xl:text-lg 3xl:text-xl font-semibold mb-2 md:mb-4 3xl:mb-6">Perks & Benefits</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 md:gap-8 xl:gap-10 2xl:gap-11">
@@ -295,7 +289,7 @@ if(isLoading){
                   }
               </div>
             </div>
-          </div>
+          </div>}
       </section>
       <section className="pt-7 pb-2">
           <PlayStoreAppAd />

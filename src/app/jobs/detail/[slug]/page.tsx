@@ -3,7 +3,7 @@ import JobListingCard from "@/components/Cards/JobListingCard";
 import JobListingCardSmall from "@/components/Cards/JobListingCardSmall";
 import GallerySlider from "@/components/JobDetail/Slider/GallarySlider";
 import Map from "@/components/Map";
-import { formatDate, getCompanyInitials, showExperience, showSalary } from "@/components/utils";
+import { formatDate, getCompanyInitials, showExperience, showSalary, showSalaryJobDetails } from "@/components/utils";
 import ReadMoreComponent from "@/components/utils/ReadMoreText";
 import api from "@/Services/Apiservice";
 import Image from "next/image";
@@ -203,12 +203,7 @@ export default function Home() {
   if(isLoading){
     return (
       <div className="flex justify-center items-center h-screen">
-        <div className='flex space-x-6 justify-center items-center'>
-                    <span className='sr-only'>Loading...</span>
-                     <div className='h-6 w-6 bg-red rounded-full animate-bounce [animation-delay:-0.3s]'></div>
-                   <div className='h-6 w-6 bg-red rounded-full animate-bounce [animation-delay:-0.15s]'></div>
-                   <div className='h-6 w-6 bg-red rounded-full animate-bounce'></div>
-                 </div>
+        <div className="flex animate-spin h-7 w-7 rounded-full border-l-0 border-b-0 border-red border-[3px]"></div>
       </div>
     )
   }
@@ -294,7 +289,7 @@ export default function Home() {
                         (jobDetails?.is_industry_standard=="1" || ((jobDetails?.min_salary === null || jobDetails?.min_salary === "" || jobDetails?.min_salary === "0")) && ((jobDetails?.max_salary === null || jobDetails?.max_salary === "" || jobDetails?.max_salary === "0")))?
                         <strong className="block text-xs 2xl:text-sm font-normal">As per Industry standards</strong>:
                       <strong className="block text-xs 2xl:text-sm font-normal">
-                        {showSalary(jobDetails?.is_industry_standard || "0", jobDetails?.salary_range_unit ||"0",jobDetails?.min_salary ||"0",jobDetails?.max_salary ||"0")}
+                        {showSalaryJobDetails(jobDetails?.is_industry_standard || "0", jobDetails?.salary_range_unit ||"0",jobDetails?.min_salary ||"0",jobDetails?.max_salary ||"0")}
                         {` ${ jobDetails?.salary_range_unit=="1"?` month`:` year`}`}
                       </strong>
                         
@@ -396,7 +391,7 @@ export default function Home() {
                 </div>
               <hr className="border-[#D6DDEB] my-4 md:my-5 xl:my-6" /></>)}
               <h2 className="text-sm 2xl:text-lg 3xl:text-xl font-semibold mb-2 md:mb-4 3xl:mb-5 flex items-center gap-2">
-                <Image src="/new-assets/icons/star-circle.png" className="size-4 2xl:size-6 flex-shrink-0 inline-block" width={150} height={150} alt="idea icon" />
+                <Image src="/new-assets/icons/perks-star.svg" className="size-[18px] 3xl:size-[26px] flex-shrink-0 inline-block" width={150} height={150} alt="idea icon" />
                 Perks and Benefits</h2>
               <div className="flex flex-wrap gap-1 md:gap-2">
                 {

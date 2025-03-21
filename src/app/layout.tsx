@@ -9,6 +9,7 @@ import ReduxProvider from "@/providers/ReduxProvider";
 import SearchSection from "@/components/SearchSection";
 import SearchAppear from "@/components/Header/SearchAppear";
 import { Toaster } from "react-hot-toast";
+import LoadGoogleMapsScript from "@/components/LoadGoogleMapScript";
 
 // Configure Poppins
 const poppins = Poppins({
@@ -42,6 +43,7 @@ export default function RootLayout({
         className={`${kalam.variable} ${poppins.className} antialiased`}
       >
         <ReduxProvider>
+        <LoadGoogleMapsScript/>
         <Header />
         <SearchAppear/>
         {children}

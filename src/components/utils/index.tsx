@@ -1,5 +1,21 @@
 import { UserLocation } from "@/Types/common";
+import toast from 'react-hot-toast';
 
+export const showToast = (message: string, isError?: boolean, options?: any) => {
+  // Dismiss any existing toast
+  toast.dismiss();
+  const updatedOptions = {
+    position: 'bottom-right', // Default position
+    ...options, // Spread provided options (if any)
+  };
+
+  // Show the new toast based on the type
+  if (!isError) {
+    toast.success(message, updatedOptions);
+  } else {
+    toast.error(message, updatedOptions);
+  }
+};
 export function handleCommaForQuery(string: string){
     if(string){
       return string.replace(/,/g, '|');

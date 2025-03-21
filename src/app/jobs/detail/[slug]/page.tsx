@@ -3,7 +3,7 @@ import JobListingCard from "@/components/Cards/JobListingCard";
 import JobListingCardSmall from "@/components/Cards/JobListingCardSmall";
 import GallerySlider from "@/components/JobDetail/Slider/GallarySlider";
 import Map from "@/components/Map";
-import { formatDate, getCompanyInitials, showExperience, showSalary, showSalaryJobDetails } from "@/components/utils";
+import { formatDate, getCompanyInitials, showExperience, showSalary, showSalaryJobDetails, showToast } from "@/components/utils";
 import ReadMoreComponent from "@/components/utils/ReadMoreText";
 import api from "@/Services/Apiservice";
 import Image from "next/image";
@@ -83,7 +83,7 @@ export default function Home() {
         const responseData = response.data as ApiResponseJobDetail;
         if (responseData.code === 1) {
           if(responseData.result?.[0]?.id==null){
-            toast.error("page not found", { position: "bottom-right" });
+            showToast("page not found", true);
             router.push("/");
           }
           setJobDetails(responseData?.result?.[0] as JobResult);
@@ -157,11 +157,11 @@ export default function Home() {
               }
             );
             if(response.data?.code==1){
-              toast.success('Applied Successfully!', { position: 'bottom-right' });
+              showToast('Applied Successfully!');
               setIsApplied(true);
             }
             if(response.data?.message=="Invalid Hash Request"){
-              toast.error("Session Expired Please login !", { position: 'bottom-right' });
+              showToast("Session Expired Please login !", true);
               dispatch(signOut());
               dispatch(setProgress(1));
               clearSessionData();
@@ -183,14 +183,14 @@ export default function Home() {
             }
           );
           if(response.data?.status=="2"){
-            toast.success('Job Unsaved!', { position: 'bottom-right' });
+            showToast('Job Unsaved!');
             setIsFavorited(false);
           }else if(response.data?.status=="1"){
-            toast.success('Job saved!', { position: 'bottom-right' });
+            showToast('Job saved!');
             setIsFavorited(true);
           }
           if(response.data?.message=="Invalid Hash Request"){
-            toast.error("Session Expired Please login !", { position: 'bottom-right' });
+            showToast("Session Expired Please login !", true);
             dispatch(signOut());
             dispatch(setProgress(1));
             clearSessionData();

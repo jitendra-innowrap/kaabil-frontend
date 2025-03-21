@@ -2,7 +2,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useEffect } from 'react'
-import { showExperience, showSalary, showSalarySimilarJob, timeAgo } from '../utils'
+import { showExperience, showSalary, showSalarySimilarJob, showToast, timeAgo } from '../utils'
 import ProfilePhoto from './ProfilePhoto'
 import { VscHeart, VscHeartFilled } from 'react-icons/vsc'
 import { useDispatch, useSelector } from 'react-redux'
@@ -43,11 +43,11 @@ export default function JobListingCardSmall({detail, isCompanyJob=false}:{detail
               }
             );
             if(response.data?.code==1){
-              toast.success('Applied Successfully!', { position: 'bottom-right' });
+              showToast('Applied Successfully!');
               setIsApplied(true);
             }
             if(response.data?.message=="Invalid Hash Request"){
-              toast.error("Session Expired Please login !", { position: 'bottom-right' });
+              showToast("Session Expired Please login !", true);
               dispatch(signOut());
               dispatch(setProgress(1));
               clearSessionData();
@@ -78,14 +78,14 @@ export default function JobListingCardSmall({detail, isCompanyJob=false}:{detail
             }
           );
           if(response.data?.status=="2"){
-            toast.success('Job Unsaved!', { position: 'bottom-right' });
+            showToast('Job Unsaved!');
             setIsFavorited(false);
           }else if(response.data?.status=="1"){
-            toast.success('Job saved!', { position: 'bottom-right' });
+            showToast('Job saved!');
             setIsFavorited(true);
           }
           if(response.data?.message=="Invalid Hash Request"){
-            toast.error("Session Expired Please login !", { position: 'bottom-right' });
+            showToast("Session Expired Please login !", true);
             dispatch(signOut());
             dispatch(setProgress(1));
             clearSessionData();

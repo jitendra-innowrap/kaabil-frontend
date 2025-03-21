@@ -69,6 +69,14 @@ function JobList() {
       const locationFilter = searchParams.get('location_filter')?.split('|') || [];
       const industriesFilter = searchParams.get('industries_filter')?.split('|') || [];
       const experienceFilter = searchParams.get('experience')?.split('|') || [];
+      const mappedExperienceFilter = experienceFilter.map(exp => {
+        if (exp === "Experienced") {
+          return 0;
+        } else if (exp === "Fresher") {
+          return 1;
+        }
+        return exp; // In case there are other unexpected values
+      });
       const jobLocationTypesFilter = searchParams.get('job_location_types_filter')?.split('|') || [];
       const benefitsFilter = searchParams.get('benefits_filter')?.split('|') || [];
       const minSalary = searchParams.get('minSalary') || '';
@@ -118,7 +126,7 @@ function JobList() {
         location_filter: formattedLocationFilter, // Use formatted location filter
         benefits_filter: benefitsFilter,
         job_types_filter: jobTypesFilter,
-        experience_filter: experienceFilter,
+        experience_filter: mappedExperienceFilter,
         min_salary: minSalary ? Number(minSalary) : null,
         max_salary: maxSalary ? Number(maxSalary) : null,
         search: search,

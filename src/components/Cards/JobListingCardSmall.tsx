@@ -150,11 +150,19 @@ export default function JobListingCardSmall({detail, isCompanyJob=false}:{detail
                 
         </div>
         <ul className='flex flex-wrap gap-2 mt-3'>
+          {detail?.jobs_skills?.slice(0, 3)?.map((skill:any, index:number) => {
+              const isSkillIncluded = userSkills?.some((userSkill) => userSkill.id == skill.id);
+            return <li
+            className={`label small flex gap-2 items-center ${isSkillIncluded ? 'lightgreen' : ''}`}
+            key={index}
+          >
+            {skill?.name}
+            {isSkillIncluded && (
+              <img src="/new-assets/icons/check.svg" className='size-2' alt="" />
+            )}
+          </li>
+          })}
           {
-            detail?.jobs_skills?.slice(0, 3)?.map((skill)=>(
-              <li className='label small cursor-default' title={skill?.name}>{skill?.name}</li>
-            ))
-          }{
             detail?.jobs_skills?.length > 3 && (
               <li className='label small cursor-default'>+{(detail?.jobs_skills?.length - 3).toString()} More</li>
             )

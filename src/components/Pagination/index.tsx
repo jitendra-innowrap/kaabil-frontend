@@ -18,10 +18,10 @@ const Pagination: React.FC<PaginationProps> = ({
     if (totalPages <= 5) {
       paginationGroup = Array.from({ length: totalPages }, (_, i) => i + 1);
     } else {
-      if (currentPage <= 3) {
-        paginationGroup = [1, 2, 3, '...', totalPages];
-      } else if (currentPage >= totalPages - 2) {
-        paginationGroup = [1, '...', totalPages - 2, totalPages - 1, totalPages];
+      if (currentPage <= 2) {
+        paginationGroup = [1, 2, '...', totalPages - 1, totalPages];
+      } else if (currentPage >= totalPages - 1) {
+        paginationGroup = [1, 2, '...', totalPages - 1, totalPages];
       } else {
         paginationGroup = [1, '...', currentPage, '...', totalPages];
       }
@@ -56,7 +56,7 @@ const Pagination: React.FC<PaginationProps> = ({
                   ? "active cursor-pointer"
                   : typeof item === 'string'
                   ? "ellipsis"
-                  : " cursor-pointer"
+                  : "cursor-pointer"
               }
             >
               <button className="page-link" disabled={typeof item === 'string'}>

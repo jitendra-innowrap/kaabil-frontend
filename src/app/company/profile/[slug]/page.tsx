@@ -12,12 +12,15 @@ import CompanyGallery from "@/components/Gallary/CompanyGallary";
 import Tabs from "@/components/Tabs";
 import { clearSessionData, getSessionData } from "@/components/utils/deviceId";
 import ProfilePhoto from "@/components/Cards/ProfilePhoto";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setProgress } from "@/redux/progressSlice";
 import { signOut } from "@/redux/userSlice";
+import { RootState } from "@/redux/store";
+import { openLoginDialog } from "@/redux/loginDialogSlice";
 
 export default function CompanyDetails() {
 const {slug} = useParams();
+const token = useSelector((state: RootState) => state.user.token);
 const dispatch = useDispatch();
 const [isLoading, setIsLoading] = useState(true);
 const [CompanyDetails, setCompanyDetails] = useState<Company>();
@@ -75,6 +78,15 @@ useEffect(() => {
 }, [slug]);
 
 const handleFollow = async ()=>{
+  if(!token){
+    dispatch(setProgress(1))
+    dispatch(openLoginDialog())
+    const button = document.getElementById('sign-in-button');
+    if (button) {
+      button.click(); // Programmatically triggers the button click
+    }
+    return
+  }
   try {
         const formData = new FormData();
         formData.append("company_master_id", slug as string); // Convert all values to strings

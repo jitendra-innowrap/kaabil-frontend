@@ -48,7 +48,11 @@ export default function Home() {
   const handleSignIn=()=>{
     if(!token){
       dispatch(setProgress(1))
-      dispatch(openLoginDialog())
+      dispatch(openLoginDialog());
+      const button = document.getElementById('sign-in-button');
+      if (button) {
+        button.click(); // Programmatically triggers the button click
+      }
       return
     }
   }
@@ -334,7 +338,9 @@ export default function Home() {
           </div>
           :
           <div className="flex gap-3 md:gap-4 justify-end items-center h-fit">
-            <button onClick={handleSignIn} className={`whitespace-nowrap flex items-center h-[35px] 3xl:h-[50px] !text-xs 3xl:!text-sm ${isApplied?"!bg-[#f2f2f2] text-black cursor-default":""}`}>Sign in to apply for this Job</button>
+            <button onClick={handleSignIn} className={`whitespace-nowrap flex items-center h-[35px] 3xl:h-[50px] !text-xs 3xl:!text-sm ${isApplied?"!bg-[#f2f2f2] text-black cursor-default":""}`}>
+              Sign in to apply for this Job
+            </button>
           </div>
           }
         </div>

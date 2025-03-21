@@ -25,6 +25,10 @@ export default function JobListingCardSmall({detail, isCompanyJob=false}:{detail
     if(!token){
       dispatch(setProgress(1))
       dispatch(openLoginDialog())
+      const button = document.getElementById('sign-in-button');
+      if (button) {
+        button.click(); // Programmatically triggers the button click
+      }
       return
     }
     if(!isApplied){
@@ -57,7 +61,11 @@ export default function JobListingCardSmall({detail, isCompanyJob=false}:{detail
   const handleSave = async (id:string)=>{
     if(!token){
       dispatch(setProgress(1))
-      dispatch(openLoginDialog())
+      dispatch(openLoginDialog());
+      const button = document.getElementById('sign-in-button');
+      if (button) {
+        button.click(); // Programmatically triggers the button click
+      }
       return
     }
     try {

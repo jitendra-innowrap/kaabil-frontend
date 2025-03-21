@@ -224,7 +224,7 @@ export default function OTPInputForm({ onClose }: prop) {
                 }}
               />
               {index < 3 && (
-                <span className="text-[#98A2B3] top-3 -right-5 sm:-right-7 text-3xl absolute">
+                <span className="text-[#98A2B3] top-4 -right-5 sm:-right-10 text-3xl absolute">
                   -
                 </span>
               )}
@@ -237,7 +237,9 @@ export default function OTPInputForm({ onClose }: prop) {
         <div className="mt-5">
           <button
             className={`no-margin ${
-              formik.isValid ? "" : "opacity-50 cursor-not-allowed"
+              !formik.isValid || formik.isSubmitting
+                ? "opacity-50 cursor-not-allowed"
+                : ""
             }`}
             type="submit"
             disabled={!formik.isValid || formik.isSubmitting}

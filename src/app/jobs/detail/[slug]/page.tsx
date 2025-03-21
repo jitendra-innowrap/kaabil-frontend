@@ -3,7 +3,7 @@ import JobListingCard from "@/components/Cards/JobListingCard";
 import JobListingCardSmall from "@/components/Cards/JobListingCardSmall";
 import GallerySlider from "@/components/JobDetail/Slider/GallarySlider";
 import Map from "@/components/Map";
-import { formatDate, getCompanyInitials, showExperience, showSalary, showSalaryJobDetails } from "@/components/utils";
+import { formatDate, getCompanyInitials, showExperience, showSalary, showSalaryJobDetails, showToast } from "@/components/utils";
 import ReadMoreComponent from "@/components/utils/ReadMoreText";
 import api from "@/Services/Apiservice";
 import Image from "next/image";
@@ -32,7 +32,7 @@ import { openLoginDialog } from "@/redux/loginDialogSlice";
 
 export default function Home() {
   const {slug} = useParams();
-  const token = useSelector((state: RootState) => state.user.token);
+  const {token, isLoggedIn} = useSelector((state: RootState) => state.user);
   const userSkills = useSelector((state: RootState) => state.user.skills);
 
   const dispatch = useDispatch();
@@ -46,7 +46,7 @@ export default function Home() {
   const [similarJobs, setSimilarJobs] = useState<CompanyJob[]>([]);
   const router = useRouter();
   const handleSignIn=()=>{
-    if(!token){
+    if(!isLoggedIn){
       dispatch(setProgress(1))
       dispatch(openLoginDialog());
       const button = document.getElementById('sign-in-button');
@@ -59,7 +59,7 @@ export default function Home() {
     useEffect(() => {
       setIsFavorited(jobDetails?.saveJob_status=='1');
       setIsApplied(jobDetails?.is_job_apply=="1"?true:false);
-    }, [jobDetails, token]);
+    }, [jobDetails, token, isLoggedIn]);
     
   useEffect(() => {
     async function fetchJobDetails() {
@@ -83,7 +83,7 @@ export default function Home() {
         const responseData = response.data as ApiResponseJobDetail;
         if (responseData.code === 1) {
           if(responseData.result?.[0]?.id==null){
-            toast.error("page not found", { position: "bottom-right" });
+            showToast("page not found", true);
             router.push("/");
           }
           setJobDetails(responseData?.result?.[0] as JobResult);
@@ -145,6 +145,15 @@ export default function Home() {
       setOpenShare(true)
   }
   const handleApply = async (id:string)=>{
+    if(!isLoggedIn){
+      dispatch(setProgress(1))
+      dispatch(openLoginDialog())
+      const button = document.getElementById('sign-in-button');
+      if (button) {
+        button.click(); // Programmatically triggers the button click
+      }
+      return
+    }
     if(!isApplied){
       try {
             const formData = new FormData();
@@ -157,11 +166,11 @@ export default function Home() {
               }
             );
             if(response.data?.code==1){
-              toast.success('Applied Successfully!', { position: 'bottom-right' });
+              showToast('Applied Successfully!');
               setIsApplied(true);
             }
             if(response.data?.message=="Invalid Hash Request"){
-              toast.error("Session Expired Please login !", { position: 'bottom-right' });
+              showToast("Session Expired Please login !", true);
               dispatch(signOut());
               dispatch(setProgress(1));
               clearSessionData();
@@ -173,6 +182,15 @@ export default function Home() {
         }
   }
   const handleSave = async (id:string)=>{
+    if(!isLoggedIn){
+      dispatch(setProgress(1))
+      dispatch(openLoginDialog())
+      const button = document.getElementById('sign-in-button');
+      if (button) {
+        button.click(); // Programmatically triggers the button click
+      }
+      return
+    }
     try {
           const formData = new FormData();
           formData.append("job_id", id); // Convert all values to strings
@@ -183,14 +201,14 @@ export default function Home() {
             }
           );
           if(response.data?.status=="2"){
-            toast.success('Job Unsaved!', { position: 'bottom-right' });
+            showToast('Job Unsaved!');
             setIsFavorited(false);
           }else if(response.data?.status=="1"){
-            toast.success('Job saved!', { position: 'bottom-right' });
+            showToast('Job saved!');
             setIsFavorited(true);
           }
           if(response.data?.message=="Invalid Hash Request"){
-            toast.error("Session Expired Please login !", { position: 'bottom-right' });
+            showToast("Session Expired Please login !", true);
             dispatch(signOut());
             dispatch(setProgress(1));
             clearSessionData();

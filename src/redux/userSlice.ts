@@ -35,8 +35,9 @@ const initialState: AuthState = {
   email: user?.email || "",
   photo_url: user?.photo_url || "",
   id: user?.id || "",
-  is_profile_verify: user?.is_profile_verify == "1" ? "1" : "0",
-  is_whatsapp_show: user?.is_whatsapp_show ? user?.is_whatsapp_show : true,
+  is_profile_verify: user?.is_profile_verify =="1"? "1":"0",
+  isLoggedIn: user?.is_profile_verify =="1",
+  is_whatsapp_show: user?.is_whatsapp_show? user?.is_whatsapp_show : true,
   mobile: user?.mobile,
   name: user?.name || "",
   role_id: user?.role_id || [],
@@ -62,84 +63,80 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     // Clear the user state
-
-    signOut: (state) => {
-      state = initialState; // Clear user_location on sign out
+      
+      signOut: (state) => {
+        state = initialState // Clear user_location on sign out
+      },
+      setUserId: (state, action: PayloadAction<string>) => {
+        state.id = action.payload;
+        storeAuthUser({ ...state, id: action.payload });
+      },
+      setUserDesignation: (state, action: PayloadAction<string>) => {
+        state.designation = action.payload;
+        storeAuthUser({ ...state, designation: action.payload });
+      },
+      setUserIsProfileVerified: (state, action: PayloadAction<string>) => {
+        state.is_profile_verify = action.payload;
+        state.isLoggedIn = action.payload=="1"
+        storeAuthUser({ ...state, is_profile_verify: action.payload });
+      },
+      setAuthToken: (state, action: PayloadAction<string>) => {
+        state.token = action.payload;
+        storeAuthToken(action.payload);
+      },
+      setIsFresher: (state, action: PayloadAction<number>) => {
+        state.is_fresher = action.payload;
+        storeAuthUser({ ...state, is_fresher: action.payload });
+      },
+      setUserPhotoUrl: (state, action: PayloadAction<string>) => {
+        state.photo_url = action.payload;
+        storeAuthUser({ ...state, photo_url: action.payload });
+      },
+      setUserRole: (state, action: PayloadAction<UserRole>) => {
+        state.role_id = action.payload.role_id;
+        state.job_type_master_id = action.payload.job_type_master_id;
+        storeAuthUser({ ...state, role_id: action.payload.role_id, job_type_master_id: action.payload.job_type_master_id });
+      },
+      setUserSkills: (state, action: PayloadAction<Skill[]>) => {
+        state.skills = action.payload;
+        storeAuthUser({ ...state, skills: action.payload });
+      },
+      setUserMobile: (state, action: PayloadAction<string>) => {
+        state.mobile = action.payload;
+        storeAuthUser({ ...state, mobile: action.payload });
+      },
+      setUserName: (state, action: PayloadAction<string>) => {
+        state.name = action.payload;
+        storeAuthUser({ ...state, name: action.payload });
+      },
+      setUserLocation: (state, action: PayloadAction<string[]>) => {
+        state.location_id = action.payload;
+        storeAuthUser({ ...state, location_id: action.payload });
+      },
+      setUserExperience: (state, action: PayloadAction<Experience[]>) => {
+        state.experience = action.payload;
+        storeAuthUser({ ...state, experience: action.payload });
+      },
+      setUserEducation: (state, action: PayloadAction<string[]>) => {
+        state.users_education = action.payload;
+        storeAuthUser({ ...state, users_education: action.payload });
+      },
+      setCurrentLocation: (state, action: PayloadAction<UserLocation>) => {
+        state.current_location = action.payload;
+        storeAuthUser({ ...state, current_location: action.payload });
+      },
+      setUserWAConsent: (state, action: PayloadAction<boolean>) => {
+        state.is_whatsapp_show = action.payload;
+        storeAuthUser({ ...state, is_whatsapp_show: action.payload });
+      },
+      setUserProfilePercentage: (state, action: PayloadAction<number>) => {
+        state.profilePercentage = action.payload;
+        storeAuthUser({ ...state, profilePercentage: action.payload });
+      },
+      setSaveMobileNumber: (state, action) => {
+        state.savedMobileNumber = action.payload;
+      },
     },
-    setUserId: (state, action: PayloadAction<string>) => {
-      state.id = action.payload;
-      storeAuthUser({ ...state, id: action.payload });
-    },
-    setUserDesignation: (state, action: PayloadAction<string>) => {
-      state.designation = action.payload;
-      storeAuthUser({ ...state, designation: action.payload });
-    },
-    setUserIsProfileVerified: (state, action: PayloadAction<string>) => {
-      state.is_profile_verify = action.payload;
-      storeAuthUser({ ...state, is_profile_verify: action.payload });
-    },
-    setAuthToken: (state, action: PayloadAction<string>) => {
-      state.token = action.payload;
-      storeAuthToken(action.payload);
-    },
-    setIsFresher: (state, action: PayloadAction<number>) => {
-      state.is_fresher = action.payload;
-      storeAuthUser({ ...state, is_fresher: action.payload });
-    },
-    setUserPhotoUrl: (state, action: PayloadAction<string>) => {
-      state.photo_url = action.payload;
-      storeAuthUser({ ...state, photo_url: action.payload });
-    },
-    setUserRole: (state, action: PayloadAction<UserRole>) => {
-      state.role_id = action.payload.role_id;
-      state.job_type_master_id = action.payload.job_type_master_id;
-      storeAuthUser({
-        ...state,
-        role_id: action.payload.role_id,
-        job_type_master_id: action.payload.job_type_master_id,
-      });
-    },
-    setUserSkills: (state, action: PayloadAction<Skill[]>) => {
-      state.skills = action.payload;
-      storeAuthUser({ ...state, skills: action.payload });
-    },
-    setUserMobile: (state, action: PayloadAction<string>) => {
-      state.mobile = action.payload;
-      storeAuthUser({ ...state, mobile: action.payload });
-    },
-    setUserName: (state, action: PayloadAction<string>) => {
-      state.name = action.payload;
-      storeAuthUser({ ...state, name: action.payload });
-    },
-    setUserLocation: (state, action: PayloadAction<string[]>) => {
-      state.location_id = action.payload;
-      storeAuthUser({ ...state, location_id: action.payload });
-    },
-    setUserExperience: (state, action: PayloadAction<Experience[]>) => {
-      state.experience = action.payload;
-      storeAuthUser({ ...state, experience: action.payload });
-    },
-    setUserEducation: (state, action: PayloadAction<string[]>) => {
-      state.users_education = action.payload;
-      storeAuthUser({ ...state, users_education: action.payload });
-    },
-    setCurrentLocation: (state, action: PayloadAction<UserLocation>) => {
-      state.current_location = action.payload;
-      storeAuthUser({ ...state, current_location: action.payload });
-    },
-    setUserWAConsent: (state, action: PayloadAction<boolean>) => {
-      state.is_whatsapp_show = action.payload;
-      storeAuthUser({ ...state, is_whatsapp_show: action.payload });
-    },
-    setUserProfilePercentage: (state, action: PayloadAction<number>) => {
-      state.profilePercentage = action.payload;
-      storeAuthUser({ ...state, profilePercentage: action.payload });
-    },
-    // Mobile Number Save So Once the user get back from the otp screen
-    setSaveMobileNumber: (state, action) => {
-      state.savedMobileNumber = action.payload;
-    },
-  },
 });
 
 // Export actions

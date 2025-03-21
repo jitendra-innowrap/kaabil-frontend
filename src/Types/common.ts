@@ -5,6 +5,7 @@ export interface optionType{
 }
 export interface User {
     email?: string;
+    isLoggedIn?: boolean;
     id?: string;
     is_profile_verify?: string;
     is_whatsapp_show?: boolean;

@@ -18,7 +18,7 @@ import Image from "next/image";
 import { Suspense, useEffect, useState } from "react";
 
 export default function Home() {
-    const {token} = useAppSelector((state) => state.auth);
+    const {isLoggedIn} = useAppSelector((state) => state.user);
 
   const [isLoading, setIsLoading] = useState(true);
   const [topCompanies, setTopCompanies] = useState<jobcardtype[]>([]);
@@ -69,7 +69,7 @@ export default function Home() {
             </div>
         </div>
       </section>
-      {/* <pre>{JSON.stringify([jobs[0]], null, 2)}</pre> */}
+      <pre>{JSON.stringify([], null, 2)}</pre>
       <section className="container">
         <div className="mt-8 lg:mt-10 2xl:mt-14 pb-5 md:pb-8 xl:pb-14 2xl:pb-16 flex flex-col lg:flex-row gap-5 md:gap-7 lg:gap-4 xl:gap-4 3xl:gap-7">
             <FilterSidebar/>
@@ -78,15 +78,15 @@ export default function Home() {
             </Suspense>
             <div className="nudges-bar flex flex-shrink-0 flex-col gap-4 md:gap-6 max-w-[400px] mx-auto lg:w-[280px] 2xl:w-[341px]">
               <FindCareer/>
-              {token && <ProfileCard/>}
-              {token && <QuickAction/>}
+              {isLoggedIn && <ProfileCard/>}
+              {isLoggedIn && <QuickAction/>}
               <ResumeBuilder/>
-              {token && <BoostProfile/>}
+              {isLoggedIn && <BoostProfile/>}
             </div>
         </div>
       </section>
 
-      {!token && <section className="bg-white py-5 xl:py-6">
+      {!isLoggedIn && <section className="bg-white py-5 xl:py-6">
           <div className="w-full flex flex-col items-center my-5 md:my-8 xl:my-14 2xl:my-16  mx-auto">
           <h2 className='text-black text-center text-2xl md:text-3xl xl:text-4xl 2xl:text-[40px] 2xl:leading-[64px] mb-5 xl:mb-8 font-medium'>Top companies <span className="font-kalam text-red">hiring</span> now</h2>
               <div className="container no-pad">                        

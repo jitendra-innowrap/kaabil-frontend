@@ -55,7 +55,11 @@ export default function Home() {
             console.log(response);
             setHomeData(response?.data?.result);
             setJobTypes(response?.data?.result?.job_types?.map((typ: any, i: number) => ({
-              icon: "/new-assets/job-types/intership.png",
+              icon: typ?.id==1?
+                    "/new-assets/job-types/full-time.png":
+                    typ?.id==2?
+                    "/new-assets/job-types/part-time.png":
+                    "/new-assets/job-types/intership.png",
               title: typ?.name,
               jobUrl: '/'
             })));
@@ -225,37 +229,37 @@ export default function Home() {
     const skills = [
         {
             image: "/new-assets/skills/21-century.png",
-            title: "21st century skills",
+            title: "Future ready skills",
             link: "/",
             index: "1"
         },
         {
             image: "/new-assets/skills/digital-literacy.png",
-            title: "Digital literacy",
+            title: "Computer skills",
             link: "/",
             index: "2"
         },
         {
             image: "/new-assets/skills/interview.png",
-            title: "Interview and business skills",
+            title: "Interview & career skills",
             link: "/",
             index: "3"
         },
         {
             image: "/new-assets/skills/21-century.png",
-            title: "Sales and marketing",
+            title: "Future ready skills",
             link: "/",
             index: "1"
         },
         {
             image: "/new-assets/skills/digital-literacy.png",
-            title: "Digital literacy",
+            title: "Computer skills",
             link: "/",
             index: "2"
         },
         {
             image: "/new-assets/skills/interview.png",
-            title: "Interview and business skills",
+            title: "Interview & career skills",
             link: "/",
             index: "3"
         },
@@ -322,7 +326,7 @@ export default function Home() {
             <section className="section-shadow">
                 <div className="w-full flex flex-col items-center py-5 md:py-8 xl:py-14 2xl:py-16 mx-auto">
                 <h2 className='text-black text-center text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[64px] mb-5 xl:mb-6 font-medium'>What type of <span className="font-kalam text-red font-bold">job</span> are you looking for?</h2>
-                <div className="container small grid grid-cols-1 lg:grid-cols-3 gap-4 2xl:gap-6 w-full mb-5 md:mb-8 xl:mb-14 2xl:mb-[84px]">
+                <div className="container small grid grid-cols-1 lg:grid-cols-3 gap-4 2xl:gap-6 w-full mb-5 md:mb-8 xl:mb-[70px] 2xl:mb-[84px]">
                     {JobTypes.map((job, index) => (
                     <JobtypeCard key={index} {...job} />
                     ))}
@@ -397,7 +401,7 @@ export default function Home() {
                         spaceBetween={20}
                         showNavigation
                         loop={true}
-                        autoplay={true}
+                        autoplay={false}
                             autoplayDuration={3000}
                             freeMode={false}
                         slidesPerView={1}
@@ -521,7 +525,7 @@ export default function Home() {
                 </div>
             </section>
             <section className="bg-[#F8F8F8]">
-                <div className="w-full flex flex-col py-5 md:py-8 xl:py-14 2xl:py-[68px]  mx-auto">
+                <div className="w-full flex flex-col py-5 md:py-8 xl:py-14 2xl:py-[68px] mb-3 mx-auto">
                     <div className="container no-pad">                        
                         <div className="section-heading md:ml-[70px]">
                             <h2 className='text-black text-start text-2xl md:text-3xl 2xl:text-[48px] 2xl:leading-[54px]  font-normal mb-2'>Articles</h2>

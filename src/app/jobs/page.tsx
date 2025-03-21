@@ -71,7 +71,7 @@ export default function Home() {
       </section>
       {/* <pre>{JSON.stringify([jobs[0]], null, 2)}</pre> */}
       <section className="container">
-        <div className="mt-8 lg:mt-10 2xl:mt-14 mb-5 md:mb-8 xl:mb-14 2xl:mb-16 flex flex-col lg:flex-row gap-5 md:gap-7 lg:gap-4 xl:gap-4 3xl:gap-7">
+        <div className="mt-8 lg:mt-10 2xl:mt-14 pb-5 md:pb-8 xl:pb-14 2xl:pb-16 flex flex-col lg:flex-row gap-5 md:gap-7 lg:gap-4 xl:gap-4 3xl:gap-7">
             <FilterSidebar/>
             <Suspense fallback={<>... Loading</>}>
               <JobList />
@@ -86,7 +86,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-white py-5 xl:py-6">
+      {!token && <section className="bg-white py-5 xl:py-6">
           <div className="w-full flex flex-col items-center my-5 md:my-8 xl:my-14 2xl:my-16  mx-auto">
           <h2 className='text-black text-center text-2xl md:text-3xl xl:text-4xl 2xl:text-[40px] 2xl:leading-[64px] mb-5 xl:mb-8 font-medium'>Top companies <span className="font-kalam text-red">hiring</span> now</h2>
               <div className="container no-pad">                        
@@ -120,7 +120,7 @@ export default function Home() {
                   </div>
               </div>
           </div>
-      </section>
+      </section>}
     </main>
   );
 }

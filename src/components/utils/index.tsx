@@ -78,6 +78,42 @@ export const showSalary = (
   
   return "As per Industry standards"
 };
+export const showSalaryJobDetails = (
+  isIndustryStandard: string,
+  salaryRangeUnit: string,
+  minSalary: string | null,
+  maxSalary: string | null,
+  text?: string
+): string => {
+  // Check if salary is as per industry standards
+  if (isIndustryStandard == "1") {
+    return "As per Industry standards";
+  }
+
+  // Check if both min and max salary are null or empty
+  if (((minSalary === null || minSalary === "" || minSalary === "0")) && ((maxSalary === null || maxSalary === "" || maxSalary === "0"))) {
+    return "As per Industry standards";
+  }
+
+  // Determine the salary unit
+  const unit = salaryRangeUnit == "1" ? "Monthly" : "Yearly";
+
+  // Check if min salary is null or empty or "0" and max salary is not null or empty or "0"
+  if ((minSalary === null || minSalary === "" || minSalary === "0") && (maxSalary !== null && maxSalary !== "" && maxSalary !== "0")) {
+    return `₹${maxSalary} / `;
+  }
+
+  // Check if max salary is null or empty or "0" and min salary is not null or empty or "0"
+  if ((maxSalary === null || maxSalary === "" || maxSalary === "0") && (minSalary !== null && minSalary !== "" && minSalary !== "0")) {
+    return `₹${minSalary} / `;
+  }
+  if (((minSalary !== null)) && ((maxSalary !== null))) {
+    // Default case: show salary range
+    return `₹${minSalary} - ₹${maxSalary} / `;
+  }
+  
+  return "As per Industry standards"
+};
 export const showSalarySimilarJob = (
   isIndustryStandard: string,
   salaryRangeUnit: string,

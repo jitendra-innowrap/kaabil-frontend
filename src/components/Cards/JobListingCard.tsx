@@ -198,7 +198,7 @@ export default function JobListingCard(prop:any) {
           }
         </ul>
         <div className="flex action-btns gap-2 3xl:gap-4 flex-wrap xl:max-w-[170px] xl:flex-nowrap justify-end items-end">
-        <Link href={`/jobs/detail/${prop?.id}`} className='grid place-items-center btn-border whitespace-nowrap !py-0 xl:!px-5 3xl:!px-8 h-[30px] 3xl:h-[44px] flex-1 text-[10px] 2xl:text-xs 3xl:text-sm text-red !border-red'>view Job</Link>
+        <Link href={`/jobs/detail/${prop?.id}`} className='grid place-items-center btn-border  xl:!min-w-[100px]  3xl:!min-w-[150px] whitespace-nowrap !py-0 xl:!px-5 3xl:!px-8 h-[30px] 3xl:h-[44px] flex-1 text-[10px] 2xl:text-xs 3xl:text-sm text-red !border-red'>view Job</Link>
         <button type='button' onClick={()=>{handleApply(prop?.id)}} className={`grid place-items-center btn-border whitespace-nowrap !py-0 xl:!px-5 3xl:!px-8 h-[30px] 3xl:h-[44px] flex-1 text-[10px] 2xl:text-xs 3xl:text-sm text-white !bg-red !border-red ${isApplied?"opacity-60 disabled cursor-default":""}`}>{isApplied?"Job Applied":"quick Apply"}</button>
         </div>
       </div>

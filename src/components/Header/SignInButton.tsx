@@ -9,7 +9,7 @@ import { PiBellBold } from "react-icons/pi";
 import { BiChevronDown } from "react-icons/bi";
 import Link from "next/link";
 import Image from "next/image";
-import { signOut } from "@/redux/userSlice";
+import { setSaveMobileNumber, signOut } from "@/redux/userSlice";
 import { setProgress } from "@/redux/progressSlice";
 import { clearSessionData } from "../utils/deviceId";
 import { AiOutlineClose } from "react-icons/ai";
@@ -29,8 +29,6 @@ export default function SignInButton({ closeSideMenu }: prop) {
   const [open, setOpen] = useState(false);
   const popupRef = useRef<any>(null);
 
-  console.log(is_profile_verify, "Verify Profile");
-
   const closePopup = () => {
     dispatch(closeLoginDialog());
     setOpen(false);
@@ -40,10 +38,9 @@ export default function SignInButton({ closeSideMenu }: prop) {
     closeSideMenu?.();
     dispatch(openLoginDialog());
     setOpen(true);
-    // When User Logged In After Months
-    if (progress === 2) {
-      dispatch(setProgress(1));
-    }
+    // When User sigin start the process from first
+    dispatch(setSaveMobileNumber(""));
+    dispatch(setProgress(1));
   };
 
   const logout = () => {

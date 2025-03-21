@@ -59,7 +59,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
           onClick={() => {
             if (!isDisabled) handleChange(data);
           }}
-          className={`relative flex items-center gap-2 ${
+          className={`relative flex items-center gap-1 ${
             isDisabled ? "opacity-90 cursor-not-allowed" : "cursor-pointer"
           }`}
         >
@@ -113,7 +113,10 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
           }
         }}
       />
-      <div className="absolute right-[20px] top-[21px]">
+      <div
+        className="absolute right-[20px] top-[21px] cursor-pointer"
+        onClick={() => setMenuOpen((prev) => !prev)}
+      >
         {menuOpen ? (
           <FaChevronUp className="size-4 text-[#333333]" />
         ) : (

@@ -132,7 +132,10 @@ const userSlice = createSlice({
       setUserProfilePercentage: (state, action: PayloadAction<number>) => {
         state.profilePercentage = action.payload;
         storeAuthUser({ ...state, profilePercentage: action.payload });
-      }
+      },
+      setSaveMobileNumber: (state, action) => {
+        state.savedMobileNumber = action.payload;
+      },
     },
 });
 

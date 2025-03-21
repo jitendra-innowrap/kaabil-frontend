@@ -263,7 +263,8 @@ export default function AddJobRole() {
             }`}
             disabled={formik.isSubmitting}
           >
-            {formik.isSubmitting ? "Submitting..." : "Next"}
+            {/* {formik.isSubmitting ? "Submitting..." : "Next"} */}
+            Next
           </button>
         </div>
       </form>

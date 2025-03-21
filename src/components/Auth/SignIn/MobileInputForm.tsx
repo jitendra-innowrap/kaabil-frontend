@@ -126,15 +126,17 @@ export default function MobileInputForm() {
             />
             <div className="min-h-[11px] text-sm text-red mt-1">
               <ErrorMessage name="mobile" />
-            </div>  
+            </div>
             <button
               type="submit"
               disabled={!isValid || !dirty || isSubmitting}
               className={`mt-1 no-margin px-6 py-2 bg-red text-white rounded-full ${
-                !isValid || !dirty ? "opacity-50 cursor-not-allowed" : ""
+                !isValid || !dirty || isSubmitting
+                  ? "opacity-50 cursor-not-allowed"
+                  : ""
               }`}
             >
-              {isSubmitting ? "Submitting..." : "Next"}
+              Next
             </button>
           </Form>
         )}

@@ -15,6 +15,7 @@ interface MultiSelectProps {
   onChange: (selectedOptions: OptionType[]) => void;
   selectedValues: OptionType[];
   icon?: React.ReactNode;
+  onInputChange?: any;
 }
 
 const MultiSelect: React.FC<MultiSelectProps> = ({
@@ -24,6 +25,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
   onChange,
   selectedValues,
   icon,
+  onInputChange,
 }) => {
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -104,6 +106,11 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
         menuPortalTarget={document.body}
         styles={{
           menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+        }}
+        onInputChange={(inputValue) => {
+          if (onInputChange) {
+            onInputChange(inputValue); // Call the parent's handler
+          }
         }}
       />
       <div className="absolute right-[20px] top-[21px]">

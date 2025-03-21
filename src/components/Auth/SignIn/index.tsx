@@ -33,7 +33,7 @@ export default function SignIn({ onClose }: prop) {
   };
   return (
     <div className="relative sign-up-modal mx-auto py-5 md:py-8 xl:py-10 w-[90%] rounded-2xl">
-      {progress >= 5 && (
+      {(progress >= 5 || progress === 2) && progress !== 11 && (
         <div onClick={handleBack}>
           <FaArrowLeft className="absolute cursor-pointer top-4 z-30 -left-2 size-6 stroke-[1.4]" />
         </div>

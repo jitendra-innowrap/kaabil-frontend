@@ -23,10 +23,13 @@ interface prop {
 export default function SignInButton({ closeSideMenu }: prop) {
   const dispatch = useDispatch();
   const isOpen = useAppSelector((state) => state.loginDialog.isOpen);
+  const progress = useAppSelector((state) => state.progress.value);
   const isUser = useAppSelector((state) => state.auth.token);
   const { is_profile_verify } = useAppSelector((state) => state.user);
   const [open, setOpen] = useState(false);
   const popupRef = useRef<any>(null);
+
+  console.log(is_profile_verify, "Verify Profile");
 
   const closePopup = () => {
     dispatch(closeLoginDialog());
@@ -37,6 +40,10 @@ export default function SignInButton({ closeSideMenu }: prop) {
     closeSideMenu?.();
     dispatch(openLoginDialog());
     setOpen(true);
+    // When User Logged In After Months
+    if (progress === 2) {
+      dispatch(setProgress(1));
+    }
   };
 
   const logout = () => {
@@ -63,7 +70,7 @@ export default function SignInButton({ closeSideMenu }: prop) {
     }
     return () => {
       document.removeEventListener("click", handleOverlayClick);
-      document.body.classList.remove("no-scroll"); 
+      document.body.classList.remove("no-scroll");
     };
   }, [open]);
 
@@ -87,7 +94,7 @@ export default function SignInButton({ closeSideMenu }: prop) {
           <SignIn onClose={closePopup} />
         </Popup>
       )}
-      {!isUser ? (
+      {!isUser || is_profile_verify === "0" ? (
         <button
           onClick={handleSignIn}
           className="bg-red text-white text-xs !p-0 2xl:text-sm lg:w-[70px] 2xl:w-[84px] h-[32px] 2xl:h-[38px] grid place-items-center rounded-[9px]"

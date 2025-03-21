@@ -135,7 +135,7 @@ export const resendOTP = createAsyncThunk(
         {},
         {
           headers: {
-            token: auth.token,
+            token: auth.mobileInputToken,
           },
         }
       );

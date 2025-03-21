@@ -212,16 +212,25 @@ export default function OnBoardingComplete({ onClose }: prop) {
               setTncChecked(!tncChecked);
             }}
           />
-          <label
-            className="!mb-0 inline-block text-[#4D4D4F]"
-            htmlFor="is_tnc_checked"
-          >
-            I agree to the{" "}
-            <span className="border-b-[1px] border-[#4D4D4F] text-[#4D4D4F] cursor-pointer">
-              terms of use
-            </span>
-            .
-          </label>
+          <div className="flex">
+            <label
+              className="!mb-0 inline-block text-[#4D4D4F] whitespace-nowrap"
+              htmlFor="is_tnc_checked"
+            >
+              <div className="flex gap-1">
+                I agree to the{" "}
+                <a
+                  href="https://meuat.kaam.com/privacy_policy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="border-b-[1px] border-[#4D4D4F] text-[#4D4D4F] cursor-pointer"
+                >
+                  terms of use
+                </a>
+                .
+              </div>
+            </label>
+          </div>
         </div>
         {!tncChecked && (
           <span className="text-red text-[15px]">

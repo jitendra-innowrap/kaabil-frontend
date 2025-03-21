@@ -2,10 +2,10 @@
 import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { useAppDispatch } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { login } from "@/redux/authSlice";
 import { setProgress } from "@/redux/progressSlice";
-import { setUserMobile, signOut } from "@/redux/userSlice";
+import { setSaveMobileNumber, setUserMobile, signOut } from "@/redux/userSlice";
 import { clearSessionData } from "@/components/utils/deviceId";
 import toast from "react-hot-toast";
 
@@ -14,6 +14,7 @@ let toastId: string | null = null;
 
 export default function MobileInputForm() {
   const dispatch = useAppDispatch();
+  const { savedMobileNumber } = useAppSelector((state) => state.user);
 
   // ✅ Validation schema
   const validationSchema = Yup.object().shape({
@@ -29,6 +30,9 @@ export default function MobileInputForm() {
   ) => {
     try {
       const { mobile } = values;
+
+      console.log(mobile, "Verify Mobile Over Here");
+      await dispatch(setSaveMobileNumber(mobile));
       const response = await dispatch(
         login({ mobile, name: "", login_type: 1, role_id: 4 })
       ).unwrap();
@@ -93,7 +97,7 @@ export default function MobileInputForm() {
         Let's start with your mobile number
       </h2>
       <Formik
-        initialValues={{ mobile: "" }}
+        initialValues={{ mobile: savedMobileNumber || "" }}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
@@ -129,11 +133,9 @@ export default function MobileInputForm() {
             </div>
             <button
               type="submit"
-              disabled={!isValid || !dirty || isSubmitting}
+              disabled={!isValid || isSubmitting}
               className={`mt-1 no-margin px-6 py-2 bg-red text-white rounded-full ${
-                !isValid || !dirty || isSubmitting
-                  ? "opacity-50 cursor-not-allowed"
-                  : ""
+                !isValid || isSubmitting ? "opacity-50 cursor-not-allowed" : ""
               }`}
             >
               Next

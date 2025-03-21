@@ -24,7 +24,7 @@ export default function AddExperience() {
   // ✅ Formik Hook
   const formik = useFormik({
     initialValues: {
-      is_fresher: user?.is_fresher == 1 ? 1 : 2, 
+      is_fresher: user?.is_fresher == 1 ? 1 : 2,
     },
     validationSchema,
     onSubmit: async (values, { setSubmitting }) => {
@@ -89,16 +89,39 @@ export default function AddExperience() {
   const validationSchemaForm = Yup.object().shape({
     designation: Yup.string().required("Designation is required"),
     companyName: Yup.string().required("Company name is required"),
-    salary: Yup.number().required("Salary is required"),
+    salary: Yup.number()
+      .required("Salary is required")
+      .test(
+        "max-digits",
+        "Must not exceed 10 digits",
+        (value) => !value || value.toString().length <= 10
+      ),
     type: Yup.number().required("Job type is required"),
     isCurrentCompany: Yup.boolean(),
-    jobStartDate: Yup.string().required("Start date is required"),
+    jobStartDate: Yup.date()
+      .required("Start date is required")
+      .max(new Date(), "Cannot be a future date"),
     jobEndDate: Yup.string().test(
       "job-end-date",
-      "End date is required",
+      "Must greater then start date",
       function (value) {
-        const { isCurrentCompany } = this.parent;
-        return isCurrentCompany === false ? !!value : true; // Only check when current company is false
+        const { isCurrentCompany, jobStartDate } = this.parent;
+        if (!isCurrentCompany) {
+          if (!value) {
+            return this.createError({
+              message: "End date is required",
+            });
+          }
+          const startDate = new Date(jobStartDate);
+          const endDate = new Date(value);
+          // Ensure end date is at least one day after the start date
+          if (endDate <= new Date(startDate.setDate(startDate.getDate() + 1))) {
+            return this.createError({
+              message: "Must greater then start date",
+            });
+          }
+        }
+        return true;
       }
     ),
   });

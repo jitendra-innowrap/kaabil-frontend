@@ -9,7 +9,7 @@ import { PiBellBold } from "react-icons/pi";
 import { BiChevronDown } from "react-icons/bi";
 import Link from "next/link";
 import Image from "next/image";
-import { signOut } from "@/redux/userSlice";
+import { setSaveMobileNumber, signOut } from "@/redux/userSlice";
 import { setProgress } from "@/redux/progressSlice";
 import { clearSessionData } from "../utils/deviceId";
 import { AiOutlineClose } from "react-icons/ai";
@@ -23,6 +23,7 @@ interface prop {
 export default function SignInButton({ closeSideMenu }: prop) {
   const dispatch = useDispatch();
   const isOpen = useAppSelector((state) => state.loginDialog.isOpen);
+  const progress = useAppSelector((state) => state.progress.value);
   const isUser = useAppSelector((state) => state.auth.token);
   const { is_profile_verify } = useAppSelector((state) => state.user);
   const [open, setOpen] = useState(false);
@@ -37,6 +38,9 @@ export default function SignInButton({ closeSideMenu }: prop) {
     closeSideMenu?.();
     dispatch(openLoginDialog());
     setOpen(true);
+    // When User sigin start the process from first
+    dispatch(setSaveMobileNumber(""));
+    dispatch(setProgress(1));
   };
 
   const logout = () => {
@@ -63,7 +67,7 @@ export default function SignInButton({ closeSideMenu }: prop) {
     }
     return () => {
       document.removeEventListener("click", handleOverlayClick);
-      document.body.classList.remove("no-scroll"); 
+      document.body.classList.remove("no-scroll");
     };
   }, [open]);
 
@@ -87,7 +91,7 @@ export default function SignInButton({ closeSideMenu }: prop) {
           <SignIn onClose={closePopup} />
         </Popup>
       )}
-      {!isUser ? (
+      {!isUser || is_profile_verify === "0" ? (
         <button
           id="sign-in-button"
           onClick={handleSignIn}

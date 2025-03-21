@@ -31,7 +31,7 @@ export default function AddSkills() {
   const { role_id } = useAppSelector((state) => state.auth);
 
   useEffect(() => {
-    fetchSkills();
+    fetchSkills("");
   }, []);
 
   // Initialize selectedSkills with user's existing skills
@@ -53,7 +53,7 @@ export default function AddSkills() {
     }
   }, [user.skills]);
 
-  const fetchSkills = async () => {
+  const fetchSkills = async (search: any) => {
     const authUserRole = getAuthUserDesiredRole();
     const department_id =
       Array.isArray(authUserRole?.role_id) && authUserRole.role_id.length > 0
@@ -71,7 +71,7 @@ export default function AddSkills() {
       payload.append("field_study_id", "");
       payload.append("department_id", JSON.stringify(department_id));
       payload.append("page", "1");
-      payload.append("search", "");
+      payload.append("search", search);
 
       const response = await api.post("/MasterData/getUserSkill", payload, {
         headers: { "Content-Type": "multipart/json" },
@@ -169,6 +169,7 @@ export default function AddSkills() {
             options={skillsList}
             placeholder="Select Skills"
             isMulti
+            onInputChange={(value: any) => fetchSkills(value)}
             onChange={(selectedOptions) => {
               setSelectedSkills(selectedOptions);
               formik.setFieldValue(
@@ -209,7 +210,9 @@ export default function AddSkills() {
           </div>
         )}
 
-        <h4 className="text-lg font-medium my-4 text-[#231F20]">Suggested skills</h4>
+        <h4 className="text-lg font-medium my-4 text-[#231F20]">
+          Suggested skills
+        </h4>
         <div className="flex flex-wrap gap-4">
           {skillsList.slice(0, 6).map((skill) => (
             <React.Fragment key={skill.value}>
@@ -274,7 +277,8 @@ export default function AddSkills() {
             }`}
             disabled={formik.isSubmitting}
           >
-            {formik.isSubmitting ? "Submitting..." : "Next"}
+            {/* {formik.isSubmitting ? "Submitting..." : "Next"} */}
+            Next
           </button>
         </div>
       </form>

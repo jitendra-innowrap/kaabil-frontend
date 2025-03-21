@@ -1,9 +1,21 @@
-import { getAuthToken, getAuthUser, getAuthUserDesiredRole, getSessionData, storeAuthToken, storeAuthUser } from '@/components/utils/deviceId';
-import { Experience, Skill, User, UserLocation, UserRole } from '@/Types/common';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import {
+  getAuthToken,
+  getAuthUser,
+  getAuthUserDesiredRole,
+  getSessionData,
+  storeAuthToken,
+  storeAuthUser,
+} from "@/components/utils/deviceId";
+import {
+  Experience,
+  Skill,
+  User,
+  UserLocation,
+  UserRole,
+} from "@/Types/common";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 // Define the experience interface
-
 
 interface AuthState extends User {
   deviceId: string;
@@ -11,6 +23,7 @@ interface AuthState extends User {
   token: string;
   loading: boolean;
   error: string | null;
+  savedMobileNumber: string | null;
 }
 const { deviceId, secret } = getSessionData();
 const user = getAuthUser() as User;
@@ -41,14 +54,14 @@ const initialState: AuthState = {
   available_job: 0,
   loading: false,
   error: null,
+  savedMobileNumber: "",
 };
 
 // Create the user slice
 const userSlice = createSlice({
-  name: 'user',
+  name: "user",
   initialState,
   reducers: {
-    
     // Clear the user state
       
       signOut: (state) => {
@@ -124,7 +137,26 @@ const userSlice = createSlice({
 });
 
 // Export actions
-export const { signOut, setUserProfilePercentage, setUserDesignation, setAuthToken, setUserIsProfileVerified, setUserId, setIsFresher, setUserWAConsent, setUserPhotoUrl, setUserRole, setUserEducation, setUserExperience, setUserMobile, setUserName, setUserLocation, setUserSkills, setCurrentLocation } = userSlice.actions;
+export const {
+  signOut,
+  setUserProfilePercentage,
+  setUserDesignation,
+  setAuthToken,
+  setUserIsProfileVerified,
+  setUserId,
+  setIsFresher,
+  setUserWAConsent,
+  setUserPhotoUrl,
+  setUserRole,
+  setUserEducation,
+  setUserExperience,
+  setUserMobile,
+  setUserName,
+  setUserLocation,
+  setUserSkills,
+  setCurrentLocation,
+  setSaveMobileNumber,
+} = userSlice.actions;
 
 // Export the reducer
 export default userSlice.reducer;

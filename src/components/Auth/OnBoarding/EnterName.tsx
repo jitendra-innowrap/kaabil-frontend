@@ -162,7 +162,8 @@ export default function EnterName() {
             }`}
             disabled={!formik.isValid || formik.isSubmitting}
           >
-            {formik.isSubmitting ? "Submitting..." : "Next"}
+            {/* {formik.isSubmitting ? "Submitting..." : "Next"} */}
+            Next
           </button>
         </div>
       </form>

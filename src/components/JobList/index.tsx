@@ -1,29 +1,29 @@
-'use client';
-import Image from 'next/image';
-import React, { Suspense, useEffect, useState } from 'react';
-import { FiCamera } from 'react-icons/fi';
-import { HiOutlineCurrencyRupee, HiOutlineFilter } from 'react-icons/hi';
-import { MdAccessTime } from 'react-icons/md';
-import Pagination from '../Pagination';
-import Link from 'next/link';
-import { IoMdArrowDropdown } from 'react-icons/io';
-import JobListingCard from '../Cards/JobListingCard';
-import Interview from '../Nudges/Listing/Interview';
-import RegisterInMinutes from '../Nudges/Listing/RegisterInMinutes';
-import { api2 } from '@/Services/Apiservice';
-import { useAppSelector } from '@/redux/hooks';
-import { useSearchParams, useRouter } from 'next/navigation';
-import { getAuthUser, getSessionData } from '../utils/deviceId';
-import { setJobFiltersMaster } from '@/redux/jobsFilterSlice';
-import { useDispatch } from 'react-redux';
-import TopCompaniesHiring from '../Nudges/Listing/TopCompaniesHiring';
+"use client";
+import Image from "next/image";
+import React, { Suspense, useEffect, useState } from "react";
+import { FiCamera } from "react-icons/fi";
+import { HiOutlineCurrencyRupee, HiOutlineFilter } from "react-icons/hi";
+import { MdAccessTime } from "react-icons/md";
+import Pagination from "../Pagination";
+import Link from "next/link";
+import { IoMdArrowDropdown } from "react-icons/io";
+import JobListingCard from "../Cards/JobListingCard";
+import Interview from "../Nudges/Listing/Interview";
+import RegisterInMinutes from "../Nudges/Listing/RegisterInMinutes";
+import { api2 } from "@/Services/Apiservice";
+import { useAppSelector } from "@/redux/hooks";
+import { useSearchParams, useRouter } from "next/navigation";
+import { getAuthUser, getSessionData } from "../utils/deviceId";
+import { setJobFiltersMaster } from "@/redux/jobsFilterSlice";
+import { useDispatch } from "react-redux";
+import TopCompaniesHiring from "../Nudges/Listing/TopCompaniesHiring";
 
 function JobList() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [isfilterAvailable, setIsfilterAvailable] = useState(false);
-  const page = searchParams.get('page') || '1'; // Get the current page from the URL
-  const search = searchParams.get('search') || ''; // Get the current page from the URL
+  const page = searchParams.get("page") || "1"; // Get the current page from the URL
+  const search = searchParams.get("search") || ""; // Get the current page from the URL
   const [currentPage, setCurrentPage] = useState(parseInt(page, 10));
   const [totalJobs, setTotalJobs] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
@@ -34,31 +34,31 @@ function JobList() {
   const dispatch = useDispatch();
   const [jobs, setJobs] = useState<object[]>([]);
 
-  const sort = searchParams.get('sort') || '1'; // Default to '1' (Relevance)
+  const sort = searchParams.get("sort") || "1"; // Default to '1' (Relevance)
 
   // Reset page to 1 when filters change
   useEffect(() => {
     const params = new URLSearchParams(searchParams.toString());
-    params.set('page', '1'); // Update the sort parameter in the URL
+    params.set("page", "1"); // Update the sort parameter in the URL
     router.push(`?${params.toString()}`, { scroll: false });
     setCurrentPage(1);
   }, [
-    searchParams.get('job_types_filter'),
-    searchParams.get('location_filter'),
-    searchParams.get('industries_filter'),
-    searchParams.get('experience'),
-    searchParams.get('job_location_types_filter'),
-    searchParams.get('benefits_filter'),
-    searchParams.get('minSalary'),
-    searchParams.get('maxSalary'),
-    searchParams.get('search'),
+    searchParams.get("job_types_filter"),
+    searchParams.get("location_filter"),
+    searchParams.get("industries_filter"),
+    searchParams.get("experience"),
+    searchParams.get("job_location_types_filter"),
+    searchParams.get("benefits_filter"),
+    searchParams.get("minSalary"),
+    searchParams.get("maxSalary"),
+    searchParams.get("search"),
   ]);
 
   // Handle sort option selection
   const handleSortChange = (newSort: string) => {
     const params = new URLSearchParams(searchParams.toString());
-    params.set('sort', newSort); // Update the sort parameter in the URL
-    params.set('page', '1'); // Reset page to 1 when sort changes
+    params.set("sort", newSort); // Update the sort parameter in the URL
+    params.set("page", "1"); // Reset page to 1 when sort changes
     router.push(`?${params.toString()}`, { scroll: false }); // Update the URL without refreshing the page
   };
 
@@ -100,7 +100,11 @@ function JobList() {
 
       // Format location_filter as an array of objects with latitude and longitude
       const formattedLocationFilter = locationFilter.map((location, index) => {
-        const locationObj: { location: string; latitude?: number; longitude?: number } = {
+        const locationObj: {
+          location: string;
+          latitude?: number;
+          longitude?: number;
+        } = {
           location: location,
         };
 
@@ -131,7 +135,7 @@ function JobList() {
         min_salary: minSalary ? Number(minSalary) : null,
         max_salary: maxSalary ? Number(maxSalary) : null,
         search: search,
-        sort: sort == '3' ? 3 : 1,
+        sort: sort == "3" ? 3 : 1,
       };
 
       const { deviceId, secret, salt } = getSessionData();
@@ -145,11 +149,13 @@ function JobList() {
 
       try {
         const response = await api2.post(
-          `/api/job/list?page=${currentPage}&pageLength=10&userId=${user?.id || 0}`,
+          `/api/job/list?page=${currentPage}&pageLength=10&userId=${
+            user?.id || 0
+          }`,
           payload,
           {
             headers: {
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
             },
           }
         );
@@ -163,13 +169,19 @@ function JobList() {
         setTotalJobs(totalJobs);
         console.log(response.data?.data);
         let filterMasters = {
-          benefits_filter: response.data?.data?.filters?.benefits_filter?.buckets,
-          job_location_types_filter: response.data?.data?.filters?.job_location_types_filter?.buckets,
-          job_types_filter: response.data?.data?.filters?.job_types_filter?.buckets,
-          location_filter: response.data?.data?.filters?.location_filter?.buckets,
-          industries_filter: response.data?.data?.filters?.industries_filter?.buckets,
+          benefits_filter:
+            response.data?.data?.filters?.benefits_filter?.buckets,
+          job_location_types_filter:
+            response.data?.data?.filters?.job_location_types_filter?.buckets,
+          job_types_filter:
+            response.data?.data?.filters?.job_types_filter?.buckets,
+          location_filter:
+            response.data?.data?.filters?.location_filter?.buckets,
+          industries_filter:
+            response.data?.data?.filters?.industries_filter?.buckets,
           skill_filter: response.data?.data?.filters?.skill_filter?.buckets,
-          soft_skills_filter: response.data?.data?.filters?.soft_skills_filter?.buckets,
+          soft_skills_filter:
+            response.data?.data?.filters?.soft_skills_filter?.buckets,
           salary: {
             min: response.data?.data?.filters?.min_salary?.value,
             max: response.data?.data?.filters?.max_salary?.value,
@@ -178,7 +190,7 @@ function JobList() {
         if (!isfilterAvailable) dispatch(setJobFiltersMaster(filterMasters));
         setIsfilterAvailable(true);
       } catch (error) {
-        console.error('Error fetching jobs:', error);
+        console.error("Error fetching jobs:", error);
       }
     };
 
@@ -194,7 +206,7 @@ function JobList() {
     const params = new URLSearchParams(searchParams.toString());
 
     // Update the 'page' parameter
-    params.set('page', page.toString());
+    params.set("page", page.toString());
 
     // Push the updated query parameters to the URL
     router.push(`?${params.toString()}`, { scroll: false });
@@ -219,14 +231,19 @@ function JobList() {
     setIsOpen(!isOpen);
   };
   return (
-    <div style={{ width: '-webkit-fill-available' }} className='lg:pl-3 xl:pl-7 3xl:pl-9'>
+    <div
+      style={{ width: "-webkit-fill-available" }}
+      className="lg:pl-3 xl:pl-7 3xl:pl-9"
+    >
       <div className="flex justify-between mb-5 xl:mb-3 3xl:mb-6">
         <div className="">
           {/* <pre>{JSON.stringify(user, null, 2)}</pre> */}
           <h2 className="font-medium text-base xl:text-lg 3xl:text-2xl 3xl:leading-7 mb-1 xl:mb-2">
             {isLoggedIn?"Recommended jobs for you":"All Jobs"}
           </h2>
-          <p className="text-[#787878] text-sm 2xl:text-sm">{totalJobs} jobs for you</p>
+          <p className="text-[#787878] text-sm 2xl:text-sm">
+            {totalJobs} jobs for you
+          </p>
         </div>
         <div className="relative h-fit sort-by-container mt-1 3xl:mt-0">
           {/* Dropdown Button */}
@@ -278,7 +295,7 @@ function JobList() {
         </div>
       </div>
       <div className="flex flex-col gap-4 lg:gap-3 3xl:gap-4">
-        {jobs.map((job:any, index) => {
+        {jobs.map((job: any, index) => {
           const items = [];
 
           // Add the job listing

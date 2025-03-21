@@ -1,11 +1,15 @@
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { setProgress } from '@/redux/progressSlice';
-import Image from 'next/image';
-import React, { useState, useRef, useEffect } from 'react';
-import { GoDotFill } from 'react-icons/go';
-import api from '@/Services/Apiservice';
-import toast from 'react-hot-toast';
-import { setUserIsProfileVerified, setUserPhotoUrl, setUserWAConsent } from '@/redux/userSlice';
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { setProgress } from "@/redux/progressSlice";
+import Image from "next/image";
+import React, { useState, useRef, useEffect } from "react";
+import { GoDotFill } from "react-icons/go";
+import api from "@/Services/Apiservice";
+import toast from "react-hot-toast";
+import {
+  setUserIsProfileVerified,
+  setUserPhotoUrl,
+  setUserWAConsent,
+} from "@/redux/userSlice";
 
 interface prop {
   onClose: () => void;
@@ -13,35 +17,46 @@ interface prop {
 
 export default function OnBoardingComplete({ onClose }: prop) {
   const progress = useAppSelector((state) => state.progress.value);
-  const { experience, name, role_id, skills, photo_url, is_whatsapp_show } = useAppSelector((state) => state.user);
+  const { experience, name, role_id, skills, photo_url, is_whatsapp_show } =
+    useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [WAConsent, setWAConsent] = useState(is_whatsapp_show===false?false:true);
+  const [WAConsent, setWAConsent] = useState(
+    is_whatsapp_show === false ? false : true
+  );
+  const [tncChecked, setTncChecked] = useState(true);
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     try {
       const formData = new FormData();
-        formData.append('is_whatsapp_show', WAConsent?'1':'0'); // Append the file safely
-        formData.append('is_profile_verify', '1'); // Append the file safely
-        // Submit the form data
-        const response = await api.post('/Auth/editJobSeekerPrpfile', formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
+      formData.append("is_whatsapp_show", WAConsent ? "1" : "0"); // Append the file safely
+      formData.append("is_profile_verify", "1"); // Append the file safely
+      formData.append("is_tnc_checked", tncChecked ? "1" : "0");
+      // Submit the form data
+      const response = await api.post("/Auth/editJobSeekerPrpfile", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
       if (response?.data?.code === 1) {
-        toast.success('Profile updated successfully!', { position: 'bottom-right' });
-        dispatch(setUserWAConsent(WAConsent))
-        dispatch(setUserIsProfileVerified('1'))
+        toast.success("Profile updated successfully!", {
+          position: "bottom-right",
+        });
+        dispatch(setUserWAConsent(WAConsent));
+        dispatch(setUserIsProfileVerified("1"));
         onClose(); // Close the modal or navigate to the next step
       } else {
-        toast.error(response?.data?.message || 'Submission failed!', { position: 'bottom-right' });
+        toast.error(response?.data?.message || "Submission failed!", {
+          position: "bottom-right",
+        });
       }
     } catch (error: any) {
-      console.error('Error updating profile:', error);
-      toast.error(error?.message || 'Something went wrong!', { position: 'bottom-right' });
+      console.error("Error updating profile:", error);
+      toast.error(error?.message || "Something went wrong!", {
+        position: "bottom-right",
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -50,32 +65,44 @@ export default function OnBoardingComplete({ onClose }: prop) {
   const handleUploadPhoto = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
 
-    if (file) { // Ensure file is not undefined
+    if (file) {
+      // Ensure file is not undefined
       try {
         const formData = new FormData();
-        formData.append('photo_url', file); // Append the file safely
+        formData.append("photo_url", file); // Append the file safely
         // Submit the form data
-        const response = await api.post('/Auth/editJobSeekerPrpfile', formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
-    
+        const response = await api.post(
+          "/Auth/editJobSeekerPrpfile",
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        );
+
         if (response?.data?.code === 1) {
-          toast.success('Profile updated successfully!', { position: 'bottom-right' });
-          dispatch(setUserPhotoUrl(response.data.result?.[0]?.photo_url))
+          toast.success("Profile updated successfully!", {
+            position: "bottom-right",
+          });
+          dispatch(setUserPhotoUrl(response.data.result?.[0]?.photo_url));
         } else {
-          toast.error(response?.data?.message || 'Submission failed!', { position: 'bottom-right' });
+          toast.error(response?.data?.message || "Submission failed!", {
+            position: "bottom-right",
+          });
         }
       } catch (error: any) {
-        console.error('Error updating profile:', error);
-        toast.error(error?.message || 'Something went wrong!', { position: 'bottom-right' });
+        console.error("Error updating profile:", error);
+        toast.error(error?.message || "Something went wrong!", {
+          position: "bottom-right",
+        });
       } finally {
         setIsSubmitting(false);
       }
     } else {
-      console.error('No file selected');
-      toast.error('Please select a file before submitting.', { position: 'bottom-right' });
+      console.error("No file selected");
+      toast.error("Please select a file before submitting.", {
+        position: "bottom-right",
+      });
     }
-    
   };
 
   const handleUploadClick = () => {
@@ -90,11 +117,14 @@ export default function OnBoardingComplete({ onClose }: prop) {
         <span className="text-red">Congrats!</span> <br />
         Your profile is active
       </h2>
-      <form onSubmit={handleSubmit} className="block mt-8 md:mt-10 xl:mt-14 2xl:mt-16">
+      <form
+        onSubmit={handleSubmit}
+        className="block mt-8 md:mt-10 xl:mt-14 2xl:mt-16"
+      >
         <div className="p-4 flex-col sm:flex-row rounded-lg border-[1.6px] border-[#E3ECFB] shadow-tertiary justify-start flex sm:gap-4">
           <div className="flex flex-col justify-center items-center">
             <Image
-              src={photo_url || '/new-assets/icons/avatar.svg'}
+              src={photo_url || "/new-assets/icons/avatar.svg"}
               alt="profile-photo"
               className="w-[75px] h-[75px] mr-1 rounded-full object-fit"
               width={150}
@@ -116,26 +146,33 @@ export default function OnBoardingComplete({ onClose }: prop) {
             </button>
           </div>
           <div className="">
-            <h5 className="font-semibold text-black mb-1 text-center sm:text-left">{name}</h5>
+            <h5 className="font-semibold text-black mb-1 text-center sm:text-left">
+              {name}
+            </h5>
             <h5 className="text-black mb-1 font-medium text-center sm:text-left">
               {/* {role_id === 1 ? 'UI/UX Designer' : 'Other Role'} Replace with actual role mapping */}
             </h5>
             {experience.length > 0 && (
               <>
                 <h6 className="text-sm text-[#4D4D4F] mb-2">
-                  {experience[0].company_name} <GoDotFill className="inline-block size-3" />{' '}
+                  {experience[0].company_name}{" "}
+                  <GoDotFill className="inline-block size-3" />{" "}
                   {experience[0].job_type_name}
                 </h6>
                 <h6 className="text-sm text-[#4D4D4F]">Selected job roles:</h6>
                 {experience.map((exp, i) => (
                   <h6 key={i} className="text-sm font-medium mb-2 inline mr-2">
-                    <GoDotFill className="inline-block size-3" /> {exp.designation_name}
+                    <GoDotFill className="inline-block size-3" />{" "}
+                    {exp.designation_name}
                   </h6>
                 ))}
               </>
             )}
             <div className="flex gap-1 text-[#4D4D4F] text-sm mt-2">
-              Skills <span className="size-5 bg-[#F9D1D7] rounded-full text-center">{skills?.length || 0}</span>
+              Skills{" "}
+              <span className="size-5 bg-[#F9D1D7] rounded-full text-center">
+                {skills?.length || 0}
+              </span>
             </div>
           </div>
         </div>
@@ -148,13 +185,14 @@ export default function OnBoardingComplete({ onClose }: prop) {
             checked={WAConsent}
             onChange={(e) => {
               // Update the Redux store or state for WhatsApp consent
-              setWAConsent(!WAConsent)
+              setWAConsent(!WAConsent);
             }}
           />
           <label className="!mb-0 inline-block" htmlFor="whatsapp_consent">
-            I consent to share my number with the recruiter for connecting with me via
+            I consent to share my number with the recruiter for connecting with
+            me via
             <Image
-              src={'/new-assets/icons/whatsapp.png'}
+              src={"/new-assets/icons/whatsapp.png"}
               alt="whatsapp-icon"
               className="w-[89px] h-[20px] inline ml-2"
               width={100}
@@ -162,12 +200,51 @@ export default function OnBoardingComplete({ onClose }: prop) {
             />
           </label>
         </div>
+        <div className="flex items-start gap-2">
+          <input
+            type="checkbox"
+            name="is_tnc_checked"
+            className="!mb-0 !mt-1 cursor-pointer inline-block !w-4 !h-4"
+            id="is_tnc_checked"
+            checked={tncChecked}
+            onChange={(e) => {
+              // Update the Redux store or state for WhatsApp consent
+              setTncChecked(!tncChecked);
+            }}
+          />
+          <div className="flex">
+            <label
+              className="!mb-0 inline-block text-[#4D4D4F] whitespace-nowrap"
+              htmlFor="is_tnc_checked"
+            >
+              <div className="flex gap-1">
+                I agree to the{" "}
+                <a
+                  href="https://meuat.kaam.com/privacy_policy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="border-b-[1px] border-[#4D4D4F] text-[#4D4D4F] cursor-pointer"
+                >
+                  terms of use
+                </a>
+                .
+              </div>
+            </label>
+          </div>
+        </div>
+        {!tncChecked && (
+          <span className="text-red text-[15px]">
+            You must agree to the terms of use to proceed.
+          </span>
+        )}
         <button
-          className={`flex-shrink-0 justify-start bg-red text-white px-4 py-2 rounded`}
-          disabled={isSubmitting}
+          className={`flex-shrink-0 justify-start bg-red text-white px-4 py-2 rounded ${
+            isSubmitting || !tncChecked ? "opacity-50 cursor-not-allowed" : ""
+          }`}
+          disabled={isSubmitting || !tncChecked}
           type="submit"
         >
-          {isSubmitting ? 'Submitting...' : 'Next'}
+          Next
         </button>
       </form>
     </div>

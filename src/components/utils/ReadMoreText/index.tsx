@@ -1,7 +1,7 @@
-'use client'
-import React, { useState, useLayoutEffect } from 'react'
+'use client';
+import React, { useState, useLayoutEffect } from 'react';
 
-const useTruncatedElement = ({ ref }: {ref:any}) => {
+const useTruncatedElement = ({ ref }: { ref: any }) => {
   const [isTruncated, setIsTruncated] = useState(false);
   const [isReadingMore, setIsReadingMore] = useState(false);
 
@@ -22,27 +22,35 @@ const useTruncatedElement = ({ ref }: {ref:any}) => {
   };
 };
 
-export default function Note({fullText}:{fullText:string}) {
+export default function Note({ fullText }: { fullText: string }) {
   const ref = React.useRef(null);
   const { isTruncated, isReadingMore, setIsReadingMore } = useTruncatedElement({
     ref,
   });
 
-
   return (
     <div>
-      <div ref={ref} className={`break-words text-xs leading-6 3xl:text-sm 3xl:leading-[32px] ${!isReadingMore && 'line-clamp-3'}`}
-      dangerouslySetInnerHTML={{
-        __html:
-          fullText && typeof fullText === "string"
-            ? fullText
-            : "",
-      }}/>
-      {isTruncated && !isReadingMore && (
-        <span aria-label='read more button' className='cursor-pointer font-semibold text-xs leading-6 3xl:text-sm 3xl:leading-[32px]' onClick={() => setIsReadingMore(true)}>
-          Read more
+      {/* Text Content */}
+      <div
+        ref={ref}
+        className={`break-words text-xs leading-6 3xl:text-sm 3xl:leading-[32px] ${
+          !isReadingMore && 'line-clamp-3'
+        }`}
+        dangerouslySetInnerHTML={{
+          __html: fullText && typeof fullText === 'string' ? fullText : '',
+        }}
+      />
+
+      {/* Read More / Read Less Button */}
+      {isTruncated && (
+        <span
+          aria-label={isReadingMore ? 'read less button' : 'read more button'}
+          className='cursor-pointer font-semibold text-xs leading-6 3xl:text-sm 3xl:leading-[32px]'
+          onClick={() => setIsReadingMore(!isReadingMore)}
+        >
+          {isReadingMore ? 'Read less' : 'Read more'}
         </span>
       )}
     </div>
-  )
+  );
 }

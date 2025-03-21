@@ -79,7 +79,7 @@ useEffect(() => {
 }, [slug]);
 
 const handleFollow = async () => {
-  if (isLoading) {
+  if (isLoggedIn) {
     dispatch(setProgress(1));
     dispatch(openLoginDialog());
     const button = document.getElementById('sign-in-button');

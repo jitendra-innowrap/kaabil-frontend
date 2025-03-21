@@ -69,7 +69,6 @@ export default function Home() {
             </div>
         </div>
       </section>
-      <pre>{JSON.stringify([], null, 2)}</pre>
       <section className="container">
         <div className="mt-8 lg:mt-10 2xl:mt-14 pb-5 md:pb-8 xl:pb-14 2xl:pb-16 flex flex-col lg:flex-row gap-5 md:gap-7 lg:gap-4 xl:gap-4 3xl:gap-7">
             <FilterSidebar/>

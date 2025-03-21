@@ -32,7 +32,7 @@ import { openLoginDialog } from "@/redux/loginDialogSlice";
 
 export default function Home() {
   const {slug} = useParams();
-  const token = useSelector((state: RootState) => state.user.token);
+  const {token, isLoggedIn} = useSelector((state: RootState) => state.user);
   const userSkills = useSelector((state: RootState) => state.user.skills);
 
   const dispatch = useDispatch();
@@ -46,7 +46,7 @@ export default function Home() {
   const [similarJobs, setSimilarJobs] = useState<CompanyJob[]>([]);
   const router = useRouter();
   const handleSignIn=()=>{
-    if(!token){
+    if(!isLoggedIn){
       dispatch(setProgress(1))
       dispatch(openLoginDialog());
       const button = document.getElementById('sign-in-button');
@@ -59,7 +59,7 @@ export default function Home() {
     useEffect(() => {
       setIsFavorited(jobDetails?.saveJob_status=='1');
       setIsApplied(jobDetails?.is_job_apply=="1"?true:false);
-    }, [jobDetails, token]);
+    }, [jobDetails, token, isLoggedIn]);
     
   useEffect(() => {
     async function fetchJobDetails() {
@@ -145,6 +145,15 @@ export default function Home() {
       setOpenShare(true)
   }
   const handleApply = async (id:string)=>{
+    if(!isLoggedIn){
+      dispatch(setProgress(1))
+      dispatch(openLoginDialog())
+      const button = document.getElementById('sign-in-button');
+      if (button) {
+        button.click(); // Programmatically triggers the button click
+      }
+      return
+    }
     if(!isApplied){
       try {
             const formData = new FormData();
@@ -173,6 +182,15 @@ export default function Home() {
         }
   }
   const handleSave = async (id:string)=>{
+    if(!isLoggedIn){
+      dispatch(setProgress(1))
+      dispatch(openLoginDialog())
+      const button = document.getElementById('sign-in-button');
+      if (button) {
+        button.click(); // Programmatically triggers the button click
+      }
+      return
+    }
     try {
           const formData = new FormData();
           formData.append("job_id", id); // Convert all values to strings

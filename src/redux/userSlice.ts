@@ -23,6 +23,7 @@ const initialState: AuthState = {
   photo_url: user?.photo_url || "",
   id: user?.id || "",
   is_profile_verify: user?.is_profile_verify =="1"? "1":"0",
+  isLoggedIn: user?.is_profile_verify =="1",
   is_whatsapp_show: user?.is_whatsapp_show? user?.is_whatsapp_show : true,
   mobile: user?.mobile,
   name: user?.name || "",
@@ -63,6 +64,7 @@ const userSlice = createSlice({
       },
       setUserIsProfileVerified: (state, action: PayloadAction<string>) => {
         state.is_profile_verify = action.payload;
+        state.isLoggedIn = action.payload=="1"
         storeAuthUser({ ...state, is_profile_verify: action.payload });
       },
       setAuthToken: (state, action: PayloadAction<string>) => {

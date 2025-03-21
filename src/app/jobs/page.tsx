@@ -18,7 +18,7 @@ import Image from "next/image";
 import { Suspense, useEffect, useState } from "react";
 
 export default function Home() {
-    const {token} = useAppSelector((state) => state.auth);
+    const {isLoggedIn} = useAppSelector((state) => state.user);
 
   const [isLoading, setIsLoading] = useState(true);
   const [topCompanies, setTopCompanies] = useState<jobcardtype[]>([]);
@@ -78,15 +78,15 @@ export default function Home() {
             </Suspense>
             <div className="nudges-bar flex flex-shrink-0 flex-col gap-4 md:gap-6 max-w-[400px] mx-auto lg:w-[280px] 2xl:w-[341px]">
               <FindCareer/>
-              {token && <ProfileCard/>}
-              {token && <QuickAction/>}
+              {isLoading && <ProfileCard/>}
+              {isLoading && <QuickAction/>}
               <ResumeBuilder/>
-              {token && <BoostProfile/>}
+              {isLoading && <BoostProfile/>}
             </div>
         </div>
       </section>
 
-      {!token && <section className="bg-white py-5 xl:py-6">
+      {!isLoading && <section className="bg-white py-5 xl:py-6">
           <div className="w-full flex flex-col items-center my-5 md:my-8 xl:my-14 2xl:my-16  mx-auto">
           <h2 className='text-black text-center text-2xl md:text-3xl xl:text-4xl 2xl:text-[40px] 2xl:leading-[64px] mb-5 xl:mb-8 font-medium'>Top companies <span className="font-kalam text-red">hiring</span> now</h2>
               <div className="container no-pad">                        

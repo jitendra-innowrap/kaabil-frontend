@@ -29,6 +29,7 @@ function JobList() {
   const [totalPages, setTotalPages] = useState(0);
   const maxPagesToShow = 5; // Maximum pages to display
   const user = useAppSelector((state) => state.user);
+  const {isLoggedIn} = useAppSelector((state) => state.user);
   const { token } = useAppSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [jobs, setJobs] = useState<object[]>([]);
@@ -118,7 +119,7 @@ function JobList() {
 
       // Construct payload
       let payload = {
-        recommendate: token ? !hasFilters : false, // Set recommendate to true if no filters are applied, else false
+        recommendate: isLoggedIn ? !hasFilters : false, // Set recommendate to true if no filters are applied, else false
         soft_skill_filter: [],
         skill_filter: [],
         job_location_types_filter: jobLocationTypesFilter,
@@ -184,17 +185,6 @@ function JobList() {
     fetchJobs();
   }, [page, user?.id, searchParams, currentPage]);
 
-  // Function to get the pagination group
-  const getPaginationGroup = () => {
-    let start = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2));
-    let end = Math.min(totalPages, start + maxPagesToShow - 1);
-
-    if (end - start < maxPagesToShow - 1) {
-      start = Math.max(1, end - maxPagesToShow + 1);
-    }
-
-    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
-  };
 
   // Handle pagination button click
   const handleActive = (page: number) => {
@@ -234,7 +224,7 @@ function JobList() {
         <div className="">
           {/* <pre>{JSON.stringify(user, null, 2)}</pre> */}
           <h2 className="font-medium text-base xl:text-lg 3xl:text-2xl 3xl:leading-7 mb-1 xl:mb-2">
-            {token?"Recommended jobs for you":"All Jobs"}
+            {isLoggedIn?"Recommended jobs for you":"All Jobs"}
           </h2>
           <p className="text-[#787878] text-sm 2xl:text-sm">{totalJobs} jobs for you</p>
         </div>
@@ -303,7 +293,7 @@ function JobList() {
             const nudgeIndex = Math.floor((index + 1) / 2) - 1;
 
             // Check if the nudgeIndex is within the bounds of the nudges array
-            if (user?.token) {
+            if (user?.isLoggedIn) {
               if (nudgeIndex < nudgesForLoggedInUser.length) {
                 items.push(nudgesForLoggedInUser[nudgeIndex]);
               }
@@ -323,8 +313,7 @@ function JobList() {
         <Pagination
           currentPage={currentPage}
           handleActive={handleActive}
-          getPaginationGroup={getPaginationGroup()}
-          pages={totalPages}
+          totalPages={totalPages}
         />
       </div>
     </div>

@@ -21,7 +21,7 @@ import { showToast } from "@/components/utils";
 
 export default function CompanyDetails() {
 const {slug} = useParams();
-const token = useSelector((state: RootState) => state.user.token);
+const { isLoggedIn } = useSelector((state: RootState) => state.user);
 const dispatch = useDispatch();
 const [isLoading, setIsLoading] = useState(true);
 const [CompanyDetails, setCompanyDetails] = useState<Company>();
@@ -79,7 +79,7 @@ useEffect(() => {
 }, [slug]);
 
 const handleFollow = async () => {
-  if (!token) {
+  if (isLoading) {
     dispatch(setProgress(1));
     dispatch(openLoginDialog());
     const button = document.getElementById('sign-in-button');

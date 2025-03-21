@@ -20,7 +20,7 @@ import { VscHeart, VscHeartFilled } from 'react-icons/vsc'
 import { openLoginDialog } from '@/redux/loginDialogSlice'
 
 export default function JobListingCard(prop:any) {
-  const token = useSelector((state: RootState) => state.user.token);
+  const {token, isLoggedIn} = useSelector((state: RootState) => state.user);
   const userSkills = useSelector((state: RootState) => state.user.skills);
   const user = useSelector((state: RootState) => state.user);
   const [isApplied, setIsApplied] = React.useState(prop?.is_job_apply=="1"?true:false);
@@ -57,7 +57,7 @@ export default function JobListingCard(prop:any) {
   }, [user,prop])
   
   const handleApply = async (id:string)=>{
-    if(!token){
+    if(!isLoggedIn){
       dispatch(setProgress(1))
       dispatch(openLoginDialog());
       const button = document.getElementById('sign-in-button');
@@ -94,7 +94,7 @@ export default function JobListingCard(prop:any) {
         }
   }
   const handleSave = async (id:string)=>{
-    if(!token){
+    if(!isLoggedIn){
       dispatch(setProgress(1))
       dispatch(openLoginDialog())
       const button = document.getElementById('sign-in-button');

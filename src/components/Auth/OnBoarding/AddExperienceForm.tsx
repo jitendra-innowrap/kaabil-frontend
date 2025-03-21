@@ -253,6 +253,7 @@ const AddExperienceForm = forwardRef(
                   onChange={formik.handleChange}
                   placeholder="Start Date"
                   className="mb-2 w-full p-2 border rounded !bg-white shadow-md"
+                  max={new Date().toISOString().split("T")[0]}
                 />
               )}
               {formik.errors.jobStartDate && formik.touched.jobStartDate && (
@@ -281,6 +282,7 @@ const AddExperienceForm = forwardRef(
                     onChange={formik.handleChange}
                     placeholder="End Date"
                     className="mb-2 w-full p-2 border rounded !bg-white shadow-md"
+                    max={new Date().toISOString().split("T")[0]}
                   />
                 )}
                 {formik.errors.jobEndDate && formik.touched.jobEndDate && (

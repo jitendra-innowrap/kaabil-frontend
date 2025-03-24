@@ -14,6 +14,7 @@ interface JobFiltersMasterState {
   benefits_filter: FilterBucket[];
   job_location_types_filter: FilterBucket[];
   job_types_filter: FilterBucket[];
+  experience: FilterBucket[];
   location_filter: FilterBucket[];
   skill_filter: FilterBucket[];
   industries_filter: FilterBucket[]
@@ -25,6 +26,7 @@ const initialState: JobFiltersMasterState = {
   benefits_filter: [],
   job_location_types_filter: [],
   industries_filter: [],
+  experience: [],
   job_types_filter: [],
   location_filter: [],
   skill_filter: [],

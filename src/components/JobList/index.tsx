@@ -71,12 +71,11 @@ function JobList() {
       const industriesFilter = searchParams.get('industries_filter')?.split('|') || [];
       const experienceFilter = searchParams.get('experience')?.split('|') || [];
       const mappedExperienceFilter = experienceFilter.map(exp => {
-        if (exp === "Experienced") {
-          return 0;
-        } else if (exp === "Fresher") {
+        if (exp === "Fresher") {
           return 1;
+        } else {
+          return 0;
         }
-        return exp; // In case there are other unexpected values
       });
       const jobLocationTypesFilter = searchParams.get('job_location_types_filter')?.split('|') || [];
       const benefitsFilter = searchParams.get('benefits_filter')?.split('|') || [];
@@ -175,6 +174,8 @@ function JobList() {
             response.data?.data?.filters?.job_location_types_filter?.buckets,
           job_types_filter:
             response.data?.data?.filters?.job_types_filter?.buckets,
+          experience:
+            response.data?.data?.filters?.experience_filter?.buckets,
           location_filter:
             response.data?.data?.filters?.location_filter?.buckets,
           industries_filter:

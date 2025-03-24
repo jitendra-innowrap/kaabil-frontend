@@ -1,11 +1,10 @@
-'use client'
 import React from 'react'
 import CompanyTrading from './CompanyTrading'
 
-const Nawal = () => {
+const page = () => {
   return (
     <div><CompanyTrading/></div>
   )
 }
 
-export default Nawal
+export default page

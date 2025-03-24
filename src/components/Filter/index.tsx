@@ -75,10 +75,7 @@ export default function FilterSidebar() {
                 <LoadMoreAccordian 
                     header="Experience level" 
                     filterKey='experience'
-                    list={[
-                        {doc_count:10, key:'Fresher'},
-                        {doc_count:10, key:'Experienced'},
-                    ]} 
+                    list={filters?.experience} 
                     />
 
                 <LoadMoreAccordian 

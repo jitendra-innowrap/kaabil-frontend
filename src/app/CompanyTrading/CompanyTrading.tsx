@@ -1,83 +1,232 @@
 "use client";
 
+import CompanyCard from "@/components/Cards/CompanyCard";
+import { industryCard } from "@/components/Cards/IndustryCard";
+import Pagination from "@/components/Pagination";
+import api from "@/Services/Apiservice";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { notFound, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { IoMdArrowDropdown } from "react-icons/io";
 
 import { RxTriangleDown } from "react-icons/rx";
 
 export default function CompanyTrading() {
-  const [sortBy, setSortBy] = useState("1");
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const sort = searchParams.get("sort") || "1"; // Default to '1' (Relevance)
+  const search = searchParams.get("search") || ""; 
+  const [searchKey, setSearchKey] = useState(search || "");
+  const industry = searchParams.get("industry") || ""; 
+  // const page = searchParams.get("page") || "1"; 
+  const tab = searchParams.get("tab") || "Trending"; 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalCompnaies, setTotalCompnaies] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
   const [selectedTab, setSelectedTab] = useState("Trending");
-  const [selectedIndustry, setSelectedIndustry] = useState("All");
+  const [selectedIndustry, setSelectedIndustry] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [industiesList, setIndustiesList] = useState<{id:string, name:string}[]>([]);
+  const [companiesList, setCompaniesList] = useState<industryCard[]>([]);
 
-  // Company data
-  const companies = [
-    { name: "Jio", icon: "/new-assets/company-icons/jio.png" },
-    { name: "Tata Consultancy Services", icon: "/new-assets/company-icons/tcs.png" },
-    { name: "Tech Mahindra Ltd", icon: "/new-assets/company-icons/mahindra.png" },
-    { name: "Mahindra Holidays and Resorts India Ltd", icon: "/new-assets/company-icons/club.png" },
-    { name: "NoBroker", icon: "/new-assets/company-icons/image-4.png" },
-    { name: "Flexsin Technologies", icon: "/new-assets/company-icons/flexsin.png" },
-    { name: "XpressBees", icon: "/new-assets/company-icons/image-6.png" },
-    { name: "The Higher Pitch", icon: "/new-assets/company-icons/image-7.png" },
-    { name: "FourthPointer Services", icon: "/new-assets/company-icons/image-8.png" },
-    { name: "Axis Finance (AFL)", icon: "/new-assets/company-icons/axis.png" },
-    { name: "ixigo", icon: "/new-assets/company-icons/ixigo.png" },
-    { name: "Cloudnow Technologies", icon: "/new-assets/company-icons/image-11.png" },
-    { name: "Mahindra Holidays and Resorts India Ltd", icon: "/new-assets/company-icons/club.png" },
-    { name: "Porter", icon: "/new-assets/company-icons/porter.png" },
-    { name: "EaseMyTrip", icon: "/new-assets/company-icons/emt.png" },
-    { name: "Jio", icon: "/new-assets/company-icons/jio.png" },
-    { name: "Tata Consultancy Services", icon: "/new-assets/company-icons/tcs.png" },
-    { name: "Tech Mahindra Ltd", icon: "/new-assets/company-icons/mahindra.png" },
-    { name: "Deloitte", icon: "/new-assets/company-icons/deolite.png" },
-    { name: "Mahindra Holidays and Resorts India Ltd", icon: "/new-assets/company-icons/club.png" },
-    { name: "Swiggy", icon: "/new-assets/company-icons/swiggy.png" },
-    { name: "Flipkart", icon: "/new-assets/company-icons/flip.png" },
-    { name: "Contempo Technologies", icon: "/new-assets/company-icons/contempo.png" },
-    { name: "Quickinsure", icon: "/new-assets/company-icons/quickinsure.png" },
-    { name: "Tech Mahindra Ltd", icon: "/new-assets/company-icons/mahindra.png" },
-  ];
+  useEffect(() => {
+    fetchIndustries();
+    fetchJobDetails();
+    setSearchKey(search);
+  }, [searchParams.toString(), selectedTab, selectedIndustry]);
 
-  // Following companies data
-  const followingCompanies = [
-    { name: "Jio", icon: "/new-assets/company-icons/jio.png" },
-    { name: "Tata Consultancy Services", icon: "/new-assets/company-icons/tcs.png" },
-    { name: "Tech Mahindra Ltd", icon: "/new-assets/company-icons/mahindra.png" },
-  ];
+  async function fetchJobDetails() {
+    try {
+      type SearchPayload = {
+        latitude: number;
+        longitude: number;
+        radius_id: number;
+        radius_value: string;
+        page: string;
+        pageLength: number;
+        filter_flag: string; // or whatever type 'sort' is
+        search: string; // or whatever type 'search' is
+        industry_id?: string; // or whatever type 'industry' is
+      };
+      let payload:SearchPayload = {
+        latitude:0,
+        longitude:0,
+        radius_id:0,
+        radius_value:"",
+        page:currentPage.toString(),
+        pageLength:10,
+        filter_flag: sort,
+        search:search,
+      };
+      if(selectedTab==="Industry"){
+        payload.industry_id = industry;
+      }
 
-  // Industries data
-  const industries = [
-    { name: "Flexsin Technologies", icon: "/new-assets/company-icons/flexsin.png" },
-    { name: "XpressBees", icon: "/new-assets/company-icons/image-6.png" },
-    { name: "The Higher Pitch", icon: "/new-assets/company-icons/image-7.png" },
-    { name: "NoBroker", icon: "/new-assets/company-icons/image-4.png" },
-    { name: "FourthPointer Services", icon: "/new-assets/company-icons/image-8.png" },
-    { name: "ixigo", icon: "/new-assets/company-icons/ixigo.png" },
-    { name: "Axis Finance (AFL)", icon: "/new-assets/company-icons/axis.png" },
-    { name: "Porter", icon: "/new-assets/company-icons/porter.png" },
-  ];
+      const formData = new FormData();
+      // ✅ Automatically append all fields from the object
+        Object.entries(payload).forEach(([key, value]) => {
+          formData.append(key, value as string); // Convert all values to strings
+        });
+        let endpoint = "";
+        if (selectedTab === "Trending") {
+          endpoint = "/Company/getTrendingCompanyJob";
+        } else if (selectedTab === "Following") {
+          endpoint = "/Company/getFollowingCompanyList";
+        } else if (selectedTab === "Industry") {
+          endpoint = "/Company/getIndustryWiseJob";
+        }
+      
+        setIsLoading(true);
+        setTotalPages(1);
+        setTotalCompnaies(0);
+      const response = await api.post(`${endpoint}?pageLength=10`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      const responseData = response.data;
+      if (responseData.code === 1) {
+        if(responseData.result?.[0]?.id==null){
+          toast.error("page not found", { position: "bottom-right" });
+          router.push("/");
+        }
+        setCompaniesList(response?.data?.result?.map((comp: any, i: number) => ({
+          icon: comp?.company_logo || "/new-assets/icons/company_icon_placeholder.png",
+          title: comp?.company_name,
+          companyId: `${comp?.id}`,
+          jobUrl: `/`
+        })));
+        const totalCompany = response?.data?.total_company_job;
+        const companyPerPage = 50;
+        const totalPages = Math.ceil(totalCompany / companyPerPage);
+        setTotalCompnaies(totalCompany || []);
+        setTotalPages(totalPages);
+        setIsLoading(false)
+      }else{
+        notFound();
+      }
+    } catch (error: any) {
+      if(error?.status==404){
+        notFound();
+      }
+      console.log(error);
+      setIsLoading(false);
+      setCompaniesList([]);
+    }
+  };
+  async function fetchIndustries() {
+    try {
+
+      let payload = {
+        role_id:"",
+        department_id:""
+      };
+
+      const formData = new FormData();
+      // ✅ Automatically append all fields from the object
+        Object.entries(payload).forEach(([key, value]) => {
+          formData.append(key, value as string); // Convert all values to strings
+        });
+      const response = await api.post('/MasterData/getIndustry', formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      const responseData = response.data;
+      if (responseData.code === 1) {
+        if(responseData.result?.[0]?.id==null){
+          toast.error("page not found", { position: "bottom-right" });
+          router.push("/");
+          return
+        }
+        setIndustiesList(responseData?.result)
+      }else{
+        notFound();
+      }
+    } catch (error: any) {
+      if(error?.status==404){
+        notFound();
+      }
+      console.log(error);
+    }
+    setIsLoading(false)
+  };
+  
+  const handleSearch=(key?:any)=>{
+    if(!searchKey) return
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("page");
+    params.set("search", searchKey); // Update the sort parameter in the URL
+    console.log(key, params);
+    router.replace(`?${params.toString()}`, { scroll: false }); // Update the URL without refreshing the page
+  }
+  const handleTab=(key?:any)=>{
+    setCurrentPage(1);
+    console.log(key)
+    setSelectedTab(key);
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("page");
+    params.set("tab", key); // Update the sort parameter in the URL
+    console.log(key, params);
+    router.push(`/CompanyTrading?${params.toString()}`, { scroll: false }); // Update the URL without refreshing the page
+  }
+  
+  // Handle sort option selection
+  const handleSortChange = (newSort: string) => {
+    setCurrentPage(1);
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("sort", newSort); // Update the sort parameter in the URL
+    params.delete("page"); // Reset page to 1 when sort changes
+    router.replace(`?${params.toString()}`, { scroll: false }); // Update the URL without refreshing the page
+  };
+
+  const [isOpen, setIsOpen] = useState(false);
+  // Handle sort option selection
+  const handleOptionClick = (newSort: string) => {
+    handleSortChange(newSort); // Update the sort value
+    setIsOpen(false); // Close the dropdown
+  };
+  // Toggle dropdown visibility
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleIndustry = (id: string)=>{
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", "1"); // Reset page to 1 when sort changes
+    params.set("industry", id); // Update the sort parameter in the URL
+    router.push(`?${params.toString()}`, { scroll: false }); // Update the URL without refreshing the page
+  }
+  
+  // Handle pagination button click
+  const handleActive = (page: number) => {
+    setCurrentPage(page);
+
+    // Create a new URLSearchParams object from the current search parameters
+    const params = new URLSearchParams(searchParams.toString());
+
+    // Update the 'page' parameter
+    // params.set("page", page.toString());
+
+    // Push the updated query parameters to the URL
+    router.push(`?${params.toString()}`, { scroll: false });
+  };
 
   return (
-    <div className="flex bg-gray-50 flex-col min-h-screen">
+    <div className="flex bg-[#f9f9f9] flex-col">
       {/* Hero Section */}
-      <div className="relative h-[300px] w-full">
-        <Image
-          src={"/assets/banners/trading.svg"}
-          alt="Office building view with silhouettes"
-          fill
-          className="object-cover brightness-75"
-          priority
-        />
+      <div className="relative w-full">
+        <Image src='/assets/banners/trading.svg' quality={100} alt="" width={3840} height={1000} className="w-full h-auto"/>
         <div className="">
           {/* Hero content */}
         </div>
       </div>
 
-   {/* Navigation Tabs */}
-   <div className="bg-gray-50 mt-6">
-        <div className="max-w-[1120px] mx-auto  border-b border-gray-200">
+      {/* Navigation Tabs */}
+      <div className="bg-[#f9f9f9] mt-6 container">
+        <div className=" mx-auto  border-b border-[#D4D4D4]">
           <div className="flex  gap-16 justify-start text-start items-start">
             <Link
               className={`px-0 py-3 inline-flex items-center  text-sm font-meduim ${
@@ -86,7 +235,7 @@ export default function CompanyTrading() {
                   : "text-black hover:text-red-500"
               }`}
               href="#"
-              onClick={() => setSelectedTab("Trending")}
+              onClick={() => handleTab("Trending")}
             >
               Trending
             </Link>
@@ -97,18 +246,18 @@ export default function CompanyTrading() {
                   : "text-black hover:text-red-500"
               }`}
               href="#"
-              onClick={() => setSelectedTab("Following")}
+              onClick={() => handleTab("Following")}
             >
               Following
             </Link>
             <Link
               className={`px-0 py-3 inline-flex items-center text-sm   ${
-                selectedTab === "Industry"
+                selectedTab == "Industry"
                   ? "border-b-4 border-red text-red-500 font-bold -mb-[0px]"
                   : "text-black hover:text-red-500"
               }`}
               href="#"
-              onClick={() => setSelectedTab("Industry")}
+              onClick={() => handleTab("Industry")}
             >
               Industry
             </Link>
@@ -117,43 +266,37 @@ export default function CompanyTrading() {
       </div>
 
       {/* Search Section */}
-      {selectedTab === "Industry" && (
-        <div className="mb-6">
-          <div className="flex flex-wrap mt-4  ml-40 gap-2">
-            {[
-              "All",
-              "Retail",
-              "Media",
-              "Healthcare",
-              "Education",
-              "IPO",
-              "Hospitality",
-              "IT Services",
-              "Manufacturing",
-            ].map((industry) => (
-              <span
-                key={industry}
-                className={`px-6 py-2 rounded-lg  border-gray-0 cursor-pointer ${
-                  selectedIndustry === industry ? "bg-black text-white" : "bg-gray-100"
-                }`}
-                onClick={() => setSelectedIndustry(industry)}
-              >
-                {industry}
-              </span>
-            ))}
+      {selectedTab == "Industry" && (
+        <div className="mb-6 3xl:mb-10">
+          <div className="container flex overscroll-auto w-full mt-3 3xl:mt-4  ml-40 gap-2">
+            <div className="flex overflow-auto w-full gap-2">
+              {[{id:"0", name:"All"}, ...industiesList]?.map((ind) => (
+                <span
+                  key={ind?.id}
+                  className={`px-4 py-2 3xl:px-6 3xl:py-3 text-xs 3xl:text-sm rounded-lg whitespace-nowrap  border-gray-0 cursor-pointer ${
+                    industry == ind.id ? "bg-black text-white" : "bg-[#F1F1F1]"
+                  }`}
+                  onClick={() => handleIndustry(ind?.id)}
+                >
+                  {ind?.name}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
       )}
 
-      <div className="w-full bg-gray-50 py-6">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="flex shadow-sm">
+      <div className={`w-full bg-[#f9f9f9] pb-6 ${selectedTab==="Industry"?"":"mt-5 3xl:mt-6"}`}>
+        <div className="container mx-auto px-4">
+          <form onSubmit={(e:any)=> {e.preventDefault(); handleSearch()}} className="flex shadow-sm">
             {/* Remove parent rounded, shape corners individually on input & button */}
             <input
+              value={searchKey}
+              onChange={(e:any)=> setSearchKey(e.target.value)}
               placeholder="Company Name"
               className="w-full h-[58px] border-0 px-6 text-base focus:outline-none flex-1 rounded-l-lg"
             />
-            <button className="h-[58px] bg-red-500 hover:bg-red-600 text-white px-6 flex items-center justify-center gap-3 min-w-[180px] shadow-md rounded-r-lg rounded-l-none">
+            <button type="submit" onClick={handleSearch} className="h-[58px] bg-red-500 hover:bg-red-600 text-white px-6 flex items-center justify-center gap-3 min-w-[180px] shadow-md rounded-r-lg rounded-l-none">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="22"
@@ -171,163 +314,121 @@ export default function CompanyTrading() {
               </svg>
               <span className="text-lg font-medium">Search Jobs</span>
             </button>
-          </div>
+          </form>
         </div>
       </div>
 
-      {/* Companies Section */}
-      <div className="max-w-6xl bg-gray-50 mx-auto w-full px-4 pb-12">
-        {selectedTab === "Trending" && (
+      {isLoading?
+       <div className="flex justify-center items-center h-[200px]">
+        <div className="flex animate-spin h-7 w-7 rounded-full border-l-0 border-b-0 border-red border-[3px]"></div>
+      </div>
+      :
+      <div className="container bg-[#f9f9f9] mx-auto w-full px-4 pb-12">
+        {
+          companiesList.length>0?
           <>
             <div className="flex justify-between items-center mb-6">
-              <div>
-                <h2 className="text-xl font-semibold">Trending companies</h2>
-                <p className="text-sm text-gray-500">120 Companies found!</p>
-              </div>
-              <div className="flex items-center relative">
-                <select
-                  className="appearance-none w-[120px] h-10 pl-3 pr-10 border border-gray-500 rounded-md text-sm text-gray-700 bg-white hover:border-gray-600 focus:outline-none focus:border-red-500"
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                >
-                  <option value="1">Sort by</option>
-                  <option value="2">A-Z</option>
-                  <option value="3">Z-A</option>
-                </select>
-                <RxTriangleDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 pointer-events-none text-gray-500" />
-              </div>
+            <div>
+              <h2 className="text-xl font-semibold">{selectedTab === "Trending"?"Trending companies":selectedTab === "Following"?"Following compnaies":"Industries"}</h2>
+              <p className="text-sm text-gray-500">{selectedTab === "Following"?`You follow ${totalCompnaies} companies`:`${totalCompnaies} companies found!`}</p>
             </div>
-
-            {/* Company Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-              {companies.map((company, index) => (
-                <CompanyCard key={index} logo={company.icon} name={company.name} />
-              ))}
-            </div>
-          </>
-        )}
-
-        {selectedTab === "Following" && (
-          <>
-            <div className="flex justify-between items-center mb-6">
-              <div>
-                <h2 className="text-xl font-semibold">Following companies</h2>
-                <p className="text-sm text-gray-500">3 Companies found!</p>
-              </div>
-              <div className="flex items-center relative">
-                <select
-                  className="appearance-none w-[120px] h-10 pl-3 pr-10 border border-gray-500 rounded-md text-sm text-gray-700 bg-white hover:border-gray-600 focus:outline-none focus:border-red-500"
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                >
-                  <option value="1">Sort by</option>
-                  <option value="2">A-Z</option>
-                  <option value="3">Z-A</option>
-                </select>
-                <RxTriangleDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 pointer-events-none text-gray-500" />
-              </div>
-            </div>
-
-            {/* Following Company Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-              {followingCompanies.map((company, index) => (
-                <CompanyCard key={index} logo={company.icon} name={company.name} />
-              ))}
-            </div>
-          </>
-        )}
-
-        {selectedTab === "Industry" && (
-          <>
-            <div className="flex justify-between items-center mb-6">
-              <div>
-                <h2 className="text-xl font-semibold">Industries</h2>
-                <p className="text-sm text-gray-500">8 Industries found!</p>
-              </div>
-              <div className="flex items-center relative">
-                <select
-                  className="appearance-none w-[120px] h-10 pl-3 pr-10 border border-gray-500 rounded-md text-sm text-gray-700 bg-white hover:border-gray-600 focus:outline-none focus:border-red-500"
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                >
-                  <option value="1">Sort by</option>
-                  <option value="2">A-Z</option>
-                  <option value="3">Z-A</option>
-                </select>
-                <RxTriangleDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 pointer-events-none text-gray-500" />
-              </div>
-            </div>
-
-            {/* Industry Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-3 lg:grid-cols-5 gap-6">
-              {industries.map((industry, index) => (
+            <div className="relative h-fit sort-by-container mt-1 3xl:mt-0">
+              {/* Dropdown Button */}
+              <button
+                type="button"
+                className="text-[#4D4D4F] px-3 !py-2 flex items-center !border-black btn-border"
+                id="menu-button"
+                aria-expanded={isOpen}
+                aria-haspopup="true"
+                onClick={toggleDropdown}
+              >
+                {sort === "1" ? "Recently posted" : sort === "2" ? "Most Jobs" : sort === "3" ? "Nearest" : "Farthest"}
+                <IoMdArrowDropdown className="flex-shrink-0 ml-1 xl:ml-2 3xl:ml-5 text-[#000000] size-3 3xl:size-4" />
+              </button>
+    
+              {/* Dropdown Menu */}
+              {isOpen && (
                 <div
-                  key={index}
-                  className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden flex flex-col w-[180px] h-[200px]"
+                  className="sort-by-items-container absolute right-0 z-10 origin-top-right top-full focus:outline-hidden"
+                  role="menu"
+                  aria-orientation="vertical"
+                  aria-labelledby="menu-button"
+                  tabIndex={-1}
                 >
-                  <div className="p-4 flex justify-center items-center">
-                    <div className="w-16 h-16 rounded-md flex items-center justify-center">
-                      <Image
-                        src={industry.icon}
-                        alt={`${industry.name} icon`}
-                        width={60}
-                        height={60}
-                        className="object-contain"
-                      />
+                  <div className="sort-items-wrapper rounded-md bg-white ring-1 shadow-lg ring-black/5 mt-1">
+                    <div className="py-0 sort-items divide-y" role="none">
+                      <div
+                        onClick={() => handleOptionClick("1")}
+                        className="sort-item block px-4 py-2 lg:px-[10px] lg:py-[7px] 3xl:px-4 3xl:py-2 text-xs lg:text-[10px] 3xl:text-sm whitespace-nowrap text-[#6b6b6b] hover:text-gray-900 outline-hidden cursor-pointer"
+                        role="menuitem"
+                        tabIndex={-1}
+                        id="menu-item-2"
+                      >
+                        Recently posted
+                      </div>
+                      <div
+                        onClick={() => handleOptionClick("2")}
+                        className="sort-item block px-4 py-2 lg:px-[10px] lg:py-[7px] 3xl:px-4 3xl:py-2 text-xs lg:text-[10px] 3xl:text-sm whitespace-nowrap text-[#6b6b6b] hover:text-gray-900 outline-hidden cursor-pointer"
+                        role="menuitem"
+                        tabIndex={-1}
+                        id="menu-item-2"
+                      >
+                          Most Jobs
+                      </div>
+                      <div
+                        onClick={() => handleOptionClick("3")}
+                        className="sort-item block px-4 py-2 lg:px-[10px] lg:py-[7px] 3xl:px-4 3xl:py-2 text-xs lg:text-[10px] 3xl:text-sm whitespace-nowrap text-[#6b6b6b] hover:text-gray-900 outline-hidden cursor-pointer"
+                        role="menuitem"
+                        tabIndex={-1}
+                        id="menu-item-2"
+                      >
+                        Nearest
+                      </div>
+                      <div
+                        onClick={() => handleOptionClick("4")}
+                        className="sort-item block px-4 py-2 lg:px-[10px] lg:py-[7px] 3xl:px-4 3xl:py-2 text-xs lg:text-[10px] 3xl:text-sm whitespace-nowrap text-[#6b6b6b] hover:text-gray-900 outline-hidden cursor-pointer"
+                        role="menuitem"
+                        tabIndex={-1}
+                        id="menu-item-2"
+                      >
+                        Farthest
+                      </div>
                     </div>
                   </div>
-                  <div className="px-4 pb-2 text-center">
-                    <h3 className="text-sm font-medium">{industry.name}</h3>
-                  </div>
-                  <div className="mt-auto p-4 pt-2 text-center">
-                    <Link
-                      className="text-xs w-full 2xl:text-lg font-semibold justify-self-end"
-                      href={`/industry/profile/${industry.name}`}
-                    >
-                      View Jobs
-                    </Link>
-                  </div>
                 </div>
-              ))}
-            </div>
-          </>
-        )}
-      </div>
-    </div>
-  );
-}
+              )}
+          </div>
+        </div>
 
-interface CompanyCardProps {
-  logo: string;
-  name: string;
-  bgColor?: string;
-}
+        {/* Company Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+          {companiesList?.map((company, index) => (
+            <CompanyCard key={index} icon={company.icon} title={company.title} jobUrl={company?.jobUrl} />
+          ))}
+        </div>
+        </>
+        :
+        <div className="container pt-10 xl:pt-20 3xl:pt-32 bg-[#f9f9f9] mx-auto w-full px-4 pb-12">
+          <Image className="w-[280px] h-[190px] mx-auto 3xl:w-[323px] 3xl:h-[262px]" width={650} height={520} src={'/new-assets/images/no-company.svg'} alt="no-company-found"/>
+          <h3 className="text-xl 3xl:text-2xl font-medium text-center">No company found</h3>
+          <p className="text-sm 3xl:text-base font-normal text-center">You haven't followed any company yet. Start following to stay updated!</p>
+        </div>
+        }
+        
 
-function CompanyCard({ logo, name, bgColor }: CompanyCardProps) {
-  return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden flex flex-col w-[180px] h-[220px]">
-      <div className="p-4 flex justify-center items-center">
-        <div className={`w-16 h-16 rounded-md flex items-center justify-center ${bgColor || ""}`}>
-          <Image
-            src={logo || "/placeholder.svg"}
-            alt={`${name} logo`}
-            width={40}
-            height={60}
-            className="object-contain"
+        {/* Pagination */}
+        <div className="mt-10 md:mt-14 2xl:mt-16">
+          <Pagination
+            currentPage={currentPage}
+            handleActive={handleActive}
+            totalPages={totalPages}
           />
         </div>
       </div>
-      <div className="px-4 pb-2 text-center">
-        <h3 className="text-sm font-medium">{name}</h3>
-      </div>
-      <div className="mt-auto p-4 pt-2 text-center">
-        <Link
-          className="text-xs w-full 2xl:text-lg font-semibold justify-self-end"
-          href={`/company/profile/${name}`}
-        >
-          View Jobs
-        </Link>
-      </div>
+      }
+      {/* Companies Section */}
+      
     </div>
   );
 }
+

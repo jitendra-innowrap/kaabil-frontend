@@ -59,7 +59,7 @@ function LoadMoreAccordion({
 
   // Filter the list based on search input and remove empty keys
   const filteredList = (fetchMoreItems ? dynamicList : list)
-    .filter(item => item.key && item.key.toLowerCase().includes(search.toLowerCase()));
+    ?.filter(item => item.key && item.key.toLowerCase().includes(search.toLowerCase()));
 
   // Determine the list to display based on "Show More" state
   const displayedList = maxItems > 0 && !showAll ? filteredList.slice(0, maxItems) : filteredList;
@@ -138,7 +138,7 @@ function LoadMoreAccordion({
                   </div>
                 </div>
               ) : <></>}
-              {shouldShowOptions && filteredList.length > 0 ? (
+              {shouldShowOptions && filteredList?.length > 0 ? (
                 <ul className={`pb-3 3xl:pb-5 grid gap-3 pt-3 3xl:pt-5 overflow-y-auto ${maxItems > 0 && showAll ? 'max-h-72' : ''} custom-scrollbar`}>
                   {displayedList.map((item) => (
                     isRadio ? (

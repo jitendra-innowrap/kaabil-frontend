@@ -39,11 +39,18 @@ export default function OTPInputForm({ onClose }: prop) {
 
   useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
+
     if (timer > 0) {
       interval = setInterval(() => {
-        setTimer((prevTimer) => prevTimer - 1);
+        setTimer((prevTimer) => {
+          if (prevTimer > 0) {
+            return prevTimer;
+          }
+          return 0;
+        });
       }, 1000);
     }
+
     return () => {
       if (interval) clearInterval(interval);
     };

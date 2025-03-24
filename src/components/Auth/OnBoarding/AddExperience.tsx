@@ -103,23 +103,12 @@ export default function AddExperience() {
       .max(new Date(), "Cannot be a future date"),
     jobEndDate: Yup.string().test(
       "job-end-date",
-      "Must greater then start date",
+      "Invalid end date",
       function (value) {
         const { isCurrentCompany, jobStartDate } = this.parent;
-        if (!isCurrentCompany) {
-          if (!value) {
-            return this.createError({
-              message: "End date is required",
-            });
-          }
-          const startDate = new Date(jobStartDate);
+        if (!isCurrentCompany && value) {
           const endDate = new Date(value);
-          // Ensure end date is at least one day after the start date
-          if (endDate <= new Date(startDate.setDate(startDate.getDate() + 1))) {
-            return this.createError({
-              message: "Must greater then start date",
-            });
-          }
+          return endDate >= new Date(jobStartDate) && endDate <= new Date();
         }
         return true;
       }

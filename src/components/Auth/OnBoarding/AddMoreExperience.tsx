@@ -237,7 +237,7 @@ export default function AddMoreExperience() {
           </div>
           <div className="flex gap-4 items-end w-full justify-end">
             <span
-              onClick={() => dispatch(setProgress(10))}
+              onClick={() => dispatch(setProgress(11))}
               className={`max-w-[130px] text-[#231F20] cursor-pointer border-[#9C9C9C] flex items-center btn-border !py-3.5 !px-9 !rounded-xl`}
             >
               Skip

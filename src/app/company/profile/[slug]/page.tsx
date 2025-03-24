@@ -76,10 +76,10 @@ useEffect(() => {
     setIsLoading(false)
   };
   fetchCompanyDetails();
-}, [slug]);
+}, [slug, isLoggedIn]);
 
 const handleFollow = async () => {
-  if (isLoggedIn) {
+  if (!isLoggedIn) {
     dispatch(setProgress(1));
     dispatch(openLoginDialog());
     const button = document.getElementById('sign-in-button');

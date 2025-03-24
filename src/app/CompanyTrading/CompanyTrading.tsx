@@ -218,9 +218,6 @@ export default function CompanyTrading() {
       {/* Hero Section */}
       <div className="relative w-full">
         <Image src='/assets/banners/trading.svg' quality={100} alt="" width={3840} height={1000} className="w-full h-auto"/>
-        <div className="">
-          {/* Hero content */}
-        </div>
       </div>
 
       {/* Navigation Tabs */}

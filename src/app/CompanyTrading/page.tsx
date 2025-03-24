@@ -1,10 +1,14 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import CompanyTrading from './CompanyTrading'
 
-const page = () => {
+const Page = () => {
   return (
-    <div><CompanyTrading/></div>
+    <div>
+      <Suspense fallback={<div>Loading...</div>}>
+        <CompanyTrading />
+      </Suspense>
+    </div>
   )
 }
 
-export default page
+export default Page

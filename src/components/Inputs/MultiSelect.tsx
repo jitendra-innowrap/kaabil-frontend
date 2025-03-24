@@ -88,7 +88,13 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
             checked={isSelected}
             readOnly
           />
-          <label className="!mb-0 !p-0">{data.label}</label>
+          <label
+            className={`!mb-0 !p-0 ${isSelected ? "text-[#E31837]" : ""} ${
+              isDisabled ? "text-[#231F20]" : ""
+            } ${isDisabled ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+          >
+            {data.label}
+          </label>
         </div>
       </components.Option>
     );
@@ -123,6 +129,17 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
         menuPortalTarget={document.body}
         styles={{
           menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+          option: (base, { isFocused, isSelected }) => ({
+            ...base,
+            // backgroundColor: isFocused
+            //   ? "#f0f0f0" // Highlight background on hover
+            //   : "",
+            border: isFocused ? "1px solid red" : "",
+            borderRadius: "5px",
+            color: isSelected ? "#E31837" : "#231F20",
+            cursor: "pointer",
+            padding: "8px 15px",
+          }),
         }}
         onInputChange={(inputValue) => {
           if (onInputChange) {

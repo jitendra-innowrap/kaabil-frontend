@@ -155,7 +155,6 @@ export default function CompanyTrading() {
   };
   
   const handleSearch=(key?:any)=>{
-    if(!searchKey) return
     const params = new URLSearchParams(searchParams.toString());
     params.delete("page");
     params.set("search", searchKey); // Update the sort parameter in the URL

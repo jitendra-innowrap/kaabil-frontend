@@ -294,6 +294,7 @@ a.btn.disabled:hover {
 }
 .popup-content.video-payer-content {
   border: none !important;
+  width: fit-content;
   background: none !important;
 }
 .popup-content.share-modal-content {

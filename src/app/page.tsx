@@ -482,7 +482,7 @@ export default function Home() {
                                 <span className="block text-xs xl:text-sm text-center w-[130px]">Women got hired</span>
                             </div>
                         </div>
-                        <button className='text-xs 2xl:text-base w-[170px] 2xl:w-[247px] 2xl:h-[50px] mt-3 2xl:mt-6 3xl:mt-[36px]'>Read More</button>
+                        <Link href={'/about-us'} className='btn block text-center text-xs 2xl:text-base w-[170px] 2xl:w-[247px] 2xl:h-[50px] mt-3 2xl:mt-6 3xl:mt-[36px]'>Read More</Link>
                     </div>
                     <div className="flex-1 order-1">                        
                         <Image src={`/new-assets/banners/why-choose-home.png`} width={704} height={735} alt="" className="w-full h-auto" />

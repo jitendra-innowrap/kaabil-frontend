@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import React from 'react'
 
 export default function PlayStoreAppAd() {
@@ -9,13 +10,15 @@ export default function PlayStoreAppAd() {
             <h2 className='font-medium text-white text-lg md:text-2xl 2xl:text-[36px] 2xl:leading-[49px] mb-1'>Unlock your career potential 
             with the <span className='font-kalam font-bold'>Kaabil</span></h2>
             <p className='md:text-sm text-white 2xl:text-[22px] 2xl:leading-[30px] mb-2 max-w-[452px]'>Download now and enjoy a seamless job-hunting experience.</p>
-            <Image
-                  src={"/new-assets/images/google-play-black.svg"}
-                  width={215}
-                  height={62}
-                  alt="company logo"
-                  className="mb-6 md:mb-9 lg:mb-5 2xl:mb-6 -translate-x-4 md:max-w-[100px] lg:max-w-[150px] 2xl:max-w-[215px] h-auto"
-                  />
+            <Link href={"https://play.google.com/store/apps/details?id=com.app.kaabil&pcampaignid=web_share&pli=1"}>
+              <Image
+                src={"/new-assets/images/google-play-black.svg"}
+                width={215}
+                height={62}
+                alt="company logo"
+                className="mb-6 md:mb-9 lg:mb-5 2xl:mb-6 -translate-x-4 md:max-w-[100px] lg:max-w-[150px] 2xl:max-w-[215px] h-auto"
+                />
+            </Link>
           </div>
           <div className="block w-1/2 max-w-[563px] flex-1">
           </div>

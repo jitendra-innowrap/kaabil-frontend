@@ -5,8 +5,6 @@ import BurgerMenu from './BurgerMenu'
 import Link from 'next/link'
 import { BiChevronDown } from 'react-icons/bi'
 import SignInButton from './SignInButton'
-import { HiMagnifyingGlass } from 'react-icons/hi2'
-import SearchSection from '../SearchSection'
 import HeaderSearch from './HeaderSearch'
 
 export default function Header() {
@@ -40,9 +38,9 @@ export default function Header() {
                                     <BiChevronDown className='font-light 3xl:text-2xl text-Grey group-hover/menu:text-black'/>
                                     <div className="absolute z-30 hidden group-hover/menu:block top-0 left-0">
                                         <div className="bg-white shadow-default mt-[40px] 3xl:mt-[62px] rounded-xl w-[180px] 3xl:w-[288px] border border-lightGrey divide-y divide-lightGrey">
-                                            <Link href='/' className='block text-Grey hover:text-black py-3 3xl:py-4 font-medium hover:font-semibold text-xs 3xl:text-base px-5'>Resume Builder</Link>
-                                            <Link href='/' className='block text-Grey hover:text-black py-3 3xl:py-4 font-medium hover:font-semibold text-xs 3xl:text-base px-5'>Career Guide</Link>
-                                            <Link href='/' className='block text-Grey hover:text-black py-3 3xl:py-4 font-medium hover:font-semibold text-xs 3xl:text-base px-5'>Mock Interviews</Link>
+                                            <Link href='/' className='block w-full text-Grey hover:text-black py-3 3xl:py-4 font-medium hover:font-semibold text-xs 3xl:text-base px-5'>Resume Builder</Link>
+                                            <Link href='/' className='block w-full text-Grey hover:text-black py-3 3xl:py-4 font-medium hover:font-semibold text-xs 3xl:text-base px-5'>Career Guide</Link>
+                                            <Link href='/' className='block w-full text-Grey hover:text-black py-3 3xl:py-4 font-medium hover:font-semibold text-xs 3xl:text-base px-5'>Mock Interviews</Link>
                                         </div>
                                     </div>
                                 </li>

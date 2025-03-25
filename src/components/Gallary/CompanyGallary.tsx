@@ -67,13 +67,16 @@ const CompanyGallery: React.FC<{ galleryItems: (CompanyImage | CompanyVideo)[] }
           autoplay={false}
           autoplayDuration={3000}
           freeMode={false}
-          slidesPerView={1}
+          slidesPerView={2}
           breakpoints={{
+            600: {
+              slidesPerView: 3,
+            },
             768: {
-              slidesPerView: 1.5,
+              slidesPerView: 4,
             },
             1024: {
-              slidesPerView: 4,
+              slidesPerView: 5,
             },
             1280: {
               slidesPerView: 5,

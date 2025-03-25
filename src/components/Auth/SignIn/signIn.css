@@ -1,0 +1,28 @@
+.popup-content {
+    border-radius: 14px;
+    max-width: 600px; /* Set a max width */
+    width: 90%; /* Responsive width */
+    overflow-y: auto; /* Enable vertical scrolling when content overflows */
+    transition: transform 0.3s ease-in-out; /* Smooth transition */
+    padding: 20px; /* Add some padding inside the dialog */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+  }
+  
+  @media screen and (max-width: 1024px) {
+    .popup-content {
+      transform: scale(0.6); /* Scale down for 1024px screens */
+      top: 5%; /* Adjust position to keep close to the top */
+    }
+  }
+  
+  @media screen and (max-width: 768px) {
+    .popup-content {
+      transform: scale(0.8); /* Further scale down for tablets */
+    }
+  }
+  
+  @media screen and (max-width: 480px) {
+    .popup-content {
+      transform: scale(0.7); /* Scale down for mobile phones */
+    }
+  }

@@ -1,6 +1,9 @@
+import { useAppDispatch } from "@/redux/hooks";
+import { setResumeModal } from "@/redux/profileSlice";
 import React, { useState } from "react";
 
 const Resume = () => {
+  const dispatch = useAppDispatch();
   const [fileName, setFileName] = useState("");
 
   const handleFileChange = (event: any) => {
@@ -17,6 +20,17 @@ const Resume = () => {
           <div className="flex gap-3 items-center">
             <img src="/new-assets/icons/resume.svg" alt="Resume Icon" />
             <h1 className="text-[#231F20] font-semibold text-md">Resume</h1>
+          </div>
+          <div
+            className="flex items-center gap-2 cursor-pointer"
+            onClick={() => dispatch(setResumeModal(true))}
+          >
+            <img
+              src="/new-assets/icons/ink_marker.svg"
+              className="h-3 mt-1"
+              alt=""
+            />
+            <span className="text-sm font-bold text-red">Edit</span>
           </div>
         </div>
         <div className="col-span-12 mt-4">
@@ -40,7 +54,7 @@ const Resume = () => {
               htmlFor="fileInput"
               className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 hover:text-blue-500 cursor-pointer"
             >
-              <img src="/new-assets/icons/attach_file.svg"/>
+              <img src="/new-assets/icons/attach_file.svg" />
             </label>
           </div>
         </div>

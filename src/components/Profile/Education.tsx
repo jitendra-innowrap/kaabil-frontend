@@ -1,6 +1,9 @@
+import { useAppDispatch } from "@/redux/hooks";
+import { setEducationModal } from "@/redux/profileSlice";
 import React from "react";
 
 const Education = () => {
+  const dispatch = useAppDispatch();
   return (
     <div className="bg-white rounded-lg mt-3 px-12 py-6">
       <div className="grid grid-cols-12">
@@ -9,7 +12,12 @@ const Education = () => {
             <img src="/new-assets/icons/graduation-cap.svg" />
             <h1 className="text-[#231F20] font-semibold text-md">Education</h1>
           </div>
-          <div className="flex items-center gap-2 cursor-pointer">
+          <div
+            className="flex items-center gap-2 cursor-pointer"
+            onClick={() => {
+              dispatch(setEducationModal(true));
+            }}
+          >
             <img
               src="/new-assets/icons/ink_marker.svg"
               className="h-3 mt-1"

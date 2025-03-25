@@ -177,7 +177,7 @@ export default function AddExperience() {
       </h2>
       <form
         onSubmit={formik.handleSubmit}
-        className="block mt-8 md:mt-10 xl:mt-14 2xl:mt-16"
+        className="block mt-10"
       >
         <h4 className="text-lg font-medium">
           What’s your level of experience?
@@ -231,7 +231,7 @@ export default function AddExperience() {
         )}
 
         {formik.values.is_fresher === 1 && user.experience.length < 1 && (
-          <>
+          <div className="scroll-content-experience cursor-pointer">
             <h4 className="text-lg mb-4 font-medium">
               Please add your latest experience
             </h4>
@@ -242,7 +242,7 @@ export default function AddExperience() {
             >
               + add more experience
             </div>
-          </>
+          </div>
         )}
         <div className="flex w-full items-end">
           <div className="whitespace-nowrap">

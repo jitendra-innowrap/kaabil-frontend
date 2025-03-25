@@ -29,6 +29,7 @@ import { setProgress } from "@/redux/progressSlice";
 import { VscHeart, VscHeartFilled } from "react-icons/vsc";
 import { openLoginDialog } from "@/redux/loginDialogSlice";
 import ScreeningQuesModal from "@/components/ScreeningQuestionsModal";
+import ShareButtons from "@/components/SocialShare";
 
 
 export default function Home() {
@@ -61,6 +62,18 @@ export default function Home() {
       return
     }
   }
+  const customSocialTypes = [
+  {
+    id: 'x',
+    name: 'X',
+    icon: (
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+      </svg>
+    ),
+    shareUrl: 'https://twitter.com/intent/tweet?url={url}&text={title}',
+  },
+];
   
   useEffect(() => {
     setIsFavorited(jobDetails?.saveJob_status=='1');
@@ -545,12 +558,7 @@ export default function Home() {
             // background: 'rgba(0, 0, 0, 0.5)',
         }}
         >
-            <ShareSocial
-                    title='Share this opportunity!'
-                    style={style}
-                    url={`${window.location.origin}/detail/franchise/${jobDetails?.share_url}`}
-                    socialTypes={['facebook','twitter','whatsapp','linkedin']}
-                />
+                <ShareButtons jobDetails={jobDetails || {}}/>
         </Popup>
         <Popup
           open={openJobQuestions}

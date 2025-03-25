@@ -27,6 +27,7 @@
     "react-range-slider-input": "^3.0.7",
     "react-redux": "^9.2.0",
     "react-select": "^5.8.2",
+    "react-share": "^5.2.2",
     "react-share-social": "^0.1.60",
     "reactjs-popup": "^2.0.6",
     "swiper": "^11.1.14",

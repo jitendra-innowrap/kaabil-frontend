@@ -378,6 +378,9 @@ export default function Home() {
           </div>
           :
           <div className="flex gap-3 md:gap-4 justify-end items-center h-fit">
+            <div onClick={handleShare} className="bg-white cursor-pointer flex-shrink-0 grid place-items-center rounded-full size-8 3xl:size-[50px]">
+              <img src="/new-assets/icons/share.svg" className="text-[#4D4D4F] size-[14px] 3xl:size-[17px]"/>
+            </div>
             <button onClick={handleSignIn} className={`whitespace-nowrap flex items-center h-[35px] 3xl:h-[50px] !text-xs 3xl:!text-sm ${isApplied?"!bg-[#f2f2f2] text-black cursor-default":""}`}>
               Sign in to apply for this Job
             </button>

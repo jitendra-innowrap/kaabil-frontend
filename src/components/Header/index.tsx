@@ -52,7 +52,7 @@ export default function Header() {
                                     </Link>
                                 </li>
                                 <li className='flex'>
-                                    <Link href={"/"} className='text-Grey hover:text-black font-medium hover:font-semibold text-xs 3xl:text-base relative after:w-full after:h-[3px] 3xl:after:h-1 after:rounded-[4px] hover:after:bg-red after:absolute after:bottom-[-8px] 3xl:after:bottom-[-12px] after:left-0'>
+                                    <Link href={"/about-us"} className='text-Grey hover:text-black font-medium hover:font-semibold text-xs 3xl:text-base relative after:w-full after:h-[3px] 3xl:after:h-1 after:rounded-[4px] hover:after:bg-red after:absolute after:bottom-[-8px] 3xl:after:bottom-[-12px] after:left-0'>
                                     About Us
                                     </Link>
                                 </li>

@@ -276,7 +276,7 @@ if(isLoading){
           {CompanyDetails?.benifits && CompanyDetails?.benifits?.length>0 && <div id="perks-&-benefits" className="my-5 md:my-8 xl:my-10 py-5 md:py-8 xl:py-14 2xl:py-16 rounded-xl shadow-default">
             <div className="px-5 md:px-8 xl:px-14 2xl:px-16">
               <h2 className="text-sm 2xl:text-lg 3xl:text-xl font-semibold mb-2 md:mb-4 3xl:mb-6">Perks & Benefits</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 md:gap-8 xl:gap-10 2xl:gap-11">
+              {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 md:gap-8 xl:gap-10 2xl:gap-11">
                   {
                     CompanyDetails?.benifits.map((benefit)=>(
                       <div className="block">
@@ -293,7 +293,14 @@ if(isLoading){
                   </div>
                     ))
                   }
-              </div>
+              </div> */}
+              <div className="flex gap-4 md:gap-6 flex-wrap">
+              {
+                    CompanyDetails?.benifits.map((benefit)=>(
+                      <div className="label grey">{benefit?.name}</div>
+                    ))
+                  }
+                  </div>
             </div>
           </div>}
       </section>

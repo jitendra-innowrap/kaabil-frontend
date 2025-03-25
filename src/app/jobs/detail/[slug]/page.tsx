@@ -28,13 +28,15 @@ import { signOut } from "@/redux/userSlice";
 import { setProgress } from "@/redux/progressSlice";
 import { VscHeart, VscHeartFilled } from "react-icons/vsc";
 import { openLoginDialog } from "@/redux/loginDialogSlice";
+import ScreeningQuesModal from "@/components/ScreeningQuestionsModal";
+import ShareButtons from "@/components/SocialShare";
 
 
 export default function Home() {
   const {slug} = useParams();
   const {token, isLoggedIn} = useSelector((state: RootState) => state.user);
   const userSkills = useSelector((state: RootState) => state.user.skills);
-
+  const [openJobQuestions, setOpenJobQuestions] = useState(false);
   const dispatch = useDispatch();
   
   const [jobDetails, setJobDetails] = useState<JobResult>();
@@ -45,6 +47,10 @@ export default function Home() {
   const [isFavorited, setIsFavorited] = useState(jobDetails?.saveJob_status=="1"?true:false);
   const [similarJobs, setSimilarJobs] = useState<CompanyJob[]>([]);
   const router = useRouter();
+
+  const closeScreeningModal=()=>{
+    setOpenJobQuestions(false);
+  }
   const handleSignIn=()=>{
     if(!isLoggedIn){
       dispatch(setProgress(1))
@@ -56,10 +62,23 @@ export default function Home() {
       return
     }
   }
-    useEffect(() => {
-      setIsFavorited(jobDetails?.saveJob_status=='1');
-      setIsApplied(jobDetails?.is_job_apply=="1"?true:false);
-    }, [jobDetails, token, isLoggedIn]);
+  const customSocialTypes = [
+  {
+    id: 'x',
+    name: 'X',
+    icon: (
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+      </svg>
+    ),
+    shareUrl: 'https://twitter.com/intent/tweet?url={url}&text={title}',
+  },
+];
+  
+  useEffect(() => {
+    setIsFavorited(jobDetails?.saveJob_status=='1');
+    setIsApplied(jobDetails?.is_job_apply=="1"?true:false);
+  }, [jobDetails, token, isLoggedIn]);
     
   useEffect(() => {
     async function fetchJobDetails() {
@@ -117,6 +136,7 @@ export default function Home() {
   const jobsSlides = similarJobs?.map((job, index) => (
     <JobListingCardSmall key={index} detail={job} />
   ));
+  
   const style = {
     root: {
       background: 'linear-gradient(45deg, #f6fbff 30%, #f6fbff 90%)',
@@ -138,12 +158,15 @@ export default function Home() {
       fontSize: 18,
     }
   };
+
   const handleClose = () => {
     setOpenShare(false)
   }
+
   const handleShare = () => {
       setOpenShare(true)
   }
+
   const handleApply = async (id:string)=>{
     if(!isLoggedIn){
       dispatch(setProgress(1))
@@ -152,6 +175,10 @@ export default function Home() {
       if (button) {
         button.click(); // Programmatically triggers the button click
       }
+      return
+    }
+    if(!isApplied && jobDetails?.jobs_questions && jobDetails?.jobs_questions.length>0){
+      // setOpenJobQuestions(true);
       return
     }
     if(!isApplied){
@@ -351,6 +378,9 @@ export default function Home() {
           </div>
           :
           <div className="flex gap-3 md:gap-4 justify-end items-center h-fit">
+            <div onClick={handleShare} className="bg-white cursor-pointer flex-shrink-0 grid place-items-center rounded-full size-8 3xl:size-[50px]">
+              <img src="/new-assets/icons/share.svg" className="text-[#4D4D4F] size-[14px] 3xl:size-[17px]"/>
+            </div>
             <button onClick={handleSignIn} className={`whitespace-nowrap flex items-center h-[35px] 3xl:h-[50px] !text-xs 3xl:!text-sm ${isApplied?"!bg-[#f2f2f2] text-black cursor-default":""}`}>
               Sign in to apply for this Job
             </button>
@@ -485,7 +515,7 @@ export default function Home() {
             </div>
         </div>
       </section>
-      <section className="bg-[#F8F8F8]">
+      {jobsSlides?.length>0 && <section className="bg-[#F8F8F8]">
         <div className="w-full flex flex-col py-5 md:py-8 xl:py-14 2xl:py-16  mx-auto">
           <div className="">                        
             <div className="container section-heading">
@@ -521,23 +551,34 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </section>}
       <Popup
-            open={openShare}
-            onClose={handleClose}
-            modal
-            className="share-modal"
-            overlayStyle={{
-                // background: 'rgba(0, 0, 0, 0.5)',
-            }}
-            >
-                <ShareSocial
-                        title='Share this opportunity!'
-                        style={style}
-                        url={`${window.location.origin}/detail/franchise/${jobDetails?.share_url}`}
-                        socialTypes={['facebook','twitter','whatsapp','linkedin']}
-                    />
-            </Popup>
+        open={openShare}
+        onClose={handleClose}
+        modal
+        className="share-modal"
+        overlayStyle={{
+            // background: 'rgba(0, 0, 0, 0.5)',
+        }}
+        >
+                <ShareButtons jobDetails={jobDetails || {}}/>
+        </Popup>
+        <Popup
+          open={openJobQuestions}
+          // closeOnDocumentClick={false}
+          onClose={()=>setOpenJobQuestions(false)}
+          modal
+          className="onboarding relative"
+          overlayStyle={{
+            background: "#4D4D4DC2",
+            padding: "20px",
+            borderRadius: "10px",
+            overflow: "hidden",
+          }}
+        >
+          <ScreeningQuesModal onClose={closeScreeningModal}/>
+        </Popup>
     </main>
   );
 }
+

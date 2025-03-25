@@ -15,6 +15,7 @@ import { clearSessionData } from "../utils/deviceId";
 import { AiOutlineClose } from "react-icons/ai";
 import { IoClose } from "react-icons/io5";
 import { closeLoginDialog, openLoginDialog } from "@/redux/loginDialogSlice";
+import { useRouter } from "next/navigation";
 
 interface prop {
   closeSideMenu?: () => void;
@@ -22,13 +23,14 @@ interface prop {
 
 export default function SignInButton({ closeSideMenu }: prop) {
   const dispatch = useDispatch();
+  const user = useAppSelector((state) => state.user);
   const isOpen = useAppSelector((state) => state.loginDialog.isOpen);
   const progress = useAppSelector((state) => state.progress.value);
   const isUser = useAppSelector((state) => state.auth.token);
   const { is_profile_verify } = useAppSelector((state) => state.user);
   const [open, setOpen] = useState(false);
   const popupRef = useRef<any>(null);
-
+  const router = useRouter();
   const closePopup = () => {
     dispatch(closeLoginDialog());
     setOpen(false);
@@ -48,6 +50,12 @@ export default function SignInButton({ closeSideMenu }: prop) {
     dispatch(setProgress(1));
     clearSessionData();
   };
+  const gotoMyjob=()=>{
+    router.push("/my-jobs")
+  }
+  const gotoMyProfile=()=>{
+    router.push("/my-profile")
+  }
 
   const handleOverlayClick = (e: MouseEvent) => {
     const target = e.target as HTMLElement;
@@ -115,16 +123,18 @@ export default function SignInButton({ closeSideMenu }: prop) {
               <Image
                 height={100}
                 width={100}
-                src="/new-assets/icons/avatar.svg"
-                className="w-auto max-w-fit h-[30px] xl:h-[40px] 2xl:h-[50px]"
+                src={
+                  user?.photo_url ? user?.photo_url : "/new-assets/icons/avatar.svg"
+                }                
+                className="w-auto object-cover max-w-fit border rounded-full flex-shrink-0 size-[30px] xl:size-[40px] 2xl:size-[50px]"
                 alt="kaabil logo"
               />
             </div>
             <BiChevronDown className="font-medium text-xl 3xl:text-2xl text-black" />
             <div className="absolute z-30 hidden group-focus-within/menu:block group-hover/menu:block top-0 left-0">
-              <div className="bg-white shadow-default mt-[52px] 2xl:mt-[76px] rounded-xl w-[140px] 3xl:w-[180px] border border-lightGrey divide-y divide-lightGrey">
+              <div className="bg-white shadow-default mt-[52px] 2xl:mt-[76px] rounded-xl w-[140px] 2xl:w-[180px] border border-lightGrey divide-y divide-lightGrey">
                 
-              <div className="flex items-center group/link gap-3 3xl:gap-4 text-Grey hover:text-black py-3 2xl:py-4 font-medium hover:font-semibold text-xs 2xl:text-base px-5 cursor-pointer">
+              <div onClick={gotoMyProfile} className="flex items-center group/link gap-3 3xl:gap-4 text-Grey hover:text-black py-3 2xl:py-4 font-medium hover:font-semibold text-xs 2xl:text-base px-5 cursor-pointer">
                   {/* Default (gray) image - hidden on hover */}
                   <Image 
                     className="size-4 3xl:size-5 block group-hover/link:hidden" 
@@ -146,6 +156,7 @@ export default function SignInButton({ closeSideMenu }: prop) {
                   View Profile
                 </div>
                 <div
+                  onClick={gotoMyjob}
                   className="flex items-center group/link gap-3 3xl:gap-4 text-Grey hover:text-black py-3 2xl:py-4 font-medium hover:font-semibold text-xs 2xl:text-base px-5 cursor-pointer"
                 >
                   <Image className="size-4 3xl:size-5 block group-hover/link:hidden" src={'/new-assets/icons/my-jobs.svg'} width={50} height={50} alt="logout" />

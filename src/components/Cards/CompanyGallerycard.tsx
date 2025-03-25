@@ -5,7 +5,7 @@ import { BiPlay } from 'react-icons/bi'
 export default function CompanyGallerycard({ item, onClick }:CompanyGalleryCardProps) {
   return (
     <div className={`gallery-card w-full cursor-pointer`} onClick={onClick}>
-        <div className="relative w-full xl:h-44 2xl:h-52 3xl:h-60">
+        <div className="relative w-full h-40 xl:h-44 2xl:h-52 3xl:h-60">
           <Image
           src={item?.media_type=="2"?item?.media_thumbnail:item?.media_url}
           fill

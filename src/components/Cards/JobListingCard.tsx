@@ -66,6 +66,10 @@ export default function JobListingCard(prop:any) {
       }
       return
     }
+    // if(!isApplied && prop?.jobs_questions && prop?.jobs_questions.length>0){
+    //   // setOpenJobQuestions(true);
+    //   return
+    // }
     if(!isApplied){
       try {
             const formData = new FormData();

@@ -1,11 +1,11 @@
 import React, { Suspense } from 'react'
-import CompanyTrading from './CompanyTrading'
+import Companies from './Companies'
 
 const Page = () => {
   return (
     <div>
       <Suspense fallback={<div>Loading...</div>}>
-        <CompanyTrading />
+        <Companies />
       </Suspense>
     </div>
   )

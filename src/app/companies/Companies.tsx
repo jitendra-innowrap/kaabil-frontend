@@ -13,13 +13,13 @@ import { IoMdArrowDropdown } from "react-icons/io";
 
 import { RxTriangleDown } from "react-icons/rx";
 
-export default function CompanyTrading() {
+export default function Companies() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const sort = searchParams.get("sort") || "1"; // Default to '1' (Relevance)
   const search = searchParams.get("search") || ""; 
   const [searchKey, setSearchKey] = useState(search || "");
-  const industry = searchParams.get("industry") || ""; 
+  const industry = searchParams.get("industry") || "0"; 
   // const page = searchParams.get("page") || "1"; 
   const tab = searchParams.get("tab") || "Trending"; 
   const [currentPage, setCurrentPage] = useState(1);

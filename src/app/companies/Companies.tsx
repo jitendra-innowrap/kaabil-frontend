@@ -3,6 +3,7 @@
 import CompanyCard from "@/components/Cards/CompanyCard";
 import { industryCard } from "@/components/Cards/IndustryCard";
 import Pagination from "@/components/Pagination";
+import { useAppSelector } from "@/redux/hooks";
 import api from "@/Services/Apiservice";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,6 +16,7 @@ import { RxTriangleDown } from "react-icons/rx";
 
 export default function Companies() {
   const router = useRouter();
+  const {isLoggedIn} = useAppSelector((state) => state.user);
   const searchParams = useSearchParams();
   const sort = searchParams.get("sort") || "1"; // Default to '1' (Relevance)
   const search = searchParams.get("search") || ""; 
@@ -35,7 +37,7 @@ export default function Companies() {
     fetchIndustries();
     fetchJobDetails();
     setSearchKey(search);
-  }, [searchParams.toString(), selectedTab, selectedIndustry]);
+  }, [searchParams.toString(), selectedTab, selectedIndustry, isLoggedIn]);
 
   async function fetchJobDetails() {
     try {

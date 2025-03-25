@@ -465,6 +465,7 @@ export const getCompanyInitials = (name?: string): string => {
 export const ProfileTabs = ["About", "Education", "Experience", "Resume"];
 
 
+// Experience Constant
 export const experiences = [
   {
     title: "Lead UI/UX Designer",

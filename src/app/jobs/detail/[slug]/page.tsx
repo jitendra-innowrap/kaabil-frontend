@@ -499,7 +499,7 @@ export default function Home() {
             </div>
         </div>
       </section>
-      <section className="bg-[#F8F8F8]">
+      {jobsSlides.length>0 && <section className="bg-[#F8F8F8]">
         <div className="w-full flex flex-col py-5 md:py-8 xl:py-14 2xl:py-16  mx-auto">
           <div className="">                        
             <div className="container section-heading">
@@ -535,7 +535,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </section>}
       <Popup
         open={openShare}
         onClose={handleClose}

@@ -323,7 +323,7 @@ export default function Home() {
                     </div>
                     <button 
                         className="mx-auto text-xs 2xl:text-base font-normal 3xl:w-[252px] 3xl:h-[50px] mt-6 md:mt-8"
-                        onClick={() => router.push('/CompanyTrading')}
+                        onClick={() => router.push('/companies')}
                     >
                         View all companies
                     </button>

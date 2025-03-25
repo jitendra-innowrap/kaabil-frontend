@@ -28,13 +28,14 @@ import { signOut } from "@/redux/userSlice";
 import { setProgress } from "@/redux/progressSlice";
 import { VscHeart, VscHeartFilled } from "react-icons/vsc";
 import { openLoginDialog } from "@/redux/loginDialogSlice";
+import ScreeningQuesModal from "@/components/ScreeningQuestionsModal";
 
 
 export default function Home() {
   const {slug} = useParams();
   const {token, isLoggedIn} = useSelector((state: RootState) => state.user);
   const userSkills = useSelector((state: RootState) => state.user.skills);
-
+  const [openJobQuestions, setOpenJobQuestions] = useState(false);
   const dispatch = useDispatch();
   
   const [jobDetails, setJobDetails] = useState<JobResult>();
@@ -45,6 +46,10 @@ export default function Home() {
   const [isFavorited, setIsFavorited] = useState(jobDetails?.saveJob_status=="1"?true:false);
   const [similarJobs, setSimilarJobs] = useState<CompanyJob[]>([]);
   const router = useRouter();
+
+  const closeScreeningModal=()=>{
+    setOpenJobQuestions(false);
+  }
   const handleSignIn=()=>{
     if(!isLoggedIn){
       dispatch(setProgress(1))
@@ -56,10 +61,11 @@ export default function Home() {
       return
     }
   }
-    useEffect(() => {
-      setIsFavorited(jobDetails?.saveJob_status=='1');
-      setIsApplied(jobDetails?.is_job_apply=="1"?true:false);
-    }, [jobDetails, token, isLoggedIn]);
+  
+  useEffect(() => {
+    setIsFavorited(jobDetails?.saveJob_status=='1');
+    setIsApplied(jobDetails?.is_job_apply=="1"?true:false);
+  }, [jobDetails, token, isLoggedIn]);
     
   useEffect(() => {
     async function fetchJobDetails() {
@@ -117,6 +123,7 @@ export default function Home() {
   const jobsSlides = similarJobs?.map((job, index) => (
     <JobListingCardSmall key={index} detail={job} />
   ));
+  
   const style = {
     root: {
       background: 'linear-gradient(45deg, #f6fbff 30%, #f6fbff 90%)',
@@ -138,12 +145,15 @@ export default function Home() {
       fontSize: 18,
     }
   };
+
   const handleClose = () => {
     setOpenShare(false)
   }
+
   const handleShare = () => {
       setOpenShare(true)
   }
+
   const handleApply = async (id:string)=>{
     if(!isLoggedIn){
       dispatch(setProgress(1))
@@ -152,6 +162,10 @@ export default function Home() {
       if (button) {
         button.click(); // Programmatically triggers the button click
       }
+      return
+    }
+    if(!isApplied && jobDetails?.jobs_questions && jobDetails?.jobs_questions.length>0){
+      // setOpenJobQuestions(true);
       return
     }
     if(!isApplied){
@@ -523,21 +537,37 @@ export default function Home() {
         </div>
       </section>
       <Popup
-            open={openShare}
-            onClose={handleClose}
-            modal
-            className="share-modal"
-            overlayStyle={{
-                // background: 'rgba(0, 0, 0, 0.5)',
-            }}
-            >
-                <ShareSocial
-                        title='Share this opportunity!'
-                        style={style}
-                        url={`${window.location.origin}/detail/franchise/${jobDetails?.share_url}`}
-                        socialTypes={['facebook','twitter','whatsapp','linkedin']}
-                    />
-            </Popup>
+        open={openShare}
+        onClose={handleClose}
+        modal
+        className="share-modal"
+        overlayStyle={{
+            // background: 'rgba(0, 0, 0, 0.5)',
+        }}
+        >
+            <ShareSocial
+                    title='Share this opportunity!'
+                    style={style}
+                    url={`${window.location.origin}/detail/franchise/${jobDetails?.share_url}`}
+                    socialTypes={['facebook','twitter','whatsapp','linkedin']}
+                />
+        </Popup>
+        <Popup
+          open={openJobQuestions}
+          // closeOnDocumentClick={false}
+          onClose={()=>setOpenJobQuestions(false)}
+          modal
+          className="onboarding relative"
+          overlayStyle={{
+            background: "#4D4D4DC2",
+            padding: "20px",
+            borderRadius: "10px",
+            overflow: "hidden",
+          }}
+        >
+          <ScreeningQuesModal onClose={closeScreeningModal}/>
+        </Popup>
     </main>
   );
 }
+

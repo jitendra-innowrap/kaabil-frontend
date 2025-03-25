@@ -17,6 +17,7 @@ import { RxTriangleDown } from "react-icons/rx";
 export default function Companies() {
   const router = useRouter();
   const {isLoggedIn} = useAppSelector((state) => state.user);
+  const currentLocation = useAppSelector((state) => state.user.current_location)
   const searchParams = useSearchParams();
   const sort = searchParams.get("sort") || "1"; // Default to '1' (Relevance)
   const search = searchParams.get("search") || ""; 
@@ -53,8 +54,8 @@ export default function Companies() {
         industry_id?: string; // or whatever type 'industry' is
       };
       let payload:SearchPayload = {
-        latitude:0,
-        longitude:0,
+        latitude:currentLocation?.city_latitude || 0,
+        longitude:currentLocation?.city_longitude || 0,
         radius_id:0,
         radius_value:"",
         page:currentPage.toString(),

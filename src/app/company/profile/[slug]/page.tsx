@@ -17,10 +17,11 @@ import { setProgress } from "@/redux/progressSlice";
 import { signOut } from "@/redux/userSlice";
 import { RootState } from "@/redux/store";
 import { openLoginDialog } from "@/redux/loginDialogSlice";
+import { showToast } from "@/components/utils";
 
 export default function CompanyDetails() {
 const {slug} = useParams();
-const token = useSelector((state: RootState) => state.user.token);
+const { isLoggedIn } = useSelector((state: RootState) => state.user);
 const dispatch = useDispatch();
 const [isLoading, setIsLoading] = useState(true);
 const [CompanyDetails, setCompanyDetails] = useState<Company>();
@@ -70,51 +71,56 @@ useEffect(() => {
       }
     } catch (error: any) {
       console.error(error);
-      toast.error("something went wrong", { position: "bottom-right" });
+      showToast("something went wrong", true);
     }
     setIsLoading(false)
   };
   fetchCompanyDetails();
-}, [slug]);
+}, [slug, isLoggedIn]);
 
-const handleFollow = async ()=>{
-  if(!token){
-    dispatch(setProgress(1))
-    dispatch(openLoginDialog())
+const handleFollow = async () => {
+  if (!isLoggedIn) {
+    dispatch(setProgress(1));
+    dispatch(openLoginDialog());
     const button = document.getElementById('sign-in-button');
     if (button) {
       button.click(); // Programmatically triggers the button click
     }
-    return
+    return;
   }
+
   try {
-        const formData = new FormData();
-        formData.append("company_master_id", slug as string); // Convert all values to strings
-        const response = await api.post(`/Company/followCompany?job_id=${slug}`,formData,{
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
-        console.log(response?.data?.status)
-        if(response.data?.status=="2"){
-          toast.success(`You unfollowed ${CompanyDetails?.company_name}!`, { position: 'bottom-right' });
-          setIsFollowed(false);
-        }else if(response.data?.status=="1"){
-          toast.success(`You followed ${CompanyDetails?.company_name}!`, { position: 'bottom-right' });
-          setIsFollowed(true);
-        }
-        if(response.data?.message=="Invalid Hash Request"){
-          toast.error("Session Expired Please login !", { position: 'bottom-right' });
-          dispatch(signOut());
-          dispatch(setProgress(1));
-          clearSessionData();
-        }
-        console.log(response);
-      } catch (error) {
-        console.error('Error fetching jobs:', error);
-      }
-}
+    const formData = new FormData();
+    formData.append('company_master_id', slug as string); // Convert all values to strings
+    const response = await api.post(`/Company/followCompany?job_id=${slug}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    console.log(response?.data?.status);
+
+    if (response.data?.status === '2') {
+      showToast(`You unfollowed ${CompanyDetails?.company_name}!`); // Success toast
+      setIsFollowed(false);
+    } else if (response.data?.status === '1') {
+      showToast(`You followed ${CompanyDetails?.company_name}!`); // Success toast
+      setIsFollowed(true);
+    }
+
+    if (response.data?.message === 'Invalid Hash Request') {
+      showToast('Session Expired Please login!', true); // Error toast
+      dispatch(signOut());
+      dispatch(setProgress(1));
+      clearSessionData();
+    }
+
+    console.log(response);
+  } catch (error) {
+    console.error('Error fetching jobs:', error);
+    showToast('An error occurred. Please try again.', true); // Error toast
+  }
+};
 
 
 

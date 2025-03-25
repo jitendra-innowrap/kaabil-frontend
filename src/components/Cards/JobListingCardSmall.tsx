@@ -2,7 +2,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useEffect } from 'react'
-import { showExperience, showSalary, showSalarySimilarJob, timeAgo } from '../utils'
+import { showExperience, showSalary, showSalarySimilarJob, showToast, timeAgo } from '../utils'
 import ProfilePhoto from './ProfilePhoto'
 import { VscHeart, VscHeartFilled } from 'react-icons/vsc'
 import { useDispatch, useSelector } from 'react-redux'
@@ -15,14 +15,14 @@ import { clearSessionData } from '../utils/deviceId'
 import { openLoginDialog } from '@/redux/loginDialogSlice'
 
 export default function JobListingCardSmall({detail, isCompanyJob=false}:{detail:CompanyJob, isCompanyJob?:boolean}) {
-  const token = useSelector((state: RootState) => state.user.token);
+  const {token, isLoggedIn} = useSelector((state: RootState) => state.user);
   const userSkills = useSelector((state: RootState) => state.user.skills);
   const user = useSelector((state: RootState) => state.user);
   const [isApplied, setIsApplied] = React.useState(detail?.is_job_apply=="1"?true:false);
   const [isFavorited, setIsFavorited] = React.useState(detail?.saveJob_status=="1"?true:false);
   const dispatch = useDispatch();  
   const handleApply = async (id:string)=>{
-    if(!token){
+    if(!isLoggedIn){
       dispatch(setProgress(1))
       dispatch(openLoginDialog())
       const button = document.getElementById('sign-in-button');
@@ -43,11 +43,11 @@ export default function JobListingCardSmall({detail, isCompanyJob=false}:{detail
               }
             );
             if(response.data?.code==1){
-              toast.success('Applied Successfully!', { position: 'bottom-right' });
+              showToast('Applied Successfully!');
               setIsApplied(true);
             }
             if(response.data?.message=="Invalid Hash Request"){
-              toast.error("Session Expired Please login !", { position: 'bottom-right' });
+              showToast("Session Expired Please login !", true);
               dispatch(signOut());
               dispatch(setProgress(1));
               clearSessionData();
@@ -59,7 +59,7 @@ export default function JobListingCardSmall({detail, isCompanyJob=false}:{detail
         }
   }
   const handleSave = async (id:string)=>{
-    if(!token){
+    if(!isLoggedIn){
       dispatch(setProgress(1))
       dispatch(openLoginDialog());
       const button = document.getElementById('sign-in-button');
@@ -78,14 +78,14 @@ export default function JobListingCardSmall({detail, isCompanyJob=false}:{detail
             }
           );
           if(response.data?.status=="2"){
-            toast.success('Job Unsaved!', { position: 'bottom-right' });
+            showToast('Job Unsaved!');
             setIsFavorited(false);
           }else if(response.data?.status=="1"){
-            toast.success('Job saved!', { position: 'bottom-right' });
+            showToast('Job saved!');
             setIsFavorited(true);
           }
           if(response.data?.message=="Invalid Hash Request"){
-            toast.error("Session Expired Please login !", { position: 'bottom-right' });
+            showToast("Session Expired Please login !", true);
             dispatch(signOut());
             dispatch(setProgress(1));
             clearSessionData();
@@ -150,11 +150,19 @@ export default function JobListingCardSmall({detail, isCompanyJob=false}:{detail
                 
         </div>
         <ul className='flex flex-wrap gap-2 mt-3'>
+          {detail?.jobs_skills?.slice(0, 3)?.map((skill:any, index:number) => {
+              const isSkillIncluded = userSkills?.some((userSkill) => userSkill.id == skill.id);
+            return <li
+            className={`label small flex gap-2 items-center ${isSkillIncluded ? 'lightgreen' : ''}`}
+            key={index}
+          >
+            {skill?.name}
+            {isSkillIncluded && (
+              <img src="/new-assets/icons/check.svg" className='size-2' alt="" />
+            )}
+          </li>
+          })}
           {
-            detail?.jobs_skills?.slice(0, 3)?.map((skill)=>(
-              <li className='label small cursor-default' title={skill?.name}>{skill?.name}</li>
-            ))
-          }{
             detail?.jobs_skills?.length > 3 && (
               <li className='label small cursor-default'>+{(detail?.jobs_skills?.length - 3).toString()} More</li>
             )

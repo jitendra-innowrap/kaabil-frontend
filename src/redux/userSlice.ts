@@ -1,9 +1,21 @@
-import { getAuthToken, getAuthUser, getAuthUserDesiredRole, getSessionData, storeAuthToken, storeAuthUser } from '@/components/utils/deviceId';
-import { Experience, Skill, User, UserLocation, UserRole } from '@/Types/common';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import {
+  getAuthToken,
+  getAuthUser,
+  getAuthUserDesiredRole,
+  getSessionData,
+  storeAuthToken,
+  storeAuthUser,
+} from "@/components/utils/deviceId";
+import {
+  Experience,
+  Skill,
+  User,
+  UserLocation,
+  UserRole,
+} from "@/Types/common";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 // Define the experience interface
-
 
 interface AuthState extends User {
   deviceId: string;
@@ -11,6 +23,7 @@ interface AuthState extends User {
   token: string;
   loading: boolean;
   error: string | null;
+  savedMobileNumber: string | null;
 }
 const { deviceId, secret } = getSessionData();
 const user = getAuthUser() as User;
@@ -23,6 +36,7 @@ const initialState: AuthState = {
   photo_url: user?.photo_url || "",
   id: user?.id || "",
   is_profile_verify: user?.is_profile_verify =="1"? "1":"0",
+  isLoggedIn: user?.is_profile_verify =="1",
   is_whatsapp_show: user?.is_whatsapp_show? user?.is_whatsapp_show : true,
   mobile: user?.mobile,
   name: user?.name || "",
@@ -40,14 +54,14 @@ const initialState: AuthState = {
   available_job: 0,
   loading: false,
   error: null,
+  savedMobileNumber: "",
 };
 
 // Create the user slice
 const userSlice = createSlice({
-  name: 'user',
+  name: "user",
   initialState,
   reducers: {
-    
     // Clear the user state
       
       signOut: (state) => {
@@ -63,6 +77,7 @@ const userSlice = createSlice({
       },
       setUserIsProfileVerified: (state, action: PayloadAction<string>) => {
         state.is_profile_verify = action.payload;
+        state.isLoggedIn = action.payload=="1"
         storeAuthUser({ ...state, is_profile_verify: action.payload });
       },
       setAuthToken: (state, action: PayloadAction<string>) => {
@@ -117,12 +132,34 @@ const userSlice = createSlice({
       setUserProfilePercentage: (state, action: PayloadAction<number>) => {
         state.profilePercentage = action.payload;
         storeAuthUser({ ...state, profilePercentage: action.payload });
-      }
+      },
+      setSaveMobileNumber: (state, action) => {
+        state.savedMobileNumber = action.payload;
+      },
     },
 });
 
 // Export actions
-export const { signOut, setUserProfilePercentage, setUserDesignation, setAuthToken, setUserIsProfileVerified, setUserId, setIsFresher, setUserWAConsent, setUserPhotoUrl, setUserRole, setUserEducation, setUserExperience, setUserMobile, setUserName, setUserLocation, setUserSkills, setCurrentLocation } = userSlice.actions;
+export const {
+  signOut,
+  setUserProfilePercentage,
+  setUserDesignation,
+  setAuthToken,
+  setUserIsProfileVerified,
+  setUserId,
+  setIsFresher,
+  setUserWAConsent,
+  setUserPhotoUrl,
+  setUserRole,
+  setUserEducation,
+  setUserExperience,
+  setUserMobile,
+  setUserName,
+  setUserLocation,
+  setUserSkills,
+  setCurrentLocation,
+  setSaveMobileNumber,
+} = userSlice.actions;
 
 // Export the reducer
 export default userSlice.reducer;

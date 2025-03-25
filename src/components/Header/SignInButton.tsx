@@ -9,7 +9,7 @@ import { PiBellBold } from "react-icons/pi";
 import { BiChevronDown } from "react-icons/bi";
 import Link from "next/link";
 import Image from "next/image";
-import { signOut } from "@/redux/userSlice";
+import { setSaveMobileNumber, signOut } from "@/redux/userSlice";
 import { setProgress } from "@/redux/progressSlice";
 import { clearSessionData } from "../utils/deviceId";
 import { AiOutlineClose } from "react-icons/ai";
@@ -29,8 +29,6 @@ export default function SignInButton({ closeSideMenu }: prop) {
   const [open, setOpen] = useState(false);
   const popupRef = useRef<any>(null);
 
-  console.log(is_profile_verify, "Verify Profile");
-
   const closePopup = () => {
     dispatch(closeLoginDialog());
     setOpen(false);
@@ -40,10 +38,9 @@ export default function SignInButton({ closeSideMenu }: prop) {
     closeSideMenu?.();
     dispatch(openLoginDialog());
     setOpen(true);
-    // When User Logged In After Months
-    if (progress === 2) {
-      dispatch(setProgress(1));
-    }
+    // When User sigin start the process from first
+    dispatch(setSaveMobileNumber(""));
+    dispatch(setProgress(1));
   };
 
   const logout = () => {
@@ -124,21 +121,44 @@ export default function SignInButton({ closeSideMenu }: prop) {
               />
             </div>
             <BiChevronDown className="font-medium text-xl 3xl:text-2xl text-black" />
-            <div className="absolute z-30 hidden group-focus-within/menu:block group-hover/menu:block top-0 right-0">
-              <div className="bg-white shadow-default mt-[52px] 2xl:mt-[76px] rounded-xl w-[200px] border border-lightGrey divide-y divide-lightGrey">
-                <div
-                  onClick={logout}
-                  className="block text-Grey hover:text-black py-3 2xl:py-4 font-medium hover:font-semibold text-xs 2xl:text-base px-5 cursor-pointer"
-                >
-                  Logout
+            <div className="absolute z-30 hidden group-focus-within/menu:block group-hover/menu:block top-0 left-0">
+              <div className="bg-white shadow-default mt-[52px] 2xl:mt-[76px] rounded-xl w-[140px] 3xl:w-[180px] border border-lightGrey divide-y divide-lightGrey">
+                
+              <div className="flex items-center group/link gap-3 3xl:gap-4 text-Grey hover:text-black py-3 2xl:py-4 font-medium hover:font-semibold text-xs 2xl:text-base px-5 cursor-pointer">
+                  {/* Default (gray) image - hidden on hover */}
+                  <Image 
+                    className="size-4 3xl:size-5 block group-hover/link:hidden" 
+                    src="/new-assets/icons/user.svg" 
+                    width={20} 
+                    height={20} 
+                    alt="Profile" 
+                  />
+                  
+                  {/* Black image - shown on hover */}
+                  <Image 
+                    className="size-4 3xl:size-5 hidden group-hover/link:block" 
+                    src="/new-assets/icons/user-black.svg" 
+                    width={20} 
+                    height={20} 
+                    alt="Profile" 
+                  />
+                  
+                  View Profile
                 </div>
                 <div
-                  onClick={handleSignIn}
-                  className="block text-Grey hover:text-black py-3 2xl:py-4 font-medium hover:font-semibold text-xs 2xl:text-base px-5 cursor-pointer"
+                  className="flex items-center group/link gap-3 3xl:gap-4 text-Grey hover:text-black py-3 2xl:py-4 font-medium hover:font-semibold text-xs 2xl:text-base px-5 cursor-pointer"
                 >
-                  {is_profile_verify === "1"
-                    ? "Update Profile"
-                    : "Complete Profile"}
+                  <Image className="size-4 3xl:size-5 block group-hover/link:hidden" src={'/new-assets/icons/my-jobs.svg'} width={50} height={50} alt="logout" />
+                  <Image className="size-4 3xl:size-5 hidden group-hover/link:block" src={'/new-assets/icons/my-jobs-black.svg'} width={50} height={50} alt="logout" />
+                  My Jobs
+                </div>
+                <div
+                  onClick={logout}
+                  className="flex items-center group/link gap-3 3xl:gap-4 text-Grey hover:text-black py-3 2xl:py-4 font-medium hover:font-semibold text-xs 2xl:text-base px-5 cursor-pointer"
+                >
+                  <Image className="size-4 3xl:size-5 block group-hover/link:hidden" src={'/new-assets/icons/logout.svg'} width={50} height={50} alt="logout" />
+                  <Image className="size-4 3xl:size-5 hidden group-hover/link:block" src={'/new-assets/icons/logout-black.svg'} width={50} height={50} alt="logout" />
+                  Logout
                 </div>
               </div>
             </div>

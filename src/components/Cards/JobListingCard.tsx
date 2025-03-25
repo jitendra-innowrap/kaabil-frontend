@@ -7,7 +7,7 @@ import { IoIosHeart, IoIosHeartEmpty } from 'react-icons/io'
 import { LiaMapMarkerAltSolid } from 'react-icons/lia'
 import { MdOutlineLocationOn } from 'react-icons/md'
 import { TbBriefcase2 } from 'react-icons/tb'
-import { formatDate, getCompanyInitials, showExperience, showSalary, timeAgo } from '../utils'
+import { formatDate, getCompanyInitials, showExperience, showSalary, showToast, timeAgo } from '../utils'
 import api from '@/Services/Apiservice'
 import toast from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
@@ -20,7 +20,7 @@ import { VscHeart, VscHeartFilled } from 'react-icons/vsc'
 import { openLoginDialog } from '@/redux/loginDialogSlice'
 
 export default function JobListingCard(prop:any) {
-  const token = useSelector((state: RootState) => state.user.token);
+  const {token, isLoggedIn} = useSelector((state: RootState) => state.user);
   const userSkills = useSelector((state: RootState) => state.user.skills);
   const user = useSelector((state: RootState) => state.user);
   const [isApplied, setIsApplied] = React.useState(prop?.is_job_apply=="1"?true:false);
@@ -57,7 +57,7 @@ export default function JobListingCard(prop:any) {
   }, [user,prop])
   
   const handleApply = async (id:string)=>{
-    if(!token){
+    if(!isLoggedIn){
       dispatch(setProgress(1))
       dispatch(openLoginDialog());
       const button = document.getElementById('sign-in-button');
@@ -78,11 +78,11 @@ export default function JobListingCard(prop:any) {
               }
             );
             if(response.data?.code==1){
-              toast.success('Applied Successfully!', { position: 'bottom-right' });
+              showToast('Applied Successfully!');
               setIsApplied(true);
             }
             if(response.data?.message=="Invalid Hash Request"){
-              toast.error("Session Expired Please login !", { position: 'bottom-right' });
+              showToast("Session Expired Please login !", true);
               dispatch(signOut());
               dispatch(setProgress(1));
               clearSessionData();
@@ -94,7 +94,7 @@ export default function JobListingCard(prop:any) {
         }
   }
   const handleSave = async (id:string)=>{
-    if(!token){
+    if(!isLoggedIn){
       dispatch(setProgress(1))
       dispatch(openLoginDialog())
       const button = document.getElementById('sign-in-button');
@@ -113,14 +113,14 @@ export default function JobListingCard(prop:any) {
             }
           );
           if(response.data?.status=="2"){
-            toast.success('Job Unsaved!', { position: 'bottom-right' });
+            showToast('Job Unsaved!', );
             setIsFavorited(false);
           }else if(response.data?.status=="1"){
-            toast.success('Job saved!', { position: 'bottom-right' });
+            showToast('Job saved!', );
             setIsFavorited(true);
           }
           if(response.data?.message=="Invalid Hash Request"){
-            toast.error("Session Expired Please login !", { position: 'bottom-right' });
+            showToast("Session Expired Please login !", true);
             dispatch(signOut());
             dispatch(setProgress(1));
             clearSessionData();

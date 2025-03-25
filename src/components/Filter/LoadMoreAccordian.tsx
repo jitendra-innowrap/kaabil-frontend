@@ -59,7 +59,7 @@ function LoadMoreAccordion({
 
   // Filter the list based on search input and remove empty keys
   const filteredList = (fetchMoreItems ? dynamicList : list)
-    .filter(item => item.key && item.key.toLowerCase().includes(search.toLowerCase()));
+    ?.filter(item => item.key && item.key.toLowerCase().includes(search.toLowerCase()));
 
   // Determine the list to display based on "Show More" state
   const displayedList = maxItems > 0 && !showAll ? filteredList.slice(0, maxItems) : filteredList;
@@ -138,16 +138,16 @@ function LoadMoreAccordion({
                   </div>
                 </div>
               ) : <></>}
-              {shouldShowOptions && filteredList.length > 0 ? (
+              {shouldShowOptions && filteredList?.length > 0 ? (
                 <ul className={`pb-3 3xl:pb-5 grid gap-3 pt-3 3xl:pt-5 overflow-y-auto ${maxItems > 0 && showAll ? 'max-h-72' : ''} custom-scrollbar`}>
                   {displayedList.map((item) => (
                     isRadio ? (
-                      <li key={item.key} className='flex justify-between gap-3' onClick={() => handleRadio(item)}>
+                      <li key={item.key} className='flex justify-between items-center gap-3' onClick={() => handleRadio(item)}>
                         <Radio item={item.key} checked={selected === item.key} />
                         <span className='mr-3 text-xs 2xl:text-sm text-end'>{item.doc_count >= 0 ? item.doc_count : ''}</span>
                       </li>
                     ) : (
-                      <li key={item.key} className='flex justify-between gap-3' onClick={() => handleCheck(item)}>
+                      <li key={item.key} className='flex justify-between items-center gap-3' onClick={() => handleCheck(item)}>
                         <Check item={item.key} checked={selected.split('|').includes(item.key)} />
                         <span className='mr-3 text-xs 2xl:text-sm text-end'>{item.doc_count >= 0 ? item.doc_count : ''}</span>
                       </li>

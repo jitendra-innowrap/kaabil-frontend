@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { default as ReactSelect, components } from "react-select";
 import { FaMagnifyingGlass, FaChevronDown, FaChevronUp } from "react-icons/fa6";
 
@@ -28,6 +28,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
   onInputChange,
 }) => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const handleChange = (selectedOption: OptionType) => {
     let updatedSelections = [...selectedValues];
@@ -51,6 +52,22 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
     const { data, innerRef, innerProps, isDisabled } = props;
     const isSelected = selectedValues.some((opt) => opt.value === data.value);
 
+    // Close the menu icon when outside click
+    useEffect(() => {
+      const handleOutsideClick = (event: MouseEvent) => {
+        if (
+          containerRef.current &&
+          !containerRef.current.contains(event.target as Node)
+        ) {
+          setMenuOpen(false);
+        }
+      };
+      document.addEventListener("mousedown", handleOutsideClick);
+      return () => {
+        document.removeEventListener("mousedown", handleOutsideClick);
+      };
+    }, []);
+
     return (
       <components.Option {...props}>
         <div
@@ -59,19 +76,25 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
           onClick={() => {
             if (!isDisabled) handleChange(data);
           }}
-          className={`relative flex items-center gap-2 ${
+          className={`relative flex items-center gap-3 ${
             isDisabled ? "opacity-90 cursor-not-allowed" : "cursor-pointer"
           }`}
         >
           <input
             type="checkbox"
-            className={`!w-4 !h-4 ${
+            className={`!w-3 !h-3 ${
               isDisabled ? "opacity-60 cursor-not-allowed" : "cursor-pointer"
             }`}
             checked={isSelected}
             readOnly
           />
-          <label className="!mb-0 !p-0">{data.label}</label>
+          <label
+            className={`!mb-0 !p-0 ${isSelected ? "text-[#E31837]" : ""} ${
+              isDisabled ? "text-[#231F20]" : ""
+            } ${isDisabled ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+          >
+            {data.label}
+          </label>
         </div>
       </components.Option>
     );
@@ -106,6 +129,17 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
         menuPortalTarget={document.body}
         styles={{
           menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+          option: (base, { isFocused, isSelected }) => ({
+            ...base,
+            // backgroundColor: isFocused
+            //   ? "#f0f0f0" // Highlight background on hover
+            //   : "",
+            border: isFocused ? "1px solid red" : "",
+            borderRadius: "5px",
+            color: isSelected ? "#E31837" : "#231F20",
+            cursor: "pointer",
+            padding: "8px 15px",
+          }),
         }}
         onInputChange={(inputValue) => {
           if (onInputChange) {
@@ -113,7 +147,10 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
           }
         }}
       />
-      <div className="absolute right-[20px] top-[21px]">
+      <div
+        className="absolute right-[20px] top-[21px] cursor-pointer"
+        onClick={() => setMenuOpen((prev) => !prev)}
+      >
         {menuOpen ? (
           <FaChevronUp className="size-4 text-[#333333]" />
         ) : (

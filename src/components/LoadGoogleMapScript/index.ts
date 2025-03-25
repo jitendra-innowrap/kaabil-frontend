@@ -10,7 +10,7 @@ import { setUserDesignation, setUserName, setUserPhotoUrl, setUserProfilePercent
 export default function LoadGoogleMapsScript() {
   const dispatch = useDispatch();
   const {token} = useAppSelector((state) => state.auth);
-  const {id} = useAppSelector((state) => state.user);
+  const {id, isLoggedIn} = useAppSelector((state) => state.user);
 
   // useEffect(() => {
   //   // Load Google Maps script
@@ -43,7 +43,7 @@ export default function LoadGoogleMapsScript() {
           return;
         }
 
-        if(token){
+        if(isLoggedIn){
           const response = await api.get("/Company/getDynamicJobseekerRow");
           console.log(response,"👍👍👍👍👍👍");
           let skills = response.data?.user_profile?.[0]?.skills

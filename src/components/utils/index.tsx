@@ -1,4 +1,5 @@
 import { UserLocation } from "@/Types/common";
+import toast from 'react-hot-toast';
 
 export function handleCommaForQuery(string: string) {
   if (string) {
@@ -6,6 +7,24 @@ export function handleCommaForQuery(string: string) {
   }
   return "";
 }
+
+
+export const showToast = (message: string, isError?: boolean, options?: any) => {
+  // Dismiss any existing toast
+  toast.dismiss();
+  const updatedOptions = {
+    position: 'bottom-right', // Default position
+    ...options, // Spread provided options (if any)
+  };
+
+  // Show the new toast based on the type
+  if (!isError) {
+    toast.success(message, updatedOptions);
+  } else {
+    toast.error(message, updatedOptions);
+  }
+};
+
 
 export const formatSalary = (salary: number) => {
   const numStr = salary.toString();
@@ -23,6 +42,7 @@ export const formatSalary = (salary: number) => {
   // Return the original salary if no trailing zeros
   return salary;
 };
+
 export function formatToK(number: number | string): string {
   // Convert string input to number
   const num = typeof number === "string" ? parseFloat(number) : number;

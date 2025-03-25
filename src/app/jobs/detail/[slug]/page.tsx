@@ -29,6 +29,7 @@ import { setProgress } from "@/redux/progressSlice";
 import { VscHeart, VscHeartFilled } from "react-icons/vsc";
 import { openLoginDialog } from "@/redux/loginDialogSlice";
 import ScreeningQuesModal from "@/components/ScreeningQuestionsModal";
+import ShareButtons from "@/components/SocialShare";
 
 
 export default function Home() {
@@ -61,6 +62,18 @@ export default function Home() {
       return
     }
   }
+  const customSocialTypes = [
+  {
+    id: 'x',
+    name: 'X',
+    icon: (
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+      </svg>
+    ),
+    shareUrl: 'https://twitter.com/intent/tweet?url={url}&text={title}',
+  },
+];
   
   useEffect(() => {
     setIsFavorited(jobDetails?.saveJob_status=='1');
@@ -365,6 +378,9 @@ export default function Home() {
           </div>
           :
           <div className="flex gap-3 md:gap-4 justify-end items-center h-fit">
+            <div onClick={handleShare} className="bg-white cursor-pointer flex-shrink-0 grid place-items-center rounded-full size-8 3xl:size-[50px]">
+              <img src="/new-assets/icons/share.svg" className="text-[#4D4D4F] size-[14px] 3xl:size-[17px]"/>
+            </div>
             <button onClick={handleSignIn} className={`whitespace-nowrap flex items-center h-[35px] 3xl:h-[50px] !text-xs 3xl:!text-sm ${isApplied?"!bg-[#f2f2f2] text-black cursor-default":""}`}>
               Sign in to apply for this Job
             </button>
@@ -499,7 +515,7 @@ export default function Home() {
             </div>
         </div>
       </section>
-      <section className="bg-[#F8F8F8]">
+      {jobsSlides?.length>0 && <section className="bg-[#F8F8F8]">
         <div className="w-full flex flex-col py-5 md:py-8 xl:py-14 2xl:py-16  mx-auto">
           <div className="">                        
             <div className="container section-heading">
@@ -535,7 +551,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </section>}
       <Popup
         open={openShare}
         onClose={handleClose}
@@ -545,12 +561,7 @@ export default function Home() {
             // background: 'rgba(0, 0, 0, 0.5)',
         }}
         >
-            <ShareSocial
-                    title='Share this opportunity!'
-                    style={style}
-                    url={`${window.location.origin}/detail/franchise/${jobDetails?.share_url}`}
-                    socialTypes={['facebook','twitter','whatsapp','linkedin']}
-                />
+                <ShareButtons jobDetails={jobDetails || {}}/>
         </Popup>
         <Popup
           open={openJobQuestions}

@@ -3,6 +3,7 @@
 import CompanyCard from "@/components/Cards/CompanyCard";
 import { industryCard } from "@/components/Cards/IndustryCard";
 import Pagination from "@/components/Pagination";
+import { useAppSelector } from "@/redux/hooks";
 import api from "@/Services/Apiservice";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,6 +16,8 @@ import { RxTriangleDown } from "react-icons/rx";
 
 export default function Companies() {
   const router = useRouter();
+  const {isLoggedIn} = useAppSelector((state) => state.user);
+  const currentLocation = useAppSelector((state) => state.user.current_location)
   const searchParams = useSearchParams();
   const sort = searchParams.get("sort") || "1"; // Default to '1' (Relevance)
   const search = searchParams.get("search") || ""; 
@@ -35,7 +38,7 @@ export default function Companies() {
     fetchIndustries();
     fetchJobDetails();
     setSearchKey(search);
-  }, [searchParams.toString(), selectedTab, selectedIndustry]);
+  }, [searchParams.toString(), selectedTab, selectedIndustry, isLoggedIn]);
 
   async function fetchJobDetails() {
     try {
@@ -51,8 +54,8 @@ export default function Companies() {
         industry_id?: string; // or whatever type 'industry' is
       };
       let payload:SearchPayload = {
-        latitude:0,
-        longitude:0,
+        latitude:currentLocation?.city_latitude || 0,
+        longitude:currentLocation?.city_longitude || 0,
         radius_id:0,
         radius_value:"",
         page:currentPage.toString(),
@@ -95,7 +98,7 @@ export default function Companies() {
         setCompaniesList(response?.data?.result?.map((comp: any, i: number) => ({
           icon: comp?.company_logo || "/new-assets/icons/company_icon_placeholder.png",
           title: comp?.company_name,
-          companyId: `${comp?.id}`,
+          companyId: `${comp?.company_master_id}`,
           jobUrl: `/`
         })));
         const totalCompany = response?.data?.total_company_job;
@@ -399,7 +402,7 @@ export default function Companies() {
         {/* Company Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
           {companiesList?.map((company, index) => (
-            <CompanyCard key={index} icon={company.icon} title={company.title} jobUrl={company?.jobUrl} />
+            <CompanyCard key={index} icon={company.icon} title={company.title} jobUrl={company?.jobUrl} companyId={company?.companyId} />
           ))}
         </div>
         </>

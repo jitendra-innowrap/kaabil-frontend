@@ -67,13 +67,16 @@ const CompanyGallery: React.FC<{ galleryItems: (CompanyImage | CompanyVideo)[] }
           autoplay={false}
           autoplayDuration={3000}
           freeMode={false}
-          slidesPerView={1}
+          slidesPerView={2}
           breakpoints={{
+            600: {
+              slidesPerView: 3,
+            },
             768: {
-              slidesPerView: 1.5,
+              slidesPerView: 4,
             },
             1024: {
-              slidesPerView: 4,
+              slidesPerView: 5,
             },
             1280: {
               slidesPerView: 5,
@@ -107,7 +110,7 @@ const CompanyGallery: React.FC<{ galleryItems: (CompanyImage | CompanyVideo)[] }
             controls
             autoPlay
             playsInline
-            style={{ width: "100%", height: "auto" }}
+            style={{ width: "auto", height: "auto", maxHeight:"400px", margin:"auto " }}
           >
             Your browser does not support the video tag.
           </video>
@@ -115,7 +118,7 @@ const CompanyGallery: React.FC<{ galleryItems: (CompanyImage | CompanyVideo)[] }
           <img
             src={mediaUrl}
             alt=""
-            style={{ width: "auto", height: "70vw", maxHeight:"600px", margin:"auto" }}
+            style={{ width: "auto", height: "500px", maxHeight:"60vh", margin:"auto" }}
           />
         )}
       </Popup>

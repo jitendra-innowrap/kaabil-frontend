@@ -110,7 +110,7 @@ const CompanyGallery: React.FC<{ galleryItems: (CompanyImage | CompanyVideo)[] }
             controls
             autoPlay
             playsInline
-            style={{ width: "auto", height: "auto", maxHeight:"500px", margin:"auto " }}
+            style={{ width: "auto", height: "auto", maxHeight:"400px", margin:"auto " }}
           >
             Your browser does not support the video tag.
           </video>

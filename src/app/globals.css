@@ -1367,7 +1367,7 @@ label {
 .scroll-content-skills:hover::-webkit-scrollbar-thumb,
 .scroll-content:hover::-webkit-scrollbar-thumb,
 .scroll-content-experience:hover::-webkit-scrollbar-thumb {
-  background: #231f20;
+  background: #D3D3D3;
   border-radius: 4px;
 }
 

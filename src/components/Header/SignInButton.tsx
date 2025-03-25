@@ -22,6 +22,7 @@ interface prop {
 
 export default function SignInButton({ closeSideMenu }: prop) {
   const dispatch = useDispatch();
+  const user = useAppSelector((state) => state.user);
   const isOpen = useAppSelector((state) => state.loginDialog.isOpen);
   const progress = useAppSelector((state) => state.progress.value);
   const isUser = useAppSelector((state) => state.auth.token);
@@ -115,14 +116,16 @@ export default function SignInButton({ closeSideMenu }: prop) {
               <Image
                 height={100}
                 width={100}
-                src="/new-assets/icons/avatar.svg"
-                className="w-auto max-w-fit h-[30px] xl:h-[40px] 2xl:h-[50px]"
+                src={
+                  user?.photo_url ? user?.photo_url : "/new-assets/icons/avatar.svg"
+                }                
+                className="w-auto object-cover max-w-fit border rounded-full flex-shrink-0 size-[30px] xl:size-[40px] 2xl:size-[50px]"
                 alt="kaabil logo"
               />
             </div>
             <BiChevronDown className="font-medium text-xl 3xl:text-2xl text-black" />
             <div className="absolute z-30 hidden group-focus-within/menu:block group-hover/menu:block top-0 left-0">
-              <div className="bg-white shadow-default mt-[52px] 2xl:mt-[76px] rounded-xl w-[140px] 3xl:w-[180px] border border-lightGrey divide-y divide-lightGrey">
+              <div className="bg-white shadow-default mt-[52px] 2xl:mt-[76px] rounded-xl w-[140px] 2xl:w-[180px] border border-lightGrey divide-y divide-lightGrey">
                 
               <div className="flex items-center group/link gap-3 3xl:gap-4 text-Grey hover:text-black py-3 2xl:py-4 font-medium hover:font-semibold text-xs 2xl:text-base px-5 cursor-pointer">
                   {/* Default (gray) image - hidden on hover */}

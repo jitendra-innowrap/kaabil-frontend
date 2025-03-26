@@ -615,6 +615,9 @@ label {
 /* Open state for search bar */
 .search-appear-animate.open {
   animation: growSearchBar 0.3s ease-in-out forwards;
+  overflow: visible;
+  position: relative;
+  z-index: 10;
 }
 
 /* Closed state for search bar */

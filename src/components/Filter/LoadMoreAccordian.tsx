@@ -8,6 +8,7 @@ import Check from './Check';
 
 // Define the types for the props
 interface LoadMoreAccordionProps {
+  removeOptionsSearch?:boolean;
   fetchMoreItems?: (keyword: string) => Promise<Array<{ key: string, doc_count: number, latitude?: number, longitude?: number }>>;
   maxItems?: number;
   filterKey: string;
@@ -31,6 +32,7 @@ function LoadMoreAccordion({
   searchPlaceholder = "",
   searchIcon = <BiSearch />,
   showOptionsOnlyOnSearch = false,
+  removeOptionsSearch
 }: LoadMoreAccordionProps) {
   const [selected, setSelected] = useState<string>('');
   const [search, setSearch] = useState("");
@@ -45,6 +47,10 @@ function LoadMoreAccordion({
     setSelected(urlFilters || ''); // Set to empty string if no filters are present
     console.log('Filters updated:', urlFilters);
   }, [searchParams.toString(), filterKey]);
+
+  useEffect(() => {
+    setSearch("")
+  }, [removeOptionsSearch]);
 
   // Handle search input change
   useEffect(() => {
@@ -183,6 +189,7 @@ export default function Page({
     searchIcon,
     searchPlaceholder,
     showOptionsOnlyOnSearch = false, // Pass the new prop
+    removeOptionsSearch = false,
 }: LoadMoreAccordionProps) {
     return (
         <React.Suspense fallback={<div>Loading...</div>}>
@@ -192,6 +199,7 @@ export default function Page({
                 maxItems={maxItems}
                 fetchMoreItems={fetchMoreItems}
                 list={list}
+                removeOptionsSearch={removeOptionsSearch}
                 searchIcon={searchIcon}
                 searchPlaceholder={searchPlaceholder}
                 isSearchable={isSearchable}

@@ -275,7 +275,7 @@ export default function Home() {
     return (
         <main>
             <section className=''>
-                <Link href={'/jobs'} className='block'>
+                <Link href={'/jobs'} className='block w-full'>
                     <Image src='/new-assets/home/banner.png' quality={100} alt="" width={3840} height={1000}
                     className="w-full h-auto"
                     />

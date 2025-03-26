@@ -59,7 +59,7 @@ export default function Home() {
       
       <section className=''>
         <div className=''>
-            <Image src='/new-assets/banners/listing-banner.png' quality={100} alt="" width={1920} height={500}
+            <Image src='/new-assets/banners/listing-banner-update.svg' quality={100} alt="" width={1920} height={500}
             className="w-full h-auto"
             />
         </div>

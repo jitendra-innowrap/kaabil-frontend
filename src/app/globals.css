@@ -1317,7 +1317,7 @@ label {
 }
 
 @media (max-width: 1600px) {
-  .popup-content.onboarding-content {
+  .popup-content.onboarding-content, .popup-content.screening-modal-container-content {
     scale: 0.7;
   }
 }
@@ -1350,6 +1350,35 @@ label {
 
 .light-shadow {
   box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.12);
+}
+
+/* Add this to your global CSS file */
+.screening-modal-container {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.screening-modal-container .popup-content {
+  width: 100%;
+  max-width: 500px;
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.screening-modal-container .popup-overlay {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+/* Fix for the close button in Popup to make it visible */
+.screening-modal-container .popup-content .close {
+  display: none;
 }
 
 .border-resume {

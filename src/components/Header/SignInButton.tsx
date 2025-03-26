@@ -120,7 +120,7 @@ export default function SignInButton({ closeSideMenu }: prop) {
             <PiBellBold className="size-4 3xl:size-5" />
           </div>
           <div className="relative group/menu flex items-center cursor-pointer">
-            <div tabIndex={0} className="relative">
+            <div tabIndex={0} className="relative size-[30px] xl:size-[40px] 2xl:size-[50px]">
               <span className="size-2 xl:size-[14px] bg-success text-white rounded-full absolute text-[10px] grid place-items-center leading-none top-[1px] -right-[2px] border-[1.5px] border-white">
                 5
               </span>
@@ -132,7 +132,7 @@ export default function SignInButton({ closeSideMenu }: prop) {
                     ? user?.photo_url
                     : "/new-assets/icons/avatar.svg"
                 }
-                className="w-auto object-cover max-w-fit border rounded-full flex-shrink-0 size-[30px] xl:size-[40px] 2xl:size-[50px]"
+                className="object-cover border rounded-full flex-shrink-0 size-[30px] w-full xl:size-[40px] 2xl:size-[50px]"
                 alt="kaabil logo"
               />
             </div>

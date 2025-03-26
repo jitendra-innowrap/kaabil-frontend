@@ -44,7 +44,7 @@ const handleFetchLocation = async () => {
                             <Image width={24} height={24} alt='' src="/new-assets/icons/x.svg" className='inline-block w-6 h-6 text-white ml-3' />
                         </a>
                         <a href="/" target="_blank" rel="noopener noreferrer">
-                            <Image width={24} height={24} alt='' src="/new-assets/icons/linkedIn.svg" className='inline-block w-6 h-6 text-white ml-3' />
+                            <Image width={24} height={24} alt='' src="/new-assets/icons/linkedIn-Icon.svg" className='inline-block w-6 h-6 text-white ml-3' />
                         </a>
                         <a href="/" target="_blank" rel="noopener noreferrer">
                             <Image width={24} height={24} alt='' src="/new-assets/icons/insta.svg" className='inline-block w-6 h-6 text-white ml-3' />

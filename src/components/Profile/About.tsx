@@ -6,7 +6,6 @@ import React from "react";
 const About = () => {
   const { profileData } = useAppSelector((state) => state.profile);
   const dispatch = useAppDispatch();
-  console.log(profileData, "Verify profileData");
   return (
     <div className="bg-white rounded-lg">
       <div className="grid grid-cols-12 pt-6 py-4 px-12">
@@ -14,8 +13,8 @@ const About = () => {
           <div className="flex gap-3 items-center">
             <div>
               <Image
-                className="cursor-pointer mx-auto size-[70px] 2xl:size-[102px] mb-2"
-                src={"/new-assets/icons/avatar.svg"}
+                className="cursor-pointer mx-auto size-[70px] 2xl:size-[102px] mb-2 rounded-full"
+                src={profileData?.photo_url ?? "/new-assets/icons/avatar.svg"}
                 width={500}
                 height={500}
                 alt="resume-builder"
@@ -23,11 +22,20 @@ const About = () => {
             </div>
             <div className="flex flex-col gap-1">
               <h1 className="text-[#231F20] text-lg font-medium">
-                {profileData?.first_name ?? "-"} {profileData?.last_name}
+                {profileData?.name ?? "-"}
               </h1>
               <h3 className="text-sm text-[#231F20] font-medium">
-                Lead UI/UX Designer at HT Media Labs
+                {profileData?.job_type
+                  ? profileData.company_name
+                    ? `${profileData.job_type} ${
+                        profileData.designation ?? "-"
+                      } at ${profileData.company_name}`
+                    : `${profileData.job_type} ${
+                        profileData.designation ?? "-"
+                      }`
+                  : "-"}
               </h3>
+
               <h5 className="text-[12px] text-[#4D4D4F]">
                 {profileData?.city ?? "-"}
               </h5>
@@ -64,14 +72,12 @@ const About = () => {
       </div>
       <div className="grid grid-cols-12 px-12 pt-2 pb-8">
         <div className="col-span-12 flex gap-12">
-          {/* First Text */}
           <div className="text-sm text-[#4D4D4F] flex flex-col gap-5">
             <h1>Highest Education</h1>
             <h1>Skills</h1>
             <h1>Previous jobs</h1>
             <h1>Strengths</h1>
           </div>
-          {/* Second Text */}
           <div className="text-sm flex flex-col gap-5">
             <h1 className="text-[#231F20] font-medium">
               {profileData?.education_name ?? "-"}
@@ -89,11 +95,21 @@ const About = () => {
                   )
                 )
               ) : (
-                <div>"-"</div>
+                <div>-</div>
               )}
             </div>
 
-            <h1 className="text-[#231F20] font-medium">Scootsy</h1>
+            <h1 className="text-[#231F20] font-medium">
+              {profileData?.job_type
+                ? profileData?.company_name
+                  ? `${profileData?.job_type} ${
+                      profileData?.designation ?? "-"
+                    } at ${profileData?.company_name}`
+                  : `${profileData?.job_type} ${
+                      profileData?.designation ?? "-"
+                    }`
+                : "-"}
+            </h1>
             <h1 className="text-[#231F20] font-medium">
               {profileData?.profile_strength ?? "-"}
             </h1>

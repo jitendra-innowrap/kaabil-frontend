@@ -1,16 +1,15 @@
-import { useAppDispatch } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { setResumeModal } from "@/redux/profileSlice";
 import React, { useState } from "react";
 
 const Resume = () => {
   const dispatch = useAppDispatch();
+  const { profileData } = useAppSelector((state) => state.profile);
   const [fileName, setFileName] = useState("");
 
-  const handleFileChange = (event: any) => {
-    const file = event.target.files[0];
-    if (file) {
-      setFileName(file.name);
-    }
+  const handleFileClick = () => {
+    // Simulate file selection and update the file name
+    setFileName("sample_resume.pdf");
   };
 
   return (
@@ -34,28 +33,43 @@ const Resume = () => {
           </div>
         </div>
         <div className="col-span-12 mt-4">
-          <div className="relative flex items-center w-full p-2 bg-white border border-[#4D4D4F66] rounded-lg cursor-pointer">
-            {/* Hidden file input */}
-            <input
-              type="file"
-              id="fileInput"
-              className="hidden"
-              onChange={handleFileChange}
-            />
-            {/* File Name Display */}
-            <label
-              htmlFor="fileInput"
-              className="flex-grow text-sm text-gray-700 px-3 cursor-pointer"
-            >
-              {fileName || "No file chosen"}
-            </label>
-            {/* Icon */}
-            <label
-              htmlFor="fileInput"
-              className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 hover:text-blue-500 cursor-pointer"
-            >
-              <img src="/new-assets/icons/attach_file.svg" />
-            </label>
+          <div className="flex flex-col gap-4">
+            {profileData?.user_portfolio &&
+            profileData.user_portfolio.length > 0 ? (
+              profileData.user_portfolio.map((item: any, index: number) => (
+                <div
+                  key={index}
+                  className="relative flex items-center w-full p-2 bg-white border border-[#4D4D4F66] rounded-lg cursor-pointer"
+                  onClick={() => window.open(item.file, "_blank")}
+                >
+                  {/* File Name Display */}
+                  <div className="flex-grow text-sm text-gray-700 px-3">
+                    {item?.file_name || "No file chosen"}
+                  </div>
+                  {/* Icon */}
+                  <div className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 hover:text-blue-500">
+                    <img
+                      src="/new-assets/icons/attach_file.svg"
+                      alt="Attach File Icon"
+                    />
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="relative flex items-center w-full p-2 bg-white border border-[#4D4D4F66] rounded-lg">
+                {/* File Name Display */}
+                <div className="flex-grow text-sm text-gray-700 px-3">
+                  No file
+                </div>
+                {/* Icon */}
+                <div className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
+                  <img
+                    src="/new-assets/icons/attach_file.svg"
+                    alt="Attach File Icon"
+                  />
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

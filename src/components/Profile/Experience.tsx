@@ -1,5 +1,5 @@
 import React from "react";
-import { experiences } from "../utils";
+import { experiences, formatJobDates } from "../utils";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { setExperienceModal } from "@/redux/profileSlice";
 
@@ -30,28 +30,38 @@ const Experience = () => {
         </div>
       </div>
       <div className="grid grid-cols-12 pr-2 mt-5 gap-3">
-        {experiences.map((exp, index) => (
+        {profileData?.user_experiences?.map((exp: any, index: number) => (
           <div
             key={index}
             className="col-span-12 bg-white p-3 rounded-lg shadow-md light-shadow"
           >
             <div className="flex items-center gap-4">
               {/* Image Section */}
-              <div>
-                <img src={exp.icon} alt={`${exp.title} icon`} />
+              <div className="w-14 h-14 rounded-md overflow-hidden">
+                {exp?.company_logo ? (
+                  <img
+                    src={exp.company_logo}
+                    alt={`${exp.company_name ?? "Company"} icon`}
+                    className="w-full h-full object-contain"
+                  />
+                ) : (
+                  <div className="bg-gradient-to-r from-[#F5F5F5] to-[#E0E0E0] w-full h-full rounded-md shadow-inner"></div>
+                )}
               </div>
               {/* Text Section */}
               <div>
                 <h1 className="text-sm text-[#231F20] font-medium">
-                  {exp.title}
+                  {exp?.designation || "-"}
                 </h1>
-                <h1 className="text-xs text-[#231F20]">{exp.company}</h1>
+                <h1 className="text-xs text-[#231F20]">
+                  {exp?.company_name || "-"}
+                </h1>
                 <h1 className="text-xs text-[#231F20] flex items-center gap-2">
-                  {exp.type}{" "}
+                  {exp?.job_type || "-"}{" "}
                   <span className="text-2xl">
-                    <img src="/new-assets/icons/dot.svg" />
+                    <img src="/new-assets/icons/dot.svg" alt="Dot" />
                   </span>{" "}
-                  {exp.duration}
+                  {formatJobDates(exp?.job_start_date, exp?.job_end_date)}
                 </h1>
               </div>
             </div>

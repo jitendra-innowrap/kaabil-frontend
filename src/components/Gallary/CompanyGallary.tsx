@@ -48,19 +48,12 @@ const CompanyGallery: React.FC<{ galleryItems: (CompanyImage | CompanyVideo)[] }
     />
   ));
 
-  // Prepare lightbox slides
-  const lightboxSlides = galleryItems.map((item) => ({
-    src: item.media_url,
-    thumbnail: item.media_thumbnail,
-    type: item.media_type === "2" ? "video" : "image", // Use "2" for video type
-  }));
-
   return (
     <div>
       {/* Gallery Slider */}
       <div className="block">
         <GallerySlider
-          slides={[...gallerySlides, ...gallerySlides]}
+          slides={[...gallerySlides]}
           spaceBetween={25}
           showNavigation
           loop={true}

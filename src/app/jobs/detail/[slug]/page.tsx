@@ -165,7 +165,7 @@ export default function Home() {
       return
     }
     if(!isApplied && jobDetails?.jobs_questions && jobDetails?.jobs_questions.length>0){
-      // setOpenJobQuestions(true);
+       setOpenJobQuestions(true);
       return
     }
     if(!isApplied){
@@ -554,18 +554,25 @@ export default function Home() {
         </Popup>
         <Popup
           open={openJobQuestions}
-          // closeOnDocumentClick={false}
-          onClose={()=>setOpenJobQuestions(false)}
+          onClose={() => setOpenJobQuestions(false)}
           modal
-          className="onboarding relative"
+          className="screening-modal-container"
           overlayStyle={{
-            background: "#4D4D4DC2",
-            padding: "20px",
-            borderRadius: "10px",
-            overflow: "hidden",
+            background: "rgba(0, 0, 0, 0.7)",
+            zIndex: 1000,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          contentStyle={{
+            padding: 0,
+            border: "none",
+            background: "transparent",
+            width: "100%",
+            maxWidth: "500px",
           }}
         >
-          <ScreeningQuesModal onClose={closeScreeningModal}/>
+          <ScreeningQuesModal onClose={closeScreeningModal} />
         </Popup>
     </main>
   );

@@ -32,6 +32,8 @@ const ResumeModal = () => {
   };
 
   return (
+    // Suppressing Dialog type error
+    // @ts-ignore
     <Dialog
       open={resumeModal}
       handler={closePopup}
@@ -39,6 +41,7 @@ const ResumeModal = () => {
       className="fixed -top-10 -translate-x-1/2 custom-dialog"
     >
       <div>
+        {/* @ts-ignore */}
         <DialogHeader>
           <div className="relative w-full">
             <IoClose
@@ -62,6 +65,7 @@ const ResumeModal = () => {
         >
           {({ setFieldValue, isSubmitting, values, dirty }) => (
             <Form>
+              {/* @ts-ignore */}
               <DialogBody className="p-0 mt-8 max-h-[50vh] sm:max-h-[60vh] md:max-h-[70vh] lg:max-h-[80vh] overflow-y-auto custom-scroll">
                 <div className="px-12">
                   <div className="!mt-4">
@@ -129,6 +133,7 @@ const ResumeModal = () => {
                   </div>
                 </div>
               </DialogBody>
+              {/* @ts-ignore */}
               <DialogFooter className="flex justify-end p-0 pb-3 px-12">
                 <button
                   type="submit"

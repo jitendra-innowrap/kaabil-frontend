@@ -35,6 +35,8 @@ const EducationModal = () => {
   };
 
   return (
+    // Suppressing Dialog type error
+    // @ts-ignore
     <Dialog
       open={educationModal}
       handler={closeModal}
@@ -42,6 +44,7 @@ const EducationModal = () => {
       className="fixed -top-20 -translate-x-1/2 custom-dialog"
     >
       <div>
+        {/* @ts-ignore */}
         <DialogHeader>
           <div className="relative w-full">
             <IoClose
@@ -65,6 +68,7 @@ const EducationModal = () => {
         >
           {({ setFieldValue, isSubmitting, values, dirty }) => (
             <Form>
+              {/* @ts-ignore */}
               <DialogBody className="p-0 mt-8 max-h-[50vh] sm:max-h-[60vh] md:max-h-[70vh] lg:max-h-[80vh] overflow-y-auto custom-scroll">
                 <div className="px-12">
                   <label
@@ -126,6 +130,7 @@ const EducationModal = () => {
                   </div>
                 </div>
               </DialogBody>
+              {/* @ts-ignore */}
               <DialogFooter className="flex justify-end p-0 pb-3 mt-3 px-12">
                 <button
                   type="submit"

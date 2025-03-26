@@ -118,6 +118,7 @@ const ExperienceModal = () => {
   });
 
   return (
+    //  @ts-ignore
     <Dialog
       open={experienceModal}
       handler={closeModal}
@@ -127,6 +128,7 @@ const ExperienceModal = () => {
       }`}
     >
       <div>
+        {/* @ts-ignore */}
         <DialogHeader>
           <div className="relative w-full">
             <IoClose
@@ -156,7 +158,7 @@ const ExperienceModal = () => {
         >
           {({ setFieldValue, isSubmitting, values, dirty }) => (
             <Form>
-              {console.log(values, "Verify Values")}
+              {/* @ts-ignore */}
               <DialogBody className="p-0 mt-8 max-h-[50vh] sm:max-h-[60vh] md:max-h-[70vh] lg:max-h-[80vh] overflow-y-auto custom-scroll cursor-pointer">
                 <div className="px-12">
                   <label
@@ -249,6 +251,7 @@ const ExperienceModal = () => {
                   </div>
                 </div>
               </DialogBody>
+              {/* @ts-ignore */}
               <DialogFooter className="flex justify-end p-0 pb-3 mt-3 px-12">
                 <button
                   type="submit"

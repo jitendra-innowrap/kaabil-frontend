@@ -161,94 +161,96 @@ export default function AddJobRole() {
       {/* ✅ Formik Form */}
       <form
         onSubmit={formik.handleSubmit}
-        className="block mt-8 md:mt-10 xl:mt-14 2xl:mt-16"
+        className="block mt-8"
       >
-        <h4 className="text-lg font-medium text-[#231F20]">
-          What job role are you looking for?
-        </h4>
-        <p className="text-sm text-[#249D64]">
-          (You can select up to 2 job roles)
-        </p>
+        <div className="scroll-content pb-2 cursor-pointer">
+          <h4 className="text-lg font-medium text-[#231F20]">
+            What job role are you looking for?
+          </h4>
+          <p className="text-sm text-[#249D64]">
+            (You can select up to 2 job roles)
+          </p>
 
-        {/* ✅ MultiSelect for Job Roles */}
-        <div className="my-3">
-          <MultiSelect
-            options={rolesList.map((role) => ({
-              ...role,
-              disabled: isOptionDisabled(role), // Dynamically set disabled based on selection
-            }))}
-            placeholder="Select Role"
-            isMulti
-            onChange={(selectedRoles: { value: string; label: string }[]) =>
-              formik.setFieldValue(
-                "role_id",
-                selectedRoles.map((role) => role.value)
-              )
-            }
-            selectedValues={rolesList?.filter((role) =>
+          {/* ✅ MultiSelect for Job Roles */}
+          <div className="my-3">
+            <MultiSelect
+              options={rolesList.map((role) => ({
+                ...role,
+                disabled: isOptionDisabled(role), // Dynamically set disabled based on selection
+              }))}
+              placeholder="Select Role"
+              isMulti
+              onChange={(selectedRoles: { value: string; label: string }[]) =>
+                formik.setFieldValue(
+                  "role_id",
+                  selectedRoles.map((role) => role.value)
+                )
+              }
+              selectedValues={rolesList?.filter((role) =>
+                formik.values.role_id.includes(role.value)
+              )}
+              maxSelections={2}
+              // hasSelectAll={false}
+              icon={
+                <FaMagnifyingGlass className="absolute left-[15px] top-[20px] size-4 text-[#808080]" />
+              }
+            />
+          </div>
+
+          {/* ✅ Display Selected Job Roles */}
+          <SelectedChips
+            selectedValues={rolesList.filter((role) =>
               formik.values.role_id.includes(role.value)
             )}
-            maxSelections={2}
-            // hasSelectAll={false}
-            icon={
-              <FaMagnifyingGlass className="absolute left-[15px] top-[20px] size-4 text-[#808080]" />
+            onRemove={(value: string) =>
+              formik.setFieldValue(
+                "role_id",
+                formik.values.role_id.filter((id) => id !== value)
+              )
             }
           />
-        </div>
 
-        {/* ✅ Display Selected Job Roles */}
-        <SelectedChips
-          selectedValues={rolesList.filter((role) =>
-            formik.values.role_id.includes(role.value)
+          {/* ✅ Validation Error */}
+          {formik.errors.role_id && formik.touched.role_id && (
+            <p className="text-red text-sm mt-1">{formik.errors.role_id}</p>
           )}
-          onRemove={(value: string) =>
-            formik.setFieldValue(
-              "role_id",
-              formik.values.role_id.filter((id) => id !== value)
-            )
-          }
-        />
 
-        {/* ✅ Validation Error */}
-        {formik.errors.role_id && formik.touched.role_id && (
-          <p className="text-red text-sm mt-1">{formik.errors.role_id}</p>
-        )}
+          <h4 className="text-lg font-medium my-4 text-[#231F20]">
+            What type of job required?
+          </h4>
 
-        <h4 className="text-lg font-medium my-4 text-[#231F20]">
-          What type of job required?
-        </h4>
+          {/* ✅ Job Type Selection */}
+          <div className="grid sm:grid-cols-3 gap-4">
+            {jobTypes.map((type) => (
+              <div
+                key={type.value}
+                className={`col-span-1 label-option cursor-pointer px-4 py-2 rounded ${
+                  formik.values.job_type_master_id.includes(type.value)
+                    ? "bg-red text-white"
+                    : ""
+                }`}
+                onClick={() => {
+                  const currentValues = formik.values.job_type_master_id;
+                  const newValues = currentValues.includes(type.value)
+                    ? currentValues.filter((id) => id !== type.value) // Remove the ID if it's already selected
+                    : [...currentValues, type.value]; // Add the ID if it's not selected
 
-        {/* ✅ Job Type Selection */}
-        <div className="grid sm:grid-cols-3 gap-4">
-          {jobTypes.map((type) => (
-            <div
-              key={type.value}
-              className={`col-span-1 label-option cursor-pointer px-4 py-2 rounded ${
-                formik.values.job_type_master_id.includes(type.value)
-                  ? "bg-red text-white"
-                  : ""
-              }`}
-              onClick={() => {
-                const currentValues = formik.values.job_type_master_id;
-                const newValues = currentValues.includes(type.value)
-                  ? currentValues.filter((id) => id !== type.value) // Remove the ID if it's already selected
-                  : [...currentValues, type.value]; // Add the ID if it's not selected
+                  formik.setFieldValue("job_type_master_id", newValues);
+                }}
+              >
+                {type.label}
+              </div>
+            ))}
+          </div>
 
-                formik.setFieldValue("job_type_master_id", newValues);
-              }}
-            >
-              {type.label}
-            </div>
-          ))}
+          {/* ✅ Validation Error */}
+          {formik.errors.job_type_master_id &&
+            formik.touched.job_type_master_id && (
+              <p className="text-red text-sm mt-1">
+                {formik.errors.job_type_master_id}
+              </p>
+            )}
         </div>
-
-        {/* ✅ Validation Error */}
-        {formik.errors.job_type_master_id &&
-          formik.touched.job_type_master_id && (
-            <p className="text-red text-sm mt-1">
-              {formik.errors.job_type_master_id}
-            </p>
-          )}
 
         <div className="flex w-full justify-between items-end">
           <div className="whitespace-nowrap">

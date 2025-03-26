@@ -156,132 +156,133 @@ export default function AddSkills() {
       <h3 className="md:text-lg text-[#231F20] font-semibold text-center">
         Add skills to find the right job for you.
       </h3>
-      <form
-        onSubmit={formik.handleSubmit}
-        className="block mt-8 md:mt-10 xl:mt-14 2xl:mt-16"
-      >
-        <h4 className="text-lg font-medium text-[#231F20]">Add Skills</h4>
-        <p className="text-sm text-[#249D64]">
-          (You can search and add all your relevant skills)
-        </p>
-        <div className="my-4">
-          <MultiSelect
-            options={skillsList}
-            placeholder="Select Skills"
-            isMulti
-            onInputChange={(value: any) => fetchSkills(value)}
-            onChange={(selectedOptions) => {
-              setSelectedSkills(selectedOptions);
-              formik.setFieldValue(
-                "user_skill",
-                selectedOptions.map((skill) => ({
-                  id: skill.value,
-                  name: skill.label,
-                  skill_level_type_id: "1",
-                }))
-              );
-            }}
-            selectedValues={selectedSkills}
-            icon={
-              <FaMagnifyingGlass className="absolute left-[15px] top-[20px] size-4 text-[#808080]" />
-            }
-          />
-        </div>
-        <SelectedChips
-          selectedValues={selectedSkills}
-          onRemove={(value) => {
-            const updatedSkills = selectedSkills.filter(
-              (skill) => skill.value !== value
-            );
-            setSelectedSkills(updatedSkills);
-            formik.setFieldValue(
-              "user_skill",
-              updatedSkills.map((skill) => ({
-                id: skill.value,
-                name: skill.label,
-                skill_level_type_id: "1",
-              }))
-            );
-          }}
-        />
-        {formik.errors.user_skill && formik.touched.user_skill && (
-          <div className="text-red text-sm mt-1">
-            {formik.errors.user_skill as string}
-          </div>
-        )}
+      <div>
+        <form onSubmit={formik.handleSubmit} className="block mt-8">
+          <div className="scroll-content-skills cursor-pointer">
+            <h4 className="text-lg font-medium text-[#231F20]">Add Skills</h4>
+            <p className="text-sm text-[#249D64]">
+              (You can search and add all your relevant skills)
+            </p>
+            <div className="my-4">
+              <MultiSelect
+                options={skillsList}
+                placeholder="Select Skills"
+                isMulti
+                onInputChange={(value: any) => fetchSkills(value)}
+                onChange={(selectedOptions) => {
+                  setSelectedSkills(selectedOptions);
+                  formik.setFieldValue(
+                    "user_skill",
+                    selectedOptions.map((skill) => ({
+                      id: skill.value,
+                      name: skill.label,
+                      skill_level_type_id: "1",
+                    }))
+                  );
+                }}
+                selectedValues={selectedSkills}
+                icon={
+                  <FaMagnifyingGlass className="absolute left-[15px] top-[20px] size-4 text-[#808080]" />
+                }
+              />
+            </div>
+            <SelectedChips
+              selectedValues={selectedSkills}
+              onRemove={(value) => {
+                const updatedSkills = selectedSkills.filter(
+                  (skill) => skill.value !== value
+                );
+                setSelectedSkills(updatedSkills);
+                formik.setFieldValue(
+                  "user_skill",
+                  updatedSkills.map((skill) => ({
+                    id: skill.value,
+                    name: skill.label,
+                    skill_level_type_id: "1",
+                  }))
+                );
+              }}
+            />
+            {formik.errors.user_skill && formik.touched.user_skill && (
+              <div className="text-red text-sm mt-1">
+                {formik.errors.user_skill as string}
+              </div>
+            )}
 
-        <h4 className="text-lg font-medium my-4 text-[#231F20]">
-          Suggested skills
-        </h4>
-        <div className="flex flex-wrap gap-4">
-          {skillsList.slice(0, 6).map((skill) => (
-            <React.Fragment key={skill.value}>
-              {selectedSkills.some((s) => s.value === skill.value) ? (
-                <div className="label-option selected flex items-center gap-2 bg-gray-200 px-3 py-1 rounded">
-                  {skill.label}
-                  <span
-                    className="cursor-pointer"
-                    onClick={() => {
-                      const updatedSkills = selectedSkills.filter(
-                        (s) => s.value !== skill.value
-                      );
-                      setSelectedSkills(updatedSkills);
-                      formik.setFieldValue(
-                        "user_skill",
-                        updatedSkills.map((skill) => ({
-                          id: skill.value,
-                          name: skill.label,
-                          skill_level_type_id: "1",
-                        }))
-                      );
-                    }}
-                  >
-                    <RxCross2 />
-                  </span>
-                </div>
-              ) : (
-                <div className="label-option add flex items-center gap-2 bg-gray-200 px-3 py-1 rounded">
-                  {skill.label}
-                  <span
-                    className="cursor-pointer"
-                    onClick={() => {
-                      const updatedSkills = [...selectedSkills, skill];
-                      setSelectedSkills(updatedSkills);
-                      formik.setFieldValue(
-                        "user_skill",
-                        updatedSkills.map((skill) => ({
-                          id: skill.value,
-                          name: skill.label,
-                          skill_level_type_id: "1",
-                        }))
-                      );
-                    }}
-                  >
-                    <IoIosAdd />
-                  </span>
-                </div>
-              )}
-            </React.Fragment>
-          ))}
-        </div>
-        <div className="flex w-full justify-between items-end">
-          <div className="whitespace-nowrap">
-            <span className="text-red">{progress - 4}</span> - 6
+            <h4 className="text-lg font-medium my-4 text-[#231F20]">
+              Suggested skills
+            </h4>
+            <div className="flex flex-wrap gap-4">
+              {skillsList.slice(0, 6).map((skill) => (
+                <React.Fragment key={skill.value}>
+                  {selectedSkills.some((s) => s.value === skill.value) ? (
+                    <div
+                      className="label-option selected flex items-center gap-2 bg-gray-200 px-3 py-1 rounded"
+                      onClick={() => {
+                        const updatedSkills = selectedSkills.filter(
+                          (s) => s.value !== skill.value
+                        );
+                        setSelectedSkills(updatedSkills);
+                        formik.setFieldValue(
+                          "user_skill",
+                          updatedSkills.map((skill) => ({
+                            id: skill.value,
+                            name: skill.label,
+                            skill_level_type_id: "1",
+                          }))
+                        );
+                      }}
+                    >
+                      {skill.label}
+                      <span className="cursor-pointer">
+                        <RxCross2 />
+                      </span>
+                    </div>
+                  ) : (
+                    <div
+                      className="label-option add flex items-center gap-2 bg-gray-200 px-3 py-1 rounded"
+                      onClick={() => {
+                        const updatedSkills = [...selectedSkills, skill];
+                        setSelectedSkills(updatedSkills);
+                        formik.setFieldValue(
+                          "user_skill",
+                          updatedSkills.map((skill) => ({
+                            id: skill.value,
+                            name: skill.label,
+                            skill_level_type_id: "1",
+                          }))
+                        );
+                      }}
+                    >
+                      {skill.label}
+                      <span className="cursor-pointer">
+                        <IoIosAdd />
+                      </span>
+                    </div>
+                  )}
+                </React.Fragment>
+              ))}
+            </div>
           </div>
-          <button
-            type="submit"
-            className={`max-w-[100px] sm:max-w-[250px] ${
-              formik.isValid
-                ? "bg-red text-white"
-                : "!opacity-50 !cursor-default"
-            }`}
-            disabled={formik.isSubmitting}
-          >
-            {/* {formik.isSubmitting ? "Submitting..." : "Next"} */}
-            Next
-          </button>
-        </div>
-      </form>
+          <div className="flex w-full justify-between items-end">
+            <div className="whitespace-nowrap">
+              <span className="text-red">{progress - 4}</span> - 6
+            </div>
+            <button
+              type="submit"
+              className={`max-w-[100px] sm:max-w-[250px] ${
+                formik.isValid
+                  ? "bg-red text-white"
+                  : "!opacity-50 !cursor-default"
+              }`}
+              disabled={formik.isSubmitting}
+            >
+              {/* {formik.isSubmitting ? "Submitting..." : "Next"} */}
+              Next
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

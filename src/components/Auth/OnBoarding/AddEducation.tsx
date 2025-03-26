@@ -106,66 +106,74 @@ export default function AddEducation() {
         <span className="text-red">education</span> background
       </h2>
       <form onSubmit={formik.handleSubmit} className="block mt-10">
-        <h4 className="text-lg font-medium">
-          What is your highest level of education?
-        </h4>
-        <div className="my-2 flex flex-col gap-4">
-          {qualificationList?.map((education) => (
-            <label
-              htmlFor={education.id}
-              key={education.id}
-              onClick={() => formik.setFieldValue("education_id", education.id)}
-              className={`form-group !flex !mb-0 gap-4 rounded-lg px-5 py-3 border shadow-sm items-center ${
-                education.id === formik.values.education_id
-                  ? "border-red bg-[#FDF1F3]"
-                  : "border-[#C8C9CB1A]"
-              }`}
-            >
-              <input
-                type="radio"
-                id={education.id}
-                checked={education.id === formik.values.education_id}
-                name="experience"
-                className={`cursor-pointer inline-block !m-0 !w-4 !h-4 ${
-                  education.id === formik.values.education_id ? "selected" : ""
-                }`}
-                value={education?.id}
-              />
-              <div
-                className={`!mb-0 gap-2 radio inline-block cursor-pointer ${
-                  education.id === formik.values.education_id ? "selected" : ""
+        <div className="scroll-content cursor-pointer">
+          <h4 className="text-lg font-medium mb-1">
+            What is your highest level of education?
+          </h4>
+          <div className="my-2 flex flex-col gap-4">
+            {qualificationList?.map((education) => (
+              <label
+                htmlFor={education.id}
+                key={education.id}
+                onClick={() =>
+                  formik.setFieldValue("education_id", education.id)
+                }
+                className={`form-group !flex !mb-0 gap-4 rounded-lg px-5 py-3 border shadow-sm items-center ${
+                  education.id === formik.values.education_id
+                    ? "border-red bg-[#FDF1F3]"
+                    : "border-[#C8C9CB1A]"
                 }`}
               >
-                {education.name}
-              </div>
-            </label>
-          ))}
-          {/* ✅ Validation Error */}
-          {formik.errors.education_id && formik.touched.education_id && (
-            <p className="text-red text-sm mt-1">
-              {formik.errors.education_id}
-            </p>
-          )}
+                <input
+                  type="radio"
+                  id={education.id}
+                  checked={education.id === formik.values.education_id}
+                  name="experience"
+                  className={`cursor-pointer inline-block !m-0 !w-4 !h-4 ${
+                    education.id === formik.values.education_id
+                      ? "selected"
+                      : ""
+                  }`}
+                  value={education?.id}
+                />
+                <div
+                  className={`!mb-0 gap-2 radio inline-block cursor-pointer ${
+                    education.id === formik.values.education_id
+                      ? "selected"
+                      : ""
+                  }`}
+                >
+                  {education.name}
+                </div>
+              </label>
+            ))}
+            {/* ✅ Validation Error */}
+            {formik.errors.education_id && formik.touched.education_id && (
+              <p className="text-red text-sm mt-1">
+                {formik.errors.education_id}
+              </p>
+            )}
+          </div>
+        </div>
 
-          <div className="flex w-full items-end">
-            <div className="whitespace-nowrap">
-              <span className="text-red">{progress - 4}</span> - 6
-            </div>
-            <div className="flex gap-4 items-end w-full justify-end">
-              <span
-                onClick={() => dispatch(setProgress(11))}
-                className={`max-w-[130px] text-[#231F20] cursor-pointer border-[#9C9C9C] flex items-center btn-border !py-3.5 !px-9 !rounded-xl`}
-              >
-                Skip
-              </span>
-              <button
-                className={`max-w-[100px] sm:max-w-[250px] flex-shrink-0 justify-start`}
-                disabled={formik.isSubmitting}
-                type="submit"
-              >
-                Next
-              </button>
-            </div>
+        <div className="flex w-full items-end">
+          <div className="whitespace-nowrap">
+            <span className="text-red">{progress - 4}</span> - 6
+          </div>
+          <div className="flex gap-4 items-end w-full justify-end">
+            <span
+              onClick={() => dispatch(setProgress(11))}
+              className={`max-w-[130px] text-[#231F20] cursor-pointer border-[#9C9C9C] flex items-center btn-border !py-3.5 !px-9 !rounded-xl`}
+            >
+              Skip
+            </span>
+            <button
+              className={`max-w-[100px] sm:max-w-[250px] flex-shrink-0 justify-start`}
+              disabled={formik.isSubmitting}
+              type="submit"
+            >
+              Next
+            </button>
           </div>
         </div>
       </form>

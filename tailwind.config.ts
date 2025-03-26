@@ -6,6 +6,8 @@ const config: Config = {
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./node_modules/@material-tailwind/react/components/**/*.{js,ts,jsx,tsx}",
+    "./node_modules/@material-tailwind/react/theme/components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
@@ -18,28 +20,25 @@ const config: Config = {
         kalam: ['var(--font-kalam)', 'cursive'], // Kalam as secondary
       },
       colors: {
-        black:"#231F20",
-        red:"#E31836",
-        yellow:"#FBCB77",
-        success:"#53C690",
-        bg:"#FEF5E4",
-        lightGrey:"#E6E7E8",
-        Grey:"#4D4D4F",
-        greyText: "#BFBFC0"
-
+        black: "#231F20",
+        red: "#E31836",
+        yellow: "#FBCB77",
+        success: "#53C690",
+        bg: "#FEF5E4",
+        lightGrey: "#E6E7E8",
+        Grey: "#4D4D4F",
+        greyText: "#BFBFC0",
       },
       animation: {
         "infinite-slider": "infiniteSlider 20s linear infinite",
         "infinite-slider-reverse": "infiniteSliderReverse 20s linear infinite",
       },
-      boxShadow:{
+      boxShadow: {
         default: "0px 4px 48px 0px #00000017",
         secondary: "0px 0px 17px -3px #bdbdbd",
         tertiary: "0px 12px 32px 0px #CFDAEC4D",
-        lg: '0px 4px 10px 0px #00000021',
+        lg: "0px 4px 10px 0px #00000021",
         sm: "0px 4px 10px 0px #00000017",
-        
-
       },
       keyframes: {
         infiniteSlider: {

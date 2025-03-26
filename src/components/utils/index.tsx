@@ -428,12 +428,6 @@ export function timeAgo(dateString: string): string {
 
   // Get the time difference in milliseconds
   const diff = now.getTime() - pastLocal.getTime();
-
-  console.log("Past Local Time:", pastLocal.toString());
-  console.log("Now Local Time:", now.toString());
-  console.log("Time Difference (ms):", diff);
-  console.log("Time Difference (hours):", diff / (1000 * 60 * 60));
-
   // Define time intervals
   const minute = 60 * 1000;
   const hour = 60 * minute;

@@ -233,7 +233,7 @@ export default function Companies() {
                   ? "border-b-4 border-red text-red-500 font-bold  -mb-[1px]"
                   : "text-black hover:text-red-500"
               }`}
-              href="#"
+              href="/companies?tab=Trending"
               onClick={() => handleTab("Trending")}
             >
               Trending
@@ -244,7 +244,7 @@ export default function Companies() {
                   ? "border-b-4 border-red text-red-500 font-bold -mb-[1px]"
                   : "text-black hover:text-red-500"
               }`}
-              href="#"
+              href="/companies?tab=Following"
               onClick={() => handleTab("Following")}
             >
               Following
@@ -255,7 +255,7 @@ export default function Companies() {
                   ? "border-b-4 border-red text-red-500 font-bold -mb-[0px]"
                   : "text-black hover:text-red-500"
               }`}
-              href="#"
+              href="/companies?tab=Industry"
               onClick={() => handleTab("Industry")}
             >
               Industry

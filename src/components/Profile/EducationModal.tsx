@@ -1,68 +1,72 @@
 "use client";
 import React from "react";
-import Popup from "reactjs-popup";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { IoClose } from "react-icons/io5";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { setEducationModal } from "@/redux/profileSlice";
-
-const qualificationList = [
-  { id: "below_10th", name: "Below 10th class" },
-  { id: "10th_class", name: "10th class" },
-  { id: "12th_class", name: "12th class" },
-  { id: "diploma_certificate", name: "Diploma/Certificate" },
-  { id: "iti", name: "ITI" },
-  { id: "graduate", name: "Graduate" },
-  { id: "post_graduate", name: "Post Graduate" },
-];
+import { setEducationModal, setResumeModal } from "@/redux/profileSlice";
+import {
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+} from "@material-tailwind/react";
 
 const EducationModal = () => {
   const { educationModal } = useAppSelector((state) => state.profile);
-
-  console.log(educationModal, "Verify Education Modal");
   const dispatch = useAppDispatch();
+
+  const qualificationList = [
+    { id: "below_10th", name: "Below 10th class" },
+    { id: "10th_class", name: "10th class" },
+    { id: "12th_class", name: "12th class" },
+    { id: "diploma_certificate", name: "Diploma/Certificate" },
+    { id: "iti", name: "ITI" },
+    { id: "graduate", name: "Graduate" },
+    { id: "post_graduate", name: "Post Graduate" },
+  ];
+
+  const validationSchema = Yup.object().shape({
+    education_id: Yup.string().required("Required"),
+  });
 
   const closeModal = () => {
     dispatch(setEducationModal(false));
   };
 
   return (
-    <Popup
+    <Dialog
       open={educationModal}
-      onClose={closeModal}
-      modal
-      className="onboarding relative"
-      overlayStyle={{
-        background: "#4D4D4DC2",
-        padding: "20px",
-        borderRadius: "10px",
-        overflow: "hidden",
-      }}
+      handler={closeModal}
+      size="md"
+      className="fixed -top-20 -translate-x-1/2 custom-dialog"
     >
       <div>
-        <div className="flex justify-end">
-          <IoClose
-            className="mr-4 mt-4 size-8 cursor-pointer"
-            onClick={closeModal}
-          />
-        </div>
+        <DialogHeader>
+          <div className="relative w-full">
+            <IoClose
+              className="absolute top-0 right-0 cursor-pointer"
+              size={38}
+              onClick={closeModal}
+            />
+            <div className="flex justify-center items-center mt-6">
+              <h2 className="text-center text-[#231F20] text-3xl font-semibold">
+                Edit your <span className="text-red">education</span>
+              </h2>
+            </div>
+          </div>
+        </DialogHeader>
         <Formik
           initialValues={{ education_id: "" }}
-          validationSchema={Yup.object().shape({
-            education_id: Yup.string().required("Required"),
-          })}
+          validationSchema={validationSchema}
           onSubmit={(values) => {
             console.log("Submitted values:", values);
           }}
         >
           {({ setFieldValue, isSubmitting, values, dirty }) => (
-            <Form className="pb-8 px-2 lg:px-8 xl:px-0">
-              <h2 className="text-center !text-[#231F20] text-3xl font-semibold !mb-4">
-                Edit your <span className="text-red">education</span>
-              </h2>
-              <div className="scroll-content">
-                <div className="!mt-9">
+            <Form>
+              <DialogBody className="p-0 mt-8 max-h-[50vh] sm:max-h-[60vh] md:max-h-[70vh] lg:max-h-[80vh] overflow-y-auto custom-scroll">
+                <div className="px-12">
                   <label
                     className="block font-semibold mb-1 !text-[#231F20] !text-xl"
                     htmlFor="fileInput"
@@ -92,7 +96,7 @@ const EducationModal = () => {
                             className="cursor-pointer !m-0 !w-4 !h-4"
                             value={education.id}
                           />
-                          <span className="text-[#231F20]">
+                          <span className="text-[#231F20] text-xl">
                             {education.name}
                           </span>
                         </div>
@@ -106,26 +110,38 @@ const EducationModal = () => {
                       className="text-red text-sm mt-1"
                     />
                   </div>
+                  <div className="mt-3">
+                    <label
+                      className="block font-semibold mb-1 !text-[#231F20] !text-xl"
+                      htmlFor="fileInput"
+                    >
+                      Certification
+                    </label>
+                    <div className="flex gap-4 mt-2 pb-2">
+                      <img src="/new-assets/icons/certificate.svg" />
+                      <img src="/new-assets/icons/certificate.svg" />
+                      <img src="/new-assets/icons/certificate.svg" />
+                      <img src="/new-assets/icons/certificate.svg" />
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className="flex justify-end">
+              </DialogBody>
+              <DialogFooter className="flex justify-end p-0 pb-3 mt-3 px-12">
                 <button
                   type="submit"
-                  className={`max-w-[100px] no-margin sm:max-w-[250px] ${
-                    !dirty || isSubmitting
-                      ? "!opacity-50 !cursor-not-allowed"
-                      : "cursor-pointer"
+                  className={`px-28 py-4  bg-[#E31837] text-white rounded-xl ${
+                    isSubmitting ? "opacity-50 cursor-not-allowed" : ""
                   }`}
-                  disabled={!dirty || isSubmitting}
+                  disabled={isSubmitting}
                 >
                   Save
                 </button>
-              </div>
+              </DialogFooter>
             </Form>
           )}
         </Formik>
       </div>
-    </Popup>
+    </Dialog>
   );
 };
 

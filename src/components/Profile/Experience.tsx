@@ -1,7 +1,11 @@
 import React from "react";
 import { experiences } from "../utils";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { setExperienceModal } from "@/redux/profileSlice";
 
 const Experience = () => {
+  const { profileData } = useAppSelector((state) => state.profile);
+  const dispatch = useAppDispatch();
   return (
     <div className="bg-white rounded-lg mt-3 px-12 py-6">
       <div className="grid grid-cols-12">
@@ -10,7 +14,12 @@ const Experience = () => {
             <img src="/new-assets/icons/briefcase-exprience.svg" />
             <h1 className="text-[#231F20] font-semibold text-md">Experience</h1>
           </div>
-          <div className="flex items-center gap-2 cursor-pointer">
+          <div
+            className="flex items-center gap-2 cursor-pointer"
+            onClick={() => {
+              dispatch(setExperienceModal(true));
+            }}
+          >
             <img
               src="/new-assets/icons/ink_marker.svg"
               className="h-3 mt-1"
@@ -33,7 +42,9 @@ const Experience = () => {
               </div>
               {/* Text Section */}
               <div>
-                <h1 className="text-sm text-[#231F20] font-medium">{exp.title}</h1>
+                <h1 className="text-sm text-[#231F20] font-medium">
+                  {exp.title}
+                </h1>
                 <h1 className="text-xs text-[#231F20]">{exp.company}</h1>
                 <h1 className="text-xs text-[#231F20] flex items-center gap-2">
                   {exp.type}{" "}

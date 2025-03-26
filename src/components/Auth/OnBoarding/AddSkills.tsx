@@ -216,46 +216,46 @@ export default function AddSkills() {
               {skillsList.slice(0, 6).map((skill) => (
                 <React.Fragment key={skill.value}>
                   {selectedSkills.some((s) => s.value === skill.value) ? (
-                    <div className="label-option selected flex items-center gap-2 bg-gray-200 px-3 py-1 rounded">
+                    <div
+                      className="label-option selected flex items-center gap-2 bg-gray-200 px-3 py-1 rounded"
+                      onClick={() => {
+                        const updatedSkills = selectedSkills.filter(
+                          (s) => s.value !== skill.value
+                        );
+                        setSelectedSkills(updatedSkills);
+                        formik.setFieldValue(
+                          "user_skill",
+                          updatedSkills.map((skill) => ({
+                            id: skill.value,
+                            name: skill.label,
+                            skill_level_type_id: "1",
+                          }))
+                        );
+                      }}
+                    >
                       {skill.label}
-                      <span
-                        className="cursor-pointer"
-                        onClick={() => {
-                          const updatedSkills = selectedSkills.filter(
-                            (s) => s.value !== skill.value
-                          );
-                          setSelectedSkills(updatedSkills);
-                          formik.setFieldValue(
-                            "user_skill",
-                            updatedSkills.map((skill) => ({
-                              id: skill.value,
-                              name: skill.label,
-                              skill_level_type_id: "1",
-                            }))
-                          );
-                        }}
-                      >
+                      <span className="cursor-pointer">
                         <RxCross2 />
                       </span>
                     </div>
                   ) : (
-                    <div className="label-option add flex items-center gap-2 bg-gray-200 px-3 py-1 rounded">
+                    <div
+                      className="label-option add flex items-center gap-2 bg-gray-200 px-3 py-1 rounded"
+                      onClick={() => {
+                        const updatedSkills = [...selectedSkills, skill];
+                        setSelectedSkills(updatedSkills);
+                        formik.setFieldValue(
+                          "user_skill",
+                          updatedSkills.map((skill) => ({
+                            id: skill.value,
+                            name: skill.label,
+                            skill_level_type_id: "1",
+                          }))
+                        );
+                      }}
+                    >
                       {skill.label}
-                      <span
-                        className="cursor-pointer"
-                        onClick={() => {
-                          const updatedSkills = [...selectedSkills, skill];
-                          setSelectedSkills(updatedSkills);
-                          formik.setFieldValue(
-                            "user_skill",
-                            updatedSkills.map((skill) => ({
-                              id: skill.value,
-                              name: skill.label,
-                              skill_level_type_id: "1",
-                            }))
-                          );
-                        }}
-                      >
+                      <span className="cursor-pointer">
                         <IoIosAdd />
                       </span>
                     </div>

@@ -23,6 +23,7 @@ interface prop {
 
 export default function SignInButton({ closeSideMenu }: prop) {
   const dispatch = useDispatch();
+
   const user = useAppSelector((state) => state.user);
   const isOpen = useAppSelector((state) => state.loginDialog.isOpen);
   const progress = useAppSelector((state) => state.progress.value);
@@ -50,12 +51,12 @@ export default function SignInButton({ closeSideMenu }: prop) {
     dispatch(setProgress(1));
     clearSessionData();
   };
-  const gotoMyjob=()=>{
-    router.push("/my-jobs")
-  }
-  const gotoMyProfile=()=>{
-    router.push("/my-profile")
-  }
+  const gotoMyjob = () => {
+    router.push("/my-jobs");
+  };
+  const gotoMyProfile = () => {
+    router.push("/my-profile");
+  };
 
   const handleOverlayClick = (e: MouseEvent) => {
     const target = e.target as HTMLElement;
@@ -95,6 +96,9 @@ export default function SignInButton({ closeSideMenu }: prop) {
             borderRadius: "10px",
             overflow: "hidden",
           }}
+          contentStyle={{
+            height: progress === 5 ? "150%" : "auto", 
+          }}
         >
           <SignIn onClose={closePopup} />
         </Popup>
@@ -124,8 +128,10 @@ export default function SignInButton({ closeSideMenu }: prop) {
                 height={100}
                 width={100}
                 src={
-                  user?.photo_url ? user?.photo_url : "/new-assets/icons/avatar.svg"
-                }                
+                  user?.photo_url
+                    ? user?.photo_url
+                    : "/new-assets/icons/avatar.svg"
+                }
                 className="w-auto object-cover max-w-fit border rounded-full flex-shrink-0 size-[30px] xl:size-[40px] 2xl:size-[50px]"
                 alt="kaabil logo"
               />
@@ -133,42 +139,66 @@ export default function SignInButton({ closeSideMenu }: prop) {
             <BiChevronDown className="font-medium text-xl 3xl:text-2xl text-black" />
             <div className="absolute z-30 hidden group-focus-within/menu:block group-hover/menu:block top-0 left-0">
               <div className="bg-white shadow-default mt-[52px] 2xl:mt-[76px] rounded-xl w-[140px] 2xl:w-[180px] border border-lightGrey divide-y divide-lightGrey">
-                
-              <div onClick={gotoMyProfile} className="flex items-center group/link gap-3 3xl:gap-4 text-Grey hover:text-black py-3 2xl:py-4 font-medium hover:font-semibold text-xs 2xl:text-base px-5 cursor-pointer">
+                <div
+                  onClick={gotoMyProfile}
+                  className="flex items-center group/link gap-3 3xl:gap-4 text-Grey hover:text-black py-3 2xl:py-4 font-medium hover:font-semibold text-xs 2xl:text-base px-5 cursor-pointer"
+                >
                   {/* Default (gray) image - hidden on hover */}
-                  <Image 
-                    className="size-4 3xl:size-5 block group-hover/link:hidden" 
-                    src="/new-assets/icons/user.svg" 
-                    width={20} 
-                    height={20} 
-                    alt="Profile" 
+                  <Image
+                    className="size-4 3xl:size-5 block group-hover/link:hidden"
+                    src="/new-assets/icons/user.svg"
+                    width={20}
+                    height={20}
+                    alt="Profile"
                   />
-                  
                   {/* Black image - shown on hover */}
-                  <Image 
-                    className="size-4 3xl:size-5 hidden group-hover/link:block" 
-                    src="/new-assets/icons/user-black.svg" 
-                    width={20} 
-                    height={20} 
-                    alt="Profile" 
+                  <Image
+                    className="size-4 3xl:size-5 hidden group-hover/link:block"
+                    src="/new-assets/icons/user-black.svg"
+                    width={20}
+                    height={20}
+                    alt="Profile"
                   />
-                  
                   View Profile
                 </div>
                 <div
                   onClick={gotoMyjob}
                   className="flex items-center group/link gap-3 3xl:gap-4 text-Grey hover:text-black py-3 2xl:py-4 font-medium hover:font-semibold text-xs 2xl:text-base px-5 cursor-pointer"
                 >
-                  <Image className="size-4 3xl:size-5 block group-hover/link:hidden" src={'/new-assets/icons/my-jobs.svg'} width={50} height={50} alt="logout" />
-                  <Image className="size-4 3xl:size-5 hidden group-hover/link:block" src={'/new-assets/icons/my-jobs-black.svg'} width={50} height={50} alt="logout" />
+                  <Image
+                    className="size-4 3xl:size-5 block group-hover/link:hidden"
+                    src={"/new-assets/icons/my-jobs.svg"}
+                    width={50}
+                    height={50}
+                    alt="logout"
+                  />
+                  <Image
+                    className="size-4 3xl:size-5 hidden group-hover/link:block"
+                    src={"/new-assets/icons/my-jobs-black.svg"}
+                    width={50}
+                    height={50}
+                    alt="logout"
+                  />
                   My Jobs
                 </div>
                 <div
                   onClick={logout}
                   className="flex items-center group/link gap-3 3xl:gap-4 text-Grey hover:text-black py-3 2xl:py-4 font-medium hover:font-semibold text-xs 2xl:text-base px-5 cursor-pointer"
                 >
-                  <Image className="size-4 3xl:size-5 block group-hover/link:hidden" src={'/new-assets/icons/logout.svg'} width={50} height={50} alt="logout" />
-                  <Image className="size-4 3xl:size-5 hidden group-hover/link:block" src={'/new-assets/icons/logout-black.svg'} width={50} height={50} alt="logout" />
+                  <Image
+                    className="size-4 3xl:size-5 block group-hover/link:hidden"
+                    src={"/new-assets/icons/logout.svg"}
+                    width={50}
+                    height={50}
+                    alt="logout"
+                  />
+                  <Image
+                    className="size-4 3xl:size-5 hidden group-hover/link:block"
+                    src={"/new-assets/icons/logout-black.svg"}
+                    width={50}
+                    height={50}
+                    alt="logout"
+                  />
                   Logout
                 </div>
               </div>

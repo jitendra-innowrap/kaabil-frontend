@@ -119,9 +119,9 @@ const AddExperienceForm = forwardRef(
               placeholder="Enter your designation"
               className="w-full p-2 border rounded"
             />
-            {designationSuggestions.length > 0 && (
+            {designationSuggestions?.length > 0 && (
               <div className="absolute z-10 w-full max-h-[250px] min-h-[50px] overflow-auto p-0 bg-white border rounded-xl shadow-lg mt-1">
-                {designationSuggestions.map((suggestion) => (
+                {designationSuggestions?.map((suggestion) => (
                   <div
                     key={suggestion.id}
                     className="p-2 hover:bg-gray-100 cursor-pointer"
@@ -158,19 +158,19 @@ const AddExperienceForm = forwardRef(
               placeholder="Enter your company name"
               className="w-full p-2 border rounded"
             />
-            {companySuggestions.length > 0 && (
+            {companySuggestions?.length > 0 && (
               <div className="absolute z-10 w-full max-h-[250px] min-h-[50px] overflow-auto p-0 bg-white border rounded-xl shadow-lg mt-1">
-                {companySuggestions.map((suggestion) => (
+                {companySuggestions?.map((suggestion) => (
                   <div
                     key={suggestion.id}
                     className="p-2 hover:bg-gray-100 cursor-pointer"
                     onClick={() => {
-                      formik.setFieldValue("companyName", suggestion.name);
-                      formik.setFieldValue("company_master_id", suggestion.id);
+                      formik.setFieldValue("companyName", suggestion?.name);
+                      formik.setFieldValue("company_master_id", suggestion?.id);
                       setCompanySuggestions([]);
                     }}
                   >
-                    {suggestion.name}
+                    {suggestion?.name}
                   </div>
                 ))}
               </div>
@@ -184,13 +184,13 @@ const AddExperienceForm = forwardRef(
             type="number"
             id="salary"
             name="salary"
-            value={formik.values.salary}
+            value={formik?.values.salary}
             onChange={formik.handleChange}
             placeholder="Monthly salary eg: 15000"
             className="mb-2 w-full p-2 border rounded"
           />
           {formik.errors.salary && formik.touched.salary && (
-            <p className="text-red text-sm mt-1">{formik.errors.salary}</p>
+            <p className="text-red text-sm mt-1">{formik?.errors.salary}</p>
           )}
 
           <div className="grid sm:grid-cols-3 gap-3 3xl:gap-4 mt-3">
@@ -236,7 +236,7 @@ const AddExperienceForm = forwardRef(
 
           <div className="flex gap-3">
             <div className="flex-1">
-              {!editDateFrom && !formik.values.jobStartDate ? (
+              {/* {!formik.values.jobStartDate ? (
                 <div
                   onClick={() => setEditDateFrom(true)}
                   className="!text-[#4D4D4F] px-3 flex items-center font-normal justify-between shadow-md rounded-[.75rem] h-[56px]"
@@ -244,7 +244,9 @@ const AddExperienceForm = forwardRef(
                   Working From{" "}
                   <IoMdArrowDropdown className="ml-1 xl:ml-5 text-[#000000] size-5" />
                 </div>
-              ) : (
+              ) : ( */}
+              <div>
+                <label>Working From</label>
                 <input
                   type="date"
                   id="jobStartDate"
@@ -255,44 +257,33 @@ const AddExperienceForm = forwardRef(
                   className="mb-2 w-full p-2 border rounded !bg-white shadow-md"
                   max={new Date().toISOString().split("T")[0]}
                 />
-              )}
+              </div>
+              {/* )} */}
               {formik.errors.jobStartDate && formik.touched.jobStartDate && (
                 <p className="text-red text-sm mt-1">
                   {formik.errors.jobStartDate}
                 </p>
               )}
             </div>
-
-            {!isCurrentCompany ? (
+            {isCurrentCompany && (
               <div className="flex-1">
-                {!editDateTill && !formik.values.jobEndDate ? (
-                  <div
-                    onClick={() => setEditDateTill(true)}
-                    className="!text-[#4D4D4F] px-3 flex items-center font-normal justify-between shadow-md rounded-[.75rem] h-[56px]"
-                  >
-                    Worked Till{" "}
-                    <IoMdArrowDropdown className="ml-1 xl:ml-5 text-[#000000] size-5" />
-                  </div>
-                ) : (
-                  <input
-                    type="date"
-                    id="jobEndDate"
-                    name="jobEndDate"
-                    value={formik.values.jobEndDate}
-                    onChange={formik.handleChange}
-                    placeholder="End Date"
-                    className="mb-2 w-full p-2 border rounded !bg-white shadow-md"
-                    max={new Date().toISOString().split("T")[0]}
-                  />
-                )}
+                <label>Worked Till</label>
+                <input
+                  type="date"
+                  id="jobEndDate"
+                  name="jobEndDate"
+                  value={formik.values.jobEndDate}
+                  onChange={formik.handleChange}
+                  placeholder="End Date"
+                  className="mb-2 w-full p-2 border rounded !bg-white shadow-md"
+                  max={new Date().toISOString().split("T")[0]}
+                />
                 {formik.errors.jobEndDate && formik.touched.jobEndDate && (
                   <p className="text-red text-sm mt-1">
                     {formik.errors.jobEndDate}
                   </p>
                 )}
               </div>
-            ) : (
-              <div className="flex-1"></div>
             )}
           </div>
         </form>

@@ -163,7 +163,7 @@ export default function AddJobRole() {
         onSubmit={formik.handleSubmit}
         className="block mt-8"
       >
-        <div className="scroll-content cursor-pointer">
+        <div className="scroll-content pb-2 cursor-pointer">
           <h4 className="text-lg font-medium text-[#231F20]">
             What job role are you looking for?
           </h4>

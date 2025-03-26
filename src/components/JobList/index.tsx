@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import React, { Suspense, useEffect, useState } from "react";
+import React, { Suspense, useEffect, useRef, useState } from "react";
 import { FiCamera } from "react-icons/fi";
 import { HiOutlineCurrencyRupee, HiOutlineFilter } from "react-icons/hi";
 import { MdAccessTime } from "react-icons/md";
@@ -210,7 +210,7 @@ function JobList() {
     params.set("page", page.toString());
 
     // Push the updated query parameters to the URL
-    router.push(`?${params.toString()}`, { scroll: false });
+    router.push(`?${params.toString()}`, { scroll: true });
   };
 
   const nudges = [
@@ -227,10 +227,22 @@ function JobList() {
     handleSortChange(newSort); // Update the sort value
     setIsOpen(false); // Close the dropdown
   };
-  // Toggle dropdown visibility
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
-  };
+  const dropdownRef = useRef<HTMLButtonElement>(null); // Ref for dropdown container
+
+  const toggleDropdown = () => setIsOpen(!isOpen);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
     <div
       style={{ width: "-webkit-fill-available" }}
@@ -250,6 +262,7 @@ function JobList() {
           {/* Dropdown Button */}
           <button
             type="button"
+            ref={dropdownRef}
             className="text-[#4D4D4F] px-3 !py-2 flex items-center !border-black btn-border"
             id="menu-button"
             aria-expanded={isOpen}
@@ -257,7 +270,7 @@ function JobList() {
             onClick={toggleDropdown}
           >
             {sort === "3" ? "Recently posted" : "Best Matched"}
-            <IoMdArrowDropdown className="flex-shrink-0 ml-1 xl:ml-2 3xl:ml-5 text-[#000000] size-3 3xl:size-4" />
+                <IoMdArrowDropdown className={`flex-shrink-0 ml-1 xl:ml-2 3xl:ml-5 text-[#000000] size-3 3xl:size-4 ${isOpen?"rotate-180":""}`} />
           </button>
 
           {/* Dropdown Menu */}

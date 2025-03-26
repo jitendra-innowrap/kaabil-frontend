@@ -8,7 +8,7 @@ import api from "@/Services/Apiservice";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { IoMdArrowDropdown } from "react-icons/io";
 
@@ -39,6 +39,8 @@ export default function Companies() {
     fetchJobDetails();
     setSearchKey(search);
   }, [searchParams.toString(), selectedTab, selectedIndustry, isLoggedIn]);
+
+
 
   async function fetchJobDetails() {
     try {
@@ -183,6 +185,7 @@ export default function Companies() {
     params.delete("page"); // Reset page to 1 when sort changes
     router.replace(`?${params.toString()}`, { scroll: false }); // Update the URL without refreshing the page
   };
+  const dropdownRef = useRef<HTMLButtonElement>(null); // Ref for dropdown container
 
   const [isOpen, setIsOpen] = useState(false);
   // Handle sort option selection
@@ -190,11 +193,19 @@ export default function Companies() {
     handleSortChange(newSort); // Update the sort value
     setIsOpen(false); // Close the dropdown
   };
-  // Toggle dropdown visibility
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
-  };
+  const toggleDropdown = () => setIsOpen(!isOpen);
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
   const handleIndustry = (id: string)=>{
     const params = new URLSearchParams(searchParams.toString());
     params.set("page", "1"); // Reset page to 1 when sort changes
@@ -214,6 +225,36 @@ export default function Companies() {
 
     // Push the updated query parameters to the URL
     router.push(`?${params.toString()}`, { scroll: false });
+  };
+
+  // Get appropriate empty state message based on selected tab
+  const getEmptyStateMessage = () => {
+    switch (selectedTab) {
+      case "Trending":
+        return {
+          title: "No company found",
+          description: "There are no companies to display",
+          image: '/new-assets/images/no-company.svg'
+        };
+      case "Following":
+        return {
+          title: "No company found",
+          description: "You haven't followed any company yet. Start following to stay updated!",
+          image: '/new-assets/images/no-company.svg'
+        };
+      case "Industry":
+        return {
+          title: "No company found",
+          description: "There are no companies to display",
+          image: '/new-assets/images/no-company.svg'
+        };
+      default:
+        return {
+          title: "No company found",
+          description: "There are no companies to display",
+          image: '/new-assets/images/no-company.svg'
+        };
+    }
   };
 
   return (
@@ -331,10 +372,11 @@ export default function Companies() {
               <h2 className="text-xl font-semibold">{selectedTab === "Trending"?"Trending companies":selectedTab === "Following"?"Following compnaies":"Industries"}</h2>
               <p className="text-sm text-gray-500">{selectedTab === "Following"?`You follow ${totalCompnaies} companies`:`${totalCompnaies} companies found!`}</p>
             </div>
-            <div className="relative h-fit sort-by-container mt-1 3xl:mt-0">
+            {selectedTab!="Following" && <div className="relative h-fit sort-by-container mt-1 3xl:mt-0">
               {/* Dropdown Button */}
               <button
                 type="button"
+                ref={dropdownRef}
                 className="text-[#4D4D4F] px-3 !py-2 flex items-center !border-black btn-border"
                 id="menu-button"
                 aria-expanded={isOpen}
@@ -342,7 +384,7 @@ export default function Companies() {
                 onClick={toggleDropdown}
               >
                 {sort === "1" ? "Recently posted" : sort === "2" ? "Most Jobs" : sort === "3" ? "Nearest" : "Farthest"}
-                <IoMdArrowDropdown className="flex-shrink-0 ml-1 xl:ml-2 3xl:ml-5 text-[#000000] size-3 3xl:size-4" />
+                <IoMdArrowDropdown className={`flex-shrink-0 ml-1 xl:ml-2 3xl:ml-5 text-[#000000] size-3 3xl:size-4 ${isOpen?"rotate-180":""}`} />
               </button>
     
               {/* Dropdown Menu */}
@@ -396,7 +438,7 @@ export default function Companies() {
                   </div>
                 </div>
               )}
-          </div>
+          </div>}
         </div>
 
         {/* Company Grid */}
@@ -408,9 +450,9 @@ export default function Companies() {
         </>
         :
         <div className="container pt-10 xl:pt-20 3xl:pt-32 bg-[#f9f9f9] mx-auto w-full px-4 pb-12">
-          <Image className="w-[280px] h-[190px] mx-auto 3xl:w-[323px] 3xl:h-[262px]" width={650} height={520} src={'/new-assets/images/no-company.svg'} alt="no-company-found"/>
-          <h3 className="text-xl 3xl:text-2xl font-medium text-center">No company found</h3>
-          <p className="text-sm 3xl:text-base font-normal text-center">You haven't followed any company yet. Start following to stay updated!</p>
+          <Image className="w-[280px] h-[190px] mx-auto 3xl:w-[323px] 3xl:h-[262px]" width={650} height={520} src={getEmptyStateMessage().image} alt="no-company-found"/>
+          <h3 className="text-xl 3xl:text-2xl font-medium text-center">{getEmptyStateMessage().title}</h3>
+          <p className="text-sm 3xl:text-base font-normal text-center">{getEmptyStateMessage().description}</p>
         </div>
         }
         

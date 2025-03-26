@@ -32,10 +32,11 @@ export default function FilterSidebar() {
     // }, []);
     
     const router = useRouter();
-    
+    const [removeOptionsSearch, SetremoveOptionsSearch] = useState(false);
     // Handle Clear All button click
     const handleClearAll = () => {
         // Remove all search parameters and navigate to the base URL
+        SetremoveOptionsSearch(!removeOptionsSearch)
         router.push('/jobs', { scroll: false }); // Replace '/jobs' with your base route
     };
   return (

@@ -122,7 +122,8 @@ export default function ScreeningQuesModal({
           {/* ✅ Formik Form */}
           <form onSubmit={formik.handleSubmit} className="block mt-12 3xl:mt-16">
             <label htmlFor="name" className="text-[#231F20] font-semibold">
-            {currentQuestion.question}
+            {/* {currentQuestion.question} */}
+            Can you provide a brief introduction about yourself ?
             </label>
             <textarea
               id="name"
@@ -146,7 +147,9 @@ export default function ScreeningQuesModal({
             </div>
             <div className="flex w-full justify-between items-end">
               <div className="whitespace-nowrap">
-                <span className="text-red">{currentQuestionIndex + 1}</span> - {questions.length}
+                <span className="text-red">{currentQuestionIndex + 1}</span> - 
+                {/* {questions.length} */}
+                4
               </div>
               <button
                 type="submit"

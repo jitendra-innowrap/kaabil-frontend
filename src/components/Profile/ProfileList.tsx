@@ -8,6 +8,7 @@ import Education from "./Education";
 import Experience from "./Experience";
 import Resume from "./Resume";
 import ProfileCard from "./ProfileCard";
+import AboutMe from "./AboutMe";
 
 const ProfileList = () => {
   const [activeTab, setActiveTab] = useState("About");
@@ -70,6 +71,9 @@ const ProfileList = () => {
           </div>
           <div ref={sectionRefs.Resume} className="mt-4">
             <Resume />
+          </div>
+          <div ref={sectionRefs.Resume} className="mt-4">
+            <AboutMe />
           </div>
         </div>
         <div className="col-span-12 xl:col-span-4 lg:col-span-5 md:col-span-6">

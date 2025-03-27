@@ -7,6 +7,7 @@ import ExperienceModal from "./ExperienceModal";
 import ProfileModal from "./ProfileModal";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { fetchProfile } from "@/redux/profileSlice";
+import { AboutModal } from "./AboutModal";
 
 const Profile = () => {
   const { token } = useAppSelector((state) => state.auth);
@@ -25,6 +26,7 @@ const Profile = () => {
       <EducationModal />
       <ResumeModal />
       <ProfileList />
+      <AboutModal />
     </div>
   );
 };

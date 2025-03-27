@@ -94,7 +94,7 @@ export default function AddLocation() {
         const response = await api.post("/Auth/addJobseekerProfile", formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
-
+      
         if (response?.data?.code === 1) {
           dispatch(setProgress(8));
           dispatch(setUserLocation(values.location_id));

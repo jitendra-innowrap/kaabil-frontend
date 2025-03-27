@@ -52,15 +52,17 @@ const ProfileCard = () => {
             <div
               className="rounded-lg h-full bg-red"
               style={{
-                width: `${profileData?.user_profile_percentage ?? "-"}%`,
+                width: `${profileData?.user_profile_percentage ?? 0}%`,
               }}
             ></div>
           </div>{" "}
-          <span className="text-xs 2xl:text-sm">100%</span>
+          <span className="text-xs 2xl:text-sm">
+            {profileData?.user_profile_percentage ?? 0}%
+          </span>
         </div>
         <div className="col-span-12 mt-1">
           <h1 className="text-red text-center text-sm">
-            Your Profile is {profileData?.user_profile_percentage ?? "-"}%
+            Your Profile is {profileData?.user_profile_percentage ?? 0}%
             Complete!
           </h1>
         </div>

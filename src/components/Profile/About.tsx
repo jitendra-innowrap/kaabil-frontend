@@ -5,6 +5,7 @@ import React from "react";
 
 const About = () => {
   const { profileData } = useAppSelector((state) => state.profile);
+  console.log(profileData, "Verify Profile Data");
   const dispatch = useAppDispatch();
   return (
     <div className="bg-white rounded-lg">
@@ -70,48 +71,60 @@ const About = () => {
           <span className="text-sm font-bold text-red">Edit</span>
         </div>
       </div>
-      <div className="grid grid-cols-12 px-12 pt-2 pb-8">
-        <div className="col-span-12 flex gap-12">
-          <div className="text-sm text-[#4D4D4F] flex flex-col gap-5">
-            <h1>Highest Education</h1>
-            <h1>Skills</h1>
-            <h1>Previous jobs</h1>
-            <h1>Strengths</h1>
+      <div className="px-12 pb-8">
+        <div className="grid grid-cols-12 gap-y-4">
+          {/* Highest Education */}
+          <div className="col-span-4 flex items-center">
+            <h1 className="text-sm text-[#4D4D4F]">Highest Education</h1>
           </div>
-          <div className="text-sm flex flex-col gap-5">
-            <h1 className="text-[#231F20] font-medium">
+          <div className="col-span-8">
+            <h1 className="text-sm text-[#231F20] font-medium">
               {profileData?.education_name ?? "-"}
             </h1>
-            <div className="text-[#717B9E] flex flex-wrap gap-2 text-[12px]">
+          </div>
+
+          {/* Skills */}
+          <div className="col-span-4 flex items-center">
+            <h1 className="text-sm text-[#4D4D4F]">Skills</h1>
+          </div>
+          <div className="col-span-8">
+            <div className="flex flex-wrap gap-3 text-[12px] text-[#717B9E]">
               {profileData?.skills?.length > 0 ? (
                 profileData.skills.map(
                   (skill: { id: string; name: string }) => (
-                    <h1
+                    <span
                       key={skill.id}
-                      className="bg-[#EEF2FECC] px-2 py-1 rounded-md"
+                      className="bg-[#EEF2FECC] px-2 py-1 rounded-md shadow-sm"
                     >
-                      {skill?.name}
-                    </h1>
+                      {skill.name}
+                    </span>
                   )
                 )
               ) : (
                 <div>-</div>
               )}
             </div>
+          </div>
 
-            <h1 className="text-[#231F20] font-medium">
-              {profileData?.job_type
-                ? profileData?.company_name
-                  ? `${profileData?.job_type} ${
-                      profileData?.designation ?? "-"
-                    } at ${profileData?.company_name}`
-                  : `${profileData?.job_type} ${
-                      profileData?.designation ?? "-"
-                    }`
-                : "-"}
+          {/* Previous Jobs */}
+          <div className="col-span-4 flex items-center">
+            <h1 className="text-sm text-[#4D4D4F]">Previous Jobs</h1>
+          </div>
+          <div className="col-span-8">
+            <h1 className="text-sm text-[#231F20] font-medium">
+              {profileData?.company_name ?? "-"}
             </h1>
-            <h1 className="text-[#231F20] font-medium">
-              {profileData?.profile_strength ?? "-"}
+          </div>
+          <div className="col-span-4 flex items-center">
+            <h1 className="text-sm text-[#4D4D4F]">Strengths</h1>
+          </div>
+          <div className="col-span-8">
+            <h1 className="text-sm text-[#231F20] font-medium">
+              {profileData?.soft_skills?.length > 0
+                ? profileData.soft_skills
+                    .map((skill: { name: string }) => skill.name)
+                    .join(", ")
+                : "-"}
             </h1>
           </div>
         </div>

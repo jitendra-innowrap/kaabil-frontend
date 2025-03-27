@@ -17,6 +17,7 @@ import { getAuthUser, getSessionData } from "../utils/deviceId";
 import { setJobFiltersMaster } from "@/redux/jobsFilterSlice";
 import { useDispatch } from "react-redux";
 import TopCompaniesHiring from "../Nudges/Listing/TopCompaniesHiring";
+import FindCareer from "../Nudges/Listing/FindCareer";
 
 function JobList() {
   const searchParams = useSearchParams();
@@ -248,10 +249,10 @@ function JobList() {
       style={{ width: "-webkit-fill-available" }}
       className="lg:pl-3 xl:pl-7 3xl:pl-9"
     >
-      <div className="flex justify-between mb-5 xl:mb-3 3xl:mb-6">
+      <div className="mobile-container flex justify-between gap-2 mb-4 lg:mb-5 xl:mb-3 3xl:mb-6">
         <div className="">
           {/* <pre>{JSON.stringify(user, null, 2)}</pre> */}
-          <h2 className="font-medium text-base xl:text-lg 3xl:text-2xl 3xl:leading-7 mb-1 xl:mb-2">
+          <h2 className="font-medium text-base leading-7s xl:text-lg 3xl:text-2xl 3xl:leading-7 mb-1 xl:mb-2">
             {isLoggedIn?"Recommended jobs for you":"All Jobs"}
           </h2>
           <p className="text-[#787878] text-sm 2xl:text-sm">
@@ -263,14 +264,14 @@ function JobList() {
           <button
             type="button"
             ref={dropdownRef}
-            className="text-[#4D4D4F] px-3 !py-2 flex items-center !border-black btn-border"
+            className="text-[#4D4D4F] px-3 !py-2 whitespace-nowrap flex items-center !border-black btn-border"
             id="menu-button"
             aria-expanded={isOpen}
             aria-haspopup="true"
             onClick={toggleDropdown}
           >
             {sort === "3" ? "Recently posted" : "Best Matched"}
-                <IoMdArrowDropdown className={`flex-shrink-0 ml-1 xl:ml-2 3xl:ml-5 text-[#000000] size-3 3xl:size-4 ${isOpen?"rotate-180":""}`} />
+                <IoMdArrowDropdown className={`flex-shrink-0 ml-1 xl:ml-2 3xl:ml-5 text-[#000000] size-4 3xl:size-4 ${isOpen?"rotate-180":""}`} />
           </button>
 
           {/* Dropdown Menu */}
@@ -308,7 +309,7 @@ function JobList() {
           )}
         </div>
       </div>
-      <div className="flex flex-col gap-4 lg:gap-3 3xl:gap-4">
+      <div className="mobile-container flex flex-col gap-4 lg:gap-3 3xl:gap-4">
         {jobs.map((job: any, index) => {
           const items = [];
 
@@ -339,8 +340,12 @@ function JobList() {
         })}
       </div>
 
+      <div className="block lg:hidden mt-4">
+        <FindCareer/>
+      </div>
+
       {/* Pagination */}
-      <div className="mt-10 md:mt-14 2xl:mt-16">
+      <div className="mobile-container mt-12 mb-5 lg:mb-0 lg:mt-14 2xl:mt-16">
         <Pagination
           currentPage={currentPage}
           handleActive={handleActive}

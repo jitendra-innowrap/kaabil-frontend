@@ -3,7 +3,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Poppins, Kalam } from 'next/font/google';
 import './globals.css';
-import './responsive.css';
+import './mobile-responsive.css';
 import 'reactjs-popup/dist/index.css';
 import ReduxProvider from "@/providers/ReduxProvider";
 import SearchSection from "@/components/SearchSection";

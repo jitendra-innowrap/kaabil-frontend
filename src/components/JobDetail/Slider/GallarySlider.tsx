@@ -78,7 +78,7 @@ useEffect(() => {
   }
 }, []);
   return (
-    <div className={`relative slider-wrapper ${showNavigation && arrowOut?'px-6 sm:px-10 2xl:px-[60px]':'px-3'}`}>
+    <div className={`relative slider-wrapper ${showNavigation && arrowOut?'md:px-6 sm:px-10 2xl:px-[60px]':'px-3'}`}>
       <Swiper
         modules={[Autoplay, Navigation, FreeMode]}
         loop={loop}

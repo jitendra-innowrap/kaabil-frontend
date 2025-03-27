@@ -1,0 +1,108 @@
+.mobile-job-search{
+    box-shadow: 0px 4px 48px 0px #00000017;
+}
+
+@media (max-width:1023px){
+    .sort-by-container button {
+        background: #fff;
+        color: #6b6b6b;
+        font-size: 12px;
+        line-height: 22px;
+        border-radius: 8px;
+        text-align: center;
+        justify-content: end;
+        padding: 7px 13px !important;
+        border: .5px solid #6b6b6b !important;
+    }
+    .job-card{
+        padding: 25px 18px 24px 18px;
+    }
+    .job-card h3{
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 140%;
+    }
+    .job-card p{
+        font-size: 10px;
+        line-height: 16px;
+        font-weight: 400;
+    }
+    .job-card h3.job-title{
+        font-size: 18px;
+        font-weight: 500;
+        line-height: 134%;
+    }
+    .job-card .label, .job-card .label.lightgreen{
+        font-size: 10px;
+        line-height: 12px;
+        letter-spacing: 0%;
+        padding: 5.5px 8px !important;
+    }
+    .job-card .action-btns{
+        display: flex;
+        flex-wrap: nowrap;
+        width: 100%;
+        border-top: 1px solid #E3ECFB;
+        padding-top: 16px;
+        margin-top: 15px;
+    }
+    .job-card .action-btns button, .job-card .action-btns a{
+        flex: 1;
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 100%;
+        height: 40px;
+        border-radius: 8px;
+    }
+    .find-career-nudge{
+        border-radius: 0;
+    }
+    .container.job-listings{
+        padding: 0;
+    }
+    .mobile-container {
+        padding-inline: 20px;
+        margin-inline: auto !important;
+    }
+    .mobile-job-search{
+        width: calc(100% - 40px);
+        margin-top: 20px;
+        margin-bottom: 0;
+        margin-inline: auto;
+    }
+    .find-career-nudge .css-13cymwt-control, .find-career-nudge .css-t3ipsp-control{
+        height: 55px;
+        border-color: transparent;
+        border-radius: 8px;
+    }
+    .find-career-nudge .css-1jqq78o-placeholder{
+        color: #4D4D4F !important;
+    }
+    .find-career-nudge button{
+        width: 130px !important;
+        height: 36px !important;
+        font-size: 14px !important;
+        line-height: 24px !important;
+        border-radius: 8px !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .mobile-filter-pannel{
+        border-radius: 20px 20px 0 0;
+    }
+    .mobile-filter-pannel .clear-all{
+        /* width: 72px;
+        height: 30px; */
+    }
+}
+
+@media (max-width: 768px){
+    .swiper.swiper-horizontal {
+        padding-inline: 0 20px !important;
+    }
+    .swiper-button-prev, .swiper-button-next{
+        display: none !important;
+    }
+    
+}

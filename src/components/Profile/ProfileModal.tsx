@@ -18,6 +18,7 @@ import { RiMapPin2Line } from "react-icons/ri";
 import api from "@/Services/Apiservice";
 import { FaChevronDown } from "react-icons/fa6";
 import { FaMapMarkerAlt } from "react-icons/fa";
+import SelectedChips from "../Inputs/SelectedChips";
 
 const ProfileModal = () => {
   const { profileModal } = useAppSelector((state) => state.profile);
@@ -60,6 +61,16 @@ const ProfileModal = () => {
     }
   };
 
+  const handleLocation = (
+    selectedOptions: { value: string; label: string }[]
+  ) => {
+    setSelectedLocation(selectedOptions); // Update selectedLocation state
+    // formik.setFieldValue(
+    //   "location_id",
+    //   selectedOptions.map((loc) => loc.value)
+    // ); // Sync with formik
+  };
+
   useEffect(() => {
     fetchLocation();
   }, []);
@@ -74,6 +85,53 @@ const ProfileModal = () => {
     strengths: "",
   };
 
+  const options = [
+    { value: "new_york", label: "New York" },
+    { value: "los_angeles", label: "Los Angeles" },
+    { value: "chicago", label: "Chicago" },
+    { value: "houston", label: "Houston" },
+    { value: "miami", label: "Miami" },
+  ];
+
+  const customSingleOption = (props: {
+    data: any;
+    innerRef: any;
+    innerProps: any;
+  }) => {
+    const { data, innerRef, innerProps } = props;
+    return (
+      <div
+        ref={innerRef}
+        {...innerProps}
+        className="flex items-center p-2 cursor-pointer hover:bg-gray-100"
+      >
+        <FaMapMarkerAlt className="text-gray-500 mr-2" />
+        <span>{data.label}</span>
+      </div>
+    );
+  };
+
+  const customMultiValueLabel = (props: { data: any }) => {
+    const { data } = props;
+    return (
+      <div className="flex items-center">
+        <FaMapMarkerAlt className="text-gray-500 mr-1" />
+        <span>{data.label}</span>
+      </div>
+    );
+  };
+
+  const customStyles = {
+    control: (provided: any) => ({
+      ...provided,
+      paddingLeft: "0.5rem", // Extra padding for better spacing
+    }),
+    multiValue: (provided: any) => ({
+      ...provided,
+      backgroundColor: "#f0f0f0",
+    }),
+  };
+
   const validationSchema = Yup.object().shape({
     fullName: Yup.string().required("Required"),
     dob: Yup.date().required("Required"),
@@ -86,6 +144,17 @@ const ProfileModal = () => {
 
   const closePopup = () => {
     dispatch(setProfileModal(false));
+  };
+
+  const handleRemoveLocation = (value: string) => {
+    const updatedLocations = selectedLocation.filter(
+      (loc) => loc.value !== value
+    );
+    setSelectedLocation(updatedLocations); // Update selectedLocation state
+    // formik.setFieldValue(
+    //   "location_id",
+    //   updatedLocations.map((loc) => loc.value)
+    // ); // Sync with formik
   };
 
   return (
@@ -123,10 +192,10 @@ const ProfileModal = () => {
             <Form>
               {/* @ts-ignore */}
               <DialogBody className="p-0  max-h-[70vh] overflow-y-auto custom-scroll">
-                <div className="px-12 space-y-6">
+                <div className="px-12 space-y-2">
                   <div className="flex gap-4 items-center">
                     <Image
-                      className="cursor-pointer rounded-full w-20 h-20"
+                      className="cursor-pointer rounded-full w-28 h-28"
                       src={"/new-assets/icons/avatar.svg"}
                       width={80}
                       height={80}
@@ -148,7 +217,7 @@ const ProfileModal = () => {
                     </div>
                   </div>
 
-                  <div>
+                  <div className="mt-3">
                     <label className="block text-lg font-medium text-[#231F20]">
                       Full Name
                     </label>
@@ -161,7 +230,7 @@ const ProfileModal = () => {
                     <ErrorMessage
                       name="fullName"
                       component="div"
-                      className="text-red-500 text-lg mt-1"
+                      className="text-red-500 text-lg"
                     />
                   </div>
 
@@ -172,12 +241,12 @@ const ProfileModal = () => {
                     <Field
                       type="date"
                       name="dob"
-                      className="w-full border p-2 rounded-md"
+                      className="w-full border p-3 rounded-md"
                     />
                     <ErrorMessage
                       name="dob"
                       component="div"
-                      className="text-red-500 text-lg mt-1"
+                      className="text-red-500 text-lg"
                     />
                   </div>
 
@@ -225,10 +294,22 @@ const ProfileModal = () => {
                   <label className="block text-lg font-medium !p-0">
                     Job Location
                   </label>
-                  <div className="flex items-center gap-2 bg-[#F2F3F3] py-3 px-3 rounded-lg">
-                    <FaMapMarkerAlt className="text-red-500" />
-                    <span>Your Location</span>
+                  <div className="my-2">
+                    <Select
+                      options={options}
+                      isMulti
+                      placeholder="Select locations"
+                      styles={customStyles}
+                      components={{
+                        Option: customSingleOption,
+                        MultiValueLabel: customMultiValueLabel,
+                      }}
+                    />
                   </div>
+                  <SelectedChips
+                    selectedValues={selectedLocation}
+                    onRemove={handleRemoveLocation}
+                  />
                   <div>
                     <label className="block text-lg font-medium">Skills</label>
                     <Field
@@ -245,7 +326,7 @@ const ProfileModal = () => {
                   </div>
 
                   <div>
-                    <label className="block text-lg font-medium">
+                    <label className="block text-lg font-medium pb-2">
                       Strengths
                     </label>
                     <Field
@@ -263,7 +344,7 @@ const ProfileModal = () => {
                 </div>
               </DialogBody>
               {/* @ts-ignore */}
-              <DialogFooter className="flex justify-end p-0 pb-3 px-12">
+              <DialogFooter className="flex justify-end p-0 pb-3 px-12 mt-3">
                 <button
                   type="submit"
                   className={`px-28 py-4 bg-[#E31837] text-white rounded-xl ${

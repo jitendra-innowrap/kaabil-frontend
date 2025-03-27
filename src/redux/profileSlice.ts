@@ -8,6 +8,9 @@ interface LoginPopupState {
   experienceModal: boolean;
   profileModal: boolean;
   profileData: any;
+  qualificationList: any;
+  educationData: any;
+  aboutMeModal: boolean;
 }
 
 const initialState: LoginPopupState = {
@@ -17,6 +20,9 @@ const initialState: LoginPopupState = {
   profileModal: false,
   loading: false,
   profileData: [],
+  qualificationList: [],
+  educationData: [],
+  aboutMeModal: false,
 };
 
 export const fetchProfile = createAsyncThunk(
@@ -26,6 +32,53 @@ export const fetchProfile = createAsyncThunk(
       const response = await api.post("/Auth/getJobSeekerProfile", data, {
         headers: {
           token,
+        },
+      });
+      console.log(response.data, "Verify Data Please");
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data || "An error occurred");
+    }
+  }
+);
+
+export const editResume = createAsyncThunk(
+  "auth/fetchProfile",
+  async ({ data }: any, { rejectWithValue }) => {
+    try {
+      const response = await api.post("/Auth/editJobSeekerPrpfile", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log(response.data, "Verify Data Please");
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data || "An error occurred");
+    }
+  }
+);
+
+export const fetchEducationDetail = createAsyncThunk(
+  "auth/fetchEducationDetail",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await api.get("/MasterData/getEducation");
+      console.log(response.data, "Verify Data Please");
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data || "An error occurred");
+    }
+  }
+);
+
+export const fieldStudy = createAsyncThunk(
+  "auth/fieldStudy",
+  async ({ data }: any, { rejectWithValue }) => {
+    try {
+      const response = await api.post("MasterData/getFieldStudy", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
         },
       });
       console.log(response.data, "Verify Data Please");
@@ -52,6 +105,12 @@ const profileSlice = createSlice({
     setProfileModal: (state, action) => {
       state.profileModal = action.payload;
     },
+    setEducationData: (state, action) => {
+      state.educationData = action.payload;
+    },
+    setAboutMeModal: (state, action) => {
+      state.aboutMeModal = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -65,6 +124,18 @@ const profileSlice = createSlice({
       .addCase(fetchProfile.rejected, (state, action) => {
         state.loading = false;
         console.error("Fetch Profile Error:", action.payload);
+      })
+      .addCase(fetchEducationDetail.fulfilled, (state, action) => {
+        state.loading = false;
+        state.qualificationList =
+          action.payload?.result?.map((role: any) => ({
+            id: role.id,
+            name: role.name,
+          })) || [];
+      })
+      .addCase(fieldStudy.fulfilled, (state, action) => {
+        console.log(action?.payload, "Verify Payload");
+        state.educationData = action.payload.result;
       });
   },
 });
@@ -74,6 +145,8 @@ export const {
   setEducationModal,
   setExperienceModal,
   setProfileModal,
+  setEducationData,
+  setAboutMeModal,
 } = profileSlice.actions;
 
 export default profileSlice.reducer;

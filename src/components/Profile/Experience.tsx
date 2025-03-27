@@ -30,43 +30,50 @@ const Experience = () => {
         </div>
       </div>
       <div className="grid grid-cols-12 pr-2 mt-5 gap-3">
-        {profileData?.user_experiences?.map((exp: any, index: number) => (
-          <div
-            key={index}
-            className="col-span-12 bg-white p-3 rounded-lg shadow-md light-shadow"
-          >
-            <div className="flex items-center gap-4">
-              {/* Image Section */}
-              <div className="w-14 h-14 rounded-md overflow-hidden">
-                {exp?.company_logo ? (
-                  <img
-                    src={exp.company_logo}
-                    alt={`${exp.company_name ?? "Company"} icon`}
-                    className="w-full h-full object-contain"
-                  />
-                ) : (
-                  <div className="bg-gradient-to-r from-[#F5F5F5] to-[#E0E0E0] w-full h-full rounded-md shadow-inner"></div>
-                )}
-              </div>
-              {/* Text Section */}
-              <div>
-                <h1 className="text-sm text-[#231F20] font-medium">
-                  {exp?.designation || "-"}
-                </h1>
-                <h1 className="text-xs text-[#231F20]">
-                  {exp?.company_name || "-"}
-                </h1>
-                <h1 className="text-xs text-[#231F20] flex items-center gap-2">
-                  {exp?.job_type || "-"}{" "}
-                  <span className="text-2xl">
-                    <img src="/new-assets/icons/dot.svg" alt="Dot" />
-                  </span>{" "}
-                  {formatJobDates(exp?.job_start_date, exp?.job_end_date)}
-                </h1>
+        {profileData?.user_experiences?.length > 0 ? (
+          profileData.user_experiences.map((exp: any, index: number) => (
+            <div
+              key={index}
+              className="col-span-12 bg-white p-3 rounded-lg shadow-md light-shadow"
+            >
+              <div className="flex items-center gap-4">
+                {/* Image Section */}
+                <div className="w-14 h-14 rounded-md overflow-hidden">
+                  {exp?.company_logo ? (
+                    <img
+                      src={exp.company_logo}
+                      alt={`${exp.company_name ?? "Company"} icon`}
+                      className="w-full h-full object-contain"
+                    />
+                  ) : (
+                    <div className="bg-gradient-to-r from-[#F5F5F5] to-[#E0E0E0] w-full h-full rounded-md shadow-inner"></div>
+                  )}
+                </div>
+                {/* Text Section */}
+                <div>
+                  <h1 className="text-sm text-[#231F20] font-medium">
+                    {exp?.designation || "-"}
+                  </h1>
+                  <h1 className="text-xs text-[#231F20]">
+                    {exp?.company_name || "-"}
+                  </h1>
+                  <h1 className="text-xs text-[#231F20] flex items-center gap-2">
+                    {exp?.job_type || "-"}{" "}
+                    <span className="text-2xl">
+                      <img src="/new-assets/icons/dot.svg" alt="Dot" />
+                    </span>{" "}
+                    {formatJobDates(exp?.job_start_date, exp?.job_end_date)}
+                  </h1>
+                </div>
               </div>
             </div>
+          ))
+        ) : (
+          <div className="col-span-12  text-[#4D4D4F] text-sm font-medium">
+            Help recruiters find you – Update your work experience details
+            today!
           </div>
-        ))}
+        )}
       </div>
     </div>
   );

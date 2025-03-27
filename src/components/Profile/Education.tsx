@@ -62,8 +62,11 @@ const Education = () => {
                       rel="noopener noreferrer"
                       className="flex flex-col items-center"
                     >
-                      <div className="h-24 w-24 bg-[#F5F5F5]" />
-
+                      <img
+                        src="/new-assets/icons/pdf_logo (1).png"
+                        className="h-24 w-24 object-cover rounded-md light-shadow"
+                        alt={cert.user_certification_title || "Certificate"}
+                      />
                       <h1 className="text-xs mt-2 text-[#231F20]">
                         {cert.user_certification_title || "PDF Certification"}
                       </h1>
@@ -85,7 +88,7 @@ const Education = () => {
               )
             )
           ) : (
-            <div>"-"</div>
+            <div>-</div>
           )}
         </div>
       </div>

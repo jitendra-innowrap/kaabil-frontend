@@ -16,6 +16,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import { IoClose } from "react-icons/io5";
 import { closeLoginDialog, openLoginDialog } from "@/redux/loginDialogSlice";
 import { useRouter } from "next/navigation";
+import LogoutDialog from "../Auth/LogoutDialog";
 
 interface prop {
   closeSideMenu?: () => void;
@@ -30,11 +31,16 @@ export default function SignInButton({ closeSideMenu }: prop) {
   const isUser = useAppSelector((state) => state.auth.token);
   const { is_profile_verify } = useAppSelector((state) => state.user);
   const [open, setOpen] = useState(false);
+  const [openLogoutDialog, setOpenLogoutDialog] = useState(false);
   const popupRef = useRef<any>(null);
+  const logoutdialogRef = useRef<any>(null);
   const router = useRouter();
   const closePopup = () => {
     dispatch(closeLoginDialog());
     setOpen(false);
+  };
+  const closeLogoutDialog = () => {
+    setOpenLogoutDialog(false);
   };
 
   const handleSignIn = () => {
@@ -47,9 +53,7 @@ export default function SignInButton({ closeSideMenu }: prop) {
   };
 
   const logout = () => {
-    dispatch(signOut());
-    dispatch(setProgress(1));
-    clearSessionData();
+    setOpenLogoutDialog(true)
   };
   const gotoMyjob = () => {
     router.push("/my-jobs");
@@ -68,6 +72,9 @@ export default function SignInButton({ closeSideMenu }: prop) {
   useEffect(() => {
     // Add or remove 'no-scroll' class to body when popup is open or closed
     if (open) {
+      document.addEventListener("click", handleOverlayClick);
+      document.body.classList.add("no-scroll");
+    } else if (openLogoutDialog) {
       document.addEventListener("click", handleOverlayClick);
       document.body.classList.add("no-scroll");
     } else {
@@ -93,7 +100,6 @@ export default function SignInButton({ closeSideMenu }: prop) {
           overlayStyle={{
             background: "#4D4D4DC2",
             padding: "20px",
-            borderRadius: "10px",
             overflow: "hidden",
           }}
           contentStyle={{
@@ -103,6 +109,24 @@ export default function SignInButton({ closeSideMenu }: prop) {
           <SignIn onClose={closePopup} />
         </Popup>
       )}
+      
+      <Popup
+        ref={logoutdialogRef}
+        open={openLogoutDialog}
+        onClose={closeLogoutDialog}
+        modal
+        className="onboarding relative logout"
+        overlayStyle={{
+          background: "#4D4D4DC2",
+          padding: "20px",
+          overflow: "hidden",
+        }}
+        contentStyle={{
+          height: progress === 5 ? "150%" : "auto", 
+        }}
+      >
+        <LogoutDialog onClose={closeLogoutDialog} />
+      </Popup>
       {!isUser || is_profile_verify === "0" ? (
         <button
           id="sign-in-button"

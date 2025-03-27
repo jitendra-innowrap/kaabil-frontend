@@ -58,6 +58,7 @@ export default function FilterSidebar() {
                     searchIcon={<GrLocation className='size-4 2xl:size-5 text-[#6C757D] font-bold' />}
                     list={filters?.location_filter} 
                     maxItems={10}
+                    removeOptionsSearch={removeOptionsSearch}
                     filterKey='location_filter'
                     // fetchMoreItems={fetchLocationOptions}
                     searchPlaceholder='Choose city'

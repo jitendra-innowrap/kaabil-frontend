@@ -89,6 +89,7 @@ const ProfileModal = () => {
   };
 
   return (
+    // @ts-ignore
     <Dialog
       open={profileModal}
       handler={closePopup}
@@ -96,6 +97,7 @@ const ProfileModal = () => {
       className="fixed top-0 -translate-x-1/2 custom-dialog"
     >
       <div>
+        {/* @ts-ignore */}
         <DialogHeader>
           <div className="relative w-full">
             <IoClose
@@ -119,6 +121,7 @@ const ProfileModal = () => {
         >
           {({ setFieldValue, isSubmitting }) => (
             <Form>
+              {/* @ts-ignore */}
               <DialogBody className="p-0  max-h-[70vh] overflow-y-auto custom-scroll">
                 <div className="px-12 space-y-6">
                   <div className="flex gap-4 items-center">
@@ -259,6 +262,7 @@ const ProfileModal = () => {
                   </div>
                 </div>
               </DialogBody>
+              {/* @ts-ignore */}
               <DialogFooter className="flex justify-end p-0 pb-3 px-12">
                 <button
                   type="submit"

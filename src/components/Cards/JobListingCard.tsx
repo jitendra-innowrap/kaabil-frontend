@@ -1,7 +1,7 @@
 'use client'
 import Image from 'next/image'
 import Link from 'next/link'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { CiHeart } from 'react-icons/ci'
 import { IoIosHeart, IoIosHeartEmpty } from 'react-icons/io'
 import { LiaMapMarkerAltSolid } from 'react-icons/lia'
@@ -18,8 +18,11 @@ import { signOut } from '@/redux/userSlice'
 import { FaHeart } from 'react-icons/fa6'
 import { VscHeart, VscHeartFilled } from 'react-icons/vsc'
 import { openLoginDialog } from '@/redux/loginDialogSlice'
+import Popup from 'reactjs-popup'
+import ScreeningQuesModal from '../ScreeningQuestionsModal'
 
 export default function JobListingCard(prop:any) {
+  const [openJobQuestions, setOpenJobQuestions] = useState(false);
   const {token, isLoggedIn} = useSelector((state: RootState) => state.user);
   const userSkills = useSelector((state: RootState) => state.user.skills);
   const user = useSelector((state: RootState) => state.user);
@@ -52,6 +55,9 @@ export default function JobListingCard(prop:any) {
       </div>
     );
   };
+  const closeScreeningModal=()=>{
+    setOpenJobQuestions(false);
+  }
   useEffect(() => {
     setIsFavorited(prop?.saveJob_status=="1"?true:false)
   }, [user,prop])
@@ -66,10 +72,10 @@ export default function JobListingCard(prop:any) {
       }
       return
     }
-    // if(!isApplied && prop?.jobs_questions && prop?.jobs_questions.length>0){
-    //   // setOpenJobQuestions(true);
-    //   return
-    // }
+    if(!isApplied && prop?.jobs_questions && prop?.jobs_questions.length>0){
+      setOpenJobQuestions(true);
+     return
+    }
     if(!isApplied){
       try {
             const formData = new FormData();
@@ -206,6 +212,22 @@ export default function JobListingCard(prop:any) {
         <button type='button' onClick={()=>{handleApply(prop?.id)}} className={`grid place-items-center btn-border whitespace-nowrap !py-0 xl:!px-5 3xl:!px-8 h-[30px] 3xl:h-[44px] flex-1 text-[10px] 2xl:text-xs 3xl:text-sm text-white !bg-red !border-red ${isApplied?"opacity-60 disabled cursor-default":""}`}>{isApplied?"Job Applied":"quick Apply"}</button>
         </div>
       </div>
+      <Popup
+        open={openJobQuestions}
+        onClose={() => setOpenJobQuestions(false)}
+        modal
+        lockScroll
+        className="screening-modal-container"
+        overlayStyle={{
+          background: "rgba(0, 0, 0, 0.7)",
+          zIndex: 1000,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <ScreeningQuesModal isApplied={isApplied} jobId={prop?.id || ""} questions={prop?.jobs_questions} setIsApplied={setIsApplied} onClose={closeScreeningModal} />
+      </Popup>
     </div>
   )
 }

@@ -1,7 +1,7 @@
 'use client'
 import Image from 'next/image'
 import Link from 'next/link'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { CiHeart } from 'react-icons/ci'
 import { IoIosHeart, IoIosHeartEmpty } from 'react-icons/io'
 import { LiaMapMarkerAltSolid } from 'react-icons/lia'
@@ -18,8 +18,11 @@ import { signOut } from '@/redux/userSlice'
 import { FaHeart } from 'react-icons/fa6'
 import { VscHeart, VscHeartFilled } from 'react-icons/vsc'
 import { openLoginDialog } from '@/redux/loginDialogSlice'
+import Popup from 'reactjs-popup'
+import ScreeningQuesModal from '../ScreeningQuestionsModal'
 
 export default function JobListingCard(prop:any) {
+  const [openJobQuestions, setOpenJobQuestions] = useState(false);
   const {token, isLoggedIn} = useSelector((state: RootState) => state.user);
   const userSkills = useSelector((state: RootState) => state.user.skills);
   const user = useSelector((state: RootState) => state.user);
@@ -35,7 +38,7 @@ export default function JobListingCard(prop:any) {
           width={44}
           height={44}
           alt="company profile logo"
-          className="rounded-full border border-[#B9B9B9] size-9 3xl:size-11"
+          className="rounded-full border border-[#B9B9B9] size-11 lg:size-9 3xl:size-11"
         />
       );
     }
@@ -52,6 +55,9 @@ export default function JobListingCard(prop:any) {
       </div>
     );
   };
+  const closeScreeningModal=()=>{
+    setOpenJobQuestions(false);
+  }
   useEffect(() => {
     setIsFavorited(prop?.saveJob_status=="1"?true:false)
   }, [user,prop])
@@ -66,10 +72,10 @@ export default function JobListingCard(prop:any) {
       }
       return
     }
-    // if(!isApplied && prop?.jobs_questions && prop?.jobs_questions.length>0){
-    //   // setOpenJobQuestions(true);
-    //   return
-    // }
+    if(!isApplied && prop?.jobs_questions && prop?.jobs_questions.length>0){
+      setOpenJobQuestions(true);
+     return
+    }
     if(!isApplied){
       try {
             const formData = new FormData();
@@ -135,9 +141,9 @@ export default function JobListingCard(prop:any) {
         }
   }
   return (
-    <div onClick={()=>{console.log(prop)}} className='job-card h-full flex flex-col justify-between w-full border shadow-sm border-lightGrey rounded-2xl bg-white p-4 3xl:p-6'>
+    <div className='job-card h-full flex flex-col justify-between w-full border shadow-sm border-lightGrey rounded-2xl bg-white lg:p-4 3xl:p-6'>
       <div className="flex gap-3 3xl:gap-4 justify-between">
-          <div className="flex gap-[10px] 3xl:gap-4">
+          <div className="flex gap-4 lg:gap-[10px] 3xl:gap-4">
             <CompanyLogo name={prop?.company_name} logo={prop?.company_logo} index={prop?.id || 0} />
             <div className="">
               <h3 className='text-xs 3xl:text-sm text-[#070828]'>{prop?.company_name}</h3>
@@ -150,14 +156,14 @@ export default function JobListingCard(prop:any) {
         <span tabIndex={0} onClick={()=>{handleSave(prop?.id)}}>
         {
           !isFavorited? (
-            <VscHeart className={`text-[#717B9E] size-4 3xl:size-5 cursor-pointer`}/>
+            <VscHeart className={`text-[#717B9E] size-[21px] lg:size-[18px] 3xl:size-5 cursor-pointer`}/>
           ) : (
-            <VscHeartFilled className={`text-red size-4 3xl:size-5 cursor-pointer`}/>
+            <VscHeartFilled className={`text-red size-[21px] lg:size-[18px] 3xl:size-5 cursor-pointer`}/>
           )
         }
         </span>
       </div>
-      <h3 className='text-sm 3xl:text-base 2xl:text-lg font-medium my-[6px] 3xl:my-3 line-clamp-1'>{prop?.job_title}</h3>
+      <h3 className='job-title lg:text-sm 3xl:text-base 2xl:text-lg font-medium my-[6px] 3xl:my-3 line-clamp-1'>{prop?.job_title}</h3>
       <div className="flex mb-1 md:mb-2">
         <img src={'/new-assets/icons/location-pin-dot.svg'} alt='Map pin' width={100} height={100} className='size-3 2xl:size-5' />
         <span className='ml-2 text-[10px] 2xl:text-sm text-[#545581] line-clamp-1' title={prop?.job_location?.[0]?.job_location || "Remote"}>{prop?.job_location?.[0]?.job_location || "Remote"}</span>
@@ -181,7 +187,7 @@ export default function JobListingCard(prop:any) {
           }
         </div>
       </div>
-      <div className="flex flex-wrap xl:flex-nowrap gap-4 min-h-16 justify-between">
+      <div className="flex flex-wrap xl:flex-nowrap lg:gap-4 min-h-16 justify-between">
         <ul className='skills-wrapper flex flex-wrap gap-2 mt-3'>
           {prop?.skills?.slice(0, 3)?.map((skill:any, index:number) => {
               const isSkillIncluded = userSkills?.some((userSkill) => userSkill.id == skill.id);
@@ -206,6 +212,22 @@ export default function JobListingCard(prop:any) {
         <button type='button' onClick={()=>{handleApply(prop?.id)}} className={`grid place-items-center btn-border whitespace-nowrap !py-0 xl:!px-5 3xl:!px-8 h-[30px] 3xl:h-[44px] flex-1 text-[10px] 2xl:text-xs 3xl:text-sm text-white !bg-red !border-red ${isApplied?"opacity-60 disabled cursor-default":""}`}>{isApplied?"Job Applied":"quick Apply"}</button>
         </div>
       </div>
+      <Popup
+        open={openJobQuestions}
+        onClose={() => setOpenJobQuestions(false)}
+        modal
+        lockScroll
+        className="screening-modal-container"
+        overlayStyle={{
+          background: "rgba(0, 0, 0, 0.7)",
+          zIndex: 1000,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <ScreeningQuesModal isApplied={isApplied} jobId={prop?.id || ""} questions={prop?.jobs_questions} setIsApplied={setIsApplied} onClose={closeScreeningModal} />
+      </Popup>
     </div>
   )
 }

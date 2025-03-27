@@ -35,9 +35,10 @@ export default function Header() {
                                     <Link href={"/"} className='text-Grey hover:text-black font-medium text-xs 3xl:text-base group-hover/menu:font-semibold relative after:w-full after:h-[3px] 3xl:after:h-1 after:rounded-[4px] group-hover/menu:after:bg-red after:absolute after:bottom-[-8px] 3xl:after:bottom-[-12px] after:left-0'>
                                         Career Tools
                                     </Link>
+                                    <div className="w-full h-6  absolute top-4 left-0"></div>
                                     <BiChevronDown className='font-light 3xl:text-2xl text-Grey group-hover/menu:text-black'/>
-                                    <div className="absolute z-30 hidden group-hover/menu:block top-0 left-0">
-                                        <div className="bg-white shadow-default mt-[40px] 3xl:mt-[62px] rounded-xl w-[180px] 3xl:w-[288px] border border-lightGrey divide-y divide-lightGrey">
+                                    <div className="absolute z-30 hidden group-hover/menu:block duration-75 top-[40px] 3xl:top-[62px] left-0">
+                                        <div className="bg-white shadow-default  rounded-xl w-[180px] 3xl:w-[288px] border border-lightGrey divide-y divide-lightGrey">
                                             <Link href='/' className='block w-full text-Grey hover:text-black py-3 3xl:py-4 font-medium hover:font-semibold text-xs 3xl:text-base px-5'>Resume Builder</Link>
                                             <Link href='/' className='block w-full text-Grey hover:text-black py-3 3xl:py-4 font-medium hover:font-semibold text-xs 3xl:text-base px-5'>Career Guide</Link>
                                             <Link href='/' className='block w-full text-Grey hover:text-black py-3 3xl:py-4 font-medium hover:font-semibold text-xs 3xl:text-base px-5'>Mock Interviews</Link>

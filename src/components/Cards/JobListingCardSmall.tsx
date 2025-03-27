@@ -1,7 +1,7 @@
 'use client'
 import Image from 'next/image'
 import Link from 'next/link'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { showExperience, showSalary, showSalarySimilarJob, showToast, timeAgo } from '../utils'
 import ProfilePhoto from './ProfilePhoto'
 import { VscHeart, VscHeartFilled } from 'react-icons/vsc'
@@ -13,14 +13,20 @@ import { signOut } from '@/redux/userSlice'
 import { setProgress } from '@/redux/progressSlice'
 import { clearSessionData } from '../utils/deviceId'
 import { openLoginDialog } from '@/redux/loginDialogSlice'
+import Popup from 'reactjs-popup'
+import ScreeningQuesModal from '../ScreeningQuestionsModal'
 
 export default function JobListingCardSmall({detail, isCompanyJob=false}:{detail:CompanyJob, isCompanyJob?:boolean}) {
+  const [openJobQuestions, setOpenJobQuestions] = useState(false);
   const {token, isLoggedIn} = useSelector((state: RootState) => state.user);
   const userSkills = useSelector((state: RootState) => state.user.skills);
   const user = useSelector((state: RootState) => state.user);
   const [isApplied, setIsApplied] = React.useState(detail?.is_job_apply=="1"?true:false);
   const [isFavorited, setIsFavorited] = React.useState(detail?.saveJob_status=="1"?true:false);
   const dispatch = useDispatch();  
+  const closeScreeningModal=()=>{
+    setOpenJobQuestions(false);
+  }
   const handleApply = async (id:string)=>{
     if(!isLoggedIn){
       dispatch(setProgress(1))
@@ -30,6 +36,10 @@ export default function JobListingCardSmall({detail, isCompanyJob=false}:{detail
         button.click(); // Programmatically triggers the button click
       }
       return
+    }
+    if(!isApplied && detail?.jobs_questions && detail?.jobs_questions.length>0){
+      setOpenJobQuestions(true);
+     return
     }
     if(!isApplied){
       try {
@@ -100,7 +110,7 @@ export default function JobListingCardSmall({detail, isCompanyJob=false}:{detail
   }, [detail])
   
   return (
-    <div className='job-card h-full flex flex-col justify-between small w-full border shadow-sm border-lightGrey rounded-2xl bg-white p-4 3xl:p-6'>
+    <div onClick={()=> console.log(detail)} className='job-card h-full flex flex-col justify-between small w-full border shadow-sm border-lightGrey rounded-2xl bg-white p-4 3xl:p-6'>
       <div className="">
         <div className="flex gap-3 3xl:gap-4 justify-between">
           <div className="flex gap-[10px] 3xl:gap-4">
@@ -177,6 +187,22 @@ export default function JobListingCardSmall({detail, isCompanyJob=false}:{detail
         <button onClick={()=>{handleApply(detail?.id)}} className={`grid place-items-center btn-border whitespace-nowrap !p-0 h-[30px] 3xl:h-[44px] flex-1 text-[10px] 2xl:text-xs 3xl:text-sm text-white !bg-red !border-red  ${isApplied?"opacity-60 disabled cursor-default":""}`}>{isApplied?"Job Applied":"Quick Apply"}</button>
         </div>
       </div>
+      <Popup
+        open={openJobQuestions}
+        onClose={() => setOpenJobQuestions(false)}
+        modal
+        lockScroll
+        className="screening-modal-container"
+        overlayStyle={{
+          background: "rgba(0, 0, 0, 0.7)",
+          zIndex: 1000,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <ScreeningQuesModal isApplied={isApplied} jobId={detail?.id || ""} questions={detail?.jobs_questions} setIsApplied={setIsApplied} onClose={closeScreeningModal} />
+      </Popup>
     </div>
   )
 }

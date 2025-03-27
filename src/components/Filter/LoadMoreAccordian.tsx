@@ -35,7 +35,7 @@ function LoadMoreAccordion({
   removeOptionsSearch
 }: LoadMoreAccordionProps) {
   const [selected, setSelected] = useState<string>('');
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState("ok");
   const [showAll, setShowAll] = useState(false);
   const [dynamicList, setDynamicList] = useState<Array<{ key: string, doc_count: number, latitude?: number, longitude?: number }>>([]);
   const router = useRouter();
@@ -49,7 +49,7 @@ function LoadMoreAccordion({
   }, [searchParams.toString(), filterKey]);
 
   useEffect(() => {
-    setSearch("")
+    setSearch("");
   }, [removeOptionsSearch]);
 
   // Handle search input change

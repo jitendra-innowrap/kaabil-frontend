@@ -18,13 +18,13 @@ export default function ProfileCard() {
     <div className="bg-white rounded-2xl px-4 xl:px-6 py-5 xl:py-8">
       <div className="flex flex-col items-center">
         <Image
-          className="cursor-pointer mx-auto size-[70px] 2xl:size-[102px] mb-2"
+          className="cursor-pointer mx-auto rounded-full object-cover border size-[70px] 2xl:size-[102px] mb-2"
           src={
             user?.photo_url ? user?.photo_url : "/new-assets/icons/avatar.svg"
           }
           width={287}
           height={253}
-          alt="resume-builder"
+          alt={user?.name || "user profile"}
         />
         <h3 className="text-sm text-center 2xl:text-base 3xl:text-lg font-semibold mb-[2px]">
           {user?.name}

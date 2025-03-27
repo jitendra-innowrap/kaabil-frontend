@@ -380,6 +380,17 @@ a.btn.disabled:hover {
   opacity: 0.6; /* Add hover effect (optional) */
   cursor: not-allowed;
 }
+.popup-content.logout-content{
+  max-width: 500px;
+}
+
+.popup-content.logout-content button{
+  width: 160px !important;
+  max-width: unset;
+}
+.popup-content.logout-content button.cancel-logout:hover{
+  font-weight: 500;
+}
 .container {
   margin-inline: auto !important;
   padding-inline: 20px;
@@ -1106,6 +1117,17 @@ label {
   }
   .job-description {
     max-width: calc(100% - 390px);
+  }
+  
+  .popup-content.logout-content{
+    max-width: 600px;
+  }
+  .popup-content.logout-content button{
+    width: 160px !important;
+    max-width: unset;
+  }
+  .popup-content.logout-content button.cancel-logout:hover{
+    font-weight: 500;
   }
 }
 

@@ -45,14 +45,14 @@ export default function Home() {
         const fetchHomedata = async () => {
           try {
             const { deviceId, secret, salt } = getSessionData();
-            
+
             // Ensure session data is available
             if (!deviceId || !secret || !salt) {
               console.log("Session data not available, retrying...");
               setTimeout(fetchHomedata, 1000); // Retry after 1 second
               return;
             }
-    
+
             const response = await api.get("/Home/homeData");
             console.log(response);
             setHomeData(response?.data?.result);
@@ -85,7 +85,7 @@ export default function Home() {
             setIsLoading(false);
           }
         };
-    
+
         fetchHomedata();
       }, []);
     const jobsList = [
@@ -153,14 +153,14 @@ export default function Home() {
         <ResumeBuilder/>,
         <Interviewlaptop/>,
     ]
-    
+
       const slides = topCompanies.map((job, index) => (
         <CompanyCard key={index} {...job} />
-    )); 
+    ));
     const articleSlides = jobsList.map((job, index) => (
         <ArticleCard key={index} {...job} />
     ));
-    
+
     const industries = [
         {
             icon: "/new-assets/industeries/icon-1a.png",
@@ -270,7 +270,7 @@ export default function Home() {
       <CareerSkill key={skill.index} {...skill} />
     ));
 
-    
+
 
     return (
         <main>
@@ -291,7 +291,7 @@ export default function Home() {
             <section className="bg-[#F6F7F7] py-5 xl:py-6">
                 <h2 className='text-black text-center text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[64px] mb-5 2xl:mb-4 font-medium'>Top companies <span className="font-kalam font-bold text-red">hiring</span> now</h2>
                 <div className="w-full flex flex-col items-center mb-5 md:mb-8 2xl:mb-12  mx-auto">
-                    <div className="container no-pad">                        
+                    <div className="container no-pad">
                         <div className="block">
                             <GallerySlider
                             slides={slides}
@@ -303,6 +303,10 @@ export default function Home() {
                             freeMode={false}
                             slidesPerView={3}
                             breakpoints={{
+                                320: {
+                                    slidesPerView: 2.5,
+                                    spaceBetween: 8,
+                                },
                                 480:{
                                     slidesPerView: 3,
                                 },
@@ -321,7 +325,7 @@ export default function Home() {
                             />
                         </div>
                     </div>
-                    <button 
+                    <button
                         className="mx-auto text-xs 2xl:text-base font-normal 3xl:w-[252px] 3xl:h-[50px] mt-6 md:mt-8"
                         onClick={() => router.push('/companies')}
                     >
@@ -332,15 +336,15 @@ export default function Home() {
 
             <section className="section-shadow">
                 <div className="w-full flex flex-col items-center py-5 md:py-8 xl:py-14 2xl:py-16 mx-auto">
-                <h2 className='text-black text-center text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[64px] mb-5 xl:mb-6 font-medium'>What type of <span className="font-kalam text-red font-bold">job</span> are you looking for?</h2>
-                <div className="container small grid grid-cols-1 lg:grid-cols-3 gap-4 2xl:gap-6 w-full mb-5 md:mb-8 xl:mb-[70px] 2xl:mb-[84px]">
+                <h2 className='container text-black lg:text-center text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[64px] mb-5 xl:mb-6 font-medium'>What type of <span className="font-kalam text-red font-bold">job</span> are you looking for?</h2>
+                <div className="container small grid grid-cols-2 lg:grid-cols-3 gap-4 2xl:gap-6 w-full mb-5 md:mb-8 xl:mb-[70px] 2xl:mb-[84px]">
                     {JobTypes.map((job, index) => (
                     <JobtypeCard key={index} {...job} />
                     ))}
                 </div>
-                <h2 className='text-black text-center text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[64px] mb-5 xl:mb-6 font-medium'>Explore job opportunities across top  <span className="font-kalam text-red font-bold">industries</span> </h2>
+                <h2 className='container text-black lg:text-center text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[64px] mb-5 xl:mb-6 font-medium'>Explore job opportunities across top  <span className="font-kalam text-red font-bold">industries</span> </h2>
 
-                    <div className="container no-pad mb-4">                        
+                    <div className="container no-pad mb-4">
                         <div className="block">
                             <GallerySlider
                             slides={inputSlides}
@@ -401,7 +405,7 @@ export default function Home() {
                     <h2 className='text-black text-center text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[64px] font-medium mb-0'>Learn key <span className="font-kalam text-red font-bold ">skills</span> for career success</h2>
                     <p className="font-normal text-center xl:text-lg 2xl:text-xl 2xl:leading-9">Access all the tools and skills to transform your professional journey from where you are to where you want to be.</p>
                 </div>
-                <div className="container no-pad">                        
+                <div className="container no-pad">
                     <div className="block">
                         <GallerySlider
                         slides={skillsSlides}
@@ -470,21 +474,21 @@ export default function Home() {
                         </div>
                         <div className="flex gap-5 xl:gap-[58px] 2xl:gap-[96px] 3xl:gap-[100px] pt-3 mb-4 2xl:mb-0">
                             <div className="text-red">
-                                <span className="font-semibold text-lg md:text-3xl 2xl:text-[40px] leading-[140%]">500k+</span> <br /> 
+                                <span className="font-semibold text-lg md:text-3xl 2xl:text-[40px] leading-[140%]">500k+</span> <br />
                                 <span className="block text-xs xl:text-sm lg:text-center w-[105px]">Women on the platform</span>
                             </div>
                             <div className="text-red">
-                                <span className="font-semibold text-lg md:text-3xl 2xl:text-[40px] leading-[140%]">3000+</span> <br /> 
+                                <span className="font-semibold text-lg md:text-3xl 2xl:text-[40px] leading-[140%]">3000+</span> <br />
                                 <span className="block text-xs xl:text-sm lg:text-center w-[110px]">Women joined skill program</span>
                             </div>
                             <div className="text-red">
-                                <span className="font-semibold text-lg md:text-3xl 2xl:text-[40px] leading-[140%]">3000+</span> <br /> 
+                                <span className="font-semibold text-lg md:text-3xl 2xl:text-[40px] leading-[140%]">3000+</span> <br />
                                 <span className="block text-xs xl:text-sm lg:text-center w-[90px]">Women got hired</span>
                             </div>
                         </div>
                         <Link href={'/about-us'} className='btn flex items-center justify-center text-center text-xs 2xl:text-base w-[170px] 2xl:w-[247px] 2xl:h-[50px] mt-6 xl:mt-7 3xl:mt-[36px]'>Read More</Link>
                     </div>
-                    <div className="flex-1 order-1">                        
+                    <div className="flex-1 order-1">
                         <Image src={`/new-assets/banners/why-choose-home.png`} width={704} height={735} alt="" className="w-full h-auto" />
                     </div>
                 </div>
@@ -495,7 +499,7 @@ export default function Home() {
                         <h2 className='text-white text-center text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[46px] font-medium mb-2'>Meet the women who’ve found <br />
                         <span className="font-kalam font-bold">career success  </span>with Kaabil.</h2>
                     </div>
-                    <div className="container big !px-5">                        
+                    <div className="container big !px-5">
                         <div className="block">
                             <GallerySlider
                             slides={successSlides}
@@ -527,13 +531,13 @@ export default function Home() {
                               }}
                             />
                         </div>
-                    </div> 
+                    </div>
                     <button className="btn-border 2xl:w-[218px] 2xl:h-[50px] text-xs 2xl:text-base mt-6 md:mt-8 2xl:mt-10">View All Stories</button>
                 </div>
             </section>
             <section className="bg-[#F8F8F8]">
                 <div className="w-full flex flex-col py-5 md:py-8 xl:py-14 2xl:py-[68px] mb-3 mx-auto">
-                    <div className="container no-pad">                        
+                    <div className="container no-pad">
                         <div className="section-heading md:ml-[70px]">
                             <h2 className='text-black text-start text-2xl md:text-3xl 2xl:text-[48px] 2xl:leading-[54px]  font-normal mb-2'>Articles</h2>
                             <p className=" text-base xl:text-lg 2xl:text-2xl">Register  to receive weekly articles, tips and more from our team</p>

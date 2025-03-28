@@ -134,7 +134,7 @@ function LoadMoreAccordion({
                     type="text"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    className="py-2 pl-8 2xl:pl-10 h-[40px] px-4 w-full text-xs 2xl:text-sm rounded-[12px] z-0 focus:shadow focus:outline-none bg-[#F6F6F6] placeholder:text-[#6C757D] placeholder:font-normal"
+                    className="py-2 pl-8 2xl:pl-10 h-[40px] px-4 w-full text-sm rounded-[12px] z-0 focus:shadow focus:outline-none bg-[#F6F6F6] placeholder:text-[#6C757D] placeholder:font-normal"
                     placeholder={searchPlaceholder ? searchPlaceholder : `Search ${header}`}
                   />
                   <div className="absolute top-[32px] left-[10px] -translate-y-1/2">
@@ -150,12 +150,12 @@ function LoadMoreAccordion({
                     isRadio ? (
                       <li key={item.key} className='flex justify-between items-center gap-3' onClick={() => handleRadio(item)}>
                         <Radio item={item.key} checked={selected === item.key} />
-                        <span className='mr-3 text-xs 2xl:text-sm text-end'>{item.doc_count >= 0 ? item.doc_count : ''}</span>
+                        <span className='mr-3 text-sm text-end text-[#6C757D]'>{item.doc_count >= 0 ? item.doc_count : ''}</span>
                       </li>
                     ) : (
                       <li key={item.key} className='flex justify-between items-center gap-3' onClick={() => handleCheck(item)}>
                         <Check item={item.key} checked={selected.split('|').includes(item.key)} />
-                        <span className='mr-3 text-xs 2xl:text-sm text-end'>{item.doc_count >= 0 ? item.doc_count : ''}</span>
+                        <span className='mr-3 text-sm text-end text-[#6C757D]'>{item.doc_count >= 0 ? item.doc_count : ''}</span>
                       </li>
                     )
                   ))}

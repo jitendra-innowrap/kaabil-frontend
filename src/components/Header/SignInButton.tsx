@@ -131,23 +131,23 @@ export default function SignInButton({ closeSideMenu }: prop) {
         <button
           id="sign-in-button"
           onClick={handleSignIn}
-          className="bg-red text-white text-xs !p-0 2xl:text-sm lg:w-[70px] 2xl:w-[84px] h-[32px] 2xl:h-[38px] grid place-items-center rounded-[9px]"
+          className="bg-red !p-0 text-white sign-in-btn text-xs 2xl:text-sm lg:w-[70px] xl:w-[84px] h-[32px] 2xl:h-[38px] grid place-items-center rounded-[9px]"
         >
           Sign In
         </button>
       ) : (
         <div className="flex items-center gap-3 2xl:gap-7">
-          <div className="relative" tabIndex={0}>
+          {/* <div className="relative" tabIndex={0}>
             <span className="size-2 xl:size-[14px] bg-success text-white rounded-full absolute text-[10px] grid place-items-center leading-none -top-[4px] -right-[4px] border-[1.5px] border-white">
               5
             </span>
             <PiBellBold className="size-4 3xl:size-5" />
-          </div>
-          <div className="relative group/menu flex items-center cursor-pointer">
+          </div> */}
+          <div className="relative group/menu flex items-center cursor-pointer mobile-profile-option">
             <div tabIndex={0} className="relative size-[30px] xl:size-[40px] 2xl:size-[50px]">
-              <span className="size-2 xl:size-[14px] bg-success text-white rounded-full absolute text-[10px] grid place-items-center leading-none top-[1px] -right-[2px] border-[1.5px] border-white">
+              {/* <span className="size-2 xl:size-[14px] bg-success text-white rounded-full absolute text-[10px] grid place-items-center leading-none top-[1px] -right-[2px] border-[1.5px] border-white">
                 5
-              </span>
+              </span> */}
               <Image
                 height={100}
                 width={100}
@@ -161,8 +161,8 @@ export default function SignInButton({ closeSideMenu }: prop) {
               />
             </div>
             <BiChevronDown className="font-medium text-xl 3xl:text-2xl text-black" />
-            <div className="absolute z-30 hidden group-focus-within/menu:block group-hover/menu:block top-0 left-0">
-              <div className="bg-white shadow-default mt-[52px] 2xl:mt-[76px] rounded-xl w-[140px] 2xl:w-[180px] border border-lightGrey divide-y divide-lightGrey">
+            <div className="absolute z-30 hidden group-focus-within/menu:block group-hover/menu:block top-0 lg:left-0 profile-options-menu">
+              <div className="bg-white shadow-default mt-[45px] lg:mt-[52px] 2xl:mt-[76px] rounded-xl w-[140px] 2xl:w-[180px] border border-lightGrey divide-y divide-lightGrey">
                 <div
                   onClick={gotoMyProfile}
                   className="flex items-center group/link gap-3 3xl:gap-4 text-Grey hover:text-black py-3 2xl:py-4 font-medium hover:font-semibold text-xs 2xl:text-base px-5 cursor-pointer"

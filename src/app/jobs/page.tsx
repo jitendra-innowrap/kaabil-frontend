@@ -41,7 +41,7 @@ export default function Home() {
         const response = await api.get("/Home/homeData");
         console.log(response);
         setTopCompanies(response?.data?.result?.top_companies?.map((comp: any, i: number) => ({
-          icon: comp?.company_logo || "/new-assets/icons/company_icon_placeholder.png",
+          icon: comp?.company_logo || "",
           title: comp?.company_name,
           companyId: `${comp?.id}`,
           jobUrl: '/'
@@ -86,10 +86,10 @@ export default function Home() {
               <JobList />
             </Suspense>
             <div className="nudges-bar hidden lg:flex flex-shrink-0 flex-col gap-4 md:gap-6 max-w-[400px] mx-auto lg:w-[280px] 2xl:w-[341px]">
-              <FindCareer/>
+              {!isLoggedIn && <FindCareer/>}
               {isLoggedIn && <ProfileCard/>}
               {isLoggedIn && <QuickAction/>}
-              <ResumeBuilder/>
+              {!isLoggedIn && <ResumeBuilder/>}
               {isLoggedIn && <BoostProfile/>}
             </div>
         </div>
@@ -97,24 +97,24 @@ export default function Home() {
 
       {!isLoggedIn && <section className="bg-white py-5 xl:py-6">
           <div className="w-full flex flex-col items-center my-5 md:my-8 xl:my-14 2xl:my-16  mx-auto">
-          <h2 className='text-black text-center text-2xl md:text-3xl xl:text-4xl 2xl:text-[40px] 2xl:leading-[64px] mb-5 xl:mb-8 font-medium'>Top companies <span className="font-kalam text-red">hiring</span> now</h2>
-              <div className="container no-pad">                        
+          <h2 className='text-black text-center text-2xl md:text-3xl xl:text-4xl 2xl:text-[40px] 2xl:leading-[64px] mb-5 xl:mb-8 font-medium'>Top companies <span className="font-kalam text-red font-semibold">hiring</span> now</h2>
+              <div className="container no-pad mobile-p-r-0">                        
                   <div className="block">
                       <GallerySlider
                       slides={slides}
-                      spaceBetween={25}
+                      spaceBetween={10}
                       showNavigation
                       loop={true}
                       autoplay={true}
                       autoplayDuration={3000}
                       freeMode={false}
-                      slidesPerView={3}
+                      slidesPerView={2.4}
                       breakpoints={{
                           480:{
-                              slidesPerView: 3,
+                              slidesPerView: 2.4,
                           },
                           768: {
-                            slidesPerView: 4,
+                            slidesPerView: 3.5,
                           },
                           1024: {
                             spaceBetween:20,

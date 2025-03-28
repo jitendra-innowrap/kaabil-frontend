@@ -64,7 +64,7 @@ export default function AboutUs() {
             </h3>
             <p className="text-xs md:text-sm text-gray-700 leading-relaxed">
               Imagine a world where every woman has the power to shape her future, where talent is nurtured, and
-              opportunities are limitless. This vision is what drives Kooliprogram.org — a pioneering initiative
+              opportunities are limitless. This vision is what drives kaabilprogram.org — a pioneering initiative
               dedicated to empowering women across India.
             </p>
           </div>
@@ -92,7 +92,7 @@ export default function AboutUs() {
               Driving Impact, Shaping the Future
             </h3>
             <p className="text-xs md:text-sm text-gray-700 leading-relaxed">
-              At Kooli, we believe that when women rise, communities thrive. Our mission is to ensure that every woman
+              At kaabil, we believe that when women rise, communities thrive. Our mission is to ensure that every woman
               has access to meaningful employment, unlocking her full potential and building a better tomorrow.
             </p>
           </div>

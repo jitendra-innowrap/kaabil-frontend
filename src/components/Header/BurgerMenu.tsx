@@ -21,9 +21,11 @@ export default function BurgerMenu() {
                     onClick={() => setOpen(false)}
                 />
             )}
-            <div className=" relative z-[11]"><Hamburger toggled={isOpen} toggle={setOpen} /></div>
+            <div className=" relative" onClick={()=> setOpen(!isOpen)}>
+                <Image src={'/new-assets/icons/mobile-menu-icon.svg'} width={20} height={12} alt='menu icon' />
+            </div>
             <div 
-                className={`fixed z-10 top-0 right-0 h-full w-[100vw] max-w-[380px] bg-white shadow-lg transform transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
+                className={`fixed z-10 top-0 left-0 h-full w-[calc(100vw_-_60px)] rounded-e-2xl max-w-[380px] bg-white shadow-lg transform transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
             >
                 <div className="flex pl-5 relative mt-4 mb-10 pr-4 items-center">
                     <img

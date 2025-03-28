@@ -88,10 +88,10 @@ function RangeAccordion() {
                             </div>
                             <form className="mb-5">
                                 <div className="form-group relative mb-2">
-                                    <label htmlFor="min-salary" className="absolute block text-xs 2xl:text-sm top-[14px] left-3 mb-1">Min ₹</label>
+                                    <label htmlFor="min-salary" className="absolute block text-sm top-[14px] left-3 mb-1">Min ₹</label>
                                     <input
                                         type="text"
-                                        className='w-full text-xs 2xl:text-sm p-[14px] pl-[65px] rounded-lg bg-[#F6F6F6] mt-[1px]'
+                                        className='w-full text-sm p-[14px] pl-[65px] rounded-lg bg-[#F6F6F6] mt-[1px]'
                                         id="min-salary"
                                         name="min-salary"
                                         value={tempValue.min}
@@ -99,10 +99,10 @@ function RangeAccordion() {
                                     />
                                 </div>
                                 <div className="form-group relative mb-2">
-                                    <label htmlFor="max-salary" className="absolute block text-xs 2xl:text-sm top-[14px] left-3 mb-1">Max ₹</label>
+                                    <label htmlFor="max-salary" className="absolute block text-sm top-[14px] left-3 mb-1">Max ₹</label>
                                     <input
                                         type="text"
-                                        className='w-full text-xs 2xl:text-sm p-[14px] pl-[65px] rounded-lg bg-[#F6F6F6] mt-[1px]'
+                                        className='w-full text-sm p-[14px] pl-[65px] rounded-lg bg-[#F6F6F6] mt-[1px]'
                                         id="max-salary"
                                         name="max-salary"
                                         value={tempValue.max}
@@ -111,7 +111,7 @@ function RangeAccordion() {
                                 </div>
                                 <button
                                     type="button"
-                                    className='w-full filter-range-btn !bg-black text-xs 2xl:text-sm font-normal !text-white'
+                                    className='w-full filter-range-btn !bg-black text-sm font-normal !text-white'
                                     onClick={handleApply}
                                 >
                                     Apply

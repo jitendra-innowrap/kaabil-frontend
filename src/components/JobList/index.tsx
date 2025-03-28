@@ -55,6 +55,9 @@ function JobList() {
     searchParams.get("search"),
   ]);
 
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null); 
+  
   // Handle sort option selection
   const handleSortChange = (newSort: string) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -62,6 +65,30 @@ function JobList() {
     params.set("page", "1"); // Reset page to 1 when sort changes
     router.push(`?${params.toString()}`, { scroll: false }); // Update the URL without refreshing the page
   };
+  const toggleDropdown = () => setIsOpen(!isOpen);
+
+  // Handle sort option selection
+  const handleOptionClick = (newSort: string) => {
+    handleSortChange(newSort); // Update the sort value
+    setIsOpen(false); // Close the dropdown
+  };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
 
   // Fetch jobs based on the current page
   useEffect(() => {
@@ -215,34 +242,13 @@ function JobList() {
   };
 
   const nudges = [
-    <Interview key="interview" />,
     <RegisterInMinutes key="register" />,
+    <Interview key="interview" />,
   ];
   const nudgesForLoggedInUser = [
-    <Interview key="interview" />,
+    // <Interview key="interview" />,
     <TopCompaniesHiring key="top-companies" />,
   ];
-  const [isOpen, setIsOpen] = useState(false);
-  // Handle sort option selection
-  const handleOptionClick = (newSort: string) => {
-    handleSortChange(newSort); // Update the sort value
-    setIsOpen(false); // Close the dropdown
-  };
-  const dropdownRef = useRef<HTMLButtonElement>(null); // Ref for dropdown container
-
-  const toggleDropdown = () => setIsOpen(!isOpen);
-
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
 
   return (
     <div
@@ -259,11 +265,10 @@ function JobList() {
             {totalJobs} jobs for you
           </p>
         </div>
-        <div className="relative h-fit sort-by-container mt-1 3xl:mt-0">
+        <div className="relative h-fit sort-by-container mt-1 3xl:mt-0" ref={dropdownRef}>
           {/* Dropdown Button */}
           <button
             type="button"
-            ref={dropdownRef}
             className="text-[#4D4D4F] px-3 !py-2 whitespace-nowrap flex items-center !border-black btn-border"
             id="menu-button"
             aria-expanded={isOpen}
@@ -271,7 +276,7 @@ function JobList() {
             onClick={toggleDropdown}
           >
             {sort === "3" ? "Recently posted" : "Best Matched"}
-                <IoMdArrowDropdown className={`flex-shrink-0 ml-1 xl:ml-2 3xl:ml-5 text-[#000000] size-4 3xl:size-4 ${isOpen?"rotate-180":""}`} />
+            <IoMdArrowDropdown className={`flex-shrink-0 ml-1 xl:ml-2 3xl:ml-5 text-[#000000] size-4 3xl:size-4 ${isOpen?"rotate-180":""}`} />
           </button>
 
           {/* Dropdown Menu */}
@@ -286,7 +291,10 @@ function JobList() {
               <div className="sort-items-wrapper rounded-md bg-white ring-1 shadow-lg ring-black/5 mt-1">
                 <div className="py-0 sort-items divide-y" role="none">
                   <div
-                    onClick={() => handleOptionClick("1")}
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevent event bubbling
+                      handleOptionClick("1");
+                    }}
                     className="sort-item block px-4 py-2 lg:px-[10px] lg:py-[7px] 3xl:px-4 3xl:py-2 text-xs lg:text-[10px] 3xl:text-sm whitespace-nowrap text-[#6b6b6b] hover:text-gray-900 outline-hidden cursor-pointer"
                     role="menuitem"
                     tabIndex={-1}
@@ -295,7 +303,10 @@ function JobList() {
                     Best Matched
                   </div>
                   <div
-                    onClick={() => handleOptionClick("3")}
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevent event bubbling
+                      handleOptionClick("3");
+                    }}
                     className="sort-item block px-4 py-2 lg:px-[10px] lg:py-[7px] 3xl:px-4 3xl:py-2 text-xs lg:text-[10px] 3xl:text-sm whitespace-nowrap text-[#6b6b6b] hover:text-gray-900 outline-hidden cursor-pointer"
                     role="menuitem"
                     tabIndex={-1}
@@ -339,7 +350,6 @@ function JobList() {
           return items;
         })}
       </div>
-
       <div className="block lg:hidden mt-4">
         <FindCareer/>
       </div>

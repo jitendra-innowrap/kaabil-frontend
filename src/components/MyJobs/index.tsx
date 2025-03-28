@@ -20,7 +20,7 @@ export default function MyJobs() {
   const searchParams = useSearchParams();
   const tabParam = searchParams.get('tab');
   const pageParam = searchParams.get('page');
-  const [jobs, setJobs] = useState<JobResult[]>([]);
+  const [jobs, setJobs] = useState<JobResult[] | null>(null);
   const { isLoggedIn } = useAppSelector((state) => state.user);
   // Initialize state from URL params directly
   const [currentPage, setCurrentPage] = useState(() => {
@@ -127,6 +127,7 @@ export default function MyJobs() {
 
   const handleActive = (page: number) => {
     setCurrentPage(page);
+    setJobs(null);
     const params = new URLSearchParams(searchParams.toString());
     params.set("page", page.toString());
     router.push(`?${params.toString()}`, { scroll: false });
@@ -136,7 +137,7 @@ export default function MyJobs() {
     let updatedList = jobs?.filter((job: JobResult) => 
         job && 'id' in job && job.id !== id
       );
-    setJobs(updatedList);
+    setJobs(updatedList || null);
     const updatedJobs = totalJobs -1
     setTotalJobs(updatedJobs)
     const updatedPages = Math.ceil(updatedJobs / jobsPerPage);
@@ -146,6 +147,7 @@ export default function MyJobs() {
     console.log('updatedList', updatedList)
   }
   const handleTab = (key: number) => {
+    setJobs(null);
     setCurrentPage(1);
     setSelectedTab(key);
     const params = new URLSearchParams();
@@ -229,7 +231,7 @@ export default function MyJobs() {
                   href="/my-jobs?tab=2"
                   onClick={() => handleTab(2)}
                 >
-                  ShortListed Jobs
+                  Shortlisted Jobs
                 </Link>
                 <Link
                   className={`px-0 py-3 inline-flex items-center text-sm ${
@@ -246,7 +248,7 @@ export default function MyJobs() {
             </div>
           </div>
           
-          {!isLoading ? (
+          {jobs !==null ? (
             <div className="w-full">
               {jobs?.length > 0 ? (
                 <div className="flex flex-col w-full gap-3 3xl:gap-4">

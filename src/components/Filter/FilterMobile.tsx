@@ -90,7 +90,8 @@ export default function FilterMobilePannel() {
       {/* <pre>{JSON.stringify(filters,null,2)}</pre> */}
 
     {open && 
-    <div ref={overlayRef} className={`block bg-black opacity-20 z-[103]  w-screen h-screen fixed top-0 left-0 `} onClick={()=>setOpen(false)}></div>}
+    <div ref={overlayRef} id='filter-pannel-overlay' className={`block bg-black opacity-20 z-[103]  w-screen h-screen fixed top-0 left-0 `} onClick={()=>setOpen(false)}></div>}
+    <div className="sticky top-[52px] h-fit">
         <div className="flex mobile-job-search relative lg:hidden justify-between items-center w-full mb-[22px]">
             <input
                 type="text"
@@ -107,6 +108,7 @@ export default function FilterMobilePannel() {
                 <Image width={18} height={18} src={"/new-assets/icons/mobile-filter-search.svg"} alt='search icon' />
             </div>
         </div>
+    </div>
     <div className="filters-sidebar !static w-screen lg:min-w-[260px] 3xl:min-w-[320px] h-fit lg:p-6 rounded-[20px] flex bg-white flex-col lg:w-fit items-start">
         <div className="flex lg:gap-7 xl:gap-10 2xl:gap-12">
             <div className={`

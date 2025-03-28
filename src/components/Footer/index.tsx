@@ -37,16 +37,16 @@ const handleFetchLocation = async () => {
                     />
                     <strong className='font-semibold uppercase text-xs 3xl:text-sm mb-4 block 3xl:mb-5'>Connect with us</strong>
                     <div className="flex gap-2 3xl:gap-4">
-                        <a href="/" target="_blank" rel="noopener noreferrer">
+                        <a href=" https://www.facebook.com/kaabilprogram" target="_blank" rel="noopener noreferrer">
                             <Image width={24} height={24} alt='' src="/new-assets/icons/fb.svg" className='inline-block w-6 h-6 text-white' />
                         </a>
-                        <a href="/" target="_blank" rel="noopener noreferrer">
+                        <a href="https://x.com/kaabilprogram?t=bw-ZHBJ3k86mRIsug2oiRA&s=15" target="_blank" rel="noopener noreferrer">
                             <Image width={24} height={24} alt='' src="/new-assets/icons/x.svg" className='inline-block w-6 h-6 text-white ml-3' />
                         </a>
-                        <a href="/" target="_blank" rel="noopener noreferrer">
+                        <a href="https://www.linkedin.com/company/kaabilprogram/" target="_blank" rel="noopener noreferrer">
                             <Image width={24} height={24} alt='' src="/new-assets/icons/linkedIn-Icon.svg" className='inline-block w-6 h-6 text-white ml-3' />
                         </a>
-                        <a href="/" target="_blank" rel="noopener noreferrer">
+                        <a href="https://www.instagram.com/kaabilprogram/" target="_blank" rel="noopener noreferrer">
                             <Image width={24} height={24} alt='' src="/new-assets/icons/insta.svg" className='inline-block w-6 h-6 text-white ml-3' />
                         </a>
                     </div>

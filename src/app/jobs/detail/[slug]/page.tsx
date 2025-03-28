@@ -268,7 +268,7 @@ export default function Home() {
     );
   };
   return (
-    <main>
+    <main className="bg-white">
       <section className="bg-[#FDEAC9] py-6 xl:py-8 sticky">
       <div className="container relative z-[1]">
         <div className="flex justify-between flex-wrap flex-col sm:flex-row sm:items-end gap-5 xl:gap-7 2xl:gap-8">
@@ -377,7 +377,7 @@ export default function Home() {
         </div>
       </div>
       </section>
-      <section className="container mt-5 md:mt-8 xl:mt-10 mb-6 md:mb-10 xl:mb-14 2xl:mb-16 ">
+      <section className="container mt-5 md:mt-8 xl:mt-10 mb-6 md:mb-10 xl:mb-14 2xl:mb-16 bg-[#ffffff]">
         <div className="flex flex-col lg:flex-row gap-4 md:gap-6 2xl:gap-10">
             <div className="h-fit order-2 job-detail-sidebar flex-shrink-0 p-3 md:p-4 lg:p-5 3xl:p-8 rounded-xl w-full shadow-default">
               <h2 className="text-sm 2xl:text-lg 3xl:text-xl font-semibold mb-2 md:mb-4 3xl:mb-5">About this role</h2>
@@ -503,7 +503,7 @@ export default function Home() {
             </div>
         </div>
       </section>
-      {jobsSlides?.length>0 && <section className="bg-[#F8F8F8]">
+      {jobsSlides?.length>0 && <section className="bg-[#f9f9f9]">
         <div className="w-full flex flex-col py-5 md:py-8 xl:py-14 2xl:py-16  mx-auto">
           <div className="">                        
             <div className="container section-heading">

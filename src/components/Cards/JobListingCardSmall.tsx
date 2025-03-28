@@ -189,7 +189,7 @@ export default function JobListingCardSmall({detail, isCompanyJob=false}:{detail
         <div className="flex flex-wrap gap-4 min-h-16 justify-between">
           <div className="flex action-btns gap-4 flex-wrap justify-end items-end 3xl:pt-4">
           <Link href={`/jobs/detail/${detail?.id}`} className='grid place-items-center btn-border whitespace-nowrap !p-0 h-[30px] 3xl:h-[44px] flex-1 text-[10px] 2xl:text-xs 3xl:text-sm text-red !border-red'>view Job</Link>
-          <button onClick={()=>{handleApply(detail?.id)}} className={`btn-border whitespace-nowrap !p-0 h-[30px] 3xl:h-[44px] flex-1 text-[10px] 2xl:text-xs 3xl:text-sm   ${isApplied?"disabled cursor-default !bg-[#f0f1f1] !border-[#f0f1f1] text-[#4D4D4F] gap-1 3xl:gap-[6px] flex justify-center items-center":"text-white !bg-red !border-red grid place-items-center"}`}>
+          <button onClick={(e)=>{handleApply(detail?.id); e.stopPropagation();}} className={`btn-border whitespace-nowrap !p-0 h-[30px] 3xl:h-[44px] flex-1 text-[10px] 2xl:text-xs 3xl:text-sm   ${isApplied?"disabled cursor-default !bg-[#f0f1f1] !border-[#f0f1f1] text-[#4D4D4F] gap-1 3xl:gap-[6px] flex justify-center items-center":"text-white !bg-red !border-red grid place-items-center"}`}>
             {
               isApplied && 
               <svg width="13" height="13" className='size-[10px] 3xl:size-3' viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -160,7 +160,7 @@ export default function SaveJobCard(prop:any) {
         <h3 className='text-sm 3xl:text-base 2xl:text-lg font-medium my-[6px] 3xl:my-3 line-clamp-1'>{prop?.job_title}</h3>
         <div className="flex mb-1 md:mb-2">
           <img src={'/new-assets/icons/location-pin-dot.svg'} alt='Map pin' width={100} height={100} className='size-3 2xl:size-5' />
-          <span className='ml-2 text-[10px] 2xl:text-sm text-[#545581] line-clamp-1' title={prop?.job_location?.[0]?.job_location || "Remote"}>{prop?.job_location?.[0]?.job_location || "Remote"}</span>
+          <span className='ml-2 text-[10px] 2xl:text-sm text-[#545581] line-clamp-1' title={prop?.jobs_location?.[0]?.job_location || "Remote"}>{prop?.jobs_location?.[0]?.job_location || "Remote"}</span>
         </div>
         <div className="flex gap-2">
           <div className="flex">

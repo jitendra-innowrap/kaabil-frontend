@@ -242,11 +242,11 @@ function JobList() {
   };
 
   const nudges = [
-    <Interview key="interview" />,
     <RegisterInMinutes key="register" />,
+    <Interview key="interview" />,
   ];
   const nudgesForLoggedInUser = [
-    <Interview key="interview" />,
+    // <Interview key="interview" />,
     <TopCompaniesHiring key="top-companies" />,
   ];
 

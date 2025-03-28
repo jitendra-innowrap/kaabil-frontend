@@ -52,13 +52,9 @@ export function formatToK(number: number | string): string {
     throw new Error("Invalid number input");
   }
 
-  if (num >= 1000 && num < 1000000) {
+  if (num >= 1000) {
     return (num / 1000).toFixed(1).replace(".0", "") + "k"; // Format as thousands
-  } else if (num >= 1000000 && num < 1000000000) {
-    return (num / 1000000).toFixed(1).replace(".0", "") + "M"; // Format as millions
-  } else if (num >= 1000000000) {
-    return (num / 1000000000).toFixed(1).replace(".0", "") + "B"; // Format as billions
-  } else {
+  }  else {
     return num.toString(); // Return the number as is for values less than 1000
   }
 }
@@ -432,6 +428,7 @@ export function timeAgo(dateString: string): string {
   const minute = 60 * 1000;
   const hour = 60 * minute;
   const day = 24 * hour;
+  const week = 7 * hour;
   const month = 30 * day;
   const year = 365 * day;
 

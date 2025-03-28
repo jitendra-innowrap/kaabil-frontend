@@ -101,8 +101,7 @@ const ProfileCard = () => {
                   <h1
                     className="text-center text-red mt-2 text-sm font-medium cursor-pointer"
                     onClick={() => {
-                      router.push("/my-jobs");
-                      dispatch(setSelectedTab(job.tabIndex));
+                      router.push(`/my-jobs?tab=${job.tabIndex}`);
                     }}
                   >
                     View all

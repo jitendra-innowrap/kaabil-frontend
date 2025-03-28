@@ -98,23 +98,23 @@ export default function Home() {
       {!isLoggedIn && <section className="bg-white py-5 xl:py-6">
           <div className="w-full flex flex-col items-center my-5 md:my-8 xl:my-14 2xl:my-16  mx-auto">
           <h2 className='text-black text-center text-2xl md:text-3xl xl:text-4xl 2xl:text-[40px] 2xl:leading-[64px] mb-5 xl:mb-8 font-medium'>Top companies <span className="font-kalam text-red">hiring</span> now</h2>
-              <div className="container no-pad">                        
+              <div className="container no-pad mobile-p-r-0">                        
                   <div className="block">
                       <GallerySlider
                       slides={slides}
-                      spaceBetween={25}
+                      spaceBetween={10}
                       showNavigation
                       loop={true}
                       autoplay={true}
                       autoplayDuration={3000}
                       freeMode={false}
-                      slidesPerView={3}
+                      slidesPerView={2.4}
                       breakpoints={{
                           480:{
-                              slidesPerView: 3,
+                              slidesPerView: 2.4,
                           },
                           768: {
-                            slidesPerView: 4,
+                            slidesPerView: 3.5,
                           },
                           1024: {
                             spaceBetween:20,

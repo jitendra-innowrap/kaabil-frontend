@@ -13,16 +13,21 @@ export default function Header() {
     <header className='sticky top-0 bg-white z-[101]'>
         <div className='relative'>
             <div className="border-b-[1px] shadow-default flex justify-center">
-                <div className='flex container py-4 lg:py-1 3xl:py-[10px] justify-between lg:justify-start items-center'>
-                    <Link href="/" className="flex relative pr-4 md:pr-6 3xl:pr-14 items-center">
-                        <Image
-                            height={70}
-                            width={141}
-                            src="/new-assets/logos/Kaabil logo.png"
-                            className='w-auto max-w-fit h-[40px] xl:h-[40px] 3xl:h-[70px]'
-                            alt='kaabil logo'
-                            />
-                    </Link>
+                <div className='flex container mobile-header py-4 lg:py-1 3xl:py-[10px] justify-between lg:justify-start items-center'>
+                    <div className="flex items-center">
+                        <div className="lg:hidden mr-2">
+                            <BurgerMenu />
+                        </div>
+                        <Link href="/" className="flex relative pr-4 md:pr-6 3xl:pr-14 items-center">
+                            <Image
+                                height={70}
+                                width={141}
+                                src="/new-assets/logos/Kaabil logo.png"
+                                className='w-auto max-w-fit h-[40px] xl:h-[40px] 3xl:h-[70px]'
+                                alt='kaabil logo'
+                                />
+                        </Link>
+                    </div>
                     <div className="hidden lg:flex h-full flex-col w-[-webkit-fill-available]">
                         <div className="flex h-full justify-between items-center">
                             <ul className="flex py-4 gap-3 xl:gap-4 3xl:gap-[30px]">
@@ -80,8 +85,8 @@ export default function Header() {
                             </ul>
                         </div>
                     </div>
-                    <div className="lg:hidden mr-4">
-                        <BurgerMenu />
+                    <div className="lg:hidden">
+                        <SignInButton/>
                     </div>
                 </div>
             </div>

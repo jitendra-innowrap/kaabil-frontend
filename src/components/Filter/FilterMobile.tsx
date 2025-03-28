@@ -109,7 +109,7 @@ export default function FilterMobilePannel() {
         </div>
     <div className="filters-sidebar w-screen lg:min-w-[260px] 3xl:min-w-[320px] h-fit lg:p-6 rounded-[20px] flex bg-white flex-col lg:w-fit items-start">
         <div className="flex lg:gap-7 xl:gap-10 2xl:gap-12">
-            <div className={`absolute p-6 lg:p-0 rounded-3xl bg-white w-screen lg:relative h-[calc(100vh_-_100px)] mobile-filter-pannel overflow-auto lg:h-auto z-[105] ${!open ? 'top-full hidden' : 'top-0'} transition-all top-[54px] md:top-16 lg:top-0 lg:w-full flex flex-col gap-4 xl:gap-5 duration-300 h-max `}>
+            <div className={`absolute p-6 lg:p-0 rounded-3xl bg-white w-screen lg:relative h-[80vh] max-h-[600px] mobile-filter-pannel overflow-auto lg:h-auto z-[105] ${!open ? 'top-full hidden' : ''} transition-all bottom-0 md:top-16 lg:top-0 lg:w-full flex flex-col gap-4 xl:gap-5 duration-300 h-max `}>
             <div className="flex lg:hidden justify-between items-center w-full mb-2 md:mb-4 xl:mb-6 2xl:mb-8">
                 <h2 className="text-lg  2xl:text-xl font-medium filter-head">All Filters</h2>
                 <button onClick={handleClearAll} className='btn-border clear-all text-black !border-black text-xs font-medium max-w-[72px] !px-2 whitespace-nowrap text-center' style={{textTransform:'unset'}}>Clear all</button>

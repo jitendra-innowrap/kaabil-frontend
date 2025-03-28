@@ -101,8 +101,8 @@ const handleFetchLocation = async () => {
                 <p className='text-xs text-[#E3E3E3]'>© Copyright 2024 App. All Rights Reserved.</p>
             </div>
         </div>
-        <div className="container w-full flex md:hidden flex-col mt-5 md:mt-8 xl:mt-14  mx-auto">
-            <div className="grid grid-cols-2 gap-3 justify-between">
+        <div className="container w-full !px-6 flex md:hidden flex-col mt-6 lg:mt-8 xl:mt-14  mx-auto">
+            <div className="grid grid-cols-2 gap-3 justify-between mb-9">
                 <div className="block col-span-1">
                     <img
                     src={"/new-assets/logos/Kaabil logo white.png"}
@@ -125,41 +125,45 @@ const handleFetchLocation = async () => {
             <div className="grid grid-cols-2 justify-between mb-5 lg:mb-8 3xl:mb-[20px]">
                 
                     <div className="block col-span-1">
-                        <strong className='uppercase font-semibold text-xs 3xl:text-sm mb-4 3xl:mb-5 text-[#E3E3E3] block'>COMPANY</strong>
-                        <ul>
-                            <li className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Home</li>
-                            <li className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>About Us</li>
-                            <li className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Resume Builder</li>
-                            <li className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Career Advisor</li>
-                            <li className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Mock Interviews</li>
-                            <li className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Skill Center</li>
-                            <li className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Blogs</li>
+                        <strong className='uppercase font-semibold text-sm 3xl:text-sm mb-6 text-[#E3E3E3] block'>COMPANY</strong>
+                        <ul className='flex flex-col gap-5'>
+                            <li className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Home</li>
+                            <li className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>About Us</li>
+                            <li className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Resume Builder</li>
+                            <li className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Career Advisor</li>
+                            <li className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Mock Interviews</li>
+                            <li className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Skill Center</li>
+                            <li className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Blogs</li>
                         </ul>
                     </div>
-                    <div className="block col-span-1">
-                        <strong className='uppercase font-semibold text-xs 3xl:text-sm mb-4 3xl:mb-5 text-[#E3E3E3] block'>Legal</strong>
-                        <ul>
-                            <li className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Privacy Policy</li>
-                            <li className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Terms of Use</li>
-                            <li className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Cookie Policy</li>
-                        </ul>
-                        <strong className='uppercase font-semibold text-xs 3xl:text-sm mb-4 3xl:mb-5 text-[#E3E3E3] block'>Resources</strong>
-                        <ul>
-                            <li className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Help Center</li>
-                            <li className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>FAQs</li>
-                        </ul>
+                    <div className="col-span-1 flex flex-col justify-between">
+                        <div className="">
+                            <strong className='uppercase font-semibold text-sm 3xl:text-sm mb-6 text-[#E3E3E3] block'>Legal</strong>
+                            <ul className='flex flex-col gap-5'>
+                                <li className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Privacy Policy</li>
+                                <li className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Terms of Use</li>
+                                <li className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Cookie Policy</li>
+                            </ul>
+                        </div>
+                        <div className="">
+                            <strong className='uppercase font-semibold text-sm 3xl:text-sm mb-6 text-[#E3E3E3] block'>Resources</strong>
+                            <ul className='flex flex-col gap-5'>
+                                <li className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Help Center</li>
+                                <li className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>FAQs</li>
+                            </ul>
+                        </div>
                     </div>
-                    <div className="block col-span-2">
-                        <strong className='uppercase font-semibold text-xs 3xl:text-sm mb-4 3xl:mb-5 text-[#E3E3E3] block'>Contact US</strong>
+                    <div className="block col-span-2 mt-11">
+                        <strong className='uppercase font-semibold text-sm 3xl:text-sm mb-6 text-[#E3E3E3] block'>Contact US</strong>
                         <ul>
-                            <li className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>K. C. Mahindra Education Trust Cecil Court, Near Regal Cinema, Mahakavi Bhushan Marg, Mumbai 400001.</li>
+                            <li className='mb-4 3xl:mb-5 text-sm leading-[24px] cursor-pointer text-[#E3E3E3]'>K. C. Mahindra Education Trust Cecil Court, Near Regal Cinema, Mahakavi Bhushan Marg, Mumbai 400001.</li>
                         </ul>
                     </div>
                 {/* <div className="flex gap-[37px]">
                 </div> */}
                 
             </div>
-            <div className="flex w-full justify-end py-4 flex-col md:flex-row gap-4 items-center border-t border-[#BDBDBD]">
+            <div className="flex w-full justify-end py-6 flex-col md:flex-row gap-4 border-t border-[#BDBDBD]">
                 <p className='text-xs text-[#E3E3E3]'>© Copyright 2024 App. All Rights Reserved.</p>
             </div>
         </div>

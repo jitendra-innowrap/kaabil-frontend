@@ -60,6 +60,12 @@ useEffect(() => {
       const responseData = response.data as CompanyDetailResponse;
 
       if (responseData.result?.[0]?.id !== null) {
+        if(!responseData.result?.[0]?.company_description || [...responseData.result?.[0]?.company_image, ...responseData.result?.[0]?.company_videos ].length!>0){
+          // Add #jobs to the URL to make the jobs tab active
+            if (!window.location.hash.includes('jobs')) {
+              router.replace(`${window.location.pathname}#jobs`, undefined);
+          }
+        }
         setCompanyDetails(responseData.result?.[0]);
         setCompanyJobs(responseData.job)
         setIsFollowed(responseData?.result?.[0]?.company_follow_status=="1")
@@ -147,7 +153,7 @@ if(isLoading){
             <div className="flex flex-col sm:flex-row sm:items-center gap-5 xl:gap-7 2xl:gap-8">
               <ProfilePhoto 
                 logo={CompanyDetails?.company_logo} 
-                styles="rounded-lg bg-white 2xl:rounded-2xl flex-shrink-0 size-16 lg:size-[105px] 2xl:size-36 3xl:size-40" 
+                styles="rounded-lg bg-white 2xl:rounded-2xl flex-shrink-0 size-16 lg:size-[105px] 2xl:size-36 3xl:size-40 company-detail-logo lg:text-4xl 2xl:text-5xl 3xl:text-6xl" 
                 name={CompanyDetails?.company_name}
                 index={1}
                 />
@@ -179,7 +185,7 @@ if(isLoading){
                         <span className="text-[10px] 2xl:text-sm font-light">Lorem</span>
                       </div>
                     </div> */}
-                    <div className="flex gap-2 lg:gap-3 2xl:gap-4">
+                    {CompanyDetails?.company_emp_size && <div className="flex gap-2 lg:gap-3 2xl:gap-4">
                       <Image
                       src={'/new-assets/icons/employee-icon.svg'}
                       width={1320}
@@ -192,8 +198,8 @@ if(isLoading){
                         <strong className="block font-medium text-xs 2xl:text-base -mb-[2px] 2xl:mb">Employees</strong>
                         <span className="text-[10px] 2xl:text-sm font-light">{CompanyDetails?.company_emp_size}</span>
                       </div>
-                    </div>
-                    <div className="flex gap-2 lg:gap-3 2xl:gap-4">
+                    </div>}
+                    {CompanyDetails?.company_location && <div className="flex gap-2 lg:gap-3 2xl:gap-4">
                       <Image
                       src={'/new-assets/icons/location-icon-round.svg'}
                       width={1320}
@@ -206,8 +212,8 @@ if(isLoading){
                         <strong className="block font-medium text-xs 2xl:text-base -mb-[2px] 2xl:mb">Location</strong>
                         <span className="text-[10px] 2xl:text-sm font-light">{CompanyDetails?.company_location}</span>
                       </div>
-                    </div>
-                    <div className="flex gap-2 lg:gap-3 2xl:gap-4">
+                    </div>}
+                    {CompanyDetails?.industry_name && <div className="flex gap-2 lg:gap-3 2xl:gap-4">
                       <Image
                       src={'/new-assets/icons/industry-icon-round.svg'}
                       width={1320}
@@ -220,7 +226,7 @@ if(isLoading){
                         <strong className="block font-medium text-xs 2xl:text-base -mb-[2px] 2xl:mb">Industry</strong>
                         <span className="text-[10px] 2xl:text-sm font-light">{CompanyDetails?.industry_name}</span>
                       </div>
-                    </div>
+                    </div>}
                   </div>
                 </div>
             </div>
@@ -230,13 +236,21 @@ if(isLoading){
           <div className="my-5 md:my-8 3xl:my-10">
             <Tabs tabTitles={tabTitles}/>
           </div>
-          {(CompanyDetails?.company_description || companyGallary.length>0) &&<div id="about" className="py-3 md:py-5 xl:py-8 2xl:py-12 rounded-xl">
-            <div className="px-3 md:px-5 xl:px-8 3xl:px-11">
+          {(CompanyDetails?.company_description || companyGallary.length>0) &&<div id="about" className="my-5 md:my-8 xl:my-10 py-5 md:py-8 xl:py-14 2xl:py-16 rounded-xl shadow-default">
+            <div className="px-5 md:px-8 xl:px-14 2xl:px-16">
               {CompanyDetails?.company_description && <h2 className="text-sm 2xl:text-lg 3xl:text-xl font-semibold mb-2 md:mb-4 3xl:mb-6">About {CompanyDetails?.company_name}</h2>}
-              {CompanyDetails?.company_description && <p className="text-xs leading-6 3xl:text-sm 3xl:leading-[32px] mb-4 md:mb-6 xl:mb-8">{CompanyDetails?.company_description}</p>}
+              {CompanyDetails?.company_description && 
+              <p className="text-xs leading-6 3xl:text-sm 3xl:leading-[32px] mb-4 md:mb-6 xl:mb-8" dangerouslySetInnerHTML={{
+                __html:
+                  CompanyDetails?.company_description && typeof CompanyDetails?.company_description === "string"
+                    ? CompanyDetails?.company_description
+                    : "",
+              }}/>}
               {companyGallary.length>0 && <h2 className="text-sm 2xl:text-lg 3xl:text-xl font-semibold">Gallery</h2>}
             </div>
-            {companyGallary.length>0 && <CompanyGallery galleryItems={companyGallary} />}
+            <div className="company-detail-gallary">
+              {companyGallary.length>0 && <CompanyGallery galleryItems={companyGallary} />}
+            </div>
           </div>}
           {jobsSlides.length>0 && <div id="jobs" className="my-5 md:my-8 xl:my-10 py-5 md:py-8 xl:py-14 2xl:py-16 rounded-xl shadow-default">
             <div className="px-5 md:px-8 xl:px-14 2xl:px-16">
@@ -250,7 +264,7 @@ if(isLoading){
                 loop={true}
                 arrowOut={false}
                 arrowColor="white"
-                autoplay={true}
+                autoplay={false}
                 autoplayDuration={3000}
                 freeMode={false}
                 slidesPerView={1}
@@ -271,6 +285,14 @@ if(isLoading){
                     }
                   }}
                 />
+            </div>
+            <div className="flex justify-center">
+              <button 
+                    className="mx-auto text-xs 2xl:text-base font-normal 3xl:w-[252px] 3xl:h-[50px] mt-6 md:mt-8"
+                    onClick={() => router.push(`/jobs?search=${CompanyDetails?.company_name}`)}
+                >
+                    View all jobs
+              </button>
             </div>
           </div>}
           {CompanyDetails?.benifits && CompanyDetails?.benifits?.length>0 && <div id="perks-&-benefits" className="my-5 md:my-8 xl:my-10 py-5 md:py-8 xl:py-14 2xl:py-16 rounded-xl shadow-default">
@@ -294,7 +316,7 @@ if(isLoading){
                     ))
                   }
               </div> */}
-              <div className="flex gap-4 md:gap-6 flex-wrap">
+              <div className="flex gap-1 md:gap-2 flex-wrap">
               {
                     CompanyDetails?.benifits.map((benefit)=>(
                       <div className="label grey">{benefit?.name}</div>

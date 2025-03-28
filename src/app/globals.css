@@ -171,15 +171,15 @@ a.btn.disabled:hover {
   background-color: #eef2fe;
   /* white-space: nowrap; */
   padding: 6px;
-  padding-left: 6px;
-  padding-right: 6px;
+  padding-left: 10px;
+  padding-right: 10px;
   text-transform: capitalize;
   height: fit-content;
   border-radius: 0.25rem;
 }
 .label.small {
   font-size: 8px;
-  padding: 4px;
+  padding: 4px 6px;
 }
 .label.green {
   color: #4d4d4f;
@@ -764,12 +764,7 @@ label {
     height: 25px !important;
     width: 25px !important;
   }
-  .job_listing_center_top_companies_nudge .swiper-button-prev {
-    left: -10px;
-  }
-  .job_listing_center_top_companies_nudge .swiper-button-next {
-    right: -10px;
-  }
+  
   .job_listing_center_top_companies_nudge a {
     font-size: 12px !important;
   }
@@ -799,7 +794,8 @@ label {
     height: 170px !important;
     margin-bottom: 0px;
   }
-  .company-card img {
+  .company-card img,
+  .company-card .img {
     width: 60px !important;
     height: 60px !important;
   }
@@ -872,6 +868,20 @@ label {
     font-weight: 400;
     padding: 10px;
   }
+  
+  .swiper-button-prev.out-arrow{
+    left: -7px !important;
+  }
+  .swiper-button-next.out-arrow{
+    right: -7px !important;
+  }
+  .job_listing_center_top_companies_nudge .swiper-button-prev {
+    left: -10px !important;
+  }
+  .job_listing_center_top_companies_nudge .swiper-button-next {
+    right: -10px !important;
+  }
+  
 }
 @media (width >=1280px) {
   .popup-content {
@@ -903,6 +913,9 @@ label {
   }
   .label {
     font-size: 10px;
+    padding: 6px;
+    padding-left: 15px;
+    padding-right: 15px;
   }
   .container {
     max-width: 1180px;
@@ -912,7 +925,8 @@ label {
     width: calc(1180px - 706px);
   }
 
-  .job_listing_center_top_companies_nudge .company-card img {
+  .job_listing_center_top_companies_nudge .company-card img,
+  .job_listing_center_top_companies_nudge .company-card .img {
     width: 40px !important;
     height: 40px !important;
   }
@@ -949,7 +963,8 @@ label {
     height: 170px !important;
     margin-bottom: 0px;
   }
-  .company-card img {
+  .company-card img,
+  .company-card .img {
     width: 70px !important;
     height: 70px !important;
   }
@@ -994,6 +1009,17 @@ label {
   .filters-sidebar {
     max-width: 260px;
   }
+  
+  .job_listing_center_top_companies_nudge .swiper-button-prev {
+    left: -10px !important;
+  }
+  .job_listing_center_top_companies_nudge .swiper-button-next {
+    right: -10px !important;
+  }
+  .job-card .action-btns.update button,
+  .job-card .action-btns.update a{
+    width: 100px !important;
+  }
 }
 @media (width >=1500px) {
   .popup-content {
@@ -1016,7 +1042,7 @@ label {
   .job_listing_center_top_companies_nudge a {
     font-size: 12px !important;
   }
-
+  
   .container.no-pad {
     max-width: 1340px;
     padding-inline: 0px;
@@ -1063,7 +1089,8 @@ label {
     height: 170px !important;
     margin-bottom: 40px;
   }
-  .company-card img {
+  .company-card img,
+  .company-card .img {
     width: 60px !important;
     height: 60px !important;
   }
@@ -1129,6 +1156,25 @@ label {
   .popup-content.logout-content button.cancel-logout:hover{
     font-weight: 500;
   }
+  .swiper-button-prev.out-arrow{
+    left: 10px !important;
+  }
+  .swiper-button-next.out-arrow{
+    right: 10px !important;
+  }
+  
+  .job_listing_center_top_companies_nudge .swiper-button-prev {
+    left: -10px !important;
+  }
+  .job_listing_center_top_companies_nudge .swiper-button-next {
+    right: -10px !important;
+  }
+  
+  .job-card .action-btns.update button,
+  .job-card .action-btns.update a{
+    width: 120px !important;
+    height: 35px !important;
+  }
 }
 
 @media (min-width: 1700px) {
@@ -1155,7 +1201,7 @@ label {
   }
   .label.small {
     font-size: 10px;
-    padding: 6px;
+    padding: 6px 10px;
   }
   .container {
     max-width: 1570px;
@@ -1165,6 +1211,7 @@ label {
     width: calc(1570px - 776px);
   }
 
+  .job_listing_center_top_companies_nudge .company-card img,
   .job_listing_center_top_companies_nudge .company-card img {
     width: 80px !important;
     height: 80px !important;
@@ -1189,10 +1236,10 @@ label {
     width: 40px !important;
   }
   .job_listing_center_top_companies_nudge .swiper-button-prev {
-    left: -10px;
+    left: -10px !important;
   }
   .job_listing_center_top_companies_nudge .swiper-button-next {
-    right: -10px;
+    right: -10px !important;
   }
   .job_listing_center_top_companies_nudge a {
     font-size: 16px !important;
@@ -1242,7 +1289,8 @@ label {
     font-size: 16px !important;
     margin-top: 22px;
   }
-  .company-card img {
+  .company-card img,
+  .company-card .img {
     width: 90px !important;
     height: 90px !important;
   }
@@ -1321,6 +1369,12 @@ label {
     padding: 12px 22px 12px 30px !important;
     color: #f2f2f2 !important;
     border-color: #f2f2f2 !important;
+  }
+  
+  .job-card .action-btns.update button,
+  .job-card .action-btns.update a{
+    width: 137px !important;
+    height: 40px !important;
   }
 }
 
@@ -1526,4 +1580,10 @@ label {
   position: fixed; /* Ensures it is positioned relative to the viewport */
   top: 0; /* Aligns it to the top */
 }
-
+.company-detail-gallary .slider-wrapper {
+  padding-inline: 50px !important;
+  margin-inline: 10px !important;
+}
+.company-detail-gallary .swiper.swiper-horizontal{
+  padding-inline: 0px !important;
+}

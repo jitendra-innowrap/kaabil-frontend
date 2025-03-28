@@ -12,6 +12,11 @@ export default function HeaderSearch() {
     const isSearch = useAppSelector((state) => state.search.value);
     const handleSearch = () => {
         dispatch(openSearch());
+        if(typeof window !== 'undefined'){
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+
+
     }
     if (pathname && (pathname.includes("/company/profile/") || pathname.includes("/jobs/detail/"))) {
       return (

@@ -56,19 +56,7 @@ const Resume = () => {
                 </div>
               ))
             ) : (
-              <div className="relative flex items-center w-full p-2 bg-white border border-[#4D4D4F66] rounded-lg">
-                {/* File Name Display */}
-                <div className="flex-grow text-sm text-gray-700 px-3">
-                  No file
-                </div>
-                {/* Icon */}
-                <div className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
-                  <img
-                    src="/new-assets/icons/attach_file.svg"
-                    alt="Attach File Icon"
-                  />
-                </div>
-              </div>
+              <></>
             )}
           </div>
         </div>

@@ -17,9 +17,10 @@ interface JobFiltersMasterState {
   experience: FilterBucket[];
   location_filter: FilterBucket[];
   skill_filter: FilterBucket[];
-  industries_filter: FilterBucket[]
+  industries_filter: FilterBucket[];
   soft_skills_filter: FilterBucket[];
   salary: SalaryRange;
+  selectedTab: number;
 }
 
 const initialState: JobFiltersMasterState = {
@@ -32,19 +33,26 @@ const initialState: JobFiltersMasterState = {
   skill_filter: [],
   soft_skills_filter: [],
   salary: { min: 0, max: 0 },
-  
+  selectedTab: 1,
 };
 
 const jobFiltersMasterSlice = createSlice({
   name: "jobFiltersMaster",
   initialState,
   reducers: {
-    setJobFiltersMaster: (state, action: PayloadAction<JobFiltersMasterState>) => {
+    setJobFiltersMaster: (
+      state,
+      action: PayloadAction<JobFiltersMasterState>
+    ) => {
       return action.payload; // Replace state with new filter master data
+    },
+    setSelectedTab: (state, action) => {
+      state.selectedTab = action.payload;
     },
     resetJobFiltersMaster: () => initialState, // Reset filters to initial state
   },
 });
 
-export const { setJobFiltersMaster, resetJobFiltersMaster } = jobFiltersMasterSlice.actions;
+export const { setJobFiltersMaster, resetJobFiltersMaster , setSelectedTab} =
+  jobFiltersMasterSlice.actions;
 export default jobFiltersMasterSlice.reducer;

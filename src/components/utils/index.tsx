@@ -516,3 +516,102 @@ export const formatJobDates = (startDate: any, endDate: any) => {
 
   return `${formattedStartDate || "-"} - ${formattedEndDate || "Present"}`;
 };
+
+export const customStyles = {
+  control: (base: any) => ({
+    ...base,
+    minHeight: "50px", // Adjust the height as needed
+    height: "50px", // Explicit height for consistent appearance
+    boxShadow: "none", // Remove focus border shadow
+    borderRadius: "10px", // Set border radius to 10px
+    borderColor: "#ccc", // Optional: Set default border color
+    "&:hover": {
+      borderColor: "#ccc", // Prevent hover border color change
+    },
+    color: "#000", // Set text color to black
+  }),
+  singleValue: (base: any) => ({
+    ...base,
+    color: "#000", // Ensure selected value text is black
+  }),
+  valueContainer: (base: any) => ({
+    ...base,
+    height: "50px", // Match the control height for proper alignment
+    display: "flex",
+    alignItems: "center",
+    padding: "0 8px",
+    color: "#000", // Text inside the value container will be black
+  }),
+  input: (base: any) => ({
+    ...base,
+    margin: "0", // Remove extra margin for better alignment
+    color: "#000", // Set input text color to black
+  }),
+  indicatorsContainer: (base: any) => ({
+    ...base,
+    height: "50px", // Match the control height for proper alignment
+    color: "#000", // Set dropdown icon color to black
+  }),
+  dropdownIndicator: (base: any) => ({
+    ...base,
+    color: "#000", // Ensure dropdown icon is black
+    "&:hover": {
+      color: "#000", // Prevent hover color change
+    },
+  }),
+};
+
+export const yearOfPassingOptions = Array.from(
+  { length: new Date().getFullYear() - 1970 + 1 },
+  (_, i) => {
+    const year = 1970 + i;
+    return { label: year, value: year };
+  }
+);
+
+export const formatDateExperience = (date: Date) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Add leading zero
+  const day = String(date.getDate()).padStart(2, "0"); // Add leading zero
+  return `${year}-${month}-${day}`;
+};
+
+export const lightBoxStyle = {
+  container: {
+    background: "rgba(0, 0, 0, 0.8)", // Semi-transparent background
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  slide: {
+    maxWidth: "60%", // Restrict the width of the image
+    borderRadius: "12px", // Rounded corners
+    overflow: "hidden",
+    boxShadow: "0px 4px 16px rgba(0, 0, 0, 0.5)", // Add a shadow
+  },
+  image: {
+    objectFit: "contain", // Ensure the image fits well inside the container
+  },
+  captions: {
+    maxWidth: "80%",
+    textAlign: "center",
+    color: "#ffffff", // White caption text
+    marginTop: "10px",
+    fontSize: "14px",
+  },
+  button: {
+    color: "#ffffff", // White buttons
+    background: "transparent", // Ensure a transparent background
+    border: "none", // Remove any borders
+    outline: "none", // Remove focus outline
+    boxShadow: "none", // Remove shadow
+    cursor: "pointer", // Keep the pointer cursor
+    transition: "none", // Disable hover effects
+  },
+  buttonHover: {
+    background: "none", // No change on hover
+    color: "#ffffff", // Keep the color consistent
+    transform: "none", // Prevent scaling or other transformations
+  },
+};
+

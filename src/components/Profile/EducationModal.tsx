@@ -21,27 +21,49 @@ import {
 import toast from "react-hot-toast";
 import api from "@/Services/Apiservice";
 import { FaSearch } from "react-icons/fa";
+import Select from "react-select";
+import { customStyles, yearOfPassingOptions } from "../utils";
 
 const EducationModal = () => {
   const { educationModal, qualificationList, profileData, educationData } =
     useAppSelector((state) => state.profile);
-
   const [educationSearch, setEducationSearch] = useState(educationData);
+  const [showEducation, setShowEducation] = useState(false);
 
   const { token } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
   const validationSchema = Yup.object().shape({
     education_id: Yup.string().required("Required"),
+    user_certification: Yup.mixed()
+      .test(
+        "fileCount",
+        "You can only upload up to 6 files.",
+        (value: any) => !value || value?.length <= 6
+      )
+      .required("Required"),
+    year_of_graduation: Yup.string().required("Required"),
   });
-
   const closeModal = () => {
     dispatch(setEducationModal(false));
   };
 
   useEffect(() => {
+    setShowEducation(false);
     dispatch(fetchEducationDetail());
   }, []);
+
+  useEffect(() => {
+    dispatch(
+      fieldStudy({
+        data: {
+          education_master_id: qualificationList?.find(
+            (item: any) => item?.name === profileData?.education_name
+          )?.id,
+        },
+      })
+    );
+  }, [qualificationList]);
 
   return (
     // Suppressing Dialog type error
@@ -75,6 +97,8 @@ const EducationModal = () => {
                 (item: any) => item?.name === profileData?.education_name
               )?.id || "",
             institute_name: "",
+            user_certification: null,
+            year_of_graduation: "",
           }}
           validationSchema={validationSchema}
           onSubmit={async (values: any) => {
@@ -85,9 +109,20 @@ const EducationModal = () => {
                 institute_name: values?.institute_name,
                 institute_master_id: "",
                 field_of_study_master_id: "",
-                year_of_graduation: "",
+                year_of_graduation: values?.year_of_graduation,
               },
             ];
+            const certificationTitles = Array(
+              values?.user_certification?.length || 0
+            ).fill("");
+            formData.append(
+              "user_certification_title",
+              JSON.stringify(certificationTitles)
+            );
+            formData.append(
+              "user_certification[]",
+              values?.user_certification[0]
+            );
             formData.append("users_education", JSON.stringify(data));
             try {
               const response: any = await api.post(
@@ -137,7 +172,12 @@ const EducationModal = () => {
                     {qualificationList?.map((education: any) => (
                       <div
                         key={education.id}
-                        className={`border-2 border-red py-2 rounded-lg px-4 ${
+                        className={`${
+                          education.id === values.education_id &&
+                          education?.is_field_study_show !== "0"
+                            ? "border-2 border-red bg-[#FDF1F3]"
+                            : ""
+                        } py-2 rounded-lg px-4 ${
                           education.id === values.education_id
                             ? "bg-[#FDF1F3]"
                             : ""
@@ -155,13 +195,10 @@ const EducationModal = () => {
                                 },
                               })
                             );
+                            setShowEducation(false);
                             setEducationSearch([]);
                           }}
-                          className={`form-group flex items-center gap-4 rounded-lg px-5 py-3 border shadow-sm cursor-pointer ${
-                            education.id === values.education_id
-                              ? "border-red"
-                              : "border-[#C8C9CB1A]"
-                          }`}
+                          className={`form-group flex items-center gap-4 rounded-lg px-5 py-3 border shadow-sm cursor-pointer`}
                         >
                           <div className="flex items-center gap-4">
                             <input
@@ -177,52 +214,80 @@ const EducationModal = () => {
                             </span>
                           </div>
                         </label>
-                        {education.id === values.education_id && (
-                          <div className="w-full py-3 relative flex items-center mt-2">
-                            <input
-                              className="px-10 bg-[#C8C9CB3B] w-full py-3 rounded-lg placeholder-[#231F20] text-[#231F20]"
-                              placeholder="BFA Applied Arts"
-                              value={values?.institute_name}
-                              onChange={(e) => {
-                                const value = e.target.value;
-                                setFieldValue("institute_name", value);
-                                const filteredSuggestions =
-                                  educationData?.filter((item: any) =>
-                                    item?.name
-                                      ?.toLowerCase()
-                                      .includes(value.toLowerCase())
-                                  );
-                                setEducationSearch(filteredSuggestions);
-                              }}
-                              onFocus={async () => {
-                                await setEducationSearch(educationData);
-                              }}
-                            />
-                            <img
-                              src="/new-assets/icons/search.svg"
-                              className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#231F20] mt-0.5"
-                            />
-                            {educationSearch?.length > 0 && (
-                              <div className="absolute top-16 z-50 w-full max-h-[250px] min-h-[50px] overflow-auto p-0 bg-white border rounded-xl shadow-lg mt-1">
-                                {educationSearch?.map((item: any) => (
-                                  <div
-                                    key={item.id}
-                                    className="p-2 hover:bg-gray-100 cursor-pointer"
-                                    onClick={() => {
-                                      setFieldValue(
-                                        "institute_name",
-                                        item.name
+                        {education.id === values.education_id &&
+                          education?.is_field_study_show !== "0" && (
+                            <>
+                              <div className="w-full py-3 relative flex items-center mt-2">
+                                <input
+                                  className="px-10 bg-[#C8C9CB3B] w-full py-3 rounded-lg placeholder-[#231F20] text-[#231F20]"
+                                  placeholder="BFA Applied Arts"
+                                  value={values?.institute_name}
+                                  onChange={(e) => {
+                                    const value = e.target.value;
+                                    setFieldValue("institute_name", value);
+                                    const filteredSuggestions =
+                                      educationData?.filter((item: any) =>
+                                        item?.name
+                                          ?.toLowerCase()
+                                          .includes(value.toLowerCase())
                                       );
-                                      setEducationSearch([]);
-                                    }}
-                                  >
-                                    {item.name}
-                                  </div>
-                                ))}
+                                    setEducationSearch(filteredSuggestions);
+                                  }}
+                                  onFocus={async () => {
+                                    setShowEducation(true);
+                                    await setEducationSearch(educationData);
+                                  }}
+                                />
+                                <img
+                                  src="/new-assets/icons/search.svg"
+                                  className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#231F20] mt-0.5"
+                                />
+                                {educationSearch?.length > 0 &&
+                                  showEducation && (
+                                    <>
+                                      <div className="absolute top-16 z-50 w-full max-h-[250px] min-h-[50px] overflow-auto p-0 bg-white border rounded-xl shadow-lg mt-1">
+                                        {educationSearch?.map((item: any) => (
+                                          <div
+                                            key={item.id}
+                                            className="p-2 hover:bg-gray-100 cursor-pointer"
+                                            onClick={() => {
+                                              setFieldValue(
+                                                "institute_name",
+                                                item.name
+                                              );
+                                              setShowEducation(false);
+                                              setEducationSearch([]);
+                                            }}
+                                          >
+                                            {item.name}
+                                          </div>
+                                        ))}
+                                      </div>
+                                    </>
+                                  )}
                               </div>
-                            )}
-                          </div>
-                        )}
+                              <div className="mt-1">
+                                <Select
+                                  placeholder="year of passing"
+                                  styles={customStyles}
+                                  options={yearOfPassingOptions}
+                                  onChange={(option) =>
+                                    setFieldValue(
+                                      "year_of_graduation",
+                                      option?.value
+                                    )
+                                  }
+                                />
+                                <div className="h-1 mb-4">
+                                  <ErrorMessage
+                                    name="year_of_graduation"
+                                    component="div"
+                                    className="text-red text-md mt-1"
+                                  />
+                                </div>
+                              </div>
+                            </>
+                          )}
                       </div>
                     ))}
                   </div>
@@ -241,10 +306,35 @@ const EducationModal = () => {
                       Certification
                     </label>
                     <div className="flex gap-4 mt-2 pb-2">
-                      <img src="/new-assets/icons/certificate.svg" />
-                      <img src="/new-assets/icons/certificate.svg" />
-                      <img src="/new-assets/icons/certificate.svg" />
-                      <img src="/new-assets/icons/certificate.svg" />
+                      <label className="cursor-pointer">
+                        <input
+                          type="file"
+                          className="hidden"
+                          multiple
+                          accept=".pdf,.doc,.docx,image/*,video/*"
+                          onChange={(e: any) => {
+                            const files = Array.from(e.target.files);
+                            if (files.length > 6) {
+                              e.target.value = ""; // Reset the input if limit exceeded
+                            } else {
+                              setFieldValue("user_certification", files);
+                              console.log("Selected files:", files);
+                              // Handle valid files here
+                            }
+                          }}
+                        />
+                        <img
+                          src="/new-assets/icons/certificateImage.svg"
+                          alt="Certificate Icon"
+                        />
+                        <div className="h-3">
+                          <ErrorMessage
+                            name="user_certification"
+                            component="div"
+                            className="text-red text-lg mt-1"
+                          />
+                        </div>
+                      </label>
                     </div>
                   </div>
                 </div>

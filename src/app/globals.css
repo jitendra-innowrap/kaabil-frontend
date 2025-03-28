@@ -1481,6 +1481,7 @@ label {
 
 .custom-dialog {
   scale: 0.7;
+  z-index: 99;
 }
 
 @media (min-width: 640px) {

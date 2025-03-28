@@ -34,7 +34,7 @@ export const AboutModal = () => {
       open={aboutMeModal}
       handler={closePopup}
       size="md"
-      className="fixed top-10 -translate-x-1/2 custom-dialog"
+      className="fixed -top-10 -translate-x-1/2 custom-dialog"
     >
       <div>
         {/* @ts-ignore */}
@@ -88,10 +88,10 @@ export const AboutModal = () => {
             }
           }}
         >
-          {({ isSubmitting }) => (
+          {({ isSubmitting, dirty }) => (
             <Form>
               {/* @ts-ignore */}
-              <DialogBody className="p-0 mt-8">
+              <DialogBody className="p-0 max-h-[55vh] sm:max-h-[65vh] md:max-h-[75vh] lg:max-h-[85vh] overflow-y-auto custom-scroll">
                 <div className="px-8">
                   <div className="mt-4">
                     <label
@@ -105,7 +105,7 @@ export const AboutModal = () => {
                       name="bio_text"
                       id="bio_text"
                       placeholder="Enter about me"
-                      rows={9}
+                      rows={8}
                       className="w-full pl-6 pt-4 text-lg bg-[#F2F3F3] focus:outline-none rounded-lg "
                     />
                     <div className="h-1">
@@ -123,9 +123,11 @@ export const AboutModal = () => {
                 <button
                   type="submit"
                   className={`px-20 py-4 bg-[#E31837] text-white rounded-xl ${
-                    isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+                    isSubmitting || !dirty
+                      ? "opacity-50 cursor-not-allowed"
+                      : ""
                   }`}
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || !dirty}
                 >
                   Save
                 </button>

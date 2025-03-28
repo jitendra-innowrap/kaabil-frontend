@@ -32,17 +32,18 @@ export default function FilterSidebar() {
     // }, []);
     
     const router = useRouter();
-    
+    const [removeOptionsSearch, SetremoveOptionsSearch] = useState(false);
     // Handle Clear All button click
     const handleClearAll = () => {
         // Remove all search parameters and navigate to the base URL
+        SetremoveOptionsSearch(!removeOptionsSearch)
         router.push('/jobs', { scroll: false }); // Replace '/jobs' with your base route
     };
   return (
     <>
-    {open && <div className="block bg-black z-10 opacity-20 w-screen h-screen fixed top-0 left-0" onClick={()=>setOpen(false)}></div>}
-    <div className="filters-sidebar lg:min-w-[260px] 3xl:min-w-[320px] h-fit p-4 md:p-6 rounded-[20px] flex bg-white relative flex-col lg:w-fit items-start">
+    {open && <div className="hidden lg:block bg-black z-10 opacity-20 w-screen h-screen fixed top-0 left-0" onClick={()=>setOpen(false)}></div>}
     {/* <pre>{JSON.stringify(filters,null,2)}</pre> */}
+    <div className="filters-sidebar lg:min-w-[260px] 3xl:min-w-[320px] h-fit p-4 md:p-6 rounded-[20px] hidden lg:flex bg-white relative flex-col lg:w-fit items-start">
         <div className="flex justify-between items-center w-full mb-2 md:mb-4 xl:mb-6 2xl:mb-8">
             <h2 className="text-lg 2xl:text-xl font-medium">All Filters
             <VscListFilter onClick={()=>setOpen(!open)} name="allFilters"  id="allFilters" className="inline lg:hidden ml-3 cursor-pointer size-5"/></h2>
@@ -57,6 +58,7 @@ export default function FilterSidebar() {
                     searchIcon={<GrLocation className='size-4 2xl:size-5 text-[#6C757D] font-bold' />}
                     list={filters?.location_filter} 
                     maxItems={10}
+                    removeOptionsSearch={removeOptionsSearch}
                     filterKey='location_filter'
                     // fetchMoreItems={fetchLocationOptions}
                     searchPlaceholder='Choose city'

@@ -78,7 +78,7 @@ useEffect(() => {
   }
 }, []);
   return (
-    <div className={`relative slider-wrapper ${showNavigation && arrowOut?'px-6 sm:px-10 2xl:px-[60px]':'px-3'}`}>
+    <div className={`relative slider-wrapper ${showNavigation && arrowOut?'md:px-6 sm:px-10 2xl:px-[60px]':'px-4'}`}>
       <Swiper
         modules={[Autoplay, Navigation, FreeMode]}
         loop={loop}
@@ -118,7 +118,7 @@ useEffect(() => {
         <div
           ref={prevButtonRef}
           onClick={() => swiperRef.current?.slidePrev()}
-          className={`swiper-button-prev absolute left-0 !size-8 rounded-full !w-fit  !text-lightGrey ${isBeginning ? 'no-disabled' : ''}`}
+          className={`swiper-button-prev absolute left-0 !size-8 rounded-full !w-fit ${arrowOut?"out-arrow":""}  !text-lightGrey ${isBeginning ? 'no-disabled' : ''}`}
         >
           {customArrowLeft? customArrowLeft : <div className={`swiper-btn ${arrowColor? `bg-white` : ""} ${arrowShadows? "shadow-sm" : ""}  rounded-full !size-8 grid shrink-0 place-items-center 2xl:!size-[50px]`}>
             <IoChevronBackOutline className={`!size-3 2xl:!size-5 font-bold text-xl ${arrowColor? '!text-black':''}`}/></div>}
@@ -128,7 +128,7 @@ useEffect(() => {
         <div
           onClick={() => swiperRef.current?.slideNext()}
           ref={nextButtonRef}
-          className={`swiper-button-next absolute right-0 !size-8 rounded-full !w-fit !text-lightGrey ${isEnd ? 'no-disabled' : ''}`}
+          className={`swiper-button-next absolute right-0 !size-8 rounded-full !w-fit ${arrowOut?"out-arrow":""} !text-lightGrey ${isEnd ? 'no-disabled' : ''}`}
         >
           {customArrowRight? customArrowRight : <div className={`swiper-btn ${arrowColor?  `bg-white` : ""} ${arrowShadows? "shadow-sm" : ""}  rounded-full !size-8 grid shrink-0 place-items-center 2xl:!size-[50px]`}>
             <IoChevronForwardOutline className={`!size-3 2xl:!size-5 font-bold text-xl ${arrowColor? '!text-black':''}`}/></div>}

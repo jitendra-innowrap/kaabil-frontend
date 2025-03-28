@@ -12,8 +12,11 @@ export default function CompanyGallerycard({ item, onClick }:CompanyGalleryCardP
           alt="company profile logo"
           className="w-full h-full rounded-xl object-cover border 2xl:rounded-2xl"
           />
-          {item?.media_type=="2" && <div className="absolute bottom-2 right-2 size-9 2xl:size-11 bg-white rounded-full shadow-secondary grid place-items-center">
-            <BiPlay/>
+          {item?.media_type=="2" && <div className="absolute bottom-[14px] 2xl:bottom-[18px] right-[14px] 2xl:right-[18px] size-9 2xl:size-11 3xl:size-12 bg-white rounded-full shadow-secondary grid place-items-center">
+            <svg width="10" className='translate-x-[1px] 3xl:translate-x-[2px]' height="11" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9.73535 5.82114L0.863756 10.9432V0.699117L9.73535 5.82114Z" fill="black"/>
+            </svg>
+
           </div>}
         </div>
         {/* <h3 className='w-full text-black text-[10px] 2xl:text-sm mt-3 2xl:mt-5 3xl:mt-6'>

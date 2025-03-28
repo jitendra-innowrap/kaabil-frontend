@@ -66,7 +66,7 @@ export default function Home() {
               jobUrl: '/'
             })));
             setTopCompanies(response?.data?.result?.top_companies?.map((comp: any, i: number) => ({
-              icon: comp?.company_logo || "/new-assets/icons/company_icon_placeholder.png",
+              icon: comp?.company_logo || "",
               title: comp?.company_name,
               companyId: `${comp?.id}`,
               jobUrl: `/`
@@ -275,7 +275,7 @@ export default function Home() {
     return (
         <main>
             <section className=''>
-                <Link href={'/jobs'} className='block'>
+                <Link href={'/jobs'} className='block w-full'>
                     <Image src='/new-assets/home/banner.png' quality={100} alt="" width={3840} height={1000}
                     className="w-full h-auto"
                     />
@@ -298,7 +298,7 @@ export default function Home() {
                             spaceBetween={25}
                             showNavigation
                             loop={true}
-                            autoplay={true}
+                            autoplay={false}
                             autoplayDuration={3000}
                             freeMode={false}
                             slidesPerView={3}
@@ -468,21 +468,21 @@ export default function Home() {
                                 </div>
                             </div>
                         </div>
-                        <div className="flex gap-5 2xl:gap-[76px] pt-3 mb-4 2xl:mb-0">
+                        <div className="flex gap-5 xl:gap-[58px] 2xl:gap-[96px] 3xl:gap-[100px] pt-3 mb-4 2xl:mb-0">
                             <div className="text-red">
                                 <span className="font-semibold text-lg md:text-3xl 2xl:text-[40px] leading-[140%]">500k+</span> <br /> 
-                                <span className="block text-xs xl:text-sm text-center w-[105px]">Women on the platform</span>
+                                <span className="block text-xs xl:text-sm lg:text-center w-[105px]">Women on the platform</span>
                             </div>
                             <div className="text-red">
                                 <span className="font-semibold text-lg md:text-3xl 2xl:text-[40px] leading-[140%]">3000+</span> <br /> 
-                                <span className="block text-xs xl:text-sm text-center w-[110px]">Women joined skill program</span>
+                                <span className="block text-xs xl:text-sm lg:text-center w-[110px]">Women joined skill program</span>
                             </div>
                             <div className="text-red">
                                 <span className="font-semibold text-lg md:text-3xl 2xl:text-[40px] leading-[140%]">3000+</span> <br /> 
-                                <span className="block text-xs xl:text-sm text-center w-[130px]">Women got hired</span>
+                                <span className="block text-xs xl:text-sm lg:text-center w-[90px]">Women got hired</span>
                             </div>
                         </div>
-                        <Link href={'/about-us'} className='btn block text-center text-xs 2xl:text-base w-[170px] 2xl:w-[247px] 2xl:h-[50px] mt-3 2xl:mt-6 3xl:mt-[36px]'>Read More</Link>
+                        <Link href={'/about-us'} className='btn flex items-center justify-center text-center text-xs 2xl:text-base w-[170px] 2xl:w-[247px] 2xl:h-[50px] mt-6 xl:mt-7 3xl:mt-[36px]'>Read More</Link>
                     </div>
                     <div className="flex-1 order-1">                        
                         <Image src={`/new-assets/banners/why-choose-home.png`} width={704} height={735} alt="" className="w-full h-auto" />

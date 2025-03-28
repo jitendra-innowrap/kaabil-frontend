@@ -62,18 +62,6 @@ export default function Home() {
       return
     }
   }
-  const customSocialTypes = [
-  {
-    id: 'x',
-    name: 'X',
-    icon: (
-      <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-      </svg>
-    ),
-    shareUrl: 'https://twitter.com/intent/tweet?url={url}&text={title}',
-  },
-];
   
   useEffect(() => {
     setIsFavorited(jobDetails?.saveJob_status=='1');
@@ -178,7 +166,7 @@ export default function Home() {
       return
     }
     if(!isApplied && jobDetails?.jobs_questions && jobDetails?.jobs_questions.length>0){
-      // setOpenJobQuestions(true);
+       setOpenJobQuestions(true);
       return
     }
     if(!isApplied){
@@ -280,7 +268,7 @@ export default function Home() {
     );
   };
   return (
-    <main>
+    <main className="bg-white">
       <section className="bg-[#FDEAC9] py-6 xl:py-8 sticky">
       <div className="container relative z-[1]">
         <div className="flex justify-between flex-wrap flex-col sm:flex-row sm:items-end gap-5 xl:gap-7 2xl:gap-8">
@@ -389,7 +377,7 @@ export default function Home() {
         </div>
       </div>
       </section>
-      <section className="container mt-5 md:mt-8 xl:mt-10 mb-6 md:mb-10 xl:mb-14 2xl:mb-16 ">
+      <section className="container mt-5 md:mt-8 xl:mt-10 mb-6 md:mb-10 xl:mb-14 2xl:mb-16 bg-[#ffffff]">
         <div className="flex flex-col lg:flex-row gap-4 md:gap-6 2xl:gap-10">
             <div className="h-fit order-2 job-detail-sidebar flex-shrink-0 p-3 md:p-4 lg:p-5 3xl:p-8 rounded-xl w-full shadow-default">
               <h2 className="text-sm 2xl:text-lg 3xl:text-xl font-semibold mb-2 md:mb-4 3xl:mb-5">About this role</h2>
@@ -515,7 +503,7 @@ export default function Home() {
             </div>
         </div>
       </section>
-      {jobsSlides?.length>0 && <section className="bg-[#F8F8F8]">
+      {jobsSlides?.length>0 && <section className="bg-[#f9f9f9]">
         <div className="w-full flex flex-col py-5 md:py-8 xl:py-14 2xl:py-16  mx-auto">
           <div className="">                        
             <div className="container section-heading">
@@ -561,22 +549,23 @@ export default function Home() {
             // background: 'rgba(0, 0, 0, 0.5)',
         }}
         >
-                <ShareButtons jobDetails={jobDetails || {}}/>
+          <ShareButtons jobDetails={jobDetails || {}}/>
         </Popup>
         <Popup
           open={openJobQuestions}
-          // closeOnDocumentClick={false}
-          onClose={()=>setOpenJobQuestions(false)}
+          onClose={() => setOpenJobQuestions(false)}
           modal
-          className="onboarding relative"
+          lockScroll
+          className="screening-modal-container"
           overlayStyle={{
-            background: "#4D4D4DC2",
-            padding: "20px",
-            borderRadius: "10px",
-            overflow: "hidden",
+            background: "rgba(0, 0, 0, 0.7)",
+            zIndex: 1000,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
-          <ScreeningQuesModal onClose={closeScreeningModal}/>
+          <ScreeningQuesModal isApplied={isApplied} jobId={jobDetails?.id || ""} questions={jobDetails?.jobs_questions} setIsApplied={setIsApplied} onClose={closeScreeningModal} />
         </Popup>
     </main>
   );

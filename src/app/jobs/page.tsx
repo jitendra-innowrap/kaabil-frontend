@@ -3,6 +3,7 @@ import PlayStoreAppAd from "@/components/Banners/PlaystoreAppAd";
 import Breadcrumb from "@/components/Breadcrumb";
 import CompanyCard, { jobcardtype } from "@/components/Cards/CompanyCard";
 import FilterSidebar from "@/components/Filter";
+import FilterMobilePannel from "@/components/Filter/FilterMobile";
 import GallerySlider from "@/components/JobDetail/Slider/GallarySlider";
 import JobList from "@/components/JobList";
 import BoostProfile from "@/components/Nudges/Listing/BoostProfile";
@@ -40,7 +41,7 @@ export default function Home() {
         const response = await api.get("/Home/homeData");
         console.log(response);
         setTopCompanies(response?.data?.result?.top_companies?.map((comp: any, i: number) => ({
-          icon: comp?.company_logo || "/new-assets/icons/company_icon_placeholder.png",
+          icon: comp?.company_logo || "",
           title: comp?.company_name,
           companyId: `${comp?.id}`,
           jobUrl: '/'
@@ -55,31 +56,40 @@ export default function Home() {
     fetchHomedata();
   }, []);
   return (
-    <main className="bg-[#F9F9F9]">
-      
+    <main className="bg-[#f3f4f4] lg:bg-[#F9F9F9]">
       <section className=''>
         <div className=''>
-            <Image src='/new-assets/banners/listing-banner.png' quality={100} alt="" width={1920} height={500}
-            className="w-full h-auto"
+            <Image src='/new-assets/banners/listing-banner-update.svg' quality={100} alt="" width={1920} height={500}
+            className="w-full h-auto hidden lg:inline"
+            />
+            <Image src='/new-assets/banners/listing-banner-mobile.svg' quality={100} alt="" width={1080} height={420}
+            className="w-full h-auto lg:hidden"
             />
         </div>
-        <div className="">
+        <div className="hidden lg:block">
             <div className="container search-section px-5 pt-8 md:px-14 md:pt-12 xl:px-24 xl:pt-14 2xl:px-20">
                 <SearchSection />
             </div>
         </div>
       </section>
-      <section className="container">
-        <div className="mt-8 lg:mt-10 2xl:mt-14 pb-5 md:pb-8 xl:pb-14 2xl:pb-16 flex flex-col lg:flex-row gap-5 md:gap-7 lg:gap-4 xl:gap-4 3xl:gap-7">
-            <FilterSidebar/>
+      <div className="block lg:hidden">
+      <Suspense fallback={<>... Loading</>}>
+        <FilterMobilePannel/>
+      </Suspense>
+      </div>
+      <section className="container job-listings">
+        <div className="mt-5 lg:mt-10 2xl:mt-14 pb-5 md:pb-8 xl:pb-14 2xl:pb-16 flex flex-col lg:flex-row  lg:gap-4 xl:gap-4 3xl:gap-7">
+            <Suspense fallback={<>... Loading</>}>
+                <FilterSidebar/>
+            </Suspense>
             <Suspense fallback={<>... Loading</>}>
               <JobList />
             </Suspense>
-            <div className="nudges-bar flex flex-shrink-0 flex-col gap-4 md:gap-6 max-w-[400px] mx-auto lg:w-[280px] 2xl:w-[341px]">
-              <FindCareer/>
+            <div className="nudges-bar hidden lg:flex flex-shrink-0 flex-col gap-4 md:gap-6 max-w-[400px] mx-auto lg:w-[280px] 2xl:w-[341px]">
+              {!isLoggedIn && <FindCareer/>}
               {isLoggedIn && <ProfileCard/>}
               {isLoggedIn && <QuickAction/>}
-              <ResumeBuilder/>
+              {!isLoggedIn && <ResumeBuilder/>}
               {isLoggedIn && <BoostProfile/>}
             </div>
         </div>
@@ -87,24 +97,24 @@ export default function Home() {
 
       {!isLoggedIn && <section className="bg-white py-5 xl:py-6">
           <div className="w-full flex flex-col items-center my-5 md:my-8 xl:my-14 2xl:my-16  mx-auto">
-          <h2 className='text-black text-center text-2xl md:text-3xl xl:text-4xl 2xl:text-[40px] 2xl:leading-[64px] mb-5 xl:mb-8 font-medium'>Top companies <span className="font-kalam text-red">hiring</span> now</h2>
-              <div className="container no-pad">                        
+          <h2 className='text-black text-center text-2xl md:text-3xl xl:text-4xl 2xl:text-[40px] 2xl:leading-[64px] mb-5 xl:mb-8 font-medium'>Top companies <span className="font-kalam text-red font-semibold">hiring</span> now</h2>
+              <div className="container no-pad mobile-p-r-0">                        
                   <div className="block">
                       <GallerySlider
                       slides={slides}
-                      spaceBetween={25}
+                      spaceBetween={10}
                       showNavigation
                       loop={true}
                       autoplay={true}
                       autoplayDuration={3000}
                       freeMode={false}
-                      slidesPerView={3}
+                      slidesPerView={2.4}
                       breakpoints={{
                           480:{
-                              slidesPerView: 3,
+                              slidesPerView: 2.4,
                           },
                           768: {
-                            slidesPerView: 4,
+                            slidesPerView: 3.5,
                           },
                           1024: {
                             spaceBetween:20,

@@ -26,7 +26,7 @@ export default function TopCompaniesHiring() {
         const response = await api.get("/Home/homeData");
         console.log(response);
         setTopCompanies(response?.data?.result?.top_companies?.map((comp: any, i: number) => ({
-          icon: comp?.company_logo || "/new-assets/icons/company_icon_placeholder.png",
+          icon: comp?.company_logo || "",
           title: comp?.company_name,
           companyId: `${comp?.id}`,
           jobUrl: '/'
@@ -42,7 +42,7 @@ export default function TopCompaniesHiring() {
   }, []);
   return (
     <div className="flex flex-col items-center my-3 md:my-4 xl:my-6 mx-auto">
-          <h2 className='font-medium w-full pl-8 text-lg xl:text-xl 3xl:text-2xl 3xl:leading-7 mb-1 xl:mb-2'>Top companies <span className="font-kalam text-red">hiring</span> now</h2>
+          <h2 className='w-full text-[#000000] font-medium lg:pl-8 text-xl 3xl:text-2xl 3xl:leading-7 mb-1 xl:mb-2'>Top companies <span className="font-kalam font-bold text-red">hiring</span> now</h2>
               <div className="job_listing_center_top_companies_nudge">                        
                   <div className="block">
                       <GallerySlider
@@ -50,10 +50,10 @@ export default function TopCompaniesHiring() {
                       spaceBetween={10}
                       showNavigation
                       loop={true}
-                      autoplay={true}
+                      autoplay={false}
                       autoplayDuration={3000}
                       freeMode={false}
-                      slidesPerView={3}
+                      slidesPerView={2.6}
                       breakpoints={{
                           480:{
                               slidesPerView: 2,

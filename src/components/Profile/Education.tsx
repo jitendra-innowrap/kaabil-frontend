@@ -1,8 +1,10 @@
-import { useAppDispatch } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { setEducationModal } from "@/redux/profileSlice";
 import React from "react";
 
 const Education = () => {
+  const { profileData } = useAppSelector((state) => state.profile);
+
   const dispatch = useAppDispatch();
   return (
     <div className="bg-white rounded-lg mt-3 px-12 py-6">
@@ -33,7 +35,9 @@ const Education = () => {
             <h1 className="text-sm text-[#4D4D4F]">Highest Education</h1>
           </div>
           <div>
-            <h1 className="text-sm font-medium text-[#231F20]">Graduate</h1>
+            <h1 className="text-sm font-medium text-[#231F20]">
+              {profileData?.education_name}
+            </h1>
           </div>
         </div>
       </div>
@@ -41,15 +45,51 @@ const Education = () => {
         <div className="col-span-12">
           <h1 className="text-[#231F20] text-sm">Certification</h1>
         </div>
-        <div className="col-span-12 mt-2 flex gap-3">
-          <div>
-            <img src="/new-assets/icons/certificate.svg" className="h-24" />
-            <h1 className="text-xs mt-2 text-[#231F20]">Product Design</h1>
-          </div>
-          <div>
-            <img src="/new-assets/icons/certificate.svg" className="h-24" />
-            <h1 className="text-xs mt-2 text-[#231F20]">User Research</h1>
-          </div>
+        <div className="col-span-12 mt-2 flex gap-3 flex-wrap">
+          {profileData?.user_certifications?.length > 0 ? (
+            profileData.user_certifications.map(
+              (cert: {
+                id: string;
+                media_url: string;
+                user_certification_title: string;
+                attachment_type: string; // Assuming this indicates the type (e.g., "1" for images, "2" for PDFs)
+              }) => (
+                <div key={cert.id} className="text-center">
+                  {cert.attachment_type === "2" ? (
+                    <a
+                      href={cert.media_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex flex-col items-center"
+                    >
+                      <img
+                        src="/new-assets/icons/pdf_logo (1).png"
+                        className="h-24 w-24 object-cover rounded-md light-shadow"
+                        alt={cert.user_certification_title || "Certificate"}
+                      />
+                      <h1 className="text-xs mt-2 text-[#231F20]">
+                        {cert.user_certification_title || "PDF Certification"}
+                      </h1>
+                    </a>
+                  ) : (
+                    <div>
+                      <img
+                        src={cert.media_url}
+                        alt={cert.user_certification_title || "Certificate"}
+                        className="h-24 w-24 object-cover rounded-md"
+                      />
+                      <h1 className="text-xs mt-2 text-[#231F20]">
+                        {cert.user_certification_title ||
+                          "Untitled Certification"}
+                      </h1>
+                    </div>
+                  )}
+                </div>
+              )
+            )
+          ) : (
+            <div>-</div>
+          )}
         </div>
       </div>
     </div>

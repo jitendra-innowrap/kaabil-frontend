@@ -1,68 +1,132 @@
 "use client";
-import React from "react";
-import Popup from "reactjs-popup";
+import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { IoClose } from "react-icons/io5";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { setEducationModal } from "@/redux/profileSlice";
-
-const qualificationList = [
-  { id: "below_10th", name: "Below 10th class" },
-  { id: "10th_class", name: "10th class" },
-  { id: "12th_class", name: "12th class" },
-  { id: "diploma_certificate", name: "Diploma/Certificate" },
-  { id: "iti", name: "ITI" },
-  { id: "graduate", name: "Graduate" },
-  { id: "post_graduate", name: "Post Graduate" },
-];
+import {
+  fetchEducationDetail,
+  fetchProfile,
+  fieldStudy,
+  setEducationModal,
+  setEducationData,
+  setResumeModal,
+} from "@/redux/profileSlice";
+import {
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+} from "@material-tailwind/react";
+import toast from "react-hot-toast";
+import api from "@/Services/Apiservice";
+import { FaSearch } from "react-icons/fa";
 
 const EducationModal = () => {
-  const { educationModal } = useAppSelector((state) => state.profile);
+  const { educationModal, qualificationList, profileData, educationData } =
+    useAppSelector((state) => state.profile);
 
-  console.log(educationModal, "Verify Education Modal");
+  const [educationSearch, setEducationSearch] = useState(educationData);
+
+  const { token } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
+
+  const validationSchema = Yup.object().shape({
+    education_id: Yup.string().required("Required"),
+  });
 
   const closeModal = () => {
     dispatch(setEducationModal(false));
   };
 
+  useEffect(() => {
+    dispatch(fetchEducationDetail());
+  }, []);
+
   return (
-    <Popup
+    // Suppressing Dialog type error
+    // @ts-ignore
+    <Dialog
       open={educationModal}
-      onClose={closeModal}
-      modal
-      className="onboarding relative"
-      overlayStyle={{
-        background: "#4D4D4DC2",
-        padding: "20px",
-        borderRadius: "10px",
-        overflow: "hidden",
-      }}
+      handler={closeModal}
+      size="md"
+      className="fixed -top-20 -translate-x-1/2 custom-dialog"
     >
       <div>
-        <div className="flex justify-end">
-          <IoClose
-            className="mr-4 mt-4 size-8 cursor-pointer"
-            onClick={closeModal}
-          />
-        </div>
+        {/* @ts-ignore */}
+        <DialogHeader>
+          <div className="relative w-full">
+            <IoClose
+              className="absolute top-0 right-0 cursor-pointer"
+              size={38}
+              onClick={closeModal}
+            />
+            <div className="flex justify-center items-center mt-6">
+              <h2 className="text-center text-[#231F20] text-3xl font-semibold">
+                Edit your <span className="text-red">education</span>
+              </h2>
+            </div>
+          </div>
+        </DialogHeader>
         <Formik
-          initialValues={{ education_id: "" }}
-          validationSchema={Yup.object().shape({
-            education_id: Yup.string().required("Required"),
-          })}
-          onSubmit={(values) => {
-            console.log("Submitted values:", values);
+          initialValues={{
+            education_id:
+              qualificationList?.find(
+                (item: any) => item?.name === profileData?.education_name
+              )?.id || "",
+            institute_name: "",
+          }}
+          validationSchema={validationSchema}
+          onSubmit={async (values: any) => {
+            const formData = new FormData();
+            const data: any = [
+              {
+                id: values.education_id,
+                institute_name: values?.institute_name,
+                institute_master_id: "",
+                field_of_study_master_id: "",
+                year_of_graduation: "",
+              },
+            ];
+            formData.append("users_education", JSON.stringify(data));
+            try {
+              const response: any = await api.post(
+                "/Auth/editJobSeekerPrpfile",
+                formData,
+                {
+                  headers: { "Content-Type": "multipart/form-data" },
+                }
+              );
+
+              if (response.data.code === 1) {
+                toast.success(response.data.msg, {
+                  position: "bottom-right",
+                });
+              } else {
+                toast.error(response.data.msg || "Failed To Update Profile", {
+                  position: "bottom-right",
+                });
+              }
+            } catch (error: any) {
+              toast.error(error?.message || "Something went wrong!", {
+                position: "bottom-right",
+              });
+            } finally {
+              await dispatch(
+                fetchProfile({
+                  token: token,
+                  data: { latitude: 0, longitude: 0 },
+                })
+              );
+              closeModal();
+            }
           }}
         >
           {({ setFieldValue, isSubmitting, values, dirty }) => (
-            <Form className="pb-8 px-2 lg:px-8 xl:px-0">
-              <h2 className="text-center !text-[#231F20] text-3xl font-semibold !mb-4">
-                Edit your <span className="text-red">education</span>
-              </h2>
-              <div className="scroll-content">
-                <div className="!mt-9">
+            <Form>
+              {/* @ts-ignore */}
+              <DialogBody className="p-0 mt-8 max-h-[50vh] sm:max-h-[60vh] md:max-h-[70vh] lg:max-h-[80vh] overflow-y-auto custom-scroll">
+                <div className="px-12">
                   <label
                     className="block font-semibold mb-1 !text-[#231F20] !text-xl"
                     htmlFor="fileInput"
@@ -70,33 +134,96 @@ const EducationModal = () => {
                     What is your highest level of education?
                   </label>
                   <div className="relative flex flex-col gap-2 w-full py-2 bg-white rounded-lg">
-                    {qualificationList.map((education) => (
-                      <label
-                        htmlFor={education.id}
+                    {qualificationList?.map((education: any) => (
+                      <div
                         key={education.id}
-                        onClick={() =>
-                          setFieldValue("education_id", education.id)
-                        }
-                        className={`form-group flex items-center gap-4 rounded-lg px-5 py-3 border shadow-sm cursor-pointer ${
+                        className={`border-2 border-red py-2 rounded-lg px-4 ${
                           education.id === values.education_id
-                            ? "border-red bg-[#FDF1F3]"
-                            : "border-[#C8C9CB1A]"
+                            ? "bg-[#FDF1F3]"
+                            : ""
                         }`}
                       >
-                        <div className="flex items-center gap-4">
-                          <input
-                            type="radio"
-                            id={education.id}
-                            checked={education.id === values.education_id}
-                            name="education"
-                            className="cursor-pointer !m-0 !w-4 !h-4"
-                            value={education.id}
-                          />
-                          <span className="text-[#231F20]">
-                            {education.name}
-                          </span>
-                        </div>
-                      </label>
+                        <label
+                          htmlFor={education.id}
+                          onClick={() => {
+                            setFieldValue("education_id", education.id);
+                            setFieldValue("institute_name", "");
+                            dispatch(
+                              fieldStudy({
+                                data: {
+                                  education_master_id: values?.education_id,
+                                },
+                              })
+                            );
+                            setEducationSearch([]);
+                          }}
+                          className={`form-group flex items-center gap-4 rounded-lg px-5 py-3 border shadow-sm cursor-pointer ${
+                            education.id === values.education_id
+                              ? "border-red"
+                              : "border-[#C8C9CB1A]"
+                          }`}
+                        >
+                          <div className="flex items-center gap-4">
+                            <input
+                              type="radio"
+                              id={education.id}
+                              checked={education.id === values.education_id}
+                              name="education"
+                              className="cursor-pointer !m-0 !w-4 !h-4"
+                              value={education.id}
+                            />
+                            <span className="text-[#231F20] text-xl">
+                              {education.name}
+                            </span>
+                          </div>
+                        </label>
+                        {education.id === values.education_id && (
+                          <div className="w-full py-3 relative flex items-center mt-2">
+                            <input
+                              className="px-10 bg-[#C8C9CB3B] w-full py-3 rounded-lg placeholder-[#231F20] text-[#231F20]"
+                              placeholder="BFA Applied Arts"
+                              value={values?.institute_name}
+                              onChange={(e) => {
+                                const value = e.target.value;
+                                setFieldValue("institute_name", value);
+                                const filteredSuggestions =
+                                  educationData?.filter((item: any) =>
+                                    item?.name
+                                      ?.toLowerCase()
+                                      .includes(value.toLowerCase())
+                                  );
+                                setEducationSearch(filteredSuggestions);
+                              }}
+                              onFocus={async () => {
+                                await setEducationSearch(educationData);
+                              }}
+                            />
+                            <img
+                              src="/new-assets/icons/search.svg"
+                              className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#231F20] mt-0.5"
+                            />
+                            {educationSearch?.length > 0 && (
+                              <div className="absolute top-16 z-50 w-full max-h-[250px] min-h-[50px] overflow-auto p-0 bg-white border rounded-xl shadow-lg mt-1">
+                                {educationSearch?.map((item: any) => (
+                                  <div
+                                    key={item.id}
+                                    className="p-2 hover:bg-gray-100 cursor-pointer"
+                                    onClick={() => {
+                                      setFieldValue(
+                                        "institute_name",
+                                        item.name
+                                      );
+                                      setEducationSearch([]);
+                                    }}
+                                  >
+                                    {item.name}
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
                     ))}
                   </div>
                   <div className="h-1">
@@ -106,26 +233,39 @@ const EducationModal = () => {
                       className="text-red text-sm mt-1"
                     />
                   </div>
+                  <div className="mt-3">
+                    <label
+                      className="block font-semibold mb-1 !text-[#231F20] !text-xl"
+                      htmlFor="fileInput"
+                    >
+                      Certification
+                    </label>
+                    <div className="flex gap-4 mt-2 pb-2">
+                      <img src="/new-assets/icons/certificate.svg" />
+                      <img src="/new-assets/icons/certificate.svg" />
+                      <img src="/new-assets/icons/certificate.svg" />
+                      <img src="/new-assets/icons/certificate.svg" />
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className="flex justify-end">
+              </DialogBody>
+              {/* @ts-ignore */}
+              <DialogFooter className="flex justify-end p-0 pb-3 mt-3 px-12">
                 <button
                   type="submit"
-                  className={`max-w-[100px] no-margin sm:max-w-[250px] ${
-                    !dirty || isSubmitting
-                      ? "!opacity-50 !cursor-not-allowed"
-                      : "cursor-pointer"
+                  className={`px-28 py-4  bg-[#E31837] text-white rounded-xl ${
+                    isSubmitting ? "opacity-50 cursor-not-allowed" : ""
                   }`}
-                  disabled={!dirty || isSubmitting}
+                  disabled={isSubmitting}
                 >
                   Save
                 </button>
-              </div>
+              </DialogFooter>
             </Form>
           )}
         </Formik>
       </div>
-    </Popup>
+    </Dialog>
   );
 };
 

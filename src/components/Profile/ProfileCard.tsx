@@ -1,14 +1,17 @@
+import { useAppSelector } from "@/redux/hooks";
 import Image from "next/image";
 import React from "react";
+import { formatJobDates } from "../utils";
 
 const ProfileCard = () => {
+  const { profileData } = useAppSelector((state) => state.profile);
   return (
     <div className="bg-white rounded-2xl py-3">
       <div className="grid grid-col-12">
         <div className="col-span-12">
           <Image
-            className="cursor-pointer mx-auto size-[70px] 2xl:size-[102px] mb-2"
-            src={"/new-assets/icons/avatar.svg"}
+            className="cursor-pointer mx-auto size-[70px] 2xl:size-[102px] mb-2 rounded-full"
+            src={profileData?.photo_url ?? "/new-assets/icons/avatar.svg"}
             width={287}
             height={253}
             alt="resume-builder"
@@ -16,41 +19,51 @@ const ProfileCard = () => {
         </div>
         <div className="col-span-12">
           <h1 className="text-xl text-center font-medium text-[#231F20]">
-            Shweta Malankar
+            {profileData?.name ?? "-"}
           </h1>
         </div>
         <div className="col-span-12">
           <h1 className="text-xs text-center text-[#4D4D4F]">
-            Vikhroli East, Mumbai
+            {profileData?.city ?? "-"}
           </h1>
         </div>
         <div className="col-span-12 mt-2">
           <h1 className="text-sm text-center">
-            HT Media Labs - May 2020 - Present
+            {profileData?.company_name} -{" "}
+            {formatJobDates(
+              profileData?.user_experiences?.[0]?.job_start_date || "-",
+              profileData?.user_experiences?.[0]?.job_end_date || "-"
+            )}
           </h1>
         </div>
         <div className="col-span-12 mt-2">
-          <div className="text-[#717B9E] flex justify-center gap-3 text-[12px] md:text-[8px] lg:text-[9px] xl:text-[12px]">
-            <h1 className="bg-[#EEF2FECC] px-2 py-1 rounded-md">Figma</h1>
-            <h1 className="bg-[#EEF2FECC] px-2 py-1 rounded-md">
-              UI/UX Design
-            </h1>
-            <h1 className="bg-[#EEF2FECC] px-2 py-1 rounded-md">Leadership</h1>
-            <h1 className="bg-[#EEF2FECC] px-2 py-1 rounded-md">Visual art</h1>
-          </div>
+          {profileData?.skills && profileData.skills.length > 0 && (
+            <div className="text-[#717B9E] flex flex-wrap justify-center gap-3 text-[12px] md:text-[8px] lg:text-[9px] xl:text-[12px]">
+              {profileData.skills.map((skill: any, index: number) => (
+                <h1 key={index} className="bg-[#EEF2FECC] px-2 py-1 rounded-md">
+                  {skill?.name}
+                </h1>
+              ))}
+            </div>
+          )}
         </div>
         <div className="col-span-12 flex justify-center items-center px-6 gap-2 mt-4">
           <div className="w-full h-[6px] 2xl:h-2 rounded-lg bg-[#CCCCCC]">
             <div
               className="rounded-lg h-full bg-red"
-              style={{ width: `100%` }}
+              style={{
+                width: `${profileData?.user_profile_percentage ?? 0}%`,
+              }}
             ></div>
           </div>{" "}
-          <span className="text-xs 2xl:text-sm">100%</span>
+          <span className="text-xs 2xl:text-sm">
+            {profileData?.user_profile_percentage ?? 0}%
+          </span>
         </div>
         <div className="col-span-12 mt-1">
           <h1 className="text-red text-center text-sm">
-            Your Profile is 100% Complete!
+            Your Profile is {profileData?.user_profile_percentage ?? 0}%
+            Complete!
           </h1>
         </div>
         <div className="col-span-12 flex justify-center px-6 mt-6">

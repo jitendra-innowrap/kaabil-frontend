@@ -1,5 +1,5 @@
 import { UserLocation } from "@/Types/common";
-import toast from 'react-hot-toast';
+import toast from "react-hot-toast";
 
 export function handleCommaForQuery(string: string) {
   if (string) {
@@ -8,12 +8,15 @@ export function handleCommaForQuery(string: string) {
   return "";
 }
 
-
-export const showToast = (message: string, isError?: boolean, options?: any) => {
+export const showToast = (
+  message: string,
+  isError?: boolean,
+  options?: any
+) => {
   // Dismiss any existing toast
   toast.dismiss();
   const updatedOptions = {
-    position: 'bottom-right', // Default position
+    position: "bottom-right", // Default position
     ...options, // Spread provided options (if any)
   };
 
@@ -24,7 +27,6 @@ export const showToast = (message: string, isError?: boolean, options?: any) => 
     toast.error(message, updatedOptions);
   }
 };
-
 
 export const formatSalary = (salary: number) => {
   const numStr = salary.toString();
@@ -455,7 +457,6 @@ export const getCompanyInitials = (name?: string): string => {
 
 export const ProfileTabs = ["About", "Education", "Experience", "Resume"];
 
-
 // Experience Constant
 export const experiences = [
   {
@@ -487,3 +488,22 @@ export const experiences = [
     icon: "/new-assets/icons/experience.svg",
   },
 ];
+
+export const formatJobDates = (startDate: any, endDate: any) => {
+  const formatDate = (date: any) => {
+    if (!date || date === "0000-00-00") return "Present";
+
+    const jsDate: any = new Date(date);
+    if (isNaN(jsDate)) return null; // Invalid date check
+
+    return jsDate.toLocaleString("en-US", { month: "short", year: "numeric" });
+  };
+
+  const formattedStartDate = formatDate(startDate);
+  const formattedEndDate = formatDate(endDate);
+
+  // If both are missing or invalid, return "-"
+  if (!formattedStartDate && !formattedEndDate) return "-";
+
+  return `${formattedStartDate || "-"} - ${formattedEndDate || "Present"}`;
+};

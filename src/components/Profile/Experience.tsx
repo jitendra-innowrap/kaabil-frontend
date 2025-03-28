@@ -1,7 +1,11 @@
 import React from "react";
-import { experiences } from "../utils";
+import { experiences, formatJobDates } from "../utils";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { setExperienceModal } from "@/redux/profileSlice";
 
 const Experience = () => {
+  const { profileData } = useAppSelector((state) => state.profile);
+  const dispatch = useAppDispatch();
   return (
     <div className="bg-white rounded-lg mt-3 px-12 py-6">
       <div className="grid grid-cols-12">
@@ -10,7 +14,12 @@ const Experience = () => {
             <img src="/new-assets/icons/briefcase-exprience.svg" />
             <h1 className="text-[#231F20] font-semibold text-md">Experience</h1>
           </div>
-          <div className="flex items-center gap-2 cursor-pointer">
+          <div
+            className="flex items-center gap-2 cursor-pointer"
+            onClick={() => {
+              dispatch(setExperienceModal(true));
+            }}
+          >
             <img
               src="/new-assets/icons/ink_marker.svg"
               className="h-3 mt-1"
@@ -21,31 +30,50 @@ const Experience = () => {
         </div>
       </div>
       <div className="grid grid-cols-12 pr-2 mt-5 gap-3">
-        {experiences.map((exp, index) => (
-          <div
-            key={index}
-            className="col-span-12 bg-white p-3 rounded-lg shadow-md light-shadow"
-          >
-            <div className="flex items-center gap-4">
-              {/* Image Section */}
-              <div>
-                <img src={exp.icon} alt={`${exp.title} icon`} />
-              </div>
-              {/* Text Section */}
-              <div>
-                <h1 className="text-sm text-[#231F20] font-medium">{exp.title}</h1>
-                <h1 className="text-xs text-[#231F20]">{exp.company}</h1>
-                <h1 className="text-xs text-[#231F20] flex items-center gap-2">
-                  {exp.type}{" "}
-                  <span className="text-2xl">
-                    <img src="/new-assets/icons/dot.svg" />
-                  </span>{" "}
-                  {exp.duration}
-                </h1>
+        {profileData?.user_experiences?.length > 0 ? (
+          profileData.user_experiences.map((exp: any, index: number) => (
+            <div
+              key={index}
+              className="col-span-12 bg-white p-3 rounded-lg shadow-md light-shadow"
+            >
+              <div className="flex items-center gap-4">
+                {/* Image Section */}
+                <div className="w-14 h-14 rounded-md overflow-hidden">
+                  {exp?.company_logo ? (
+                    <img
+                      src={exp.company_logo}
+                      alt={`${exp.company_name ?? "Company"} icon`}
+                      className="w-full h-full object-contain"
+                    />
+                  ) : (
+                    <div className="bg-gradient-to-r from-[#F5F5F5] to-[#E0E0E0] w-full h-full rounded-md shadow-inner"></div>
+                  )}
+                </div>
+                {/* Text Section */}
+                <div>
+                  <h1 className="text-sm text-[#231F20] font-medium">
+                    {exp?.designation || "-"}
+                  </h1>
+                  <h1 className="text-xs text-[#231F20]">
+                    {exp?.company_name || "-"}
+                  </h1>
+                  <h1 className="text-xs text-[#231F20] flex items-center gap-2">
+                    {exp?.job_type || "-"}{" "}
+                    <span className="text-2xl">
+                      <img src="/new-assets/icons/dot.svg" alt="Dot" />
+                    </span>{" "}
+                    {formatJobDates(exp?.job_start_date, exp?.job_end_date)}
+                  </h1>
+                </div>
               </div>
             </div>
+          ))
+        ) : (
+          <div className="col-span-12  text-[#4D4D4F] text-sm font-medium">
+            Help recruiters find you – Update your work experience details
+            today!
           </div>
-        ))}
+        )}
       </div>
     </div>
   );

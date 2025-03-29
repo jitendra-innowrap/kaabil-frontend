@@ -30,7 +30,7 @@ function JobList() {
   const [totalPages, setTotalPages] = useState(0);
   const maxPagesToShow = 5; // Maximum pages to display
   const user = useAppSelector((state) => state.user);
-  const {isLoggedIn} = useAppSelector((state) => state.user);
+  const { isLoggedIn } = useAppSelector((state) => state.user);
   const { token } = useAppSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [jobs, setJobs] = useState<object[]>([]);
@@ -56,8 +56,8 @@ function JobList() {
   ]);
 
   const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null); 
-  
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
   // Handle sort option selection
   const handleSortChange = (newSort: string) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -76,7 +76,10 @@ function JobList() {
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false);
       }
     };
@@ -84,7 +87,7 @@ function JobList() {
     if (isOpen) {
       document.addEventListener("mousedown", handleClickOutside);
     }
-    
+
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -94,24 +97,29 @@ function JobList() {
   useEffect(() => {
     const fetchJobs = async () => {
       // Parse URL parameters
-      const jobTypesFilter = searchParams.get('job_types_filter')?.split('|') || [];
-      const locationFilter = searchParams.get('location_filter')?.split('|') || [];
-      const industriesFilter = searchParams.get('industries_filter')?.split('|') || [];
-      const experienceFilter = searchParams.get('experience')?.split('|') || [];
-      const mappedExperienceFilter = experienceFilter.map(exp => {
+      const jobTypesFilter =
+        searchParams.get("job_types_filter")?.split("|") || [];
+      const locationFilter =
+        searchParams.get("location_filter")?.split("|") || [];
+      const industriesFilter =
+        searchParams.get("industries_filter")?.split("|") || [];
+      const experienceFilter = searchParams.get("experience")?.split("|") || [];
+      const mappedExperienceFilter = experienceFilter.map((exp) => {
         if (exp === "Fresher") {
           return 1;
         } else {
           return 0;
         }
       });
-      const jobLocationTypesFilter = searchParams.get('job_location_types_filter')?.split('|') || [];
-      const benefitsFilter = searchParams.get('benefits_filter')?.split('|') || [];
-      const minSalary = searchParams.get('minSalary') || '';
-      const maxSalary = searchParams.get('maxSalary') || '';
-      const latitude = searchParams.get('latitude')?.split('|') || []; // Parse latitude as an array
-      const longitude = searchParams.get('longitude')?.split('|') || []; // Parse longitude as an array
-      const search = searchParams.get('search') || '';
+      const jobLocationTypesFilter =
+        searchParams.get("job_location_types_filter")?.split("|") || [];
+      const benefitsFilter =
+        searchParams.get("benefits_filter")?.split("|") || [];
+      const minSalary = searchParams.get("minSalary") || "";
+      const maxSalary = searchParams.get("maxSalary") || "";
+      const latitude = searchParams.get("latitude")?.split("|") || []; // Parse latitude as an array
+      const longitude = searchParams.get("longitude")?.split("|") || []; // Parse longitude as an array
+      const search = searchParams.get("search") || "";
 
       // Check if any filters are applied
       const hasFilters =
@@ -202,8 +210,7 @@ function JobList() {
             response.data?.data?.filters?.job_location_types_filter?.buckets,
           job_types_filter:
             response.data?.data?.filters?.job_types_filter?.buckets,
-          experience:
-            response.data?.data?.filters?.experience_filter?.buckets,
+          experience: response.data?.data?.filters?.experience_filter?.buckets,
           location_filter:
             response.data?.data?.filters?.location_filter?.buckets,
           industries_filter:
@@ -216,6 +223,7 @@ function JobList() {
             max: response.data?.data?.filters?.max_salary?.value,
           },
         };
+        // @ts-ignore
         if (!isfilterAvailable) dispatch(setJobFiltersMaster(filterMasters));
         setIsfilterAvailable(true);
       } catch (error) {
@@ -225,7 +233,6 @@ function JobList() {
 
     fetchJobs();
   }, [page, user?.id, searchParams, currentPage]);
-
 
   // Handle pagination button click
   const handleActive = (page: number) => {
@@ -259,13 +266,16 @@ function JobList() {
         <div className="">
           {/* <pre>{JSON.stringify(user, null, 2)}</pre> */}
           <h2 className="font-medium text-base leading-7s xl:text-lg 3xl:text-2xl 3xl:leading-7 mb-1 xl:mb-2">
-            {isLoggedIn?"Recommended jobs for you":"All Jobs"}
+            {isLoggedIn ? "Recommended jobs for you" : "All Jobs"}
           </h2>
           <p className="text-[#787878] text-sm 2xl:text-sm">
             {totalJobs} jobs for you
           </p>
         </div>
-        <div className="relative h-fit sort-by-container mt-1 3xl:mt-0" ref={dropdownRef}>
+        <div
+          className="relative h-fit sort-by-container mt-1 3xl:mt-0"
+          ref={dropdownRef}
+        >
           {/* Dropdown Button */}
           <button
             type="button"
@@ -276,7 +286,11 @@ function JobList() {
             onClick={toggleDropdown}
           >
             {sort === "3" ? "Recently posted" : "Best Matched"}
-            <IoMdArrowDropdown className={`flex-shrink-0 ml-1 xl:ml-2 3xl:ml-5 text-[#000000] size-4 3xl:size-4 ${isOpen?"rotate-180":""}`} />
+            <IoMdArrowDropdown
+              className={`flex-shrink-0 ml-1 xl:ml-2 3xl:ml-5 text-[#000000] size-4 3xl:size-4 ${
+                isOpen ? "rotate-180" : ""
+              }`}
+            />
           </button>
 
           {/* Dropdown Menu */}
@@ -351,7 +365,7 @@ function JobList() {
         })}
       </div>
       <div className="block lg:hidden mt-4">
-        <FindCareer/>
+        <FindCareer />
       </div>
 
       {/* Pagination */}

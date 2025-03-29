@@ -380,15 +380,15 @@ a.btn.disabled:hover {
   opacity: 0.6; /* Add hover effect (optional) */
   cursor: not-allowed;
 }
-.popup-content.logout-content{
+.popup-content.logout-content {
   max-width: 500px;
 }
 
-.popup-content.logout-content button{
+.popup-content.logout-content button {
   width: 160px !important;
   max-width: unset;
 }
-.popup-content.logout-content button.cancel-logout:hover{
+.popup-content.logout-content button.cancel-logout:hover {
   font-weight: 500;
 }
 .container {
@@ -768,7 +768,7 @@ label {
     height: 25px !important;
     width: 25px !important;
   }
-  
+
   .job_listing_center_top_companies_nudge a {
     font-size: 12px !important;
   }
@@ -872,11 +872,11 @@ label {
     font-weight: 400;
     padding: 10px;
   }
-  
-  .swiper-button-prev.out-arrow{
+
+  .swiper-button-prev.out-arrow {
     left: -7px !important;
   }
-  .swiper-button-next.out-arrow{
+  .swiper-button-next.out-arrow {
     right: -7px !important;
   }
   .job_listing_center_top_companies_nudge .swiper-button-prev {
@@ -886,10 +886,10 @@ label {
     right: -10px !important;
   }
   .job-card .action-btns.update button,
-  .job-card .action-btns.update a{
+  .job-card .action-btns.update a {
     padding: 0 !important;
   }
-  .job-listings .nudges-bar{
+  .job-listings .nudges-bar {
     margin-top: 69px;
   }
 }
@@ -1019,7 +1019,7 @@ label {
   .filters-sidebar {
     max-width: 260px;
   }
-  
+
   .job_listing_center_top_companies_nudge .swiper-button-prev {
     left: -10px !important;
   }
@@ -1027,7 +1027,7 @@ label {
     right: -10px !important;
   }
   .job-card .action-btns.update button,
-  .job-card .action-btns.update a{
+  .job-card .action-btns.update a {
     width: 100px !important;
   }
   
@@ -1057,7 +1057,7 @@ label {
   .job_listing_center_top_companies_nudge a {
     font-size: 12px !important;
   }
-  
+
   .container.no-pad {
     max-width: 1340px;
     padding-inline: 0px;
@@ -1160,41 +1160,41 @@ label {
   .job-description {
     max-width: calc(100% - 390px);
   }
-  
-  .popup-content.logout-content{
+
+  .popup-content.logout-content {
     max-width: 600px;
   }
-  .popup-content.logout-content button{
+  .popup-content.logout-content button {
     width: 160px !important;
     max-width: unset;
   }
-  .popup-content.logout-content button.cancel-logout:hover{
+  .popup-content.logout-content button.cancel-logout:hover {
     font-weight: 500;
   }
-  .swiper-button-prev.out-arrow{
+  .swiper-button-prev.out-arrow {
     left: 10px !important;
   }
-  .swiper-button-next.out-arrow{
+  .swiper-button-next.out-arrow {
     right: 10px !important;
   }
-  
+
   .job_listing_center_top_companies_nudge .swiper-button-prev {
     left: -10px !important;
   }
   .job_listing_center_top_companies_nudge .swiper-button-next {
     right: -10px !important;
   }
-  
+
   .job-card .action-btns.update button,
-  .job-card .action-btns.update a{
+  .job-card .action-btns.update a {
     width: 120px !important;
     height: 35px !important;
   }
-    
-.job_listing_center_top_companies_nudge h3{
-  margin-bottom: 0 !important;
-  height: 40px !important;
-}
+
+  .job_listing_center_top_companies_nudge h3 {
+    margin-bottom: 0 !important;
+    height: 40px !important;
+  }
 }
 
 @media (min-width: 1700px) {
@@ -1390,22 +1390,22 @@ label {
     color: #f2f2f2 !important;
     border-color: #f2f2f2 !important;
   }
-  
+
   .job-card .action-btns.update button,
-  .job-card .action-btns.update a{
+  .job-card .action-btns.update a {
     width: 137px !important;
     height: 40px !important;
     padding: 0 !important;
   }
-  
-  .job-listings .nudges-bar{
+
+  .job-listings .nudges-bar {
     margin-top: 79px;
   }
-    
-.job_listing_center_top_companies_nudge h3{
-  margin-bottom: 10px !important;
-  height: 40px !important;
-}
+
+  .job_listing_center_top_companies_nudge h3 {
+    margin-bottom: 10px !important;
+    height: 40px !important;
+  }
 }
 
 @media (width>=1700) {
@@ -1423,7 +1423,8 @@ label {
 }
 
 @media (max-width: 1600px) {
-  .popup-content.onboarding-content, .popup-content.screening-modal-container-content {
+  .popup-content.onboarding-content,
+  .popup-content.screening-modal-container-content {
     scale: 0.7;
   }
 }
@@ -1620,9 +1621,10 @@ label {
   padding-inline: 50px !important;
   margin-inline: 10px !important;
 }
-.company-detail-gallary .swiper.swiper-horizontal{
+.company-detail-gallary .swiper.swiper-horizontal {
   padding-inline: 0px !important;
-}.custom-dialog {
+}
+.custom-dialog {
   scale: 0.7;
   z-index: 99;
 }
@@ -1657,3 +1659,39 @@ label {
   border-radius: 8px;
   height: 56px;
 }
+
+.custom-dialog .css-13cymwt-control,
+.custom-dialog .css-t3ipsp-control {
+  border: none !important;
+  background-color: #ffffff !important;
+  padding-left: 5px !important;
+  border-radius: 8px !important;
+  height: 53px !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06) !important;
+}
+
+.css-9x5mqu {
+  padding: 0px 0px !important;
+  z-index: 999;
+  font-size: 12px;
+}
+
+.custom-dialog .job-role-select .css-13cymwt-control,
+.custom-dialog .job-role-select .css-t3ipsp-control {
+  border: none !important;
+  background-color: #f2f3f3 !important;
+  padding-left: 5px !important;
+  border-radius: 8px !important;
+  height: 53px !important;
+}
+
+.custom-dialog .skills-select .css-13cymwt-control,
+.custom-dialog .skills-select .css-t3ipsp-control {
+  border: none !important;
+  background-color: #f2f3f3 !important;
+  padding-left: 36px !important;
+  border-radius: 8px !important;
+  height: 53px !important;
+}
+
+/* .css-t3ipsp-control */

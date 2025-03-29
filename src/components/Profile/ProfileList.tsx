@@ -42,9 +42,9 @@ const ProfileList = () => {
         <div className="col-span-12 mt-3">
           <h1 className="text-[#231F20] text-[22px] font-medium">My Profile</h1>
         </div>
-        <div className="col-span-12 flex flex-wrap gap-4 md:gap-12 border-b-2 border-[#D4D4D4] text-[#D4D4D4]">
+        <div className="col-span-8 flex flex-wrap gap-4 md:gap-12 border-b-2 border-[#D4D4D4] text-[#D4D4D4]">
           {ProfileTabs?.map((tab) => (
-            <h2
+            <h2 
               key={tab}
               className={`cursor-pointer pb-2 text-sm md:text-base ${
                 activeTab === tab

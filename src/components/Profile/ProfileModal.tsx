@@ -1,12 +1,18 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import MultiSelect from "@/components/Inputs/MultiSelect";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { IoClose } from "react-icons/io5";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { setProfileModal, setResumeModal } from "@/redux/profileSlice";
-import Select from "react-select";
+import {
+  fetchJobTypes,
+  fetchLocation,
+  fetchProfile,
+  fetchRoles,
+  fetchSkills,
+  fetchSoftSkills,
+  setProfileModal,
+} from "@/redux/profileSlice";
 import {
   Dialog,
   DialogHeader,
@@ -14,148 +20,62 @@ import {
   DialogFooter,
 } from "@material-tailwind/react";
 import Image from "next/image";
-import { RiMapPin2Line } from "react-icons/ri";
+import { formatDateExperience } from "../utils";
+import MultiSelect from "../Inputs/MultiSelect";
 import api from "@/Services/Apiservice";
-import { FaChevronDown } from "react-icons/fa6";
-import { FaMapMarkerAlt } from "react-icons/fa";
+import { FaMagnifyingGlass } from "react-icons/fa6";
 import SelectedChips from "../Inputs/SelectedChips";
+import toast from "react-hot-toast";
 
 const ProfileModal = () => {
-  const { profileModal } = useAppSelector((state) => state.profile);
-  const { current_location, location_id } = useAppSelector(
-    (state) => state.user
-  );
+  const {
+    profileModal,
+    rolesList,
+    jobTypes,
+    locationList,
+    cityList,
+    softSkillsOption,
+    softSkills,
+    skillsOption,
+    skillList,
+  } = useAppSelector((state) => state.profile);
+  const { token } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
-  const [locationList, setLocationList] = useState<
-    { value: string; label: string }[]
-  >([]);
-  const [selectedLocation, setSelectedLocation] = useState<
-    { value: string; label: string; [key: string]: any }[]
-  >([]);
 
-  useEffect(() => {
-    if (location_id) {
-      const initialLocations = locationList.filter((loc) =>
-        location_id.includes(loc.value)
-      );
-      setSelectedLocation(initialLocations);
-      // formik.setFieldValue(
-      //   "location_id",
-      //   initialLocations.map((loc) => loc.value)
-      // );
-    }
-  }, [current_location, locationList]);
-
-  const fetchLocation = async () => {
-    try {
-      const response = await api.get("/MasterData/getCity");
-      const locations =
-        response?.data?.result?.map((loc: any) => ({
-          value: loc.id,
-          label: loc.name,
-          ...loc,
-        })) || [];
-      setLocationList(locations);
-    } catch (error) {
-      console.error("Error fetching locations:", error);
-    }
-  };
-
-  const handleLocation = (
-    selectedOptions: { value: string; label: string }[]
-  ) => {
-    setSelectedLocation(selectedOptions); // Update selectedLocation state
-    // formik.setFieldValue(
-    //   "location_id",
-    //   selectedOptions.map((loc) => loc.value)
-    // ); // Sync with formik
-  };
-
-  useEffect(() => {
-    fetchLocation();
-  }, []);
-
-  const initialValues = {
-    fullName: "",
-    dob: "",
-    jobRolePreference: "",
-    jobType: "Full Time",
-    jobLocation: "",
-    skills: "",
-    strengths: "",
-  };
-
-  const options = [
-    { value: "new_york", label: "New York" },
-    { value: "los_angeles", label: "Los Angeles" },
-    { value: "chicago", label: "Chicago" },
-    { value: "houston", label: "Houston" },
-    { value: "miami", label: "Miami" },
-  ];
-
-  const customSingleOption = (props: {
-    data: any;
-    innerRef: any;
-    innerProps: any;
-  }) => {
-    const { data, innerRef, innerProps } = props;
-    return (
-      <div
-        ref={innerRef}
-        {...innerProps}
-        className="flex items-center p-2 cursor-pointer hover:bg-gray-100"
-      >
-        <FaMapMarkerAlt className="text-gray-500 mr-2" />
-        <span>{data.label}</span>
-      </div>
-    );
-  };
-
-  const customMultiValueLabel = (props: { data: any }) => {
-    const { data } = props;
-    return (
-      <div className="flex items-center">
-        <FaMapMarkerAlt className="text-gray-500 mr-1" />
-        <span>{data.label}</span>
-      </div>
-    );
-  };
-
-  const customStyles = {
-    control: (provided: any) => ({
-      ...provided,
-      paddingLeft: "0.5rem", // Extra padding for better spacing
-    }),
-    multiValue: (provided: any) => ({
-      ...provided,
-      backgroundColor: "#f0f0f0",
-    }),
-  };
+  console.log(rolesList, "Check Role List");
 
   const validationSchema = Yup.object().shape({
-    fullName: Yup.string().required("Required"),
-    dob: Yup.date().required("Required"),
-    jobRolePreference: Yup.string().required("Required"),
-    jobType: Yup.string().required("Required"),
-    jobLocation: Yup.string().required("Required"),
-    skills: Yup.string().required("Required"),
-    strengths: Yup.string().required("Required"),
+    photo_url: Yup.mixed().required("Required"),
+    first_name: Yup.string().required("Required"),
+    date_of_birth: Yup.date().required("Required"),
+    role_id: Yup.array()
+      .of(Yup.string())
+      .min(1, "Required")
+      .max(2, "Max 2 Roles")
+      .required("Required"),
+    job_type_master_id: Yup.array()
+      .of(Yup.string())
+      .min(1, "Required")
+      .required("Required"),
+    user_willing_to_relocate: Yup.array()
+      .min(1, "Required")
+      .required("Required"),
+    user_soft_skill: Yup.array().min(1, "Required").required("Required"),
+    user_skill: Yup.array().min(1, "Required"),
   });
 
   const closePopup = () => {
     dispatch(setProfileModal(false));
   };
 
-  const handleRemoveLocation = (value: string) => {
-    const updatedLocations = selectedLocation.filter(
-      (loc) => loc.value !== value
-    );
-    setSelectedLocation(updatedLocations); // Update selectedLocation state
-    // formik.setFieldValue(
-    //   "location_id",
-    //   updatedLocations.map((loc) => loc.value)
-    // ); // Sync with formik
-  };
+  useEffect(() => {
+    dispatch(fetchRoles());
+    dispatch(fetchJobTypes());
+    dispatch(fetchLocation());
+    dispatch(fetchSoftSkills());
+    dispatch(fetchSkills({ data: {} }));
+    // dispatch
+  }, []);
 
   return (
     // @ts-ignore
@@ -163,7 +83,7 @@ const ProfileModal = () => {
       open={profileModal}
       handler={closePopup}
       size="md"
-      className="fixed top-0 -translate-x-1/2 custom-dialog"
+      className="fixed -top-10 -translate-x-1/2 custom-dialog"
     >
       <div>
         {/* @ts-ignore */}
@@ -182,164 +102,517 @@ const ProfileModal = () => {
           </div>
         </DialogHeader>
         <Formik
-          initialValues={initialValues}
+          initialValues={{
+            photo_img: "/new-assets/icons/avatar.svg", //Exclude this
+            photo_url: null,
+            first_name: "",
+            date_of_birth: formatDateExperience(new Date()),
+            role_id: [],
+            job_type_master_id: [],
+            //  Location
+            city: "",
+            user_city: "",
+            city_latitude: "",
+            city_longitude: "",
+            user_willing_to_relocate: [],
+            is_willing_to_relocate: 1,
+            selectedLocation: [], //exclude this
+            //  Soft  Skills
+            soft_skill: [], //Exclude this
+            user_soft_skill: [],
+            //  Skills
+            skills: [], //Exclude this
+            user_skill: [],
+          }}
           validationSchema={validationSchema}
-          onSubmit={(values) => {
-            console.log("Submitted values:", values);
+          onSubmit={async (values) => {
+            const {
+              photo_img,
+              skills,
+              soft_skill,
+              selectedLocation,
+              ...payload
+            } = values;
+            const formData: any = new FormData();
+            // Append payload key-value pairs to FormData
+            Object.keys(payload)?.forEach((key: any) => {
+              if (
+                key === "user_willing_to_relocate" ||
+                key === "user_soft_skill" ||
+                key === "user_skill"
+              ) {
+                // Convert these keys' values to JSON strings
+                // @ts-ignore
+                formData.append(key, JSON.stringify(payload[key]));
+              } else {
+                // Append other keys as is
+                // @ts-ignore
+                formData.append(key, payload[key]);
+              }
+            });
+            try {
+              const response: any = await api.post(
+                "/Auth/editJobSeekerPrpfile",
+                formData,
+                {
+                  headers: { "Content-Type": "multipart/form-data" },
+                }
+              );
+
+              response.data.code === 1
+                ? toast.success(response.data.msg, {
+                    position: "bottom-right",
+                  })
+                : toast.error(response.data.msg || "Failed To Update Profile", {
+                    position: "bottom-right",
+                  });
+            } catch (error: any) {
+              toast.error(error?.message || "Something went wrong!", {
+                position: "bottom-right",
+              });
+            } finally {
+              await dispatch(
+                fetchProfile({
+                  token: token,
+                  data: { latitude: 0, longitude: 0 },
+                })
+              );
+              closePopup();
+            }
           }}
         >
-          {({ setFieldValue, isSubmitting }) => (
+          {({ setFieldValue, isSubmitting, values, errors }) => (
             <Form>
               {/* @ts-ignore */}
-              <DialogBody className="p-0  max-h-[70vh] overflow-y-auto custom-scroll">
-                <div className="px-12 space-y-2">
-                  <div className="flex gap-4 items-center">
-                    <Image
-                      className="cursor-pointer rounded-full w-28 h-28"
-                      src={"/new-assets/icons/avatar.svg"}
-                      width={80}
-                      height={80}
-                      alt="profile-avatar"
-                    />
-                    <div className="flex gap-3">
-                      <button
-                        type="button"
-                        className="bg-black text-white text-lg px-4 py-2 rounded-md hover:bg-black"
-                      >
-                        Change Picture
-                      </button>
-                      <button
-                        type="button"
-                        className="border-2 border-black text-lg px-4 py-2 rounded-md"
-                      >
-                        Delete Picture
-                      </button>
+              <DialogBody className="p-0 max-h-[70vh] overflow-y-auto custom-scroll">
+                <div className="px-12 space-y-2 pb-8">
+                  {/* Field One */}
+                  <div>
+                    <div className="flex gap-4 items-center">
+                      <Image
+                        className="cursor-pointer rounded-full w-28 h-28"
+                        src={values?.photo_img}
+                        width={60}
+                        height={60}
+                        alt="profile-avatar"
+                      />
+                      <div className="flex gap-3">
+                        <button
+                          type="button"
+                          className="bg-[#231F20] text-white text-lg px-4 py-[13px] rounded-md hover:bg-[#231F20]"
+                        >
+                          <label
+                            htmlFor="photoInput"
+                            className="cursor-pointer text-lg"
+                          >
+                            Change Picture
+                          </label>
+                        </button>
+                        <input
+                          id="photoInput"
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(e) => {
+                            const file: any = e.target.files?.[0];
+                            if (file) {
+                              setFieldValue("photo_url", file);
+                              const reader = new FileReader();
+                              reader.onload = (event) => {
+                                setFieldValue(
+                                  "photo_img",
+                                  event.target?.result
+                                );
+                              };
+                              reader.readAsDataURL(file);
+                            }
+                          }}
+                        />
+                        <div
+                          className="!border-2 flex gap-2 items-center cursor-pointer font-medium text-[#231F20] !bg-white !border-black text-lg px-4 rounded-md"
+                          onClick={() => {
+                            setFieldValue("photo_url", null);
+                            setFieldValue(
+                              "photo_img",
+                              "/new-assets/icons/avatar.svg"
+                            );
+                          }}
+                        >
+                          <img
+                            src="/new-assets/icons/delete-icon.svg"
+                            className="h-8 w-8"
+                          />
+                          Delete Picture
+                        </div>
+                      </div>
+                    </div>
+                    <div className="h-4">
+                      <ErrorMessage
+                        name="photo_url"
+                        component="div"
+                        className="text-red-500 text-lg"
+                      />
                     </div>
                   </div>
-
+                  {/* Field Two */}
                   <div className="mt-3">
-                    <label className="block text-lg font-medium text-[#231F20]">
+                    <label className="block text-lg font-semibold text-[#231F20] mb-2">
                       Full Name
                     </label>
                     <Field
                       type="text"
-                      name="fullName"
-                      className="w-full border pl-4 py-3 rounded-md bg-[#F2F3F3]"
+                      name="first_name"
+                      className="w-full border pl-4 py-3 rounded-lg bg-[#F2F3F3]"
                       placeholder="Enter your full name"
                     />
-                    <ErrorMessage
-                      name="fullName"
-                      component="div"
-                      className="text-red-500 text-lg"
-                    />
+                    <div className="h-3">
+                      <ErrorMessage
+                        name="first_name"
+                        component="div"
+                        className="text-red-500 text-lg"
+                      />
+                    </div>
                   </div>
-
+                  {/* Field  Three */}
                   <div>
-                    <label className="block text-lg font-medium">
+                    <label className="block text-lg font-semibold text-[#231F20] mb-2">
                       Date of Birth
                     </label>
-                    <Field
+                    <input
                       type="date"
-                      name="dob"
-                      className="w-full border p-3 rounded-md"
-                    />
-                    <ErrorMessage
-                      name="dob"
-                      component="div"
-                      className="text-red-500 text-lg"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-lg font-medium">
-                      Job Role Preference
-                    </label>
-                    <div className="shadow-md rounded-lg">
-                      <div className="py-3 px-4 flex justify-between items-center">
-                        Manage Design
-                        <FaChevronDown className="size-3 text-[#333333] " />
-                      </div>
-                    </div>
-                    <div className="inline-flex text-[#E31837] rounded-full py-1 px-5 mt-3 justify-between items-center gap-2 border-2 border-[#E31837]">
-                      <span>UI Designer</span>
-                      <div>X</div>
-                    </div>
-                    <ErrorMessage
-                      name="jobRolePreference"
-                      component="div"
-                      className="text-red-500 text-lg mt-1"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-lg font-medium">
-                      Job Type
-                    </label>
-                    <div className="flex gap-3">
-                      <div className="text-md rounded-full bg-red px-6 py-1 text-white flex items-center">
-                        Full Time
-                      </div>
-                      <div className="text-md rounded-full text-black border-2 border-[#4D4D4F4D] px-6 py-1 flex items-center">
-                        Part Time
-                      </div>
-                      <div className="text-md rounded-full text-black border-2 border-[#4D4D4F4D] px-6 py-1 flex items-center">
-                        internship
-                      </div>
-                    </div>
-                    <ErrorMessage
-                      name="jobType"
-                      component="div"
-                      className="text-red-500 text-lg mt-1"
-                    />
-                  </div>
-                  <label className="block text-lg font-medium !p-0">
-                    Job Location
-                  </label>
-                  <div className="my-2">
-                    <Select
-                      options={options}
-                      isMulti
-                      placeholder="Select locations"
-                      styles={customStyles}
-                      components={{
-                        Option: customSingleOption,
-                        MultiValueLabel: customMultiValueLabel,
+                      id="date_of_birth"
+                      name="date_of_birth"
+                      value={values.date_of_birth}
+                      onChange={(e) => {
+                        setFieldValue("date_of_birth", e.target.value);
                       }}
+                      placeholder="Start Date"
+                      className="mb-2 w-full px-3 py-3 border rounded-lg !bg-white shadow-md"
+                      max={(() => {
+                        const today = new Date();
+                        return today.toISOString().split("T")[0];
+                      })()}
                     />
-                  </div>
-                  <SelectedChips
-                    selectedValues={selectedLocation}
-                    onRemove={handleRemoveLocation}
-                  />
-                  <div>
-                    <label className="block text-lg font-medium">Skills</label>
-                    <Field
-                      type="text"
-                      name="skills"
-                      className="w-full border p-2 rounded-md"
-                      placeholder="Enter your skills"
-                    />
-                    <ErrorMessage
-                      name="skills"
-                      component="div"
-                      className="text-red-500 text-lg mt-1"
-                    />
+                    <div className="h-3">
+                      <ErrorMessage
+                        name="date_of_birth"
+                        component="div"
+                        className="text-red-500 text-lg"
+                      />
+                    </div>
                   </div>
 
+                  {/* Field 4 */}
+                  <div className="">
+                    <label className="block text-lg font-semibold text-[#231F20] mb-2">
+                      Job role preference
+                    </label>
+                    <MultiSelect
+                      options={rolesList}
+                      placeholder="Select Job Role"
+                      isMulti
+                      onChange={(
+                        selectedRoles: { value: string; label: string }[]
+                      ) =>
+                        setFieldValue(
+                          "role_id",
+                          selectedRoles.map((role) => role.value)
+                        )
+                      }
+                      selectedValues={rolesList?.filter((role: any) =>
+                        // @ts-ignore
+                        values.role_id.includes(role.value)
+                      )}
+                      maxSelections={2}
+                    />
+                    <div className={values.role_id.length > 0 ? "mt-4" : ""}>
+                      <SelectedChips
+                        selectedValues={rolesList?.filter((role: any) =>
+                          // @ts-ignore
+                          values.role_id.includes(role.value)
+                        )}
+                        onRemove={(value: string) =>
+                          setFieldValue(
+                            "role_id",
+                            values.role_id?.filter((id) => id !== value)
+                          )
+                        }
+                      />
+                    </div>
+                    <div className="h-4">
+                      <ErrorMessage
+                        name="role_id"
+                        component="div"
+                        className="text-red-500 text-lg"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Field 5 */}
                   <div>
-                    <label className="block text-lg font-medium pb-2">
+                    <label className="block text-lg font-semibold text-[#231F20] mb-2">
+                      Job type
+                    </label>
+                    <div className="grid sm:grid-cols-3 gap-3 3xl:gap-4 ">
+                      {jobTypes.map((jobType: any) => (
+                        <div
+                          key={jobType.id}
+                          className={`col-span-1 label-option cursor-pointer ${
+                            values.job_type_master_id == jobType.id
+                              ? "bg-red text-white"
+                              : ""
+                          }`}
+                          onClick={() => {
+                            setFieldValue("job_type_master_id", [jobType.id]);
+                          }}
+                        >
+                          {jobType.name}
+                        </div>
+                      ))}
+                    </div>
+                    <div className="h-4">
+                      <ErrorMessage
+                        name="job_type_master_id"
+                        component="div"
+                        className="text-red-500 text-lg"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Field 6 */}
+                  <div className="job-role-select">
+                    <label className="block text-lg font-semibold text-[#231F20] mb-2">
+                      Job location
+                    </label>
+                    <MultiSelect
+                      options={locationList}
+                      placeholder="Select Job Role"
+                      isMulti
+                      onChange={async (
+                        selectedLocation: { value: string; label: string }[]
+                      ) => {
+                        await setFieldValue(
+                          "selectedLocation",
+                          selectedLocation?.map((role) => role.value)
+                        );
+                        const selectedLocationValues = selectedLocation?.map(
+                          (role) => role.value
+                        );
+                        const cityData = cityList?.filter((item: any) =>
+                          selectedLocationValues?.includes(item?.id)
+                        );
+                        if (selectedLocation.length > 0) {
+                          setFieldValue("city", cityData[0]?.id);
+                          setFieldValue("user_city", cityData[0]?.name);
+                          setFieldValue("city_latitude", cityData[0]?.latitude);
+                          setFieldValue(
+                            "city_longitude",
+                            cityData[0]?.latitude
+                          );
+                          setFieldValue("user_willing_to_relocate", cityData);
+                        } else {
+                          setFieldValue("city", "");
+                          setFieldValue("user_city", "");
+                          setFieldValue("city_latitude", "");
+                          setFieldValue("city_longitude", "");
+                          setFieldValue("user_willing_to_relocate", []);
+                        }
+                      }}
+                      selectedValues={locationList?.filter((role: any) =>
+                        // @ts-ignore
+                        values.selectedLocation?.includes(role.value)
+                      )}
+                    />
+                    <div
+                      className={
+                        values.selectedLocation?.length > 0 ? "mt-4" : ""
+                      }
+                    >
+                      <SelectedChips
+                        selectedValues={locationList?.filter((role: any) =>
+                          // @ts-ignore
+                          values.selectedLocation?.includes(role.value)
+                        )}
+                        onRemove={async (value: string) => {
+                          const updatedSelectedLocations =
+                            values.selectedLocation?.filter(
+                              (id) => id !== value
+                            );
+                          await setFieldValue(
+                            "selectedLocation",
+                            updatedSelectedLocations
+                          );
+                          const filteredCities = cityList?.filter((city: any) =>
+                            // @ts-ignore
+                            updatedSelectedLocations?.includes(city.id)
+                          );
+                          if (filteredCities.length > 0) {
+                            await setFieldValue("city", filteredCities[0].id);
+                            await setFieldValue(
+                              "user_city",
+                              filteredCities[0]?.name
+                            );
+                            await setFieldValue(
+                              "city_latitude",
+                              filteredCities[0]?.latitude
+                            );
+                            await setFieldValue(
+                              "city_longitude",
+                              filteredCities[0]?.longitude
+                            );
+                            await setFieldValue(
+                              "user_willing_to_relocate",
+                              filteredCities
+                            );
+                          } else {
+                            // Clear the city-related fields if no cities remain
+                            await setFieldValue("city", "");
+                            await setFieldValue("user_city", "");
+                            await setFieldValue("city_latitude", "");
+                            await setFieldValue("city_longitude", "");
+                            await setFieldValue("user_willing_to_relocate", []);
+                          }
+                        }}
+                      />
+                    </div>
+                    <div className="h-4">
+                      <ErrorMessage
+                        name="user_willing_to_relocate"
+                        component="div"
+                        className="text-red-500 text-lg"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Field 7 */}
+                  <div className="skills-select">
+                    <label className="block text-lg font-semibold text-[#231F20] mb-2">
+                      Skills
+                    </label>
+                    <MultiSelect
+                      options={skillsOption}
+                      placeholder="Search your skills"
+                      isMulti
+                      onChange={(
+                        skills: { value: string; label: string }[]
+                      ) => {
+                        setFieldValue(
+                          "skills",
+                          skills.map((skill) => skill.value)
+                        );
+                        const selectedSkillValues = skills?.map(
+                          (item) => item.value
+                        );
+                        const skillsData = skillList?.filter((item: any) =>
+                          selectedSkillValues?.includes(item?.id)
+                        );
+                        if (skillsData?.length > 0) {
+                          setFieldValue("user_skill", skillsData);
+                        } else {
+                          setFieldValue("user_skill", []);
+                        }
+                      }}
+                      selectedValues={skillsOption?.filter((role: any) =>
+                        // @ts-ignore
+                        values.skills.includes(role.value)
+                      )}
+                      icon={
+                        <FaMagnifyingGlass className="absolute left-[15px] top-[20px] size-4 text-[#808080]" />
+                      }
+                    />
+                    <div className={values.skills.length > 0 ? "mt-4" : ""}>
+                      <SelectedChips
+                        selectedValues={skillsOption?.filter((role: any) =>
+                          // @ts-ignore
+                          values.skills.includes(role.value)
+                        )}
+                        onRemove={(value: string) => {
+                          const updatedSelectedSoftSkills =
+                            values.skills?.filter((id) => id !== value);
+                          setFieldValue("skills", updatedSelectedSoftSkills);
+                          const filteredSoftSkills = skillList?.filter(
+                            (skill: any) =>
+                              // @ts-ignore
+                              updatedSelectedSoftSkills?.includes(skill.id)
+                          );
+                          setFieldValue("user_skill", filteredSoftSkills);
+                        }}
+                      />
+                    </div>
+                    <div className="h-4">
+                      <ErrorMessage
+                        name="user_skill"
+                        component="div"
+                        className="text-red-500 text-lg"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Filed 8 */}
+                  <div className="skills-select">
+                    <label className="block text-lg font-semibold text-[#231F20] mb-2">
                       Strengths
                     </label>
-                    <Field
-                      type="text"
-                      name="strengths"
-                      className="w-full border p-2 rounded-md"
-                      placeholder="Enter your strengths"
+                    <MultiSelect
+                      options={softSkillsOption}
+                      placeholder="Search your Strengths"
+                      isMulti
+                      onChange={(
+                        selectedSoftSkills: { value: string; label: string }[]
+                      ) => {
+                        setFieldValue(
+                          "soft_skill",
+                          selectedSoftSkills.map((role) => role.value)
+                        );
+                        const selectedSoftSkillValues = selectedSoftSkills?.map(
+                          (item) => item.value
+                        );
+                        const softSkillsData = softSkills?.filter((item: any) =>
+                          selectedSoftSkillValues?.includes(item?.id)
+                        );
+                        if (softSkills?.length > 0) {
+                          setFieldValue("user_soft_skill", softSkillsData);
+                        } else {
+                          setFieldValue("user_soft_skill", []);
+                        }
+                      }}
+                      selectedValues={softSkillsOption?.filter((role: any) =>
+                        // @ts-ignore
+                        values.soft_skill.includes(role.value)
+                      )}
+                      icon={
+                        <FaMagnifyingGlass className="absolute left-[15px] top-[20px] size-4 text-[#808080]" />
+                      }
                     />
-                    <ErrorMessage
-                      name="strengths"
-                      component="div"
-                      className="text-red-500 text-lg mt-1"
-                    />
+                    <div className={values.soft_skill.length > 0 ? "mt-4" : ""}>
+                      <SelectedChips
+                        selectedValues={softSkillsOption?.filter((role: any) =>
+                          // @ts-ignore
+                          values.soft_skill.includes(role.value)
+                        )}
+                        onRemove={(value: string) => {
+                          const updatedSelectedSoftSkills =
+                            values.soft_skill?.filter((id) => id !== value);
+                          setFieldValue(
+                            "soft_skill",
+                            updatedSelectedSoftSkills
+                          );
+                          const filteredSoftSkills = softSkills?.filter(
+                            (skill: any) =>
+                              // @ts-ignore
+                              updatedSelectedSoftSkills?.includes(skill.id)
+                          );
+                          setFieldValue("user_soft_skill", filteredSoftSkills);
+                        }}
+                      />
+                    </div>
+                    <div className="h-4">
+                      <ErrorMessage
+                        name="user_soft_skill"
+                        component="div"
+                        className="text-red-500 text-lg"
+                      />
+                    </div>
                   </div>
                 </div>
               </DialogBody>

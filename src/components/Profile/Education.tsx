@@ -32,7 +32,8 @@ const Education = () => {
         slides={slides}
         index={currentIndex}
         on={{
-          change: (index) => setCurrentIndex(index),
+          // @ts-ignore
+          change: (index: any) => setCurrentIndex(index),
         }}
         styles={lightBoxStyle}
       />

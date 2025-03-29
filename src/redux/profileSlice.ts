@@ -126,12 +126,9 @@ const profileSlice = createSlice({
         console.error("Fetch Profile Error:", action.payload);
       })
       .addCase(fetchEducationDetail.fulfilled, (state, action) => {
+        console.log(action.payload, "Education Background");
         state.loading = false;
-        state.qualificationList =
-          action.payload?.result?.map((role: any) => ({
-            id: role.id,
-            name: role.name,
-          })) || [];
+        state.qualificationList = action.payload?.result;
       })
       .addCase(fieldStudy.fulfilled, (state, action) => {
         console.log(action?.payload, "Verify Payload");

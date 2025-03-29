@@ -67,7 +67,7 @@ export default function MyJobs() {
       type SearchPayload = {
         page: string;
         flag: string;
-        company_master_id?: string
+        company_master_id?: string;
       };
       let payload: SearchPayload = {
         page: currentPage.toString(),

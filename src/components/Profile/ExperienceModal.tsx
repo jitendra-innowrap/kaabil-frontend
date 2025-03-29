@@ -1,272 +1,550 @@
-"use client";
-import React, { useRef, useState } from "react";
-import { Formik, Form, Field, ErrorMessage, useFormik } from "formik";
-import * as Yup from "yup";
-import { IoClose } from "react-icons/io5";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import {
-  setEducationModal,
-  setExperienceModal,
-  setResumeModal,
-} from "@/redux/profileSlice";
+import { useAppSelector } from "@/redux/hooks";
+import { fetchProfile, setExperienceModal } from "@/redux/profileSlice";
 import {
   Dialog,
-  DialogHeader,
   DialogBody,
   DialogFooter,
+  DialogHeader,
 } from "@material-tailwind/react";
+import React, { useEffect, useState } from "react";
+import { IoClose } from "react-icons/io5";
+import { useDispatch } from "react-redux";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import api from "@/Services/Apiservice";
+import * as Yup from "yup";
+import { formatDateExperience } from "../utils";
 import toast from "react-hot-toast";
-import { Experience } from "@/Types/common";
-import AddExperienceModal from "./AddExperienceModal";
 
 const ExperienceModal = () => {
   const { experienceModal } = useAppSelector((state) => state.profile);
-  const user = useAppSelector((state) => state.user);
-  const dispatch = useAppDispatch();
-
-  const [value, setValue] = useState(2);
-
+  const { token } = useAppSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const [designationSuggestionsSearch, setDesignationSuggestionsSearch] =
+    useState<any[]>();
+  const [designationSuggestions, setDesignationSuggestions] = useState<any[]>(
+    []
+  );
+  const [companySuggestionsSearch, setCompanySuggestionsSearch] = useState<
+    any[]
+  >([]);
+  const [companySuggestions, setCompanySuggestions] = useState<any[]>([]);
+  const [jobTypes, setJobTypes] = useState<any[]>([]);
   const closeModal = () => {
     dispatch(setExperienceModal(false));
   };
 
-  const progress = useAppSelector((state) => state.progress.value);
-  const [experiences, setExperiences] = useState<Experience[]>([]);
-  const formikFormRef = useRef<any>(null); // Ref to access child formik methods
-
-  const handleAddExperience = (experience: any) => {
-    setExperiences([...experiences, experience]);
-    //   dispatch(setUserExperience([...experiences, experience]));
-  };
-
-  const handleSubmitExperience = async () => {
-    if (formikFormRef.current) {
-      await formikFormRef.current.handleSubmit();
-    }
-  };
-
-  const validationSchemaForm = Yup.object().shape({
-    designation: Yup.string().required("Designation is required"),
-    companyName: Yup.string().required("Company name is required"),
-    salary: Yup.number()
-      .required("Salary is required")
+  const validationSchema = Yup.object().shape({
+    is_fresher: Yup.number().required("Required"),
+    designation_name: Yup.string().when("is_fresher", {
+      is: (isFresher: any) => isFresher === 1,
+      then: (schema) => schema.required("Required"),
+      otherwise: (schema) => schema.nullable(),
+    }),
+    company_name: Yup.string().when("is_fresher", {
+      is: (isFresher: any) => isFresher === 1,
+      then: (schema) => schema.required("Required"),
+      otherwise: (schema) => schema.nullable(),
+    }),
+    in_hand_salary: Yup.number()
       .test(
         "max-digits",
         "Must not exceed 10 digits",
         (value) => !value || value.toString().length <= 10
-      ),
-    type: Yup.number().required("Job type is required"),
-    isCurrentCompany: Yup.boolean(),
-    jobStartDate: Yup.date()
-      .required("Start date is required")
-      .max(new Date(), "Cannot be a future date"),
-    jobEndDate: Yup.string().test(
-      "job-end-date",
-      "Invalid end date",
-      function (value) {
-        const { isCurrentCompany, jobStartDate } = this.parent;
-        if (!isCurrentCompany && value) {
-          const endDate = new Date(value);
-          return endDate >= new Date(jobStartDate) && endDate <= new Date();
-        }
-        return true;
-      }
-    ),
+      )
+      .when("is_fresher", {
+        is: (isFresher: any) => isFresher === 1,
+        then: (schema) => schema.required("Required"),
+        otherwise: (schema) => schema.nullable(),
+      }),
+    job_type_id: Yup.string().when("is_fresher", {
+      is: (isFresher: any) => isFresher === 1,
+      then: (schema) => schema.required("Required"),
+      otherwise: (schema) => schema.nullable(),
+    }),
+    job_start_date: Yup.date()
+      .max(new Date(), "Cannot be a future date")
+      .when("is_fresher", {
+        is: (isFresher: any) => isFresher === 1,
+        then: (schema) => schema.required("Required"),
+        otherwise: (schema) => schema.nullable(),
+      }),
+    job_end_date: Yup.string().when("is_fresher", {
+      is: (isFresher: any) => isFresher === 1,
+      then: (schema) =>
+        schema.test("job-end-date", "Invalid end date", function (value) {
+          const { is_current_company, job_start_date } = this.parent;
+          if (!is_current_company && value) {
+            const endDate = new Date(value);
+            return endDate >= new Date(job_start_date) && endDate <= new Date();
+          }
+          return true;
+        }),
+      otherwise: (schema) => schema.nullable(),
+    }),
   });
 
-  const setFormikFormRef = (instance: any) => {
-    if (instance) {
-      formikFormRef.current = instance;
+  const fetchDesignationSuggestions = async (query: string) => {
+    if (query.length > 1) {
+      console.log(query, "insider query");
+      // Filter from existing suggestions if query length is greater than 1
+      const filteredSuggestions: any = designationSuggestionsSearch?.filter(
+        (item) => item?.name?.toLowerCase()?.includes(query.toLowerCase())
+      );
+      console.log(filteredSuggestions, "Verify Filter Suggestion");
+      setDesignationSuggestions(filteredSuggestions);
+    } else if (query === "") {
+      // Call API when query is empty
+      try {
+        const response = await api.get("/MasterData/getDesignation", {
+          params: { search: query },
+        });
+        console.log(response, " ");
+        setDesignationSuggestionsSearch(response?.data?.result);
+        setDesignationSuggestions(response.data.result);
+      } catch (error) {
+        console.error("Error fetching designations:", error);
+      }
     }
   };
 
-  const formikForm = useFormik({
-    initialValues: {
-      designation: "",
-      designation_master_id: "",
-      companyName: "",
-      company_master_id: "",
-      salary: "",
-      type: "",
-      type_name: "",
-      jobStartDate: "",
-      jobEndDate: "",
-      isCurrentCompany: false,
-    },
-    validationSchema: validationSchemaForm,
-    onSubmit: (values) => {
-      const experience = {
-        company_master_id: "1578",
-        company_name: values.companyName,
-        designation_master_id: "2698",
-        designation_name: values.designation,
-        job_type_id: values.type,
-        job_type_name: values.type_name,
-        job_start_date: values.jobStartDate,
-        job_end_date: values.isCurrentCompany ? "" : values.jobEndDate,
-        in_hand_salary: values.salary,
-        is_current_company: values.isCurrentCompany ? 1 : 0,
-        additional_info: "",
-      };
-      handleAddExperience(experience);
-      //   dispatch(setProgress(10));
-      toast.success("Experience added successfully!", {
-        position: "bottom-right",
-      });
-      formikForm.resetForm();
-    },
-  });
+  // Company
+  const fetchCompanySuggestions = async (query: string) => {
+    if (query.length > 1) {
+      // Filter from existing suggestions if query length is greater than 1
+      const filteredSuggestions = companySuggestionsSearch?.filter((item) =>
+        item?.name?.toLowerCase().includes(query.toLowerCase())
+      );
+      setCompanySuggestions(filteredSuggestions);
+    } else if (query === "") {
+      try {
+        const response = await api.get("/MasterData/getCompany", {
+          params: { search: query },
+        });
+        setCompanySuggestionsSearch(response?.data?.result);
+        setCompanySuggestions(response?.data?.result);
+      } catch (error) {
+        console.error("Error fetching companies:", error);
+      }
+    }
+  };
+
+  // Job Types
+  useEffect(() => {
+    const fetchJobTypes = async () => {
+      try {
+        const response = await api.get("/MasterData/getJobType");
+        setJobTypes(response.data.result);
+      } catch (error) {
+        console.error("Error fetching job types:", error);
+      }
+    };
+
+    fetchJobTypes();
+  }, []);
 
   return (
-    //  @ts-ignore
+    // @ts-ignore
     <Dialog
       open={experienceModal}
       handler={closeModal}
       size="md"
-      className={`fixed -translate-x-1/2 custom-dialog ${
-        value === 2 ? "top-10" : "-top-10"
-      }`}
+      className="fixed -top-10 -translate-x-1/2 custom-dialog"
     >
-      <div>
-        {/* @ts-ignore */}
-        <DialogHeader>
-          <div className="relative w-full">
-            <IoClose
-              className="absolute top-0 right-0 cursor-pointer"
-              size={38}
-              onClick={closeModal}
-            />
-            <div className="flex justify-center items-center mt-6">
-              <h2 className="text-center text-[#231F20] text-3xl font-semibold">
-                Edit your <span className="text-red">experience</span>
-              </h2>
-            </div>
+      {/* @ts-ignore  */}
+      <DialogHeader>
+        <div className="relative w-full">
+          <IoClose
+            className="absolute top-0 right-0 cursor-pointer"
+            size={38}
+            onClick={closeModal}
+          />
+          <div className="flex justify-center items-center mt-6">
+            <h2 className="text-center text-[#231F20] text-3xl font-semibold">
+              Edit your <span className="text-red">experience</span>
+            </h2>
           </div>
-        </DialogHeader>
-        <Formik
-          initialValues={{
-            is_fresher: 2,
-          }}
-          validationSchema={Yup.object().shape({
-            is_fresher: Yup.number().required(
-              "Please select your experience level"
-            ),
-          })}
-          onSubmit={(values) => {
-            console.log("Submitted values:", values);
-          }}
-        >
-          {({ setFieldValue, isSubmitting, values, dirty }) => (
-            <Form>
-              {/* @ts-ignore */}
-              <DialogBody className="p-0 mt-8 max-h-[50vh] sm:max-h-[60vh] md:max-h-[70vh] lg:max-h-[80vh] overflow-y-auto custom-scroll cursor-pointer">
-                <div className="px-12">
-                  <label
-                    className="block font-semibold mb-1 !text-[#231F20] !text-lg"
-                    htmlFor="fileInput"
-                  >
-                    What’s your level of experience?
-                  </label>
-                  <div className="my-2 flex flex-col sm:flex-row gap-4">
-                    <label
-                      htmlFor="fresher"
-                      className={`form-group !flex flex-1 !mb-0 gap-4 rounded-lg px-5 !py-1 border cursor-pointer shadow-sm items-center ${
-                        2 === values.is_fresher
-                          ? "border-[#E31837] bg-[#FDF1F3] text-[#E31837]"
-                          : "border-[#C8C9CB1A]"
-                      }`}
-                    >
-                      <input
-                        type="radio"
-                        id="fresher"
-                        name="is_fresher"
-                        className="cursor-pointer inline-block !m-0 !w-5 !h-5"
-                        value={2}
-                        onChange={(e) => {
-                          const value = parseInt(e.target.value);
-                          setValue(value);
-                          setFieldValue("is_fresher", value);
-                        }}
-                        checked={values.is_fresher === 2}
-                      />
-                      <div className="!mb-0 gap-2 inline-block cursor-pointer text-lg">
-                        I'm a Fresher
-                      </div>
-                    </label>
-                    <label
-                      htmlFor="experienced"
-                      className={`form-group !flex flex-1 !mb-0 gap-4 rounded-lg px-5 py-4 border cursor-pointer shadow-sm items-center ${
-                        1 === values.is_fresher
-                          ? "border-[#E31837] bg-[#FDF1F3] text-[#E31837]"
-                          : "border-[#C8C9CB1A]"
-                      }`}
-                    >
-                      <input
-                        type="radio"
-                        id="experienced"
-                        name="is_fresher"
-                        className="cursor-pointer inline-block !m-0 !w-5 !h-5"
-                        value={1}
-                        onChange={(e) => {
-                          const value = parseInt(e.target.value);
-                          setValue(value);
+        </div>
+      </DialogHeader>
+      {/* @ts-ignore  */}
 
-                          setFieldValue("is_fresher", value);
-                        }}
-                        checked={values.is_fresher === 1}
-                      />
-                      <div className="!mb-0 gap-2 inline-block cursor-pointer text-lg">
-                        I'm Experienced
-                      </div>
-                    </label>
-                  </div>
-                  <div className="h-1">
-                    <ErrorMessage
+      <Formik
+        initialValues={{
+          is_fresher: 2,
+          designation_name: "",
+          designation_master_id: "2698", // It Will Be Replaced
+          company_master_id: "1578", // It Will Be Replaced
+          company_name: "",
+          in_hand_salary: "",
+          job_type_id: "",
+          // job_type_name: "",
+          is_current_company: "0",
+          job_start_date: formatDateExperience(new Date()),
+          job_end_date: formatDateExperience(new Date()),
+          additional_info: "",
+          company_logo: "",
+        }}
+        validationSchema={validationSchema}
+        onSubmit={async (values) => {
+          console.log(values, "Hitted");
+          const { is_fresher, ...payload } = values;
+          const formData = new FormData();
+          if (is_fresher === 1) {
+            formData.append("is_fresher", is_fresher.toString());
+            formData.append("user_experiences", JSON.stringify([payload]));
+          } else {
+            formData.append("is_fresher", is_fresher.toString());
+          }
+          try {
+            const response: any = await api.post(
+              "/Auth/editJobSeekerPrpfile",
+              formData,
+              {
+                headers: { "Content-Type": "multipart/form-data" },
+              }
+            );
+            response.data.code === 1
+              ? toast.success(response.data.msg, {
+                  position: "bottom-right",
+                })
+              : toast.error(response.data.msg || "Failed To Update Profile", {
+                  position: "bottom-right",
+                });
+          } catch (error: any) {
+            toast.error(error?.message || "Something went wrong!", {
+              position: "bottom-right",
+            });
+          } finally {
+            dispatch(
+              // @ts-ignore
+              fetchProfile({
+                token: token,
+                data: { latitude: 0, longitude: 0 },
+              })
+            );
+            closeModal();
+          }
+        }}
+      >
+        {({ values, setFieldValue, isSubmitting }) => (
+          <Form>
+            {/* @ts-ignore */}
+            <DialogBody className="p-0 mt-8 max-h-[50vh] sm:max-h-[60vh] md:max-h-[70vh] lg:max-h-[80vh] overflow-y-auto custom-scroll">
+              <div className="px-12">
+                <label
+                  className="block font-semibold mb-1 !text-[#231F20] !text-lg"
+                  htmlFor="fileInput"
+                >
+                  What’s your level of experience?
+                </label>
+                <div className="my-2 flex flex-col sm:flex-row gap-4">
+                  <label
+                    htmlFor="fresher"
+                    className={`form-group !flex flex-1 !mb-0 gap-4 rounded-lg px-5 !py-1 border cursor-pointer shadow-sm items-center ${
+                      2 === values.is_fresher
+                        ? "border-[#E31837] bg-[#FDF1F3] text-[#E31837]"
+                        : "border-[#C8C9CB1A]"
+                    }`}
+                  >
+                    <Field
+                      type="radio"
+                      id="fresher"
                       name="is_fresher"
-                      component="div"
-                      className="text-red text-sm mt-1"
+                      className="cursor-pointer inline-block !m-0 !w-5 !h-5"
+                      value={2}
+                      onChange={(e: any) => {
+                        const value = parseInt(e.target.value);
+                        setFieldValue("is_fresher", value);
+                      }}
+                      checked={values.is_fresher === 2}
                     />
-                  </div>
-                  <div>
-                    {values.is_fresher === 1 && (
-                      <div className="scroll-content-experience cursor-pointer">
-                        <label
-                          className="block font-semibold mb-2 !text-[#231F20] !text-lg"
-                          htmlFor="fileInput"
-                        >
-                          Please add all your experience
-                        </label>
-                        <AddExperienceModal
-                          ref={setFormikFormRef}
-                          formik={formikForm}
+                    <div className="!mb-0 gap-2 inline-block cursor-pointer text-lg">
+                      I'm a Fresher
+                    </div>
+                  </label>
+                  <label
+                    htmlFor="experienced"
+                    className={`form-group !flex flex-1 !mb-0 gap-4 rounded-lg px-5 py-4 border cursor-pointer shadow-sm items-center ${
+                      1 === values.is_fresher
+                        ? "border-[#E31837] bg-[#FDF1F3] text-[#E31837]"
+                        : "border-[#C8C9CB1A]"
+                    }`}
+                  >
+                    <Field
+                      type="radio"
+                      id="experienced"
+                      name="is_fresher"
+                      className="cursor-pointer inline-block !m-0 !w-5 !h-5"
+                      value={1}
+                      onChange={(e: any) => {
+                        const value = parseInt(e.target.value);
+                        setFieldValue("is_fresher", value);
+                      }}
+                      checked={values.is_fresher === 1}
+                    />
+                    <div className="!mb-0 gap-2 inline-block cursor-pointer text-lg">
+                      I'm Experienced
+                    </div>
+                  </label>
+                </div>
+                {/* Fields */}
+                {values?.is_fresher === 1 && (
+                  <div className="mt-8">
+                    <label
+                      className="block font-semibold mb-1 !text-[#231F20] !text-lg"
+                      htmlFor="fileInput"
+                    >
+                      Please add your latest experience
+                    </label>
+                    <div className="p-4 md:p-7 rounded-lg shadow-default">
+                      {/* Input File 1 */}
+                      <div className="relative mb-2">
+                        <input
+                          type="text"
+                          id="designation"
+                          name="designation"
+                          value={values.designation_name}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            setFieldValue("designation_name", value);
+                            fetchDesignationSuggestions(value);
+                          }}
+                          onFocus={() =>
+                            fetchDesignationSuggestions(values.designation_name)
+                          }
+                          placeholder="Enter your designation"
+                          className="w-full p-3 border bg-[#C8C9CB3B] rounded-lg"
                         />
-                        <div
-                          className="flex text-red font-semibold mt-7 cursor-pointer"
-                          onClick={() => handleSubmitExperience()}
-                        >
-                          + add more experience
+                        {designationSuggestions?.length > 0 && (
+                          <div className="absolute z-10 w-full max-h-[250px] min-h-[50px] overflow-auto p-0 bg-white border rounded-xl shadow-lg mt-1">
+                            {designationSuggestions?.map((suggestion) => (
+                              <div
+                                key={suggestion.id}
+                                className="p-2 hover:bg-gray-100 cursor-pointer"
+                                onClick={() => {
+                                  setFieldValue(
+                                    "designation_name",
+                                    suggestion.name
+                                  );
+                                  setFieldValue(
+                                    "designation_master_id",
+                                    suggestion.id
+                                  );
+                                  setDesignationSuggestions([]);
+                                }}
+                              >
+                                {suggestion.name}
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                        <div className="h-1">
+                          <ErrorMessage
+                            name="designation_name"
+                            component="div"
+                            className="text-red text-md mt-1"
+                          />
                         </div>
                       </div>
-                    )}
+                      {/* Input Field 2 */}
+                      <div className="relative mb-2 mt-6">
+                        <input
+                          type="text"
+                          id="companyName"
+                          name="companyName"
+                          value={values.company_name}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            fetchCompanySuggestions(value);
+                          }}
+                          onFocus={() =>
+                            fetchCompanySuggestions(values.company_name)
+                          }
+                          placeholder="Enter your company name"
+                          className="w-full p-3 border bg-[#C8C9CB3B] rounded-lg"
+                        />
+                        {companySuggestions?.length > 0 && (
+                          <div className="absolute z-10 w-full max-h-[250px] min-h-[50px] overflow-auto p-0 bg-white border rounded-xl shadow-lg mt-1">
+                            {companySuggestions?.map((suggestion) => (
+                              <div
+                                key={suggestion.id}
+                                className="p-2 hover:bg-gray-100 cursor-pointer"
+                                onClick={() => {
+                                  setFieldValue(
+                                    "company_name",
+                                    suggestion?.name
+                                  );
+                                  setFieldValue(
+                                    "company_master_id",
+                                    suggestion?.id
+                                  );
+                                  setCompanySuggestions([]);
+                                }}
+                              >
+                                {suggestion?.name}
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                        <div className="h-1">
+                          <ErrorMessage
+                            name="company_name"
+                            component="div"
+                            className="text-red text-md mt-1"
+                          />
+                        </div>
+                      </div>
+                      {/* Input Field 3 */}
+                      <div className="mt-6">
+                        <input
+                          type="number"
+                          id="in_hand_salary"
+                          name="in_hand_salary"
+                          onChange={(e) =>
+                            setFieldValue("in_hand_salary", e.target.value)
+                          }
+                          value={values.in_hand_salary}
+                          placeholder="Monthly in_hand_salary eg: 15000"
+                          className="w-full p-3 border bg-[#C8C9CB3B] rounded-lg"
+                        />
+                        <div className="h-1">
+                          <ErrorMessage
+                            name="in_hand_salary"
+                            component="div"
+                            className="text-red text-md mt-1"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Field 4 */}
+                      <div className="grid sm:grid-cols-3 gap-3 3xl:gap-4 mt-6">
+                        {jobTypes.map((jobType) => (
+                          <div
+                            key={jobType.id}
+                            className={`col-span-1 label-option cursor-pointer ${
+                              values.job_type_id == jobType.id
+                                ? "bg-red text-white"
+                                : ""
+                            }`}
+                            onClick={() => {
+                              setFieldValue(
+                                "job_type_id",
+                                parseInt(jobType.id)
+                              );
+                              // setFieldValue("job_type_name", jobType.name);
+                            }}
+                          >
+                            {jobType.name}
+                          </div>
+                        ))}
+                      </div>
+                      <div className="h-1">
+                        <ErrorMessage
+                          name="job_type_id"
+                          component="div"
+                          className="text-red text-md mt-1"
+                        />
+                      </div>
+
+                      {/* Field 5 */}
+                      <div className="flex items-center gap-2 my-6">
+                        <input
+                          type="checkbox"
+                          id="is_current_company"
+                          name="is_current_company"
+                          checked={values.is_current_company === "1"} // Compare with "1" to determine checked state
+                          onChange={(e) => {
+                            const isChecked = e.target.checked ? "1" : "0"; // Set "1" for true and "0" for false
+                            setFieldValue("is_current_company", isChecked);
+                          }}
+                          className="!mb-0 inline-block !w-5 !h-5 cursor-pointer"
+                        />
+                        <label
+                          htmlFor="is_current_company"
+                          className="!mb-0 inline-block text-lg"
+                        >
+                          Currently working here
+                        </label>
+                      </div>
+                      <div className="flex gap-4 ">
+                        <div>
+                          <label className="text-lg">Working From</label>
+                          <input
+                            type="date"
+                            id="job_start_date"
+                            name="job_start_date"
+                            value={values.job_start_date}
+                            onChange={(e) => {
+                              console.log(e.target.value, "Check Value");
+                              setFieldValue("job_start_date", e.target.value);
+                            }}
+                            placeholder="Start Date"
+                            className="mb-2 w-full p-2 border rounded !bg-white shadow-md"
+                            max={(() => {
+                              const tomorrow = new Date();
+                              tomorrow.setDate(tomorrow.getDate() + 1);
+                              return tomorrow.toISOString().split("T")[0];
+                            })()}
+                          />
+                          <div className="h-1">
+                            <ErrorMessage
+                              name="job_start_date"
+                              component="div"
+                              className="text-red text-md mt-1"
+                            />
+                          </div>
+                        </div>
+
+                        {/* Field 7 */}
+                        {values?.is_current_company === "0" && (
+                          <div>
+                            <label className="text-lg">Working Till</label>
+                            <input
+                              type="date"
+                              id="job_end_date"
+                              name="job_end_date"
+                              value={values.job_end_date}
+                              onChange={(e) => {
+                                console.log(e.target.value, "Check Value");
+                                setFieldValue("job_end_date", e.target.value);
+                              }}
+                              placeholder="Start Date"
+                              className="mb-2 w-full p-2 border rounded !bg-white shadow-md"
+                              max={(() => {
+                                const tomorrow = new Date();
+                                tomorrow.setDate(tomorrow.getDate() + 1);
+                                return tomorrow.toISOString().split("T")[0];
+                              })()}
+                            />
+                            <div className="h-1">
+                              <ErrorMessage
+                                name="job_end_date"
+                                component="div"
+                                className="text-red text-md mt-1"
+                              />
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </DialogBody>
-              {/* @ts-ignore */}
-              <DialogFooter className="flex justify-end p-0 pb-3 mt-3 px-12">
-                <button
-                  type="submit"
-                  className={`px-24 py-4  bg-[#E31837] text-white rounded-xl ${
-                    isSubmitting ? "opacity-50 cursor-not-allowed" : ""
-                  }`}
-                  disabled={isSubmitting}
-                >
-                  Save
-                </button>
-              </DialogFooter>
-            </Form>
-          )}
-        </Formik>
-      </div>
+                )}
+              </div>
+            </DialogBody>
+            {/* @ts-ignore */}
+            <DialogFooter className="flex justify-end p-0 pb-3 mt-3 px-12">
+              <button
+                type="submit"
+                className={`px-24 py-4  bg-[#E31837] text-white rounded-xl ${
+                  isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+                disabled={isSubmitting}
+              >
+                Save
+              </button>
+            </DialogFooter>
+          </Form>
+        )}
+      </Formik>
     </Dialog>
   );
 };

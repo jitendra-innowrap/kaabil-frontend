@@ -683,8 +683,8 @@ label {
   border-color: #f2f2f2 !important;
 }
 
-.job_listing_center_top_companies_nudge h3 {
-  margin-bottom: 0 !important;
+.job_listing_center_top_companies_nudge h3{
+  margin-bottom: 10px !important;
 }
 @media (width >= 768px) {
   .container {
@@ -1030,11 +1030,11 @@ label {
   .job-card .action-btns.update a {
     width: 100px !important;
   }
-
-  .job_listing_center_top_companies_nudge h3 {
-    margin-bottom: 0 !important;
-    height: 40px !important;
-  }
+  
+.job_listing_center_top_companies_nudge h3{
+  margin-bottom: 8px !important;
+  height: 40px !important;
+}
 }
 @media (width >=1500px) {
   .popup-content {

@@ -48,7 +48,10 @@ function RangeAccordion() {
     // Handle Apply button click
     const handleApply = () => {
         setAppliedValue(tempValue); // Set the applied values
-
+        const button = document.getElementById('filter-pannel-overlay');
+        if (button) {
+            button.click(); // Programmatically triggers the button click
+        }
         // Update the query parameters in the URL
         const params = new URLSearchParams(searchParams.toString());
         params.set('minSalary', tempValue.min.toString());

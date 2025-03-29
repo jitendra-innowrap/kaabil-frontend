@@ -75,7 +75,15 @@ export default function Home() {
         let payload = {
           job_id: slug as string,
         };
-  
+        
+        const { deviceId, secret, salt } = getSessionData();
+        
+        // Ensure session data is available
+        if (!deviceId || !secret || !salt) {
+          console.log("Session data not available, retrying...");
+          setTimeout(fetchJobDetails, 1000); // Retry after 1 second
+          return;
+        }
         const formData = new FormData();
         // ✅ Automatically append all fields from the object
           Object.entries(payload).forEach(([key, value]) => {
@@ -269,7 +277,7 @@ export default function Home() {
   };
   return (
     <main className="bg-white">
-      <section className="bg-[#FDEAC9] py-6 xl:py-8 sticky">
+      <section className="bg-[#FDEAC9] py-6 xl:py-8 sticky top-[52px] lg:top-[56px] 3xl:top-[90px] z-10">
       <div className="container relative z-[1]">
         <div className="flex justify-between flex-wrap flex-col sm:flex-row sm:items-end gap-5 xl:gap-7 2xl:gap-8">
           <div className="flex justify-between flex-col sm:flex-row gap-3 2xl:gap-5 3xl:gap-8">

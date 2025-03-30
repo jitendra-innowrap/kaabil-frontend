@@ -1659,6 +1659,23 @@ label {
 .job-action-btn-sx{
   display: none
 }
+@media (max-width: 999px) {
+  .job-card .action-btns{
+    margin-top: 0 !important;
+  }
+  .job-card .action-btns .applied-btn{
+    min-width: 50%;
+    max-width: 50%;
+    padding: 0 10px !important;
+    text-align: center;
+    justify-content: center;
+    width: fit-content !important;
+    height: 34px;
+  }
+  .job-card .action-btns a{
+    height: 34px !important;
+  }
+}
 @media (max-width: 640px) {
   .success-story-card.odd {
     padding-top: 0;
@@ -1687,6 +1704,50 @@ label {
   }
   .popup-content{
     width: 100% !important;
+  }
+  .job-card{
+    padding: 16px !important;
+  }
+  .job-card img[alt="company profile logo"] {
+    height: 40px !important;
+    width: 40px !important;
+  }
+  .job-card .action-btns{
+    margin-top: 0 !important;
+  }
+  .single-company-jobs   .job-card .action-btns{
+    margin-top: 15px !important;
+  }
+  .job-card .action-btns .applied-btn {
+    min-width: 155px;
+    max-width: 160px;
+  }
+  .mobile-container-zero-padding{
+    padding-inline: 0 !important;
+  }
+  .profile-card{
+    margin: 16px !important;
+  }
+  .certification-card{
+    width: 122px;
+    display: block;
+    flex-basis: 122px;
+    flex-grow: 0;
+    flex-shrink: 0;
+    text-align: center;
+  }
+  .certification-card img{
+    width: 100px;
+    margin: auto;
+  }
+  .home-banner{
+    width: auto;
+    height: 269px !important;
+    object-fit: cover;
+    object-position: left;
+  }
+  .job-card .action-btns button{
+    height: 34px !important;
   }
 }
 

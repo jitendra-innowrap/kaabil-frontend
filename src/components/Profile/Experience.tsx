@@ -7,12 +7,12 @@ const Experience = () => {
   const { profileData } = useAppSelector((state) => state.profile);
   const dispatch = useAppDispatch();
   return (
-    <div className="bg-white rounded-lg mt-3 px-12 py-6">
+    <div className="profile-card bg-white rounded-lg mt-3 p-[16px] sm:p-[20px] lg:px-12 py-6">
       <div className="grid grid-cols-12">
         <div className="col-span-12 flex justify-between">
           <div className="flex gap-3 items-center">
             <img src="/new-assets/icons/briefcase-exprience.svg" />
-            <h1 className="text-[#231F20] font-semibold text-md">Experience</h1>
+            <h1 className="text-[#231F20] font-semibold text-[14px] sm:text-md">Experience</h1>
           </div>
           <div
             className="flex items-center gap-2 cursor-pointer"
@@ -25,7 +25,7 @@ const Experience = () => {
               className="h-3 mt-1"
               alt=""
             />
-            <span className="text-sm font-bold text-red">Edit</span>
+            <span className="text-[13px] sm:text-sm font-bold text-red">Edit</span>
           </div>
         </div>
       </div>

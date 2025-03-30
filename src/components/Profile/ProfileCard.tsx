@@ -89,17 +89,17 @@ const ProfileCard = () => {
             {jobStats.map((job, index) => (
               <React.Fragment key={index}>
                 <div>
-                  <h1 className="text-[#7B7B7D] text-md text-center">
+                  <h1 className="text-[#7B7B7D] text-[11px] sm:text-md text-center">
                     {job.label.split(" ")[0]}
                   </h1>
-                  <h1 className="text-[#7B7B7D] text-md text-center">
+                  <h1 className="text-[#7B7B7D] text-[11px] sm:text-md text-center">
                     {job.label.split(" ")[1]}
                   </h1>
                   <h1 className="text-center text-[#4D4D4F] mt-2 text-lg">
                     {job.count}
                   </h1>
                   <h1
-                    className="text-center text-red mt-2 text-sm font-medium cursor-pointer"
+                    className="text-center text-red mt-2 text-[12px] sm:text-sm font-medium cursor-pointer"
                     onClick={() => {
                       router.push(`/my-jobs?tab=${job.tabIndex}`);
                     }}

@@ -338,7 +338,7 @@ export default function Companies() {
                 placeholder="Company Name"
                 className="w-full h-[58px] border-0 px-6 text-base focus:outline-none flex-1 rounded-l-lg"
               />
-              <button type="submit" onClick={handleSearch} className="h-[58px] bg-red-500 hover:bg-red-600 text-white px-6 flex items-center justify-center gap-3 min-w-[180px] shadow-md rounded-r-lg rounded-l-none">
+              <button type="submit" onClick={handleSearch} className="h-[58px] bg-red-500 hover:bg-red-600 text-white px-4 sm:px-6 flex items-center justify-center gap-3  sm:min-w-[180px] shadow-md rounded-r-lg rounded-l-none">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="22"
@@ -354,7 +354,7 @@ export default function Companies() {
                   <circle cx="11" cy="11" r="8"></circle>
                   <path d="m21 21-4.3-4.3"></path>
                 </svg>
-                <span className="text-lg font-medium">Search Jobs</span>
+                <span className="hidden sm:block text-[14px] sm:text-lg font-medium">Search Jobs</span>
               </button>
             </form>
           </div>
@@ -371,8 +371,8 @@ export default function Companies() {
             <>
               <div className="flex justify-between items-center mb-6">
               <div>
-                <h2 className="text-xl font-semibold">{selectedTab === "Trending"?"Trending Companies":selectedTab === "Following"?"Following Compnaies":"Industries"}</h2>
-                <p className="text-sm text-gray-500">{selectedTab === "Following"?`You follow ${totalCompnaies} companies`:`${totalCompnaies} Companies found!`}</p>
+                <h2 className="text-[16px] sm:text-xl font-semibold">{selectedTab === "Trending"?"Trending Companies":selectedTab === "Following"?"Following Companies":"Industries"}</h2>
+                <p className="text-[12px] sm:text-sm text-gray-500">{selectedTab === "Following"?`You follow ${totalCompnaies} companies`:`${totalCompnaies} Companies found!`}</p>
               </div>
               {selectedTab!="Following" && 
               <div className="relative h-fit sort-by-container mt-1 3xl:mt-0" ref={dropdownRef}>

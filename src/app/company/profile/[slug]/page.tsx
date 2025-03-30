@@ -147,7 +147,7 @@ if(isLoading){
  const tabTitles = ["About", "Jobs", "Perks & Benefits"]
   return (
     <main>
-      <section className="bg-[#0a0100] py-10 2xl:py-16 3xl:py-[76px] sticky top-[52px] lg:top-[56px] 3xl:top-[90px] z-[11]">
+      <section className="bg-[#0a0100] py-10 2xl:py-16 3xl:py-[76px] relative sm:sticky top-[0] lg:top-[56px] 3xl:top-[90px] z-[11]">
             <Image
                 src="/new-assets/icons/Comapny-profile-bg.png"
                 width={988}
@@ -263,7 +263,7 @@ if(isLoading){
             <div className="px-5 md:px-8 xl:px-14 2xl:px-16">
               <h2 className="text-sm 2xl:text-lg 3xl:text-xl font-semibold ">{CompanyDetails?.job_count} Jobs in {CompanyDetails?.company_name}</h2>
             </div>
-            <div className="block">
+            <div className="block single-company-jobs">
                 <GallerySlider
                 slides={jobsSlides}
                 spaceBetween={25}

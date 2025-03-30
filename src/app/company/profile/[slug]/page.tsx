@@ -326,7 +326,7 @@ if(isLoading){
             </div>
           </div>}
       </section>
-      <section className="pt-7 pb-2">
+      <section className="pt-7 lg:pb-2">
           <PlayStoreAppAd />
       </section>
     </main>

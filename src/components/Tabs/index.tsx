@@ -75,7 +75,7 @@ export default function Tabs({ tabTitles }: TabsProps) {
         return (
           <li
             key={slug}
-            className={`details-tab-item md:text-sm ${isActive ? 'font-bold text-red' : 'font-normal text-black hover:text-red'}`}
+            className={`details-tab-item text-[14px] md:text-sm ${isActive ? 'font-bold text-red' : 'font-normal text-black hover:text-red'}`}
           >
             <Link
               href={slug}

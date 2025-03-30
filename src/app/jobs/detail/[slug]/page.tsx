@@ -349,7 +349,7 @@ export default function Home() {
           </div>
           {
             token?
-            <div className="flex gap-2 3xl:gap-3 justify-end items-center h-fit">
+            <div className="hidden sm:flex gap-2 3xl:gap-3 justify-end items-center h-fit">
             <div onClick={handleShare} className="bg-white cursor-pointer flex-shrink-0 grid place-items-center rounded-full size-8 3xl:size-[50px]">
               <img src="/new-assets/icons/share.svg" className="text-[#4D4D4F] size-[14px] 3xl:size-[17px]"/>
             </div>
@@ -365,7 +365,7 @@ export default function Home() {
             <button onClick={()=> handleApply(jobDetails?.id || "")} className={`whitespace-nowrap h-[35px] 3xl:h-[50px] w-[130px] 3xl:w-[176px] !text-xs 3xl:!text-sm ${isApplied?"opacity-60 disabled cursor-default":""}`}>{isApplied?"Job Applied":"apply now"}</button>
           </div>
           :
-          <div className="flex gap-3 md:gap-4 justify-end items-center h-fit">
+          <div className="hidden sm:flex gap-3 md:gap-4 justify-end items-center h-fit">
             <div onClick={handleShare} className="bg-white cursor-pointer flex-shrink-0 grid place-items-center rounded-full size-8 3xl:size-[50px]">
               <img src="/new-assets/icons/share.svg" className="text-[#4D4D4F] size-[14px] 3xl:size-[17px]"/>
             </div>
@@ -440,7 +440,36 @@ export default function Home() {
             <div className="lg:order-2 job-description">
             <Tabs tabTitles={tabTitles} />
               <div id="job-description" className="py-4 md:py-6 xl:py-8 2xl:py-10 rounded-xl shadow-default">
-                <div className="px-4 md:px-6 xl:px-8 2xl:px-10">
+                <div className="job-action-btn-sx">
+                  {
+                    token?
+                        <div className="flex gap-2 3xl:gap-3 justify-center items-center h-fit">
+                          <div onClick={handleShare} className="bg-white cursor-pointer flex-shrink-0 grid place-items-center rounded-full size-8 3xl:size-[50px]">
+                            <img src="/new-assets/icons/share.svg" className="text-[#4D4D4F] size-[14px] 3xl:size-[17px]"/>
+                          </div>
+                          <button onClick={()=> handleSave(jobDetails?.id || "")} className="text-[#231F20] btn-border h-[35px] 3xl:h-[50px] !text-xs 3xl:!text-sm flex items-center gap-2 !border-black">
+                            save {
+                            !isFavorited? (
+                                <VscHeart className={`text-black 3xl:size-5 cursor-pointer`}/>
+                            ) : (
+                                <VscHeartFilled className={`text-red 3xl:size-5 cursor-pointer`}/>
+                            )
+                          }
+                          </button>
+                          <button onClick={()=> handleApply(jobDetails?.id || "")} className={`whitespace-nowrap h-[35px] 3xl:h-[50px] w-[130px] 3xl:w-[176px] !text-xs 3xl:!text-sm ${isApplied?"opacity-60 disabled cursor-default":""}`}>{isApplied?"Job Applied":"apply now"}</button>
+                        </div>
+                        :
+                        <div className="flex gap-3 md:gap-4 justify-center items-center h-fit">
+                          <div onClick={handleShare} className="bg-white cursor-pointer flex-shrink-0 grid place-items-center rounded-full size-8 3xl:size-[50px]">
+                            <img src="/new-assets/icons/share.svg" className="text-[#4D4D4F] size-[14px] 3xl:size-[17px]"/>
+                          </div>
+                          <button onClick={handleSignIn} className={`whitespace-nowrap flex items-center h-[35px] 3xl:h-[50px] !text-xs 3xl:!text-sm ${isApplied?"!bg-[#f2f2f2] text-black cursor-default":""}`}>
+                            Sign in to apply for this Job
+                          </button>
+                        </div>
+                  }
+                </div>
+                <div className="job-description-content px-4 md:px-6 xl:px-8 2xl:px-10">
                   <h2 className="text-sm 2xl:text-lg 3xl:text-xl font-semibold mb-2 md:mb-4 3xl:mb-6">Job Description</h2>
                   <div
                     className="text-xs leading-6 3xl:text-sm 3xl:leading-[32px] mb-4 md:mb-6 xl:mb-8"

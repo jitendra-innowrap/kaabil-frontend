@@ -35,9 +35,7 @@ const About = () => {
                     ? `${profileData.job_type} ${
                         profileData.designation ?? ""
                       } at ${profileData.company_name}`
-                    : `${profileData.job_type} ${
-                        profileData.designation ?? ""
-                      }`
+                    : `${profileData.job_type} ${profileData.designation ?? ""}`
                   : ""}
               </h3>
 
@@ -66,7 +64,10 @@ const About = () => {
             About {profileData?.first_name ?? ""}
           </h1>
         </div>
-        <div className="col-span-2 flex justify-end gap-2 cursor-pointer mt-3">
+        <div
+          className="col-span-2 flex justify-end gap-2 cursor-pointer mt-3"
+          onClick={() => dispatch(setProfileModal(true))}
+        >
           <img
             src="/new-assets/icons/ink_marker.svg"
             className="h-3 mt-1"

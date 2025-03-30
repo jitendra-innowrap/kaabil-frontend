@@ -8,8 +8,16 @@ import toast from "react-hot-toast";
 import { setIsFresher, setUserExperience } from "@/redux/userSlice";
 import api from "@/Services/Apiservice";
 import { Experience } from "@/Types/common";
+import {
+  Dialog,
+  DialogBody,
+  DialogFooter,
+  DialogHeader,
+} from "@material-tailwind/react";
+import { FaArrowLeft } from "react-icons/fa";
+import { IoClose } from "react-icons/io5";
 
-export default function AddExperience() {
+export default function AddExperience({ size, closePopup, handleBack }: any) {
   const progress = useAppSelector((state) => state.progress.value);
   const user = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
@@ -170,101 +178,157 @@ export default function AddExperience() {
   };
 
   return (
-    <div className="">
-      <h2 className="text-center font-semibold text-lg md:text-xl xl:text-[28px] 2xl:leading-[38px]">
-        You’re almost there! Add
-        <br /> your <span className="text-red">experience</span>
-      </h2>
-      <form
-        onSubmit={formik.handleSubmit}
-        className="block mt-10"
-      >
-        <h4 className="text-lg font-medium">
-          What’s your level of experience?
-        </h4>
-        <div className="my-4 flex flex-col sm:flex-row gap-4">
-          <label
-            htmlFor="fresher"
-            className={`form-group !flex flex-1 !mb-0 gap-4 rounded-lg px-5 py-4 border cursor-pointer shadow-sm items-center ${
-              2 === formik.values.is_fresher
-                ? "border-red bg-[#FDF1F3]"
-                : "border-[#C8C9CB1A]"
-            }`}
-          >
-            <input
-              type="radio"
-              id="fresher"
-              name="is_fresher"
-              className="cursor-pointer inline-block !m-0 !w-4 !h-4"
-              value={2}
-              onChange={handleExperienceChange}
-              checked={formik.values.is_fresher === 2}
-            />
-            <div className="!mb-0 gap-2 inline-block cursor-pointer">
-              I'm a Fresher
+    // @ts-ignore
+    <Dialog
+      open={progress === 9}
+      size={size}
+      className={`onboarding-dailog ${
+        size === "md" ? "fixed -top-16 -translate-x-1/2  onboarding-scale" : ""
+      }`}
+    >
+      <div className="">
+        {/* @ts-ignore */}
+        <DialogHeader>
+          <div className="relative w-full">
+            <div onClick={handleBack}>
+              <FaArrowLeft className="absolute cursor-pointer top-2 z-30 left-2 size-6" />
             </div>
-          </label>
-          <label
-            htmlFor="experienced"
-            className={`form-group !flex flex-1 !mb-0 gap-4 rounded-lg px-5 py-4 border cursor-pointer shadow-sm items-center ${
-              1 === formik.values.is_fresher
-                ? "border-red bg-[#FDF1F3]"
-                : "border-[#C8C9CB1A]"
-            }`}
-          >
-            <input
-              type="radio"
-              id="experienced"
-              name="is_fresher"
-              className="cursor-pointer inline-block !m-0 !w-4 !h-4"
-              value={1}
-              onChange={handleExperienceChange}
-              checked={formik.values.is_fresher === 1}
+            <IoClose
+              className="absolute top-2 right-2 cursor-pointer"
+              size={size === "md" ? 32 : 28}
+              onClick={closePopup}
             />
-            <div className="!mb-0 gap-2 inline-block cursor-pointer">
-              I'm Experienced
-            </div>
-          </label>
-        </div>
-        {formik.errors.is_fresher && formik.touched.is_fresher && (
-          <p className="text-red text-sm mt-1">{formik.errors.is_fresher}</p>
-        )}
-
-        {formik.values.is_fresher === 1 && user.experience.length < 1 && (
-          <div className="scroll-content-experience cursor-pointer">
-            <h4 className="text-lg mb-4 font-medium">
-              Please add your latest experience
-            </h4>
-            <AddExperienceForm ref={setFormikFormRef} formik={formikForm} />
             <div
-              className="flex text-red font-semibold mt-7 cursor-pointer"
-              onClick={() => handleSubmitExperience()}
+              className={`${
+                size === "md"
+                  ? "flex justify-center items-center mt-6"
+                  : "flex justify-start items-start mt-16"
+              }`}
             >
-              + add more experience
+              <h2
+                className={`text-[#231F20] font-semibold  ${
+                  size === "md"
+                    ? "!text-[26px] text-center"
+                    : "!text-[22px] text-start"
+                }`}
+              >
+                <span className="text-[#231F20]">
+                  You’re almost there! <br />
+                  <span className="text-[#231F20]">Add your </span>
+                  <span className="text-red">experience</span>
+                </span>
+              </h2>
             </div>
           </div>
-        )}
-        <div className="flex w-full items-end">
-          <div className="whitespace-nowrap">
-            <span className="text-red">{progress - 4}</span> - 6
-          </div>
-          <div className="flex gap-4 items-end w-full justify-end">
-            <span
-              onClick={() => dispatch(setProgress(11))}
-              className={`max-w-[130px] text-[#231F20] cursor-pointer border-[#9C9C9C] flex items-center btn-border !py-3.5 !px-9 !rounded-xl`}
+        </DialogHeader>
+        <form
+          onSubmit={formik.handleSubmit}
+          className={`${size === "md" ? "block mt-6" : "mt-2"}`}
+        >
+          {/* @ts-ignore */}
+          <DialogBody className="custom-dialog-body custom-scroll">
+            <div
+              className={`pb-2 cursor-pointer ${
+                size === "md" ? "px-12" : "px-0"
+              }`}
             >
-              Skip
-            </span>
-            <button
-              className="max-w-[100px] sm:max-w-[250px] flex-shrink-0 justify-start"
-              disabled={formik.isSubmitting}
-              type="submit"
-            >
-              Next
-            </button>
-          </div>
-        </div>
-      </form>
-    </div>
+              <h4 className="text-lg font-medium">
+                What’s your level of experience?
+              </h4>
+              <div className="my-4 flex flex-col sm:flex-row gap-4">
+                <label
+                  htmlFor="fresher"
+                  className={`form-group !flex flex-1 !mb-0 gap-4 rounded-lg px-5  border cursor-pointer shadow-sm items-center ${
+                    2 === formik.values.is_fresher
+                      ? "border-red bg-[#FDF1F3]"
+                      : "border-[#C8C9CB1A]"
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    id="fresher"
+                    name="is_fresher"
+                    className="cursor-pointer inline-block !m-0 !w-4 !h-4"
+                    value={2}
+                    onChange={handleExperienceChange}
+                    checked={formik.values.is_fresher === 2}
+                  />
+                  <div className="!mb-0 gap-2 inline-block cursor-pointer">
+                    I'm a Fresher
+                  </div>
+                </label>
+                <label
+                  htmlFor="experienced"
+                  className={`form-group !flex flex-1 !mb-0 gap-4 rounded-lg px-5  border cursor-pointer shadow-sm items-center ${
+                    1 === formik.values.is_fresher
+                      ? "border-red bg-[#FDF1F3]"
+                      : "border-[#C8C9CB1A]"
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    id="experienced"
+                    name="is_fresher"
+                    className="cursor-pointer inline-block !m-0 !w-4 !h-4"
+                    value={1}
+                    onChange={handleExperienceChange}
+                    checked={formik.values.is_fresher === 1}
+                  />
+                  <div className="!mb-0 gap-2 inline-block cursor-pointer">
+                    I'm Experienced
+                  </div>
+                </label>
+              </div>
+              {formik.errors.is_fresher && formik.touched.is_fresher && (
+                <p className="text-red text-sm mt-1">
+                  {formik.errors.is_fresher}
+                </p>
+              )}
+
+              {formik.values.is_fresher === 1 && user.experience.length < 1 && (
+                <div className="scroll-content-experience cursor-pointer">
+                  <h4 className="text-lg mb-4 font-medium">
+                    Please add your latest experience
+                  </h4>
+                  <AddExperienceForm
+                    ref={setFormikFormRef}
+                    formik={formikForm}
+                  />
+                  <div
+                    className="flex text-red font-semibold mt-7 cursor-pointer"
+                    onClick={() => handleSubmitExperience()}
+                  >
+                    + add more experience
+                  </div>
+                </div>
+              )}
+            </div>
+          </DialogBody>
+          {/* @ts-ignore */}
+          <DialogFooter className="p-0 pb-6 !px-12 mt-5 flex justify-center">
+            <div className="flex w-full items-end">
+              <div className="whitespace-nowrap">
+                <span className="text-red">{progress - 4}</span> - 6
+              </div>
+              <div className="flex gap-4 items-end w-full justify-end">
+                <span
+                  onClick={() => dispatch(setProgress(11))}
+                  className={`max-w-[130px] text-[#231F20] cursor-pointer border-[#9C9C9C] flex items-center btn-border !py-3.5 !px-9 !rounded-xl`}
+                >
+                  Skip
+                </span>
+                <button
+                  className="max-w-[100px] sm:max-w-[250px] flex-shrink-0 justify-start"
+                  disabled={formik.isSubmitting}
+                  type="submit"
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          </DialogFooter>
+        </form>
+      </div>
+    </Dialog>
   );
 }

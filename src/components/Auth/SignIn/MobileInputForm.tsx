@@ -8,14 +8,23 @@ import { setProgress } from "@/redux/progressSlice";
 import { setSaveMobileNumber, setUserMobile, signOut } from "@/redux/userSlice";
 import { clearSessionData } from "@/components/utils/deviceId";
 import toast from "react-hot-toast";
+import {
+  Dialog,
+  DialogBody,
+  DialogFooter,
+  DialogHeader,
+} from "@material-tailwind/react";
+import { IoClose } from "react-icons/io5";
 
 // Toast ID tracker outside the component
 let toastId: string | null = null;
 
-export default function MobileInputForm() {
+export default function MobileInputForm({ size, closePopup }: any) {
   const dispatch = useAppDispatch();
   const { savedMobileNumber } = useAppSelector((state) => state.user);
+  const progress = useAppSelector((state) => state.progress.value);
 
+  console.log(size, "Verify Modal Style Over Here Please Check");
   // ✅ Validation schema
   const validationSchema = Yup.object().shape({
     mobile: Yup.string()
@@ -92,57 +101,107 @@ export default function MobileInputForm() {
   };
 
   return (
-    <div>
-      <h2 className="text-center text-[#231F20] font-semibold text-lg md:text-xl 2xl:text-[28px] 2xl:leading-[36px]">
-        Let's start with your mobile number
-      </h2>
-      <Formik
-        initialValues={{ mobile: savedMobileNumber || "" }}
-        validationSchema={validationSchema}
-        onSubmit={handleSubmit}
-      >
-        {({ isSubmitting, isValid, dirty, setFieldValue, values }) => (
-          <Form className="block mt-8 md:mt-10 xl:mt-14 2xl:mt-16">
-            <label
-              htmlFor="mobile"
-              className="text-[#231F20] mobile-text text-lg md:text-xl 2xl:text-[16px]"
-            >
-              Mobile Number
-            </label>
-            <Field
-              type="tel"
-              id="mobile"
-              name="mobile"
-              value={values?.mobile}
-              placeholder="Enter your mobile number to receive OTP"
-              className={`border p-2 w-full rounded-[12px] text-[#231F20] ${
-                values?.mobile ? "font-semibold" : "font-normal"
-              }`}
-              maxLength={10} // Restricts input to 10 characters
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                const numericValue = e.target.value.replace(/\D+/g, "");
-                if (numericValue.length <= 10) {
-                  setFieldValue("mobile", numericValue);
-                } else {
-                  setFieldValue("mobile", numericValue.slice(0, 10));
-                }
-              }}
+    // @ts-ignore
+    <Dialog
+      open={progress === 1}
+      size={size}
+      className={`onboarding-dailog ${
+        size === "md" ? "fixed top-12 -translate-x-1/2  onboarding-scale" : ""
+      }`}
+    >
+      <div className="pb-6">
+        {/* @ts-ignore */}
+        <DialogHeader>
+          <div className="relative w-full">
+            <IoClose
+              className="absolute top-2 right-2 cursor-pointer"
+              size={size === "md" ? 32 : 28}
+              onClick={closePopup}
             />
-            <div className="min-h-[11px] text-sm text-red mt-1">
-              <ErrorMessage name="mobile" />
-            </div>
-            <button
-              type="submit"
-              disabled={!isValid || isSubmitting}
-              className={`mt-1 no-margin px-6 py-2 bg-red text-white rounded-full ${
-                !isValid || isSubmitting ? "opacity-50 cursor-not-allowed" : ""
-              }`}
+            <div
+              className={`${
+                size === "md"
+                  ? "flex justify-center items-center"
+                  : "flex justify-start items-start"
+              } mt-16`}
             >
-              Next
-            </button>
-          </Form>
-        )}
-      </Formik>
-    </div>
+              <h2
+                className={`text-[#231F20] font-semibold ${
+                  size === "md" ? "!text-[26px]" : "!text-[22px]"
+                }`}
+              >
+                Let's start with your mobile number
+              </h2>
+            </div>
+          </div>
+        </DialogHeader>
+        <Formik
+          initialValues={{ mobile: savedMobileNumber || "" }}
+          validationSchema={validationSchema}
+          onSubmit={handleSubmit}
+        >
+          {({ isSubmitting, isValid, dirty, setFieldValue, values }) => (
+            <Form>
+              {/* @ts-ignore */}
+              <DialogBody
+                className={`${
+                  size === "md" ? "mt-2" : "mt-0"
+                } custom-dialog-body custom-scroll p-0 px-5`}
+              >
+                <div className={`${size === "md" ? "px-12" : "px-0"}`}>
+                  <label
+                    htmlFor="mobile"
+                    className="text-[#231F20] mobile-text text-lg md:text-xl 2xl:text-[16px]"
+                  >
+                    Mobile Number
+                  </label>
+                  <Field
+                    type="tel"
+                    id="mobile"
+                    name="mobile"
+                    value={values?.mobile}
+                    placeholder="Enter your mobile number to receive OTP"
+                    className={`border p-2 w-full rounded-[12px] text-[#231F20] ${
+                      values?.mobile ? "font-semibold" : "font-normal"
+                    } ${size === "xxl" ? "text-sm" : "text-lg"}`}
+                    maxLength={10} // Restricts input to 10 characters
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      const numericValue = e.target.value.replace(/\D+/g, "");
+                      if (numericValue.length <= 10) {
+                        setFieldValue("mobile", numericValue);
+                      } else {
+                        setFieldValue("mobile", numericValue.slice(0, 10));
+                      }
+                    }}
+                  />
+                  <div className="h-6 text-sm text-red mt-1">
+                    <ErrorMessage name="mobile" />
+                  </div>
+                </div>
+              </DialogBody>
+              {/* @ts-ignore */}
+              <DialogFooter
+                className={`p-0 pb-6 ${
+                  size === "md" ? "!px-[66px]" : "px-[20px]"
+                }`}
+              >
+                <button
+                  type="submit"
+                  disabled={!isValid || isSubmitting}
+                  className={`${
+                    size === "md" ? "text-lg" : "text-md"
+                  } mt-1 no-margin px-6 py-2 !bg-red hover:bg-red text-white rounded-full ${
+                    isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                >
+                  Next
+                </button>
+                {/* @ts-ignore */}
+              </DialogFooter>
+            </Form>
+          )}
+        </Formik>
+      </div>
+    </Dialog>
   );
 }

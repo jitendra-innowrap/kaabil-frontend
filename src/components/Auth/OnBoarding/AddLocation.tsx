@@ -94,7 +94,7 @@ export default function AddLocation() {
         const response = await api.post("/Auth/addJobseekerProfile", formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
-      
+
         if (response?.data?.code === 1) {
           dispatch(setProgress(8));
           dispatch(setUserLocation(values.location_id));
@@ -147,7 +147,9 @@ export default function AddLocation() {
         onSubmit={formik.handleSubmit}
         className="block mt-8 md:mt-10 xl:mt-14 2xl:mt-16"
       >
-        <h4 className="text-lg font-semibold !text-[#231F20]">Select job location</h4>
+        <h4 className="text-lg font-semibold !text-[#231F20]">
+          Select job location
+        </h4>
         <div className="my-2">
           <MultiSelect
             options={locationList}

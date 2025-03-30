@@ -45,7 +45,14 @@ useEffect(() => {
         longitude:'0',
         radius_id:'0'
       };
+      const { deviceId, secret, salt } = getSessionData();
 
+      // Ensure session data is available
+      if (!deviceId || !secret || !salt) {
+        console.log("Session data not available, retrying...");
+        setTimeout(fetchCompanyDetails, 1000); // Retry after 1 second
+        return;
+      }
       const formData = new FormData();
       // ✅ Automatically append all fields from the object
         Object.entries(payload).forEach(([key, value]) => {
@@ -140,7 +147,7 @@ if(isLoading){
  const tabTitles = ["About", "Jobs", "Perks & Benefits"]
   return (
     <main>
-      <section className="bg-[#0a0100] py-10 2xl:py-16 3xl:py-[76px] relative">
+      <section className="bg-[#0a0100] py-10 2xl:py-16 3xl:py-[76px] sticky top-[52px] lg:top-[56px] 3xl:top-[90px] z-[11]">
             <Image
                 src="/new-assets/icons/Comapny-profile-bg.png"
                 width={988}

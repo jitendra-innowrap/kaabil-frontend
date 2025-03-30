@@ -103,7 +103,7 @@ const ResumeModal = () => {
             }
           }}
         >
-          {({ setFieldValue, isSubmitting, values }) => (
+          {({ setFieldValue, isSubmitting, values, dirty }) => (
             <Form>
               {/* @ts-ignore */}
 
@@ -173,9 +173,11 @@ const ResumeModal = () => {
                 <button
                   type="submit"
                   className={`px-28 py-4 bg-[#E31837] text-white rounded-xl ${
-                    isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+                    isSubmitting || !dirty
+                      ? "opacity-50 cursor-not-allowed"
+                      : ""
                   }`}
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || !dirty}
                 >
                   Save
                 </button>

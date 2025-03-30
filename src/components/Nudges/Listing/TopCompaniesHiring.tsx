@@ -53,10 +53,10 @@ export default function TopCompaniesHiring() {
                       autoplay={false}
                       autoplayDuration={3000}
                       freeMode={false}
-                      slidesPerView={2.6}
+                      slidesPerView={2.4}
                       breakpoints={{
                           480:{
-                              slidesPerView: 2,
+                              slidesPerView: 2.4,
                           },
                           768: {
                             slidesPerView: 3,

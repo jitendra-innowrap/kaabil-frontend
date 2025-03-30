@@ -5,7 +5,7 @@ import { Swiper as SwiperType, SwiperOptions } from 'swiper/types';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/autoplay';
-import { Autoplay, Navigation, FreeMode } from 'swiper/modules';
+import { Autoplay, Navigation, FreeMode, Grid } from 'swiper/modules';
 import { IoChevronBackOutline, IoChevronForwardOutline } from 'react-icons/io5';
 
 interface GallerySliderProps extends SwiperOptions {
@@ -80,7 +80,7 @@ useEffect(() => {
   return (
     <div className={`relative slider-wrapper ${showNavigation && arrowOut?'md:px-6 sm:px-10 2xl:px-[60px]':'px-4'}`}>
       <Swiper
-        modules={[Autoplay, Navigation, FreeMode]}
+        modules={[Autoplay, Navigation, FreeMode, Grid]}
         loop={loop}
         autoplay={autoplayConfig}
         spaceBetween={spaceBetween}

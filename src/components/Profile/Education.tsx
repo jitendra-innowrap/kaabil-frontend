@@ -37,12 +37,12 @@ const Education = () => {
         }}
         styles={lightBoxStyle}
       />
-      <div className="bg-white rounded-lg mt-3 px-12 py-6">
+      <div className="profile-card bg-white rounded-lg mt-3 p-[16px] sm:p-[20px] lg:px-12 py-6">
         <div className="grid grid-cols-12">
           <div className="col-span-12 flex justify-between">
             <div className="flex gap-3 items-center">
               <img src="/new-assets/icons/graduation-cap.svg" />
-              <h1 className="text-[#231F20] font-semibold text-md">
+              <h1 className="text-[#231F20] font-semibold text-[14px] sm:text-md">
                 Education
               </h1>
             </div>
@@ -57,14 +57,14 @@ const Education = () => {
                 className="h-3 mt-1"
                 alt=""
               />
-              <span className="text-sm font-bold text-red">Edit</span>
+              <span className="text-[13px] sm:text-sm font-bold text-red">Edit</span>
             </div>
           </div>
         </div>
         <div className="grid grid-cols-12 mt-6">
           <div className="col-span-12 flex gap-14">
             <div>
-              <h1 className="text-sm text-[#4D4D4F]">Highest Education</h1>
+              <h1 className="text-[14px] sm:text-sm text-[#4D4D4F]">Highest Education</h1>
             </div>
             <div>
               <h1 className="text-sm font-medium text-[#231F20]">
@@ -75,9 +75,9 @@ const Education = () => {
         </div>
         <div className="grid grid-col-12 mt-4">
           <div className="col-span-12">
-            <h1 className="text-[#231F20] text-sm">Certification</h1>
+            <h1 className="text-[#231F20] text-[14px] sm:text-sm">Certification</h1>
           </div>
-          <div className="col-span-12 mt-2 flex gap-3 flex-wrap">
+          <div className="col-span-12 mt-2 flex gap-3 sm:flex-wrap overflow-auto ">
             {profileData?.user_certifications?.length > 0 ? (
               profileData.user_certifications.map(
                 (
@@ -89,7 +89,7 @@ const Education = () => {
                   },
                   index: number
                 ) => (
-                  <div key={cert.id} className="text-center">
+                  <div key={cert.id} className="certification-card text-center">
                     {cert.attachment_type === "2" ? (
                       <a
                         href={cert.media_url}

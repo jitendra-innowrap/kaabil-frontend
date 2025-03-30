@@ -12,7 +12,7 @@ export default function IndustryCard({icon, title, jobUrl, color}:industryCard) 
     <div style={{background:`${color}`}} className={`w-full h-full flex flex-col justify-between bg-white rounded-2xl p-4 2xl:p-6 text-center`}>
         <div className="block">
             <Image
-            className="h-[100px] xl:h-[90px] 3xl:h-[127px] w-auto rounded-full cursor-pointer mx-auto"
+            className="h-[63px] lg:h-[100px] xl:h-[90px] 3xl:h-[127px] w-auto rounded-full cursor-pointer mx-auto"
             src={icon}
             width={90}
             height={90}

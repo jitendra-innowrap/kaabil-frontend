@@ -26,13 +26,13 @@ export default function ProfileCard() {
           height={253}
           alt={user?.name || "user profile"}
         />
-        <h3 className="text-sm text-center 2xl:text-base 3xl:text-lg font-semibold mb-[2px]">
+        <h3 className="text-[16px] lg:text-sm text-center 2xl:text-base 3xl:text-lg font-semibold mb-2 lg:mb-[2px]">
           {user?.name}
         </h3>
         <p className="text-xs text-center 2xl:text-sm text-[#4D4D4F] mb-3">
           {user?.designation}
         </p>
-        <p className="text-xs text-center 2xl:text-sm font-medium">
+        <p className="mb-2 text-xs text-center 2xl:text-sm font-medium">
           Complete your profile
         </p>
         <div className="flex items-center gap-2 w-full">

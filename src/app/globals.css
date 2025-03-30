@@ -138,6 +138,13 @@ a.btn {
   text-transform: capitalize;
   transition: background-color 0.3s ease;
 }
+
+@media (max-width: 520px) {
+  .btn-m{
+    padding: 4px 10px !important;
+    border-radius: 4px !important;
+  }
+}
 .btn-border {
   padding: 9px 30px;
   border-radius: 8px;
@@ -842,6 +849,7 @@ label {
   }
   .job-description {
     width: -webkit-fill-available;
+    width: 100%;
     max-width: calc(100% - 297px);
   }
   .filters-sidebar {
@@ -1647,6 +1655,100 @@ label {
   /* Extra-large screens */
   .custom-dialog {
     scale: 0.7;
+  }
+}
+.job-action-btn-sx{
+  display: none
+}
+@media (max-width: 999px) {
+  .job-card .action-btns{
+    margin-top: 0 !important;
+  }
+  .job-card .action-btns .applied-btn{
+    min-width: 50%;
+    max-width: 50%;
+    padding: 0 10px !important;
+    text-align: center;
+    justify-content: center;
+    width: fit-content !important;
+    height: 34px;
+  }
+  .job-card .action-btns a{
+    height: 34px !important;
+  }
+}
+@media (max-width: 640px) {
+  .success-story-card.odd {
+    padding-top: 0;
+  }
+  .company-detail-gallary .slider-wrapper {
+    padding-inline: 0px !important;
+  }
+  .slider-wrapper .swiper.swiper-horizontal{
+    padding-inline: 0 0 !important;
+  }
+  .job-description-content{
+    margin-top: -54px !important;
+    padding-bottom: 54px !important;
+  }
+  .job-action-btn-sx{
+    display: block !important;
+    position: sticky !important;
+    top: calc(100vh - 55px) !important;
+    width: 100% !important;
+    padding: 10px !important;
+    background: #fff !important;
+  }
+  .otp-input {
+    height: 55px !important;
+    width: 55px !important;
+  }
+  .popup-content{
+    width: 100% !important;
+  }
+  .job-card{
+    padding: 16px !important;
+  }
+  .job-card img[alt="company profile logo"] {
+    height: 40px !important;
+    width: 40px !important;
+  }
+  .job-card .action-btns{
+    margin-top: 0 !important;
+  }
+  .single-company-jobs   .job-card .action-btns{
+    margin-top: 15px !important;
+  }
+  .job-card .action-btns .applied-btn {
+    min-width: 155px;
+    max-width: 160px;
+  }
+  .mobile-container-zero-padding{
+    padding-inline: 0 !important;
+  }
+  .profile-card{
+    margin: 16px !important;
+  }
+  .certification-card{
+    width: 122px;
+    display: block;
+    flex-basis: 122px;
+    flex-grow: 0;
+    flex-shrink: 0;
+    text-align: center;
+  }
+  .certification-card img{
+    width: 100px;
+    margin: auto;
+  }
+  .home-banner{
+    width: auto;
+    height: 269px !important;
+    object-fit: cover;
+    object-position: left;
+  }
+  .job-card .action-btns button{
+    height: 34px !important;
   }
 }
 

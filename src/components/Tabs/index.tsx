@@ -111,7 +111,7 @@ const handleTabClick = (e: React.MouseEvent<HTMLAnchorElement>, slug: string) =>
         return (
           <li
             key={slug}
-            className={`details-tab-item md:text-sm ${isActive ? 'font-bold text-red' : 'font-normal text-black hover:text-red'}`}
+            className={`details-tab-item text-[14px] md:text-sm ${isActive ? 'font-bold text-red' : 'font-normal text-black hover:text-red'}`}
           >
             <Link
               href={slug}

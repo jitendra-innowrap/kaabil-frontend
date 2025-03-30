@@ -35,9 +35,7 @@ const About = () => {
                     ? `${profileData.job_type} ${
                         profileData.designation ?? ""
                       } at ${profileData.company_name}`
-                    : `${profileData.job_type} ${
-                        profileData.designation ?? ""
-                      }`
+                    : `${profileData.job_type} ${profileData.designation ?? ""}`
                   : ""}
               </h3>
 

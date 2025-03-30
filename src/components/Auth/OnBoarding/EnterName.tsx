@@ -17,10 +17,18 @@ import {
   setUserSkills,
   setUserWAConsent,
 } from "@/redux/userSlice";
+import {
+  Dialog,
+  DialogBody,
+  DialogFooter,
+  DialogHeader,
+} from "@material-tailwind/react";
+import { IoClose } from "react-icons/io5";
 
-export default function EnterName() {
+export default function EnterName({ size, closePopup }: any) {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user);
+  const progress: any = useAppSelector((state) => state.progress.value);
 
   // ✅ Yup Validation Schema
   const validationSchema = Yup.object().shape({
@@ -123,50 +131,101 @@ export default function EnterName() {
   });
 
   return (
-    <div>
-      <h2 className="text-center font-semibold text-lg md:text-xl 2xl:text-[28px] 2xl:leading-[36px]">
-        Welcome to <span className="text-red">Kaabil</span>
-      </h2>
-      {/* ✅ Formik Form */}
-      <form onSubmit={formik.handleSubmit} className="block mt-8 3xl:mt-16">
-        <label htmlFor="name" className="text-[#231F20] font-semibold">
-          Enter your full name
-        </label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          placeholder="Enter your full name"
-          value={formik.values.name}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          className={`border p-2 w-full ${
-            formik.errors.name && formik.touched.name
-              ? "border-red-500"
-              : "border-gray-300"
-          } ${formik.values.name ? "font-semibold" : "font-normal"}`}
-        />
-        {/* ✅ Display Validation Error */}
-        <div>
-          {formik.errors.name && formik.touched.name && (
-            <p className="text-red-500 text-sm">{formik.errors.name}</p>
-          )}
-        </div>
-        <div className="mt-4">
-          <button
-            type="submit"
-            className={`no-margin px-6 py-2 bg-red text-white rounded ${
-              !formik.isValid || formik.isSubmitting
-                ? "!opacity-50 !cursor-default"
-                : ""
+    // @ts-ignore
+    <Dialog
+      open={progress === 4}
+      size={size}
+      className={`onboarding-dailog ${
+        size === "md" ? "fixed top-10 -translate-x-1/2  onboarding-scale" : ""
+      }`}
+    >
+      <div className="pb-6">
+        {/* @ts-ignore */}
+        <DialogHeader>
+          <div className="relative w-full">
+            <IoClose
+              className="absolute top-2 right-2 cursor-pointer"
+              size={size === "md" ? 32 : 28}
+              onClick={closePopup}
+            />
+            <div
+              className={`${
+                size === "md"
+                  ? "flex justify-center items-center mt-6"
+                  : "flex justify-start items-start mt-16"
+              }`}
+            >
+              <h2
+                className={`text-[#231F20] font-semibold ${
+                  size === "md" ? "!text-[26px]" : "!text-[22px]"
+                }`}
+              >
+                Welcome to <span className="text-red">Kaabil</span>
+              </h2>
+            </div>
+          </div>
+        </DialogHeader>
+        {/* ✅ Formik Form */}
+        <form
+          onSubmit={formik.handleSubmit}
+          className={`${size === "md" ? "block mt-6" : "mt-2"}`}
+        >
+          {/* @ts-ignore */}
+          <DialogBody className="mt-2 max-h-[50vh] sm:max-h-[60vh] md:max-h-[70vh] lg:max-h-[80vh] overflow-y-auto custom-scroll p-0 px-5">
+            <div className={`${size === "md" ? "px-12" : "px-0"}`}>
+              {/* @ts-ignore */}
+              <label
+                htmlFor="name"
+                className={`text-[#231F20] ${
+                  size === "md" ? "font-semibold" : "font-normal"
+                }`}
+              >
+                Enter your full name
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                placeholder="Enter your full name"
+                value={formik.values.name}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                className={`border p-2 w-full ${
+                  formik.errors.name && formik.touched.name
+                    ? "border-red-500"
+                    : "border-gray-300"
+                } ${formik.values.name ? "font-semibold" : "font-normal"}`}
+              />
+              <div>
+                {formik.errors.name && formik.touched.name && (
+                  <p className="text-red-500 text-sm">{formik.errors.name}</p>
+                )}
+              </div>
+            </div>
+          </DialogBody>
+          {/* @ts-ignore */}
+          <DialogFooter
+            className={`p-0 pb-6 mt-5 flex justify-center ${
+              size === "md" ? "!px-[66px]" : "px-[20px]"
             }`}
-            disabled={!formik.isValid || formik.isSubmitting}
           >
-            {/* {formik.isSubmitting ? "Submitting..." : "Next"} */}
-            Next
-          </button>
-        </div>
-      </form>
-    </div>
+            <button
+              type="submit"
+              className={`${
+                size === "md" ? "text-lg" : "text-md"
+              } mt-1 no-margin px-6 py-2 !bg-red hover:bg-red text-white rounded-full ${
+                !formik.isValid || formik.isSubmitting
+                  ? "opacity-50 cursor-not-allowed"
+                  : ""
+              }`}
+              disabled={!formik.isValid || formik.isSubmitting}
+            >
+              {/* {formik.isSubmitting ? "Submitting..." : "Next"} */}
+              Next
+            </button>
+          </DialogFooter>
+        </form>
+      </div>
+    </Dialog>
   );
 }

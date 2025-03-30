@@ -11,9 +11,19 @@ import * as Yup from "yup";
 import api from "@/Services/Apiservice";
 import toast from "react-hot-toast";
 import { setUserRole } from "@/redux/userSlice";
+import {
+  Dialog,
+  DialogBody,
+  DialogFooter,
+  DialogHeader,
+} from "@material-tailwind/react";
+import { IoClose } from "react-icons/io5";
+import { FaArrowLeft } from "react-icons/fa";
 
-export default function AddJobRole() {
+export default function AddJobRole({ size, closePopup, handleBack }: any) {
   const dispatch = useAppDispatch();
+  const progress: any = useAppSelector((state) => state.progress.value);
+
   const user = useAppSelector((state) => state.user);
   const [selectedRoles, setSelectedRoles] = useState<
     { value: string; label: string }[]
@@ -85,7 +95,6 @@ export default function AddJobRole() {
           user.job_type_master_id.map((id) => id.toString())
         );
       }
-
       setJobTypes(jobTypes);
     } catch (error) {
       console.error("Error fetching job types:", error);
@@ -150,126 +159,176 @@ export default function AddJobRole() {
   });
 
   return (
-    <div className="">
-      <h2 className="text-center font-semibold  text-lg md:text-xl xl:text-[28px] xl:leading-[36px]">
-        <span className="text-red">Hi {user?.name}!</span> <br />
-        <span className="text-[#231F20]">
-          Take the first step to find a job
-        </span>
-      </h2>
-
-      {/* ✅ Formik Form */}
-      <form
-        onSubmit={formik.handleSubmit}
-        className="block mt-8"
-      >
-        <div className="scroll-content pb-2 cursor-pointer">
-          <h4 className="text-lg font-medium text-[#231F20]">
-            What job role are you looking for?
-          </h4>
-          <p className="text-sm text-[#249D64]">
-            (You can select up to 2 job roles)
-          </p>
-
-          {/* ✅ MultiSelect for Job Roles */}
-          <div className="my-3">
-            <MultiSelect
-              options={rolesList.map((role) => ({
-                ...role,
-                disabled: isOptionDisabled(role), // Dynamically set disabled based on selection
-              }))}
-              placeholder="Select Role"
-              isMulti
-              onChange={(selectedRoles: { value: string; label: string }[]) =>
-                formik.setFieldValue(
-                  "role_id",
-                  selectedRoles.map((role) => role.value)
-                )
-              }
-              selectedValues={rolesList?.filter((role) =>
-                formik.values.role_id.includes(role.value)
-              )}
-              maxSelections={2}
-              // hasSelectAll={false}
-              icon={
-                <FaMagnifyingGlass className="absolute left-[15px] top-[20px] size-4 text-[#808080]" />
-              }
+    // @ts-ignore
+    <Dialog
+      open={progress === 5}
+      size={size}
+      className={`onboarding-dailog ${
+        size === "md" ? "fixed -top-16 -translate-x-1/2  onboarding-scale" : ""
+      }`}
+    >
+      <div className="pb-6">
+        {/* @ts-ignore */}
+        <DialogHeader>
+          <div className="relative w-full">
+            <div onClick={handleBack}>
+              <FaArrowLeft className="absolute cursor-pointer top-2 z-30 left-2 size-6" />
+            </div>
+            <IoClose
+              className="absolute top-2 right-2 cursor-pointer"
+              size={size === "md" ? 32 : 28}
+              onClick={closePopup}
             />
+            <div
+              className={`${
+                size === "md"
+                  ? "flex justify-center items-center mt-6"
+                  : "flex justify-start items-start mt-16"
+              }`}
+            >
+              <h2
+                className={`text-[#231F20] font-semibold  ${
+                  size === "md"
+                    ? "!text-[26px] text-center"
+                    : "!text-[22px] text-start"
+                }`}
+              >
+                <span className="text-red">Hi {user?.name}!</span>
+                <br />
+                <span className="text-[#231F20]">
+                  Take the first step to find a job
+                </span>
+              </h2>
+            </div>
           </div>
+        </DialogHeader>
 
-          {/* ✅ Display Selected Job Roles */}
-          <SelectedChips
-            selectedValues={rolesList.filter((role) =>
-              formik.values.role_id.includes(role.value)
-            )}
-            onRemove={(value: string) =>
-              formik.setFieldValue(
-                "role_id",
-                formik.values.role_id.filter((id) => id !== value)
-              )
-            }
-          />
+        {/* ✅ Formik Form */}
+        <form
+          onSubmit={formik.handleSubmit}
+          className={`${size === "md" ? "block mt-6" : "mt-2"}`}
+        >
+          {/* @ts-ignore */}
+          <DialogBody className="custom-dialog-body custom-scroll">
+            <div
+              className={`scroll-content pb-2 cursor-pointer ${
+                size === "md" ? "px-12" : "px-0"
+              }`}
+            >
+              <h4 className="text-lg font-medium text-[#231F20]">
+                What job role are you looking for?
+              </h4>
+              <p className="text-sm text-[#249D64]">
+                (You can select up to 2 job roles)
+              </p>
 
-          {/* ✅ Validation Error */}
-          {formik.errors.role_id && formik.touched.role_id && (
-            <p className="text-red text-sm mt-1">{formik.errors.role_id}</p>
-          )}
+              {/* ✅ MultiSelect for Job Roles */}
+              <div className="my-3">
+                <MultiSelect
+                  options={rolesList.map((role) => ({
+                    ...role,
+                    disabled: isOptionDisabled(role), // Dynamically set disabled based on selection
+                  }))}
+                  placeholder="Select Role"
+                  isMulti
+                  onChange={(
+                    selectedRoles: { value: string; label: string }[]
+                  ) =>
+                    formik.setFieldValue(
+                      "role_id",
+                      selectedRoles.map((role) => role.value)
+                    )
+                  }
+                  selectedValues={rolesList?.filter((role) =>
+                    formik.values.role_id.includes(role.value)
+                  )}
+                  maxSelections={2}
+                  // hasSelectAll={false}
+                  icon={
+                    <FaMagnifyingGlass className="absolute left-[15px] top-[20px] size-4 text-[#808080]" />
+                  }
+                />
+              </div>
 
-          <h4 className="text-lg font-medium my-4 text-[#231F20]">
-            What type of job required?
-          </h4>
+              {/* ✅ Display Selected Job Roles */}
+              <SelectedChips
+                selectedValues={rolesList.filter((role) =>
+                  formik.values.role_id.includes(role.value)
+                )}
+                onRemove={(value: string) =>
+                  formik.setFieldValue(
+                    "role_id",
+                    formik.values.role_id.filter((id) => id !== value)
+                  )
+                }
+                size={size}
+              />
 
-          {/* ✅ Job Type Selection */}
-          <div className="grid sm:grid-cols-3 gap-4">
-            {jobTypes.map((type) => (
-              <div
-                key={type.value}
-                className={`col-span-1 label-option cursor-pointer px-4 py-2 rounded ${
-                  formik.values.job_type_master_id.includes(type.value)
-                    ? "bg-red text-white"
+              {/* ✅ Validation Error */}
+              {formik.errors.role_id && formik.touched.role_id && (
+                <p className="text-red text-sm mt-1">{formik.errors.role_id}</p>
+              )}
+
+              <h4 className="text-lg font-medium my-4 text-[#231F20]">
+                What type of job required?
+              </h4>
+
+              {/* ✅ Job Type Selection */}
+              <div className="flex flex-wrap gap-4">
+                {jobTypes.map((type) => (
+                  <div
+                    key={type.value}
+                    className={`label-option cursor-pointer px-4 py-2 rounded md:grow ${
+                      formik.values.job_type_master_id.includes(type.value)
+                        ? "bg-red text-white"
+                        : ""
+                    }`}
+                    onClick={() => {
+                      const currentValues = formik.values.job_type_master_id;
+                      const newValues = currentValues.includes(type.value)
+                        ? currentValues.filter((id) => id !== type.value)
+                        : [...currentValues, type.value];
+                      formik.setFieldValue("job_type_master_id", newValues);
+                    }}
+                  >
+                    {type.label}
+                  </div>
+                ))}
+              </div>
+
+              {/* ✅ Validation Error */}
+              {formik.errors.job_type_master_id &&
+                formik.touched.job_type_master_id && (
+                  <p className="text-red text-sm mt-1">
+                    {formik.errors.job_type_master_id}
+                  </p>
+                )}
+            </div>
+          </DialogBody>
+
+          {/* @ts-ignore */}
+          <DialogFooter className="p-0 pb-6 !px-12 mt-5 flex justify-center">
+            <div className="flex w-full justify-between items-end">
+              <div className="whitespace-nowrap">
+                <span className="text-red">{6 - 4}</span> - 6
+              </div>
+              <button
+                type="submit"
+                className={`max-w-[200px] sm:max-w-[250px] ${
+                  size === "md" ? "text-lg" : "text-md"
+                } mt-1 no-margin px-6 py-2 !bg-red hover:bg-red text-white rounded-full ${
+                  !formik.isValid || formik.isSubmitting
+                    ? "opacity-50 cursor-not-allowed"
                     : ""
                 }`}
-                onClick={() => {
-                  const currentValues = formik.values.job_type_master_id;
-                  const newValues = currentValues.includes(type.value)
-                    ? currentValues.filter((id) => id !== type.value) // Remove the ID if it's already selected
-                    : [...currentValues, type.value]; // Add the ID if it's not selected
-
-                  formik.setFieldValue("job_type_master_id", newValues);
-                }}
+                disabled={formik.isSubmitting}
               >
-                {type.label}
-              </div>
-            ))}
-          </div>
-
-          {/* ✅ Validation Error */}
-          {formik.errors.job_type_master_id &&
-            formik.touched.job_type_master_id && (
-              <p className="text-red text-sm mt-1">
-                {formik.errors.job_type_master_id}
-              </p>
-            )}
-        </div>
-
-        <div className="flex w-full justify-between items-end">
-          <div className="whitespace-nowrap">
-            <span className="text-red">{6 - 4}</span> - 6
-          </div>
-          <button
-            type="submit"
-            className={`max-w-[100px] sm:max-w-[250px] ${
-              formik.isValid
-                ? "bg-red text-white"
-                : "!opacity-50 !cursor-default"
-            }`}
-            disabled={formik.isSubmitting}
-          >
-            {/* {formik.isSubmitting ? "Submitting..." : "Next"} */}
-            Next
-          </button>
-        </div>
-      </form>
-    </div>
+                Next
+              </button>
+            </div>
+          </DialogFooter>
+        </form>
+      </div>
+    </Dialog>
   );
 }

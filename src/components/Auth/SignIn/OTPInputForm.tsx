@@ -20,11 +20,19 @@ import {
   setUserName,
   setUserPhotoUrl,
 } from "@/redux/userSlice";
+import {
+  Dialog,
+  DialogBody,
+  DialogFooter,
+  DialogHeader,
+} from "@material-tailwind/react";
+import { IoClose } from "react-icons/io5";
+import { FaArrowLeft } from "react-icons/fa";
 
 interface prop {
   onClose: () => void;
 }
-export default function OTPInputForm({ onClose }: prop) {
+export default function OTPInputForm({ size, closePopup, handleBack }: any) {
   const progress = useAppSelector((state) => state.progress.value);
   const user = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
@@ -86,7 +94,8 @@ export default function OTPInputForm({ onClose }: prop) {
           );
           if (response?.result?.is_profile_verify == "1") {
             dispatch(setProgress(11));
-            onClose();
+            closePopup();
+            // Here we will close modal Based On Condtion
           } else {
             dispatch(setProgress(3));
             toast.success("Logged In Successfully!", {
@@ -181,92 +190,162 @@ export default function OTPInputForm({ onClose }: prop) {
   }, []);
 
   return (
-    <>
-      <h2 className="text-center text-[#231F20] font-semibold text-lg md:text-xl 2xl:text-[28px] 2xl:leading-[36px]">
-        OTP Verification
-      </h2>
-      <p className="text-center mt-2 text-[#000000]">
-        We have sent the code verification to your number
-      </p>
-      <Image
-        src="/new-assets/icons/otp-icon.png"
-        alt="OTP verification form"
-        width={60}
-        height={60}
-        className="mx-auto mt-5"
-      />
-      <form className="block mt-8 md:mt-10" onSubmit={formik.handleSubmit}>
-        <label
-          htmlFor="mobile"
-          className="text-[#231F20] mobile-text text-lg md:text-xl 2xl:text-[16px]"
-        >
-          Mobile Number
-        </label>
-        <input
-          type="tel"
-          id="mobile"
-          name="mobile"
-          value={user?.mobile}
-          placeholder="Enter your mobile number to receive OTP"
-          readOnly
-          required
-          className={`text-[#231F20] ${
-            user?.mobile ? "font-semibold" : "font-normal"
-          }`}
-        />
-        <div className="flex gap-6 sm:gap-10 mt-2 xl:mt-[10px]  justify-between">
-          {formik.values.otp.map((digit, index) => (
-            <div className="relative" key={index}>
-              <input
-                className="otp-input w-full  border border-borderBlue text-center text-lg md:text-xl font-semibold"
-                name={`otp${index}`}
-                type="tel"
-                maxLength={1}
-                autoComplete="off"
-                value={digit}
-                onChange={(e) => handleOtpChange(index, e.target.value)}
-                onKeyDown={(e) => handleKeyDown(index, e)}
-                ref={(ref) => {
-                  inputRefs.current[index] = ref;
-                }}
-              />
-              {index < 3 && (
-                <span className="text-[#98A2B3] top-4 -right-5 sm:-right-10 text-3xl absolute">
-                  -
-                </span>
-              )}
-            </div>
-          ))}
+    // @ts-ignore
+    <Dialog
+      open={progress === 2}
+      size={size}
+      className={`onboarding-dailog ${
+        size === "md" ? "fixed -top-8 -translate-x-1/2  onboarding-scale" : ""
+      }`}
+    >
+      {/* @ts-ignore */}
+      <DialogHeader>
+        <div className="relative w-full">
+          <div onClick={handleBack}>
+            <FaArrowLeft className="absolute cursor-pointer top-2 z-30 left-2 size-6" />
+          </div>
+
+          <IoClose
+            className="absolute top-2 right-2 cursor-pointer"
+            size={size === "md" ? 32 : 28}
+            onClick={closePopup}
+          />
+          <div
+            className={`${
+              size === "md"
+                ? "flex justify-center items-center mt-8"
+                : "flex justify-start items-start mt-16"
+            } `}
+          >
+            <h2
+              className={`text-[#231F20] font-semibold ${
+                size === "md" ? "!text-[26px]" : "!text-[22px]"
+              }`}
+            >
+              OTP Verification
+            </h2>
+          </div>
+          <div className={`${size === "md" ? "text-center" : "text-start"}`}>
+            <p
+              className={`font-normal ${
+                size === "md" ? "mt-2" : "mt-1"
+              } text-[#000000] text-sm`}
+            >
+              We have sent the code verification to your number
+            </p>
+          </div>
+          {size === "md" && (
+            <Image
+              src="/new-assets/icons/otp-icon.png"
+              alt="OTP verification form"
+              width={60}
+              height={60}
+              className="mx-auto mt-2"
+            />
+          )}
         </div>
-        {formik.errors.otp && (
-          <p className="text-red-500 mt-2">{formik.errors.otp}</p>
-        )}
-        <div className="mt-5">
+      </DialogHeader>
+      <form
+        className={`block ${size === "xxl" ? "mt-2" : "mt-10"}`}
+        onSubmit={formik.handleSubmit}
+      >
+        {/* @ts-ignore */}
+        <DialogBody className="mt-2 max-h-[50vh] sm:max-h-[60vh] md:max-h-[70vh] lg:max-h-[80vh] overflow-y-auto custom-scroll p-0 px-5">
+          <div className={`${size === "md" ? "px-12" : "px-0"}`}>
+            <label
+              htmlFor="mobile"
+              className="text-[#231F20] mobile-text text-lg md:text-xl 2xl:text-[16px]"
+            >
+              Mobile Number
+            </label>
+            <input
+              type="tel"
+              id="mobile"
+              name="mobile"
+              value={user?.mobile}
+              placeholder="Enter your mobile number to receive OTP"
+              readOnly
+              required
+              className={`text-[#231F20] ${
+                user?.mobile ? "font-semibold" : "font-normal"
+              }`}
+            />
+            <div
+              className={`flex ${
+                size === "xxl" ? "gap-10" : "gap-0"
+              } mt-2 xl:mt-[10px] ${
+                size === "xxl" ? "justify-start" : "justify-between"
+              }`}
+            >
+              {formik.values.otp.map((digit, index) => (
+                <div className="relative" key={index}>
+                  <input
+                    className="otp-input border border-borderBlue text-center text-lg md:text-xl font-semibold"
+                    name={`otp${index}`}
+                    type="tel"
+                    maxLength={1}
+                    autoComplete="off"
+                    value={digit}
+                    onChange={(e) => handleOtpChange(index, e.target.value)}
+                    onKeyDown={(e) => handleKeyDown(index, e)}
+                    ref={(ref) => {
+                      inputRefs.current[index] = ref;
+                    }}
+                  />
+                  {index < 3 && (
+                    <span
+                      className={`text-[#98A2B3] ${
+                        size === "md" ? "top-4 -right-8" : "top-2 -right-7"
+                      }  text-3xl absolute`}
+                    >
+                      -
+                    </span>
+                  )}
+                </div>
+              ))}
+            </div>
+            {formik.errors.otp && (
+              <p className="text-red-500 mt-2">{formik.errors.otp}</p>
+            )}
+          </div>
+        </DialogBody>
+        {/* @ts-ignore */}
+        <DialogFooter
+          className={`p-0 pb-6 mt-5 flex justify-center ${
+            size === "md" ? "!px-[66px]" : "px-[20px]"
+          }`}
+        >
           <button
-            className={`no-margin ${
+            type="submit"
+            disabled={!formik.isValid || formik.isSubmitting}
+            className={`${
+              size === "md" ? "text-lg" : "text-md"
+            } mt-1 no-margin px-6 py-2 !bg-red hover:bg-red text-white rounded-full ${
               !formik.isValid || formik.isSubmitting
                 ? "opacity-50 cursor-not-allowed"
                 : ""
             }`}
-            type="submit"
-            disabled={!formik.isValid || formik.isSubmitting}
           >
             Verify
           </button>
-        </div>
-        <p className="mt-4 2xl:mt-5 text-center text-[#000000]">
-          Didn’t receive code?
-          <span
-            tabIndex={0}
-            onClick={handleResendOtp}
-            className={`font-medium text-red ml-1 cursor-pointer ${
-              isResending || timer > 0 ? "opacity-50" : ""
-            }`}
-          >
-            {isResending || timer > 0 ? `Resend OTP (${timer}s)` : "Resend OTP"}
-          </span>
-        </p>
+          <div>
+            <p className="mt-4 2xl:mt-5 text-center text-[#000000]">
+              Didn’t receive code?
+              <span
+                tabIndex={0}
+                onClick={handleResendOtp}
+                className={`font-medium text-red ml-1  cursor-pointer ${
+                  isResending || timer > 0 ? "opacity-50" : ""
+                }`}
+              >
+                {isResending || timer > 0
+                  ? `Resend OTP (${timer}s)`
+                  : "Resend OTP"}
+              </span>
+            </p>
+          </div>
+        </DialogFooter>
       </form>
-    </>
+    </Dialog>
   );
 }

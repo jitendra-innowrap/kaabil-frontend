@@ -10,12 +10,19 @@ import {
   setUserPhotoUrl,
   setUserWAConsent,
 } from "@/redux/userSlice";
+import {
+  Dialog,
+  DialogBody,
+  DialogFooter,
+  DialogHeader,
+} from "@material-tailwind/react";
+import { IoClose } from "react-icons/io5";
 
 interface prop {
-  onClose: () => void;
+  closePopup: () => void;
 }
 
-export default function OnBoardingComplete({ onClose }: prop) {
+export default function OnBoardingComplete({ size, closePopup }: any) {
   const progress = useAppSelector((state) => state.progress.value);
   const { experience, name, role_id, skills, photo_url, is_whatsapp_show } =
     useAppSelector((state) => state.user);
@@ -46,7 +53,7 @@ export default function OnBoardingComplete({ onClose }: prop) {
         });
         dispatch(setUserWAConsent(WAConsent));
         dispatch(setUserIsProfileVerified("1"));
-        onClose(); // Close the modal or navigate to the next step
+        closePopup(); // Close the modal or navigate to the next step
       } else {
         toast.error(response?.data?.message || "Submission failed!", {
           position: "bottom-right",
@@ -112,141 +119,187 @@ export default function OnBoardingComplete({ onClose }: prop) {
   };
 
   return (
-    <div className="">
-      <h2 className="text-center font-semibold text-lg md:text-xl xl:text-[28px] xl:leading-[38px]">
-        <span className="text-red">Congrats!</span> <br />
-        Your profile is active
-      </h2>
-      <form
-        onSubmit={handleSubmit}
-        className="block mt-8 md:mt-10 xl:mt-14 2xl:mt-16"
-      >
-        <div className="p-4 flex-col sm:flex-row rounded-lg border-[1.6px] border-[#E3ECFB] shadow-tertiary justify-start flex sm:gap-4">
-          <div className="flex flex-col justify-center items-center">
-            <Image
-              src={photo_url || "/new-assets/icons/avatar.svg"}
-              alt="profile-photo"
-              className="w-[75px] h-[75px] mr-1 rounded-full object-fit"
-              width={150}
-              height={150}
+    // @ts-ignore
+    <Dialog
+      open={progress === 11}
+      size={size}
+      className={`onboarding-dailog ${
+        size === "md" ? "fixed -top-10 -translate-x-1/2  onboarding-scale" : ""
+      }`}
+    >
+      <div className="pb-6">
+        {/* @ts-ignore */}
+        <DialogHeader>
+          <div className="relative w-full">
+            <IoClose
+              className="absolute top-2 right-2 cursor-pointer"
+              size={size === "md" ? 32 : 28}
+              onClick={closePopup}
             />
-            <input
-              type="file"
-              ref={fileInputRef}
-              accept="image/*"
-              onChange={handleUploadPhoto}
-              className="hidden"
-            />
-            <button
-              type="button"
-              onClick={handleUploadClick}
-              className="!p-0 !rounded-full !text-[11px] !w-[87px] !h-6 !m-2 bg-red text-white"
-            >
-              Upload Photo
-            </button>
-          </div>
-          <div className="">
-            <h5 className="font-semibold text-black mb-1 text-center sm:text-left">
-              {name}
-            </h5>
-            <h5 className="text-black mb-1 font-medium text-center sm:text-left">
-              {/* {role_id === 1 ? 'UI/UX Designer' : 'Other Role'} Replace with actual role mapping */}
-            </h5>
-            {experience.length > 0 && (
-              <>
-                <h6 className="text-sm text-[#4D4D4F] mb-2">
-                  {experience[0].company_name}{" "}
-                  <GoDotFill className="inline-block size-3" />{" "}
-                  {experience[0].job_type_name}
-                </h6>
-                <h6 className="text-sm text-[#4D4D4F]">Selected job roles:</h6>
-                {experience.map((exp, i) => (
-                  <h6 key={i} className="text-sm font-medium mb-2 inline mr-2">
-                    <GoDotFill className="inline-block size-3" />{" "}
-                    {exp.designation_name}
-                  </h6>
-                ))}
-              </>
-            )}
-            <div className="flex gap-1 text-[#4D4D4F] text-sm mt-2">
-              Skills{" "}
-              <span className="size-5 bg-[#F9D1D7] rounded-full text-center">
-                {skills?.length || 0}
-              </span>
+            <div className="flex justify-center items-center mt-16">
+              <h2
+                className={`text-[#231F20] font-semibold ${
+                  size === "md" ? "!text-[26px]" : "!text-[22px]"
+                } text-center`}
+              >
+                <span className="text-red">Congrats!</span> <br />
+                <span>Your profile is active</span>
+              </h2>
             </div>
           </div>
-        </div>
-        <div className="flex items-start gap-2 my-4">
-          <input
-            type="checkbox"
-            name="whatsapp_consent"
-            className="!mb-0 !mt-1 cursor-pointer inline-block !w-4 !h-4"
-            id="whatsapp_consent"
-            checked={WAConsent}
-            onChange={(e) => {
-              // Update the Redux store or state for WhatsApp consent
-              setWAConsent(!WAConsent);
-            }}
-          />
-          <label className="!mb-0 inline-block" htmlFor="whatsapp_consent">
-            I consent to share my number with the recruiter for connecting with
-            me via
-            <Image
-              src={"/new-assets/icons/whatsapp.png"}
-              alt="whatsapp-icon"
-              className="w-[89px] h-[20px] inline ml-2"
-              width={100}
-              height={30}
-            />
-          </label>
-        </div>
-        <div className="flex items-start gap-2">
-          <input
-            type="checkbox"
-            name="is_tnc_checked"
-            className="!mb-0 !mt-1 cursor-pointer inline-block !w-4 !h-4"
-            id="is_tnc_checked"
-            checked={tncChecked}
-            onChange={(e) => {
-              // Update the Redux store or state for WhatsApp consent
-              setTncChecked(!tncChecked);
-            }}
-          />
-          <div className="flex">
-            <label
-              className="!mb-0 inline-block text-[#4D4D4F] whitespace-nowrap"
-              htmlFor="is_tnc_checked"
-            >
-              <div className="flex gap-1">
-                I agree to the{" "}
-                <a
-                  href="https://meuat.kaam.com/privacy_policy"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="border-b-[1px] border-[#4D4D4F] text-[#4D4D4F] cursor-pointer"
-                >
-                  terms of use
-                </a>
-                .
-              </div>
-            </label>
-          </div>
-        </div>
-        {!tncChecked && (
-          <span className="text-red text-[15px]">
-            You must agree to the terms of use to proceed.
-          </span>
-        )}
-        <button
-          className={`flex-shrink-0 justify-start bg-red text-white px-4 py-2 rounded ${
-            isSubmitting || !tncChecked ? "opacity-50 cursor-not-allowed" : ""
-          }`}
-          disabled={isSubmitting || !tncChecked}
-          type="submit"
+        </DialogHeader>
+        <form
+          onSubmit={handleSubmit}
+          className={`${size === "md" ? "block mt-6" : "mt-2"}`}
         >
-          Next
-        </button>
-      </form>
-    </div>
+          {/* @ts-ignore */}
+          <DialogBody className="custom-dialog-body custom-scroll">
+            <div
+              className={`pb-2 cursor-pointer ${
+                size === "md" ? "px-12" : "px-0"
+              }`}
+            >
+              <div className="p-4 flex-col sm:flex-row rounded-lg border-[1.6px] border-[#E3ECFB] shadow-tertiary justify-start flex sm:gap-4">
+                <div className="flex flex-col justify-center items-center">
+                  <Image
+                    src={photo_url || "/new-assets/icons/avatar.svg"}
+                    alt="profile-photo"
+                    className="w-[100px] h-[100px] mr-1 rounded-full object-fit"
+                    width={150}
+                    height={150}
+                  />
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    accept="image/*"
+                    onChange={handleUploadPhoto}
+                    className="hidden"
+                  />
+                  <div
+                    onClick={handleUploadClick}
+                    className="!rounded-full py-2 px-4 bg-red text-white"
+                  >
+                    Upload Photo
+                  </div>
+                </div>
+                <div className="">
+                  <h5 className="font-semibold text-black mb-1 text-center sm:text-left">
+                    {name}
+                  </h5>
+                  <h5 className="text-black mb-1 font-medium text-center sm:text-left">
+                    {/* {role_id === 1 ? 'UI/UX Designer' : 'Other Role'} Replace with actual role mapping */}
+                  </h5>
+                  {experience.length > 0 && (
+                    <>
+                      <h6 className="text-sm text-[#4D4D4F] mb-2">
+                        {experience[0].company_name}{" "}
+                        <GoDotFill className="inline-block size-3" />{" "}
+                        {experience[0].job_type_name}
+                      </h6>
+                      <h6 className="text-sm text-[#4D4D4F]">
+                        Selected job roles:
+                      </h6>
+                      {experience.map((exp, i) => (
+                        <h6
+                          key={i}
+                          className="text-sm font-medium mb-2 inline mr-2"
+                        >
+                          <GoDotFill className="inline-block size-3" />{" "}
+                          {exp.designation_name}
+                        </h6>
+                      ))}
+                    </>
+                  )}
+                  <div className="flex gap-1 text-[#4D4D4F] text-sm mt-2">
+                    Skills{" "}
+                    <span className="size-5 bg-[#F9D1D7] rounded-full text-center">
+                      {skills?.length || 0}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 my-4">
+                <input
+                  type="checkbox"
+                  name="whatsapp_consent"
+                  className="!mb-0 !mt-1 cursor-pointer inline-block !w-4 !h-4"
+                  id="whatsapp_consent"
+                  checked={WAConsent}
+                  onChange={(e) => {
+                    // Update the Redux store or state for WhatsApp consent
+                    setWAConsent(!WAConsent);
+                  }}
+                />
+                <label
+                  className="!mb-0 inline-block"
+                  htmlFor="whatsapp_consent"
+                >
+                  I consent to share my number with the recruiter for connecting
+                  with me via
+                  <Image
+                    src={"/new-assets/icons/whatsapp.png"}
+                    alt="whatsapp-icon"
+                    className="w-[89px] h-[20px] inline ml-2"
+                    width={100}
+                    height={30}
+                  />
+                </label>
+              </div>
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  name="is_tnc_checked"
+                  className="!mb-0 !mt-1 cursor-pointer inline-block !w-4 !h-4"
+                  id="is_tnc_checked"
+                  checked={tncChecked}
+                  onChange={(e) => {
+                    // Update the Redux store or state for WhatsApp consent
+                    setTncChecked(!tncChecked);
+                  }}
+                />
+                <div className="flex">
+                  <label
+                    className="!mb-0 inline-block text-[#4D4D4F] whitespace-nowrap"
+                    htmlFor="is_tnc_checked"
+                  >
+                    <div className="flex gap-1">
+                      I agree to the{" "}
+                      <a
+                        href="https://meuat.kaam.com/privacy_policy"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="border-b-[1px] border-[#4D4D4F] text-[#4D4D4F] cursor-pointer"
+                      >
+                        terms of use
+                      </a>
+                      .
+                    </div>
+                  </label>
+                </div>
+              </div>
+              {!tncChecked && (
+                <span className="text-red text-[15px]">
+                  You must agree to the terms of use to proceed.
+                </span>
+              )}
+            </div>
+          </DialogBody>
+          {/* @ts-ignore */}
+          <DialogFooter className="p-0 pb-6 !px-12 mt-5 flex justify-center">
+            <button
+              className={`flex-shrink-0 justify-start bg-red text-white px-4 py-2 rounded ${
+                isSubmitting || !tncChecked
+                  ? "opacity-50 cursor-not-allowed"
+                  : ""
+              }`}
+              disabled={isSubmitting || !tncChecked}
+              type="submit"
+            >
+              Next
+            </button>
+          </DialogFooter>
+        </form>
+      </div>
+    </Dialog>
   );
 }

@@ -277,10 +277,10 @@ export default function Home() {
   };
   return (
     <main className="bg-white">
-      <section className="bg-[#FDEAC9] py-6 xl:py-8 sticky top-[52px] lg:top-[56px] 3xl:top-[90px] z-10">
+      <section className="bg-[#FDEAC9] py-6 xl:py-8 sm:sticky sm:top-[52px] lg:top-[56px] 3xl:top-[90px] z-10">
       <div className="container relative z-[1]">
         <div className="flex justify-between flex-wrap flex-col sm:flex-row sm:items-end gap-5 xl:gap-7 2xl:gap-8">
-          <div className="flex justify-between flex-col sm:flex-row gap-3 2xl:gap-5 3xl:gap-8">
+          <div className="flex justify-between flex-row gap-3 2xl:gap-5 3xl:gap-8">
               <CompanyLogo  index={1} logo={jobDetails?.logo} styles="flex-shrink-0 border border-[#07082833] size-12 2xl:size-16 rounded-full"  name={jobDetails?.company_name} />
               <div className="block">
                 <div className="flex justify-between lg:justify-start gap-5 xl:gap-7 2xl:gap-8 items-center">

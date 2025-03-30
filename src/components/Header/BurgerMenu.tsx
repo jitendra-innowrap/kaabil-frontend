@@ -14,17 +14,17 @@ export default function BurgerMenu() {
     }
     return (
         <div className="relative">
-            
+
             {isOpen && (
-                <div 
-                    className="fixed inset-0 z-10 bg-black opacity-50" 
+                <div
+                    className="fixed inset-0 z-10 bg-black opacity-50"
                     onClick={() => setOpen(false)}
                 />
             )}
             <div className=" relative" onClick={()=> setOpen(!isOpen)}>
                 <Image src={'/new-assets/icons/mobile-menu-icon.svg'} width={20} height={12} alt='menu icon' />
             </div>
-            <div 
+            <div
                 className={`fixed z-10 top-0 left-0 h-full w-[calc(100vw_-_60px)] rounded-e-2xl max-w-[380px] bg-white shadow-lg transform transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
             >
                 <div className="flex pl-5 relative mt-4 mb-10 pr-4 items-center">

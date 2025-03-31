@@ -6,12 +6,15 @@ import Link from 'next/link';
 import { BiChevronDown } from 'react-icons/bi';
 import SignInButton from './SignInButton';
 import Image from 'next/image';
+import { useAppSelector } from '@/redux/hooks';
 
 export default function BurgerMenu() {
     const [isOpen, setOpen] = useState(false);
     const closeSideMenu = ()=>{
         setOpen(false);
     }
+    const {isLoggedIn} = useAppSelector((state) => state.user);
+
     return (
         <div className="relative">
 
@@ -38,54 +41,61 @@ export default function BurgerMenu() {
                     <SlMagnifier  className='size-5' color='#959595' />
                     <input type="text" className='outline-none focus:outline-none placeholder:text-[#959595] w-[300px] text-sm' placeholder='Search Jobs, Companies & More' />
                 </div> */}
-                <ul className="flex flex-col px-6 gap-4 xl:gap-8">
-                    <li className='flex'>
-                        <Link onClick={closeSideMenu} href={"/jobs"} className='text-Grey hover:text-black font-medium hover:font-semibold relative after:w-full after:h-1 after:rounded-[4px] hover:after:bg-red after:absolute after:bottom-[-12px] after:left-0'>
-                        Jobs
-                        </Link>
-                    </li>
-                    <li className='relative group/menu flex'>
-                        <Link onClick={closeSideMenu} href={"/"} className='text-Grey hover:text-black font-medium group-hover/menu:font-semibold relative after:w-full after:h-1 after:rounded-[4px] group-hover/menu:after:bg-red after:absolute after:bottom-[-12px] after:left-0'>
-                        Career Tools
-                        </Link>
-                    </li>
-                    <li className='flex'>
-                        <Link onClick={closeSideMenu} href={"/"} className='text-Grey hover:text-black font-medium hover:font-semibold relative after:w-full after:h-1 after:rounded-[4px] hover:after:bg-red after:absolute after:bottom-[-12px] after:left-0'>
-                        Skill Centre
-                        </Link>
-                    </li>
-                    <li className='flex'>
-                        <Link onClick={closeSideMenu} href={"/"} className='text-Grey hover:text-black font-medium hover:font-semibold relative after:w-full after:h-1 after:rounded-[4px] hover:after:bg-red after:absolute after:bottom-[-12px] after:left-0'>
-                        About Us
-                        </Link>
-                    </li>
-                </ul>
-                <ul className='flex flex-col px-6 gap-7 mt-5'>
-                    <li className='relative group/menu flex'>
-                        <Link onClick={closeSideMenu} href={"/"} className='text-Grey hover:text-black font-medium group-hover/menu:font-semibold relative after:w-full after:h-1 after:rounded-[4px] group-hover/menu:after:bg-red after:absolute after:bottom-[-12px] after:left-0'>
-                        Employer Corner
-                        </Link>
-                    </li>
-                    <li className='relative group/menu text-Grey font-medium flex'>
-                        <div className='relative text-black flex items-center p-2 border border-[#e3e3e3] rounded-lg'>
-                        <SlGlobe className='text-black font-medium mr-1'/> English
-                        <BiChevronDown className='font-medium text-2xl text-black'/>
-                        </div>
-                    </li>
-                    {/* <li>
-                        <SignInButton closeSideMenu={closeSideMenu}/>
-                    </li> */}
-                    <li>
-                    <Image
-                        height={100}
-                        width={412}
-                        quality={100}
-                        src="/new-assets/icons/empowered by mahindra logo.png"
-                        className='w-auto max-w-[113px] h-[22px] xl:h-[20px] 2xl:h-[31px]'
-                        alt='kaabil logo'
-                        />
-                    </li>
-                </ul>
+                <div className="flex flex-col gap-2 justify-between h-[calc(100vh_-_128px)] md:h-[calc(100vh_-_158px)]">
+                    <ul className="flex flex-col px-6 gap-4 xl:gap-8">
+                        <li className='flex'>
+                            <Link onClick={closeSideMenu} href={"/jobs"} className='text-Grey hover:text-black font-medium hover:font-semibold relative after:w-full after:h-1 after:rounded-[4px] hover:after:bg-red after:absolute after:bottom-[-12px] after:left-0'>
+                            Jobs
+                            </Link>
+                        </li>
+                        {/* <li className='relative group/menu flex'>
+                            <Link onClick={closeSideMenu} href={"/"} className='text-Grey hover:text-black font-medium group-hover/menu:font-semibold relative after:w-full after:h-1 after:rounded-[4px] group-hover/menu:after:bg-red after:absolute after:bottom-[-12px] after:left-0'>
+                            Career Tools
+                            </Link>
+                        </li> */}
+                        <li className='flex'>
+                            <Link onClick={closeSideMenu} href={"/companies"} className='text-Grey hover:text-black font-medium hover:font-semibold relative after:w-full after:h-1 after:rounded-[4px] hover:after:bg-red after:absolute after:bottom-[-12px] after:left-0'>
+                            Companies
+                            </Link>
+                        </li>
+                        <li className='flex'>
+                            <Link onClick={closeSideMenu} href={"/about-us"} className='text-Grey hover:text-black font-medium hover:font-semibold relative after:w-full after:h-1 after:rounded-[4px] hover:after:bg-red after:absolute after:bottom-[-12px] after:left-0'>
+                            About Us
+                            </Link>
+                        </li>
+                        {!isLoggedIn && <li className='flex'>
+                            <Link onClick={closeSideMenu} href={"https://meuat.kaam.com/recruiter/login"} className='text-Grey hover:text-black font-medium hover:font-semibold relative after:w-full after:h-1 after:rounded-[4px] hover:after:bg-red after:absolute after:bottom-[-12px] after:left-0'>
+                            Recruiter Login
+                            </Link>
+                        </li>}
+                    </ul>
+                    <ul className='flex flex-col justify-end px-6 gap-7 mt-5'>
+                        {/* <li className='relative group/menu flex'>
+                            <Link onClick={closeSideMenu} href={"/"} className='text-Grey hover:text-black font-medium group-hover/menu:font-semibold relative after:w-full after:h-1 after:rounded-[4px] group-hover/menu:after:bg-red after:absolute after:bottom-[-12px] after:left-0'>
+                            Employer Corner
+                            </Link>
+                        </li>
+                        <li className='relative group/menu text-Grey font-medium flex'>
+                            <div className='relative text-black flex items-center p-2 border border-[#e3e3e3] rounded-lg'>
+                            <SlGlobe className='text-black font-medium mr-1'/> English
+                            <BiChevronDown className='font-medium text-2xl text-black'/>
+                            </div>
+                        </li> */}
+                        {/* <li>
+                            <SignInButton closeSideMenu={closeSideMenu}/>
+                        </li> */}
+                        <li>
+                        <Image
+                            height={100}
+                            width={412}
+                            quality={100}
+                            src="/new-assets/icons/empowered by mahindra logo.png"
+                            className='w-auto max-w-[115px] h-[35px] xl:h-[20px] 2xl:h-[31px]'
+                            alt='kaabil logo'
+                            />
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     );

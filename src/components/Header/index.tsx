@@ -1,3 +1,4 @@
+'use client'
 import Image from 'next/image'
 import React from 'react'
 import { SlGlobe } from 'react-icons/sl'
@@ -6,9 +7,11 @@ import Link from 'next/link'
 import { BiChevronDown } from 'react-icons/bi'
 import SignInButton from './SignInButton'
 import HeaderSearch from './HeaderSearch'
+import { useAppSelector } from '@/redux/hooks'
 
 export default function Header() {
-
+const {isLoggedIn} = useAppSelector((state) => state.user);
+    
   return (
     <header className='sticky top-0 bg-white z-[101]'>
         <div className='relative'>
@@ -36,7 +39,12 @@ export default function Header() {
                                     Jobs
                                     </Link>
                                 </li>
-                                <li className='relative group/menu cursor-pointer flex '>
+                                <li className='flex'>
+                                    <Link href={"/companies"} className='text-Grey hover:text-black font-medium hover:font-semibold text-xs 3xl:text-base relative after:w-full after:h-[3px] 3xl:after:h-1 after:rounded-[4px] hover:after:bg-red after:absolute after:bottom-[-8px] 3xl:after:bottom-[-12px] after:left-0'>
+                                    Companies
+                                    </Link>
+                                </li>
+                                {/* <li className='relative group/menu cursor-pointer flex '>
                                     <Link href={"/"} className='text-Grey hover:text-black font-medium text-xs 3xl:text-base group-hover/menu:font-semibold relative after:w-full after:h-[3px] 3xl:after:h-1 after:rounded-[4px] group-hover/menu:after:bg-red after:absolute after:bottom-[-8px] 3xl:after:bottom-[-12px] after:left-0'>
                                         Career Tools
                                     </Link>
@@ -49,12 +57,12 @@ export default function Header() {
                                             <Link href='/' className='block w-full text-Grey hover:text-black py-3 3xl:py-4 font-medium hover:font-semibold text-xs 3xl:text-base px-5'>Mock Interviews</Link>
                                         </div>
                                     </div>
-                                </li>
-                                <li className='flex'>
+                                </li> */}
+                                {/* <li className='flex'>
                                     <Link href={"/"} className='text-Grey hover:text-black font-medium hover:font-semibold text-xs 3xl:text-base relative after:w-full after:h-[3px] 3xl:after:h-1 after:rounded-[4px] hover:after:bg-red after:absolute after:bottom-[-8px] 3xl:after:bottom-[-12px] after:left-0'>
                                     Skill Centre
                                     </Link>
-                                </li>
+                                </li> */}
                                 <li className='flex'>
                                     <Link href={"/about-us"} className='text-Grey hover:text-black font-medium hover:font-semibold text-xs 3xl:text-base relative after:w-full after:h-[3px] 3xl:after:h-1 after:rounded-[4px] hover:after:bg-red after:absolute after:bottom-[-8px] 3xl:after:bottom-[-12px] after:left-0'>
                                     About Us
@@ -69,6 +77,12 @@ export default function Header() {
                                         <BiChevronDown className='font-medium 3xl:text-2xl text-black'/>
                                     </Link>
                                 </li> */}
+                                
+                                {!isLoggedIn && <li className='flex mr-1 3xl:mr-3'>
+                                    <Link href={"https://meuat.kaam.com/recruiter/login"} className='text-Grey hover:text-black font-medium hover:font-semibold text-xs 3xl:text-base relative after:w-full after:h-[3px] 3xl:after:h-1 after:rounded-[4px] hover:after:bg-red after:absolute after:bottom-[-8px] 3xl:after:bottom-[-12px] after:left-0'>
+                                    Recruiter Login
+                                    </Link>
+                                </li>}
                                 <li>
                                     <SignInButton/>
                                 </li>
@@ -86,7 +100,9 @@ export default function Header() {
                         </div>
                     </div>
                     <div className="lg:hidden">
+                    <ul className='flex gap-[10px] items-center'>
                         <SignInButton/>
+                    </ul>
                     </div>
                 </div>
             </div>

@@ -104,6 +104,7 @@ export default function JobListingCard(prop:any) {
         }
   }
   const handleSave = async (id:string)=>{
+    console.log(prop?.jobs_questions)
     if(!isLoggedIn){
       dispatch(setProgress(1))
       dispatch(openLoginDialog())

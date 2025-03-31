@@ -161,7 +161,7 @@ export default function MobileInputForm({ size, closePopup }: any) {
                     name="mobile"
                     value={values?.mobile}
                     placeholder="Enter your mobile number to receive OTP"
-                    className={`border p-2 w-full rounded-[12px] text-[#231F20] ${
+                    className={`otp-number border p-2 w-full rounded-[12px] text-[#231F20] ${
                       values?.mobile ? "font-semibold" : "font-normal"
                     } ${size === "xxl" ? "text-[14px] sm:text-sm" : "text-lg"}`}
                     maxLength={10} // Restricts input to 10 characters

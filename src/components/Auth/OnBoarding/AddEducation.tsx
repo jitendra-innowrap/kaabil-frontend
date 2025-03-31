@@ -184,7 +184,7 @@ export default function AddEducation({ size, closePopup, handleBack }: any) {
                       id={education.id}
                       checked={education.id === formik.values.education_id}
                       name="experience"
-                      className={`cursor-pointer inline-block !m-0 !w-4 !h-4 ${
+                      className={`cursor-pointer edu-checkbox inline-block !m-0 sm:!w-4 sm:!h-4 ${
                         education.id === formik.values.education_id
                           ? "selected"
                           : ""

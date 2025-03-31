@@ -235,7 +235,7 @@ export default function AddExperience({ size, closePopup, handleBack }: any) {
               <h4 className="text-[14px] sm:text-lg font-medium">
                 What’s your level of experience?
               </h4>
-              <div className="my-4 flex flex-col sm:flex-row gap-4">
+              <div className="my-4 flex flex-row gap-4">
                 <label
                   htmlFor="fresher"
                   className={`form-group !flex flex-1 !mb-0 gap-4 rounded-lg px-5  border cursor-pointer shadow-sm items-center ${

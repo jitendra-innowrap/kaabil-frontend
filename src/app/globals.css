@@ -30,6 +30,8 @@ body {
 .no-scroll {
   overflow: hidden !important;
   height: 100vh !important;
+  scrollbar-width:none !important;
+
 }
 
 .otp-input {
@@ -1808,6 +1810,7 @@ label {
   .onboarding-dailog label.form-group {
     height: 40px;
     font-size: 12px;
+    padding: 9px;
   }
   .footer-2btn span, .footer-2btn button {
     width: 50%;
@@ -1840,6 +1843,15 @@ label {
   .onboarding-dailog  .otp-input{
     height: 45px !important;
     width: 65px !important;
+  }
+  .onboarding-dailog {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+  }
+  .onboarding-dailog input.edu-checkbox{
+    height: 16px !important;
+    width: 16px !important;
   }
 }
 

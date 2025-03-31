@@ -454,18 +454,38 @@ css-10wo9uf-option:hover,
   color: var(--primary-red) !important;
   border: 1px solid var(--primary-red);
   border-radius: 8px;
-  height: 40px;
+  min-height: 40px;
+  height: fit-content;
 }
 .css-10wo9uf-option {
   border: 1px solid transparent;
-  height: 40px;
+  min-height: 40px;
+  height: fit-content;
 }
 .css-d7l1ni-option {
   background: transparent !important;
   border: 1px solid var(--primary-red);
   border-color: var(--primary-red) !important;
   border-radius: 8px;
-  height: 40px;
+  min-height: 40px;
+  height: fit-content;
+}
+.css-tr4s17-option,
+.css-10wo9uf-option,
+.css-d7l1ni-option {
+  white-space: nowrap;  /* Prevents text from wrapping */
+  overflow: hidden;      /* Hides overflowing text */
+  text-overflow: ellipsis; /* Adds '...' for overflowed text */
+  display: flex;         /* Ensures proper alignment */
+  align-items: center;   /* Vertically centers the text */
+  padding: 0 10px;       /* Adds padding to avoid text touching the edges */
+  max-width: 100%;       /* Ensures it does not exceed its container */
+}
+.select-industry__menu.css-1nmdiq5-menu, .select-location__menu.css-1nmdiq5-menu{
+  padding-block: 10px !important;
+}
+.select-industry__menu-list.css-qr46ko, .select-location__menu-list.css-qr46ko{
+  padding-block: 0 !important;
 }
 .search-section .css-13cymwt-control {
   border-color: #b3b3b3 !important;

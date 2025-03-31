@@ -40,7 +40,7 @@ export default function TopCompaniesHiring() {
 
     fetchHomedata();
   }, []);
-  return (
+  if(slides.length>0 ) return (
     <div className="flex flex-col items-center my-3 md:my-4 xl:my-6 mx-auto">
           <h2 className='w-full text-[#000000] font-medium lg:pl-8 text-xl 3xl:text-2xl 3xl:leading-7 mb-1 xl:mb-2'>Top companies <span className="font-kalam font-bold text-red">hiring</span> now</h2>
               <div className="job_listing_center_top_companies_nudge">                        

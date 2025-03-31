@@ -35,13 +35,13 @@ function JobList() {
   const dispatch = useDispatch();
   const [jobs, setJobs] = useState<object[]>([]);
 
-  const sort = searchParams.get("sort") || "1"; // Default to '1' (Relevance)
+  const sort = searchParams.get("sort") || (isLoggedIn?"1":"3"); // Default to '1' (Relevance)
 
   // Reset page to 1 when filters change
   useEffect(() => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("page", "1"); // Update the sort parameter in the URL
-    router.push(`?${params.toString()}`, { scroll: false });
+    router.replace(`?${params.toString()}`, { scroll: false });
     setCurrentPage(1);
   }, [
     searchParams.get("job_types_filter"),
@@ -63,7 +63,7 @@ function JobList() {
     const params = new URLSearchParams(searchParams.toString());
     params.set("sort", newSort); // Update the sort parameter in the URL
     params.set("page", "1"); // Reset page to 1 when sort changes
-    router.push(`?${params.toString()}`, { scroll: false }); // Update the URL without refreshing the page
+    router.replace(`?${params.toString()}`, { scroll: false }); // Update the URL without refreshing the page
   };
   const toggleDropdown = () => setIsOpen(!isOpen);
 
@@ -119,6 +119,7 @@ function JobList() {
       const maxSalary = searchParams.get("maxSalary") || "";
       const latitude = searchParams.get("latitude")?.split("|") || []; // Parse latitude as an array
       const longitude = searchParams.get("longitude")?.split("|") || []; // Parse longitude as an array
+      const company_id = searchParams.get("cmp_id")?.split("|") || []; // Parse longitude as an array
       const search = searchParams.get("search") || "";
 
       // Check if any filters are applied
@@ -131,6 +132,7 @@ function JobList() {
         benefitsFilter.length > 0 ||
         minSalary ||
         maxSalary ||
+        company_id.length > 0 ||
         search;
 
       // Format location_filter as an array of objects with latitude and longitude
@@ -159,6 +161,7 @@ function JobList() {
       // Construct payload
       let payload = {
         recommendate: isLoggedIn ? !hasFilters : false, // Set recommendate to true if no filters are applied, else false
+        company_id_filter: company_id,
         soft_skill_filter: [],
         skill_filter: [],
         job_location_types_filter: jobLocationTypesFilter,
@@ -170,7 +173,7 @@ function JobList() {
         min_salary: minSalary ? Number(minSalary) : null,
         max_salary: maxSalary ? Number(maxSalary) : null,
         search: search,
-        sort: sort == "3" ? 3 : 1,
+        sort: sort == "3" ? 3 : sort == "1"? 1 : (isLoggedIn? 1: 3),
       };
 
       const { deviceId, secret, salt } = getSessionData();
@@ -245,7 +248,7 @@ function JobList() {
     params.set("page", page.toString());
 
     // Push the updated query parameters to the URL
-    router.push(`?${params.toString()}`, { scroll: true });
+    router.replace(`?${params.toString()}`, { scroll: true });
   };
 
   const nudges = [
@@ -285,7 +288,7 @@ function JobList() {
             aria-haspopup="true"
             onClick={toggleDropdown}
           >
-            {sort === "3" ? "Recently posted" : "Best Matched"}
+            {sort === "3" ? "Recently Posted" :sort === "1" ? "Best Matched" : (isLoggedIn? "Best Matched":"Recently Posted")}
             <IoMdArrowDropdown
               className={`flex-shrink-0 ml-1 xl:ml-2 3xl:ml-5 text-[#000000] size-4 3xl:size-4 ${
                 isOpen ? "rotate-180" : ""
@@ -326,7 +329,7 @@ function JobList() {
                     tabIndex={-1}
                     id="menu-item-2"
                   >
-                    Recently posted
+                    Recently Posted
                   </div>
                 </div>
               </div>

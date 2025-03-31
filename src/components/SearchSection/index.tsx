@@ -107,6 +107,7 @@ function SearchSection() {
           value={location ? locationOptions.find(opt => opt.label === location) : null}
           options={locationOptions}
           placeholder="Select Location"
+          // menuIsOpen
           className="text-xs 2xl:text-base"
           classNamePrefix="select-location"
           // onInputChange={handleLocationInputChange}
@@ -124,6 +125,7 @@ function SearchSection() {
         <Select
           value={industry?industryOptions.find(opt => opt.value === industry):null}
           options={industryOptions}
+          // menuIsOpen
           placeholder="Select Industry"
           className="text-xs 2xl:text-base"
           classNamePrefix="select-industry"

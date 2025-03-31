@@ -34,7 +34,7 @@ function JobList() {
   const { token } = useAppSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [jobs, setJobs] = useState<object[]>([]);
-
+  const [isJobsLoading, setIsJobsLoading] = useState(true);
   const sort = searchParams.get("sort") || (isLoggedIn?"1":"3"); // Default to '1' (Relevance)
 
   // Reset page to 1 when filters change
@@ -186,6 +186,7 @@ function JobList() {
       }
 
       try {
+        setIsJobsLoading(true)
         const response = await api2.post(
           `/api/job/list?page=${currentPage}&pageLength=10&userId=${
             user?.id || 0
@@ -198,7 +199,7 @@ function JobList() {
           }
         );
         setJobs(response.data?.data?.jobs as object[]);
-
+        setIsJobsLoading(false);
         // Calculate total pages based on total jobs and jobs per page
         const totalJobs = response.data?.data?.total;
         const jobsPerPage = 10;
@@ -272,9 +273,9 @@ function JobList() {
           <h2 className="font-medium text-base leading-7s xl:text-lg 3xl:text-2xl 3xl:leading-7 mb-1 xl:mb-2">
             {isLoggedIn ? "Recommended jobs for you" : "All Jobs"}
           </h2>
-          <p className="text-[#787878] text-sm 2xl:text-sm">
+          {!isJobsLoading && <p className="text-[#787878] text-sm 2xl:text-sm">
             {totalJobs} jobs for you
-          </p>
+          </p>}
         </div>
         <div
           className="relative h-fit sort-by-container mt-1 3xl:mt-0"
@@ -338,6 +339,11 @@ function JobList() {
           )}
         </div>
       </div>
+      {isJobsLoading ?
+      <div className="flex justify-center items-center h-[200px]">
+        <div className="flex animate-spin h-7 w-7 rounded-full border-l-0 border-b-0 border-red border-[3px]"></div>
+      </div>
+      :
       <div className="mobile-container flex flex-col gap-4 lg:gap-3 3xl:gap-4">
         {jobs.map((job: any, index) => {
           const items = [];
@@ -367,7 +373,7 @@ function JobList() {
 
           return items;
         })}
-      </div>
+      </div>}
       <div className="block lg:hidden mt-4">
         <FindCareer />
       </div>

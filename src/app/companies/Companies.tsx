@@ -175,13 +175,13 @@ export default function Companies() {
     params.delete("page");
     params.set("tab", key); // Update the sort parameter in the URL
     console.log(key, params);
-    router.push(`/CompanyTrading?${params.toString()}`, { scroll: false }); // Update the URL without refreshing the page
+    router.replace(`/CompanyTrading?${params.toString()}`, { scroll: false }); // Update the URL without refreshing the page
   }
   const handleIndustry = (id: string)=>{
     const params = new URLSearchParams(searchParams.toString());
     params.set("page", "1"); // Reset page to 1 when sort changes
     params.set("industry", id); // Update the sort parameter in the URL
-    router.push(`?${params.toString()}`, { scroll: false }); // Update the URL without refreshing the page
+    router.replace(`?${params.toString()}`, { scroll: false }); // Update the URL without refreshing the page
   }
   
   // Handle pagination button click
@@ -195,7 +195,7 @@ export default function Companies() {
     // params.set("page", page.toString());
 
     // Push the updated query parameters to the URL
-    router.push(`?${params.toString()}`, { scroll: false });
+    router.replace(`?${params.toString()}`, { scroll: false });
   };
 
   // Get appropriate empty state message based on selected tab

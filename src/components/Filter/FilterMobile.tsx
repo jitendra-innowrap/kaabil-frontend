@@ -130,7 +130,7 @@ export default function FilterMobilePannel() {
                 <h2 className="text-lg  2xl:text-xl font-medium filter-head">All Filters</h2>
                 <button onClick={handleClearAll} className='btn-border clear-all text-black !border-black text-xs font-medium max-w-[72px] !px-2 whitespace-nowrap text-center' style={{textTransform:'unset'}}>Clear all</button>
             </div>
-            <div className="overflow-y-auto h-[calc(100%)] !pr-0">
+            <div className="overflow-y-auto h-[calc(100%_-_110px)] !pr-0">
                 <LoadMoreAccordian 
                     showOptionsOnlyOnSearch
                     header="Search by Location"  

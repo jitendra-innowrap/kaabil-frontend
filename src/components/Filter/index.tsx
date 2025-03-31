@@ -39,6 +39,7 @@ export default function FilterSidebar() {
         SetremoveOptionsSearch(!removeOptionsSearch)
         router.replace('/jobs', { scroll: false }); // Replace '/jobs' with your base route
     };
+    
   return (
     <>
     {open && <div className="hidden lg:block bg-black z-10 opacity-20 w-screen h-screen fixed top-0 left-0" onClick={()=>setOpen(false)}></div>}

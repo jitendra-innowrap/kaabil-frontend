@@ -107,7 +107,7 @@ function RangeAccordion() {
                                     onInput={handleRangeChange}
                                 />
                             </div>
-                            <form className="mb-5">
+                            <form className="lg:mb-5">
                                 <div className="form-group relative mb-2">
                                     <label htmlFor="min-salary" className="absolute block text-sm top-[14px] left-3 mb-1">Min ₹</label>
                                     <input
@@ -132,11 +132,20 @@ function RangeAccordion() {
                                 </div>
                                 <button
                                     type="button"
-                                    className='block w-full filter-range-btn !bg-black text-sm font-normal !text-white'
+                                    className='hidden lg:block w-full filter-range-btn !bg-black text-sm font-normal !text-white'
                                     onClick={handleApply}
                                 >
                                     Apply
                                 </button>
+                                <div className="block lg:hidden sticky-apply-on-filter-pannel">
+                                    <button
+                                        type="button"
+                                        className='w-full filter-range-btn !bg-black text-sm font-normal !text-white'
+                                        onClick={handleApply}
+                                    >
+                                        Apply
+                                    </button>
+                                </div>
                             </form>
                         </AccordionBody>
                     </>

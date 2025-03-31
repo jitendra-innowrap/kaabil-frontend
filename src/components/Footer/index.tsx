@@ -68,7 +68,7 @@ const handleFetchLocation = async () => {
                     <div className="block">
                         <strong className='uppercase font-semibold text-xs 3xl:text-sm mb-4 3xl:mb-5 text-[#E3E3E3] block'>Legal</strong>
                         <ul>
-                            <Link href={'/'} className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Privacy Policy</Link>
+                            <Link href={'https://meuat.kaam.com/privacy_policy'} className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Privacy Policy</Link>
                             <Link href={'/'} className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Terms of Use</Link>
                             {/* <Link href={'/'} className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Cookie Policy</Link> */}
                         </ul>
@@ -141,7 +141,7 @@ const handleFetchLocation = async () => {
                         <div className="">
                             <strong className='uppercase font-semibold text-sm 3xl:text-sm mb-6 text-[#E3E3E3] block'>Legal</strong>
                             <ul className='flex flex-col gap-5'>
-                                <Link href={'/'} className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Privacy Policy</Link>
+                                <Link href={'https://meuat.kaam.com/privacy_policy'} className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Privacy Policy</Link>
                                 <Link href={'/'} className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Terms of Use</Link>
                                 {/* <Link href={'/'} className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Cookie Policy</Link> */}
                             </ul>

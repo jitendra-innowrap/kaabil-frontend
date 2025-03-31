@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Twirl as Hamburger } from 'hamburger-react'
 import { SlGlobe, SlMagnifier } from 'react-icons/sl';
 import Link from 'next/link';
@@ -7,6 +7,7 @@ import { BiChevronDown } from 'react-icons/bi';
 import SignInButton from './SignInButton';
 import Image from 'next/image';
 import { useAppSelector } from '@/redux/hooks';
+import ProfileCard from '../Nudges/SideMenu/Profile';
 
 export default function BurgerMenu() {
     const [isOpen, setOpen] = useState(false);
@@ -14,7 +15,26 @@ export default function BurgerMenu() {
         setOpen(false);
     }
     const {isLoggedIn} = useAppSelector((state) => state.user);
-
+    useEffect(() => {
+        if (isOpen) {
+            document.body.classList.add('overflow-hidden', 'fixed', 'w-full', 'pr-[calc(100vw-100%)]');
+        } else {
+            document.body.classList.remove('overflow-hidden', 'fixed', 'w-full', 'pr-[calc(100vw-100%)]');
+        }
+        
+        return () => {
+            document.body.classList.remove('overflow-hidden', 'fixed', 'w-full', 'pr-[calc(100vw-100%)]');
+        };
+    }, [isOpen]);
+    
+    const handleSignIn =()=>{
+        const button = document.getElementById('sign-in-button');
+        if (button) {
+            button.click(); // Programmatically triggers the button click
+        }
+        setOpen(false);
+        return
+    }
     return (
         <div className="relative">
 
@@ -43,8 +63,23 @@ export default function BurgerMenu() {
                 </div> */}
                 <div className="flex flex-col gap-2 justify-between h-[calc(100vh_-_128px)] md:h-[calc(100vh_-_158px)]">
                     <ul className="flex flex-col px-6 gap-4 xl:gap-8">
+                        {
+                            !isLoggedIn ? <li>
+                                <button
+                                onClick={handleSignIn}
+                                className="bg-red !p-0 text-white sign-in-btn text-xs 2xl:text-sm !w-[116px] xl:w-[84px] h-[33px] 2xl:h-[38px] grid place-items-center rounded-[9px] mb-6"
+                                >
+                                Sign In
+                                </button>
+                            </li>
+                            :
+                            <div className="block">
+                                <ProfileCard closeSideMenu={closeSideMenu}/>
+                            </div>
+                        }
                         <li className='flex'>
-                            <Link onClick={closeSideMenu} href={"/jobs"} className='text-Grey hover:text-black font-medium hover:font-semibold relative after:w-full after:h-1 after:rounded-[4px] hover:after:bg-red after:absolute after:bottom-[-12px] after:left-0'>
+                            <Link onClick={closeSideMenu} href={"/jobs"} className='text-Grey hover:text-black font-medium hover:font-semibold relative after:w-full after:h-1 after:rounded-[4px] hover:after:bg-red after:absolute after:bottom-[-12px] after:left-0 flex items-center gap-3'>
+                            <Image src={"/new-assets/icons/menu-jobs-bag.svg"} width={18} height={18} alt='jobs icon' />
                             Jobs
                             </Link>
                         </li>
@@ -54,17 +89,20 @@ export default function BurgerMenu() {
                             </Link>
                         </li> */}
                         <li className='flex'>
-                            <Link onClick={closeSideMenu} href={"/companies"} className='text-Grey hover:text-black font-medium hover:font-semibold relative after:w-full after:h-1 after:rounded-[4px] hover:after:bg-red after:absolute after:bottom-[-12px] after:left-0'>
+                            <Link onClick={closeSideMenu} href={"/companies"} className='text-Grey hover:text-black font-medium hover:font-semibold relative after:w-full after:h-1 after:rounded-[4px] hover:after:bg-red after:absolute after:bottom-[-12px] after:left-0 flex items-center gap-3'>
+                            <Image src={"/new-assets/icons/menu-jobs-bag.svg"} width={18} height={18} alt='jobs icon' />
                             Companies
                             </Link>
                         </li>
                         <li className='flex'>
-                            <Link onClick={closeSideMenu} href={"/about-us"} className='text-Grey hover:text-black font-medium hover:font-semibold relative after:w-full after:h-1 after:rounded-[4px] hover:after:bg-red after:absolute after:bottom-[-12px] after:left-0'>
+                            <Link onClick={closeSideMenu} href={"/about-us"} className='text-Grey hover:text-black font-medium hover:font-semibold relative after:w-full after:h-1 after:rounded-[4px] hover:after:bg-red after:absolute after:bottom-[-12px] after:left-0 flex items-center gap-3'>
+                            <Image src={"/new-assets/icons/menu-about.svg"} width={18} height={18} alt='jobs icon' />
                             About Us
                             </Link>
                         </li>
                         {!isLoggedIn && <li className='flex'>
-                            <Link onClick={closeSideMenu} href={"https://meuat.kaam.com/recruiter/login"} className='text-Grey hover:text-black font-medium hover:font-semibold relative after:w-full after:h-1 after:rounded-[4px] hover:after:bg-red after:absolute after:bottom-[-12px] after:left-0'>
+                            <Link onClick={closeSideMenu} href={"https://meuat.kaam.com/recruiter/login"} className='text-Grey hover:text-black font-medium hover:font-semibold relative after:w-full after:h-1 after:rounded-[4px] hover:after:bg-red after:absolute after:bottom-[-12px] after:left-0 flex items-center gap-3'>
+                            <Image src={"/new-assets/icons/menu-recruiter.svg"} width={18} height={18} alt='jobs icon' />
                             Recruiter Login
                             </Link>
                         </li>}
@@ -89,8 +127,8 @@ export default function BurgerMenu() {
                             height={100}
                             width={412}
                             quality={100}
-                            src="/new-assets/icons/empowered by mahindra logo.png"
-                            className='w-auto max-w-[115px] h-[35px] xl:h-[20px] 2xl:h-[31px]'
+                            src="/new-assets/icons/mahindra-logo.svg"
+                            className='absolute bottom-5 left-5 w-auto max-w-[115px] h-[35px] xl:h-[20px] 2xl:h-[31px]'
                             alt='kaabil logo'
                             />
                         </li>

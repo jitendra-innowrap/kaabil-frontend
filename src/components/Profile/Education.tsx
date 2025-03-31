@@ -47,7 +47,7 @@ const Education = () => {
               </h1>
             </div>
             <div
-              className="flex items-center gap-2 cursor-pointer"
+              className=" !hidden flex items-center gap-2 cursor-pointer"
               onClick={() => {
                 dispatch(setEducationModal(true));
               }}

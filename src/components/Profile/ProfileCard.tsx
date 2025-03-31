@@ -84,7 +84,7 @@ const ProfileCard = () => {
             Complete!
           </h1>
         </div>
-        <div className="col-span-12 flex justify-center px-6 mt-6">
+        <div className=" !hidden col-span-12 flex justify-center px-6 mt-6">
           <div className="bg-[#F1F5FE] flex w-full justify-around px-4 rounded-2xl py-3">
             {jobStats.map((job, index) => (
               <React.Fragment key={index}>

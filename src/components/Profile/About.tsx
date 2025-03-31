@@ -46,7 +46,7 @@ const About = () => {
           </div>
         </div>
         <div
-          className="col-span-2 flex justify-end gap-2 cursor-pointer"
+          className="hidden col-span-2 flex justify-end gap-2 cursor-pointer"
           onClick={() => dispatch(setProfileModal(true))}
         >
           <img
@@ -64,7 +64,7 @@ const About = () => {
             About {profileData?.first_name ?? ""}
           </h1>
         </div>
-        <div className="col-span-2 flex justify-end gap-2 cursor-pointer sm:mt-3">
+        <div className="!hidden col-span-2 flex justify-end gap-2 cursor-pointer sm:mt-3">
           <img
             src="/new-assets/icons/ink_marker.svg"
             className="h-3 mt-1"

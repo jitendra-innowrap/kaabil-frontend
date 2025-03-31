@@ -254,7 +254,7 @@ function JobList() {
 
   const nudges = [
     <RegisterInMinutes key="register" />,
-    <Interview key="interview" />,
+    // <Interview key="interview" />,
   ];
   const nudgesForLoggedInUser = [
     // <Interview key="interview" />,

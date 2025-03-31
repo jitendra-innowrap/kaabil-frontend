@@ -8,14 +8,18 @@ const About = () => {
   console.log(profileData, "Verify Profile Data");
   const dispatch = useAppDispatch();
   return (
-    <div className="bg-white rounded-lg">
-      <div className="grid grid-cols-12 pt-6 py-4 px-12">
+    <div className="profile-card bg-white rounded-lg">
+      <div className="grid grid-cols-12 sm:pt-6 py-4 p-[16px] sm:p-[20px] lg:px-12">
         <div className="col-span-10">
           <div className="flex gap-3 items-center">
-            <div>
+            <div className="hidden md:block">
               <Image
                 className="cursor-pointer mx-auto size-[70px] 2xl:size-[102px] mb-2 rounded-full"
-                src={profileData?.photo_url ?? "/new-assets/icons/avatar.svg"}
+                src={
+                  profileData?.photo_url
+                    ? profileData?.photo_url
+                    : "/new-assets/icons/avatar.svg"
+                }
                 width={500}
                 height={500}
                 alt="resume-builder"
@@ -23,22 +27,20 @@ const About = () => {
             </div>
             <div className="flex flex-col gap-1">
               <h1 className="text-[#231F20] text-lg font-medium">
-                {profileData?.name ?? "-"}
+                {profileData?.name ?? ""}
               </h1>
               <h3 className="text-sm text-[#231F20] font-medium">
                 {profileData?.job_type
                   ? profileData.company_name
                     ? `${profileData.job_type} ${
-                        profileData.designation ?? "-"
+                        profileData.designation ?? ""
                       } at ${profileData.company_name}`
-                    : `${profileData.job_type} ${
-                        profileData.designation ?? "-"
-                      }`
-                  : "-"}
+                    : `${profileData.job_type} ${profileData.designation ?? ""}`
+                  : ""}
               </h3>
 
               <h5 className="text-[12px] text-[#4D4D4F]">
-                {profileData?.city ?? "-"}
+                {profileData?.city ?? ""}
               </h5>
             </div>
           </div>
@@ -52,26 +54,26 @@ const About = () => {
             className="h-3 mt-1"
             alt=""
           />
-          <span className="text-sm font-bold text-red">Edit</span>
+          <span className="text-[13px] sm:text-sm font-bold text-red">Edit</span>
         </div>
       </div>
       <hr className="border-[#D4D4D4]" />
-      <div className="grid grid-cols-12 px-12 pb-2 pt-4">
+      <div className="grid grid-cols-12 p-[16px] sm:p-[20px] lg:px-12 pb-2 pt-4">
         <div className="col-span-10">
-          <h1 className="text-md text-[#231F20] font-semibold">
-            About {profileData?.first_name ?? "-"}
+          <h1 className="text-[14px] sm:text-md text-[#231F20] font-semibold">
+            About {profileData?.first_name ?? ""}
           </h1>
         </div>
-        <div className="col-span-2 flex justify-end gap-2 cursor-pointer mt-3">
+        <div className="col-span-2 flex justify-end gap-2 cursor-pointer sm:mt-3">
           <img
             src="/new-assets/icons/ink_marker.svg"
             className="h-3 mt-1"
             alt=""
           />
-          <span className="text-sm font-bold text-red">Edit</span>
+          <span className="text-[13px] sm:text-sm font-bold text-red">Edit</span>
         </div>
       </div>
-      <div className="px-12 pb-8">
+      <div className="p-[16px] sm:p-[20px] lg:px-12 pb-8">
         <div className="grid grid-cols-12 gap-y-4">
           {/* Highest Education */}
           <div className="col-span-4 flex items-center">
@@ -79,7 +81,7 @@ const About = () => {
           </div>
           <div className="col-span-8">
             <h1 className="text-sm text-[#231F20] font-medium">
-              {profileData?.education_name ?? "-"}
+              {profileData?.education_name ?? ""}
             </h1>
           </div>
 
@@ -101,7 +103,7 @@ const About = () => {
                   )
                 )
               ) : (
-                <div>-</div>
+                <div></div>
               )}
             </div>
           </div>
@@ -112,7 +114,7 @@ const About = () => {
           </div>
           <div className="col-span-8">
             <h1 className="text-sm text-[#231F20] font-medium">
-              {profileData?.company_name ?? "-"}
+              {profileData?.company_name ?? ""}
             </h1>
           </div>
           <div className="col-span-4 flex items-center">
@@ -124,7 +126,7 @@ const About = () => {
                 ? profileData.soft_skills
                     .map((skill: { name: string }) => skill.name)
                     .join(", ")
-                : "-"}
+                : ""}
             </h1>
           </div>
         </div>

@@ -16,13 +16,21 @@ import * as Yup from "yup";
 import toast from "react-hot-toast";
 import { setUserSkills } from "@/redux/userSlice";
 import { FaMagnifyingGlass } from "react-icons/fa6";
+import {
+  Dialog,
+  DialogBody,
+  DialogFooter,
+  DialogHeader,
+} from "@material-tailwind/react";
+import { FaArrowLeft } from "react-icons/fa";
+import { IoClose } from "react-icons/io5";
 
 interface Skill {
   value: string;
   label: string;
 }
 
-export default function AddSkills() {
+export default function AddSkills({ size, closePopup, handleBack }: any) {
   const progress = useAppSelector((state) => state.progress.value);
   const user = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
@@ -148,141 +156,203 @@ export default function AddSkills() {
   });
 
   return (
-    <div>
-      <h2 className="text-center font-semibold text-lg md:text-xl xl:text-[28px] 2xl:leading-[36px]">
-        <span className="text-red">Skills</span>
-      </h2>
+    // @ts-ignore
+    <Dialog
+      open={progress === 6}
+      size={size}
+      className={`onboarding-dailog ${
+        size === "md" ? "fixed -top-24 -translate-x-1/2  onboarding-scale" : ""
+      }`}
+    >
+      <div className="pb-6">
+        {/* @ts-ignore */}
+        <DialogHeader>
+          <div className="relative w-full">
+            <div onClick={handleBack}>
+              <FaArrowLeft className="absolute cursor-pointer top-2 z-30 left-2 size-6" />
+            </div>
+            <IoClose
+              className="absolute top-2 right-2 cursor-pointer"
+              size={size === "md" ? 32 : 28}
+              onClick={closePopup}
+            />
+            <div
+              className={`${
+                size === "md"
+                  ? "flex justify-center items-center mt-6"
+                  : "flex justify-start items-start mt-16"
+              }`}
+            >
+              <h2
+                className={`text-[#231F20] font-semibold  ${
+                  size === "md"
+                    ? "!text-[26px] text-center"
+                    : "!text-[22px] text-start"
+                }`}
+              >
+                <span className="text-red">Skills</span>
+                <br />
+                <span
+                  className={`text-[#231F20] ${
+                    size === "xxl" ? "text-sm" : "text-[20px]"
+                  }`}
+                >
+                  Add skills to find the right job for you.
+                </span>
+              </h2>
+            </div>
+          </div>
+        </DialogHeader>
 
-      <h3 className="md:text-lg text-[#231F20] font-semibold text-center">
-        Add skills to find the right job for you.
-      </h3>
-      <div>
-        <form onSubmit={formik.handleSubmit} className="block mt-8">
-          <div className="scroll-content-skills cursor-pointer">
-            <h4 className="text-lg font-medium text-[#231F20]">Add Skills</h4>
-            <p className="text-sm text-[#249D64]">
-              (You can search and add all your relevant skills)
-            </p>
-            <div className="my-4">
-              <MultiSelect
-                options={skillsList}
-                placeholder="Select Skills"
-                isMulti
-                onInputChange={(value: any) => fetchSkills(value)}
-                onChange={(selectedOptions) => {
-                  setSelectedSkills(selectedOptions);
+        <form
+          onSubmit={formik.handleSubmit}
+          className={`${size === "md" ? "block mt-6" : "mt-2"}`}
+        >
+          {/* @ts-ignore */}
+          <DialogBody className="custom-dialog-body custom-scroll">
+            <div
+              className={`pb-2 cursor-pointer ${
+                size === "md" ? "px-12" : "px-0"
+              }`}
+            >
+              <h4 className="text-lg font-medium text-[#231F20]">Add Skills</h4>
+              <p
+                className={`${
+                  size === "xxl" ? "text-xs" : "text-sm"
+                } text-[#249D64]`}
+              >
+                (You can search and add all your relevant skills)
+              </p>
+              <div className="my-4">
+                <MultiSelect
+                  options={skillsList}
+                  placeholder="Select Skills"
+                  isMulti
+                  onInputChange={(value: any) => fetchSkills(value)}
+                  onChange={(selectedOptions) => {
+                    setSelectedSkills(selectedOptions);
+                    formik.setFieldValue(
+                      "user_skill",
+                      selectedOptions.map((skill) => ({
+                        id: skill.value,
+                        name: skill.label,
+                        skill_level_type_id: "1",
+                      }))
+                    );
+                  }}
+                  selectedValues={selectedSkills}
+                  icon={
+                    <FaMagnifyingGlass className="absolute left-[15px] top-[20px] size-4 text-[#808080]" />
+                  }
+                />
+              </div>
+              <SelectedChips
+                selectedValues={selectedSkills}
+                size={size}
+                onRemove={(value) => {
+                  const updatedSkills = selectedSkills.filter(
+                    (skill) => skill.value !== value
+                  );
+                  setSelectedSkills(updatedSkills);
                   formik.setFieldValue(
                     "user_skill",
-                    selectedOptions.map((skill) => ({
+                    updatedSkills.map((skill) => ({
                       id: skill.value,
                       name: skill.label,
                       skill_level_type_id: "1",
                     }))
                   );
                 }}
-                selectedValues={selectedSkills}
-                icon={
-                  <FaMagnifyingGlass className="absolute left-[15px] top-[20px] size-4 text-[#808080]" />
-                }
               />
-            </div>
-            <SelectedChips
-              selectedValues={selectedSkills}
-              onRemove={(value) => {
-                const updatedSkills = selectedSkills.filter(
-                  (skill) => skill.value !== value
-                );
-                setSelectedSkills(updatedSkills);
-                formik.setFieldValue(
-                  "user_skill",
-                  updatedSkills.map((skill) => ({
-                    id: skill.value,
-                    name: skill.label,
-                    skill_level_type_id: "1",
-                  }))
-                );
-              }}
-            />
-            {formik.errors.user_skill && formik.touched.user_skill && (
-              <div className="text-red text-sm mt-1">
-                {formik.errors.user_skill as string}
-              </div>
-            )}
+              {formik.errors.user_skill && formik.touched.user_skill && (
+                <div className="text-red text-sm mt-1">
+                  {formik.errors.user_skill as string}
+                </div>
+              )}
 
-            <h4 className="text-lg font-medium my-4 text-[#231F20]">
-              Suggested skills
-            </h4>
-            <div className="flex flex-wrap gap-4">
-              {skillsList.slice(0, 6).map((skill) => (
-                <React.Fragment key={skill.value}>
-                  {selectedSkills.some((s) => s.value === skill.value) ? (
-                    <div
-                      className="label-option selected flex items-center gap-2 bg-gray-200 px-3 py-1 rounded"
-                      onClick={() => {
-                        const updatedSkills = selectedSkills.filter(
-                          (s) => s.value !== skill.value
-                        );
-                        setSelectedSkills(updatedSkills);
-                        formik.setFieldValue(
-                          "user_skill",
-                          updatedSkills.map((skill) => ({
-                            id: skill.value,
-                            name: skill.label,
-                            skill_level_type_id: "1",
-                          }))
-                        );
-                      }}
-                    >
-                      {skill.label}
-                      <span className="cursor-pointer">
-                        <RxCross2 />
-                      </span>
-                    </div>
-                  ) : (
-                    <div
-                      className="label-option add flex items-center gap-2 bg-gray-200 px-3 py-1 rounded"
-                      onClick={() => {
-                        const updatedSkills = [...selectedSkills, skill];
-                        setSelectedSkills(updatedSkills);
-                        formik.setFieldValue(
-                          "user_skill",
-                          updatedSkills.map((skill) => ({
-                            id: skill.value,
-                            name: skill.label,
-                            skill_level_type_id: "1",
-                          }))
-                        );
-                      }}
-                    >
-                      {skill.label}
-                      <span className="cursor-pointer">
-                        <IoIosAdd />
-                      </span>
-                    </div>
-                  )}
-                </React.Fragment>
-              ))}
+              <h4 className="text-lg font-medium my-4 text-[#231F20]">
+                Suggested skills
+              </h4>
+              <div className="flex flex-wrap gap-4">
+                {skillsList.slice(0, 6).map((skill) => (
+                  <React.Fragment key={skill.value}>
+                    {selectedSkills.some((s) => s.value === skill.value) ? (
+                      <div
+                        className={`label-option selected flex items-center gap-2 bg-gray-200 px-3 py-1 rounded ${
+                          size === "xxl" ? "text-xs" : "text-md"
+                        }`}
+                        onClick={() => {
+                          const updatedSkills = selectedSkills.filter(
+                            (s) => s.value !== skill.value
+                          );
+                          setSelectedSkills(updatedSkills);
+                          formik.setFieldValue(
+                            "user_skill",
+                            updatedSkills.map((skill) => ({
+                              id: skill.value,
+                              name: skill.label,
+                              skill_level_type_id: "1",
+                            }))
+                          );
+                        }}
+                      >
+                        {skill.label}
+                        <span className="cursor-pointer">
+                          <RxCross2 />
+                        </span>
+                      </div>
+                    ) : (
+                      <div
+                        className={`label-option add flex items-center gap-2 bg-gray-200 px-3 py-1 rounded ${
+                          size === "xxl" ? "text-xs" : "text-md"
+                        }`}
+                        onClick={() => {
+                          const updatedSkills = [...selectedSkills, skill];
+                          setSelectedSkills(updatedSkills);
+                          formik.setFieldValue(
+                            "user_skill",
+                            updatedSkills.map((skill) => ({
+                              id: skill.value,
+                              name: skill.label,
+                              skill_level_type_id: "1",
+                            }))
+                          );
+                        }}
+                      >
+                        {skill.label}
+                        <span className="cursor-pointer">
+                          <IoIosAdd />
+                        </span>
+                      </div>
+                    )}
+                  </React.Fragment>
+                ))}
+              </div>
             </div>
-          </div>
-          <div className="flex w-full justify-between items-end">
-            <div className="whitespace-nowrap">
-              <span className="text-red">{progress - 4}</span> - 6
+          </DialogBody>
+
+          {/* @ts-ignore */}
+          <DialogFooter className="p-0 pb-6 !px-12 mt-5 flex justify-center">
+            <div className="flex w-full justify-between items-end">
+              <div className="whitespace-nowrap">
+                <span className="text-red">{progress - 4}</span> - 6
+              </div>
+              <button
+                type="submit"
+                className={`max-w-[200px] sm:max-w-[250px] ${
+                  formik.isValid
+                    ? "bg-red text-white"
+                    : "!opacity-50 !cursor-default"
+                }`}
+                disabled={formik.isSubmitting}
+              >
+                {/* {formik.isSubmitting ? "Submitting..." : "Next"} */}
+                Next
+              </button>
             </div>
-            <button
-              type="submit"
-              className={`max-w-[100px] sm:max-w-[250px] ${
-                formik.isValid
-                  ? "bg-red text-white"
-                  : "!opacity-50 !cursor-default"
-              }`}
-              disabled={formik.isSubmitting}
-            >
-              {/* {formik.isSubmitting ? "Submitting..." : "Next"} */}
-              Next
-            </button>
-          </div>
+          </DialogFooter>
         </form>
       </div>
-    </div>
+    </Dialog>
   );
 }

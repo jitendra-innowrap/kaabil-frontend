@@ -67,7 +67,7 @@ export default function MyJobs() {
       type SearchPayload = {
         page: string;
         flag: string;
-        company_master_id?: string
+        company_master_id?: string;
       };
       let payload: SearchPayload = {
         page: currentPage.toString(),
@@ -204,9 +204,9 @@ export default function MyJobs() {
       <div className="mt-5 3xl:mt-6 mb-7 3xl:mb-8">
         <Breadcrumb root='Home' category='My Jobs' />
       </div>
-      <h1 className='text-[#231F20] text-xl 3xl:text-2xl font-medium'>My jobs</h1>
-      <div className="pb-5 md:pb-8 xl:pb-14 2xl:pb-16 flex flex-col lg:flex-row justify-between gap-5 md:gap-7 lg:gap-8 2xl:gap-10 3xl:gap-12">
-        <div className="w-full">
+      <h1 className='hidden sm:block text-[#231F20] text-xl 3xl:text-2xl font-medium'>My jobs</h1>
+      <div className="pb-5 md:pb-8 xl:pb-14 2xl:pb-16 flex flex-col sm:flex-row justify-between gap-5 md:gap-7 lg:gap-8 2xl:gap-10 3xl:gap-12">
+        <div className="w-full order-1 sm:order-0">
           {/* Navigation Tabs */}
           <div className="bg-[#f9f9f9] mb-6 mt-4">
             <div className="mx-auto border-b border-[#D4D4D4]">
@@ -300,10 +300,12 @@ export default function MyJobs() {
           )}
         </div>
         
-        <div className="nudges-bar lg:mt-32 flex flex-shrink-0 flex-col gap-4 md:gap-6 max-w-[400px] mx-auto lg:mx-0 lg:w-[280px] 2xl:w-[341px]">
-          <ProfileCard/>
-          <QuickAction/>
-          <BoostProfile/>
+        <div className="nudges-bar sm:mt-28 lg:mt-32 flex flex-shrink-0  md:gap-6 max-w-[400px] mx-auto lg:mx-0 sm:w-[300px] lg:w-[280px] 2xl:w-[341px] order-0 sm:order-1">
+          <div className={"sticky top-[80px] flex flex-col gap-4"}>
+            <ProfileCard/>
+            <QuickAction/>
+            <BoostProfile/>
+          </div>
         </div>
       </div>
     </div>

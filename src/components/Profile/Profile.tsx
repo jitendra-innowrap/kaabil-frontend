@@ -20,7 +20,7 @@ const Profile = () => {
   }, [token]);
 
   return (
-    <div className="container">
+    <div className="container mobile-container-zero-padding">
       <ProfileModal />
       <ExperienceModal />
       <EducationModal />

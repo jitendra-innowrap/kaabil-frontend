@@ -34,7 +34,7 @@ export default function FindCareerSection() {
                 />
         </div>
     </div>
-        <div className="section-heading mb-5 xl:mb-8 col-span-7 max-w-[650px]">
+        <div className="section-heading mb-5 xl:mb-8 col-span-7 max-w-[95%] md:max-w-[650px] mx-auto">
             <h2 className='text-black text-start text-2xl xl:text-3xl 2xl:text-[40px] 2xl:leading-[64px] font-medium mb-2'>Not sure what  <span className="font-kalam font-bold text-red"> job</span> suits you?</h2>
             <p className="font-normal xl:text-sm 3xl:text-xl 3xl:leading-9">Find career paths that match your skills and strengths.</p>
             <p className="font-semibold text-lg xl:text-base 3xl:text-xl mt-7 xl:mt-8 3xl:mt-10 mb-3 3xl:mb-4 3xl:max-w-[520px]">Answer a few simple questions and we’ll help you discover the right careers!</p>

@@ -118,7 +118,7 @@ function SearchSection() {
             ),
           }}
         />
-        <GrLocation className="absolute lg:left-[14px] 2xl:left-[18px] opacity-60 top-[16px] lg:top-[10px] 2xl:top-[16px] size-5 lg:size-4 2xl:size-5 text-[#808080]" />
+        <GrLocation className="absolute left-[15px] sm:left-[30px] lg:left-[14px] 2xl:left-[18px] opacity-60 top-[16px] lg:top-[10px] 2xl:top-[16px] size-5 lg:size-4 2xl:size-5 text-[#808080]" />
       </div>
       <div className="relative w-full z-[10] rounded-[40px] lg:w-[190px] 2xl:w-[220px] 3xl:w-[295px]">
         <Select
@@ -138,7 +138,7 @@ function SearchSection() {
       </div>
       <button
         type='submit'
-        className="md:text-lg lg:text-xs 2xl:text-lg justify-center w-full font-medium px-6 flex lg:px-8 2xl:h-[100px] lg:w-[160px] 2xl:min-w-[180px] 3xl:min-w-[222px] whitespace-nowrap bg-[#E41C3B] text-white"
+        className="text-[14px] sm:text-sx md:text-lg lg:text-xs 2xl:text-lg justify-center w-full font-medium px-6 flex lg:px-8 2xl:h-[100px]  lg:w-[160px] 2xl:min-w-[180px] 3xl:min-w-[222px] whitespace-nowrap bg-[#E41C3B] text-white"
       >
         <Image className="mr-2 2xl:mr-4 lg:w-4 2xl:w-6" src="/new-assets/icons/search-icon.svg" width="24" height="24" alt="Search" />
         Search Jobs

@@ -53,7 +53,7 @@ export default function SignInButton({ closeSideMenu }: prop) {
   };
 
   const logout = () => {
-    setOpenLogoutDialog(true)
+    setOpenLogoutDialog(true);
   };
   const gotoMyjob = () => {
     router.push("/my-jobs");
@@ -87,29 +87,11 @@ export default function SignInButton({ closeSideMenu }: prop) {
     };
   }, [open]);
 
+  
+
   return (
     <div className="flex">
-      {true && (
-        <Popup
-          ref={popupRef}
-          open={open}
-          closeOnDocumentClick={false}
-          onClose={closePopup}
-          modal
-          className="onboarding relative"
-          overlayStyle={{
-            background: "#4D4D4DC2",
-            padding: "20px",
-            overflow: "hidden",
-          }}
-          contentStyle={{
-            height: progress === 5 ? "150%" : "auto", 
-          }}
-        >
-          <SignIn onClose={closePopup} />
-        </Popup>
-      )}
-      
+      {open && <SignIn closePopup={closePopup} />}
       <Popup
         ref={logoutdialogRef}
         open={openLogoutDialog}
@@ -122,7 +104,7 @@ export default function SignInButton({ closeSideMenu }: prop) {
           overflow: "hidden",
         }}
         contentStyle={{
-          height: progress === 5 ? "150%" : "auto", 
+          height: progress === 5 ? "150%" : "auto",
         }}
       >
         <LogoutDialog onClose={closeLogoutDialog} />
@@ -144,7 +126,10 @@ export default function SignInButton({ closeSideMenu }: prop) {
             <PiBellBold className="size-4 3xl:size-5" />
           </div> */}
           <div className="relative group/menu flex items-center cursor-pointer mobile-profile-option">
-            <div tabIndex={0} className="relative size-[30px] xl:size-[40px] 2xl:size-[50px]">
+            <div
+              tabIndex={0}
+              className="relative size-[30px] xl:size-[40px] 2xl:size-[50px]"
+            >
               {/* <span className="size-2 xl:size-[14px] bg-success text-white rounded-full absolute text-[10px] grid place-items-center leading-none top-[1px] -right-[2px] border-[1.5px] border-white">
                 5
               </span> */}

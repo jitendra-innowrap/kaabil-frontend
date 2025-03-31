@@ -9,8 +9,16 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import toast from "react-hot-toast";
 import { setUserLocation } from "@/redux/userSlice";
+import {
+  Dialog,
+  DialogBody,
+  DialogFooter,
+  DialogHeader,
+} from "@material-tailwind/react";
+import { FaArrowLeft } from "react-icons/fa";
+import { IoClose } from "react-icons/io5";
 
-export default function AddLocation() {
+export default function AddLocation({ size, closePopup, handleBack }: any) {
   const progress = useAppSelector((state) => state.progress.value);
   const { current_location, location_id } = useAppSelector(
     (state) => state.user
@@ -94,7 +102,7 @@ export default function AddLocation() {
         const response = await api.post("/Auth/addJobseekerProfile", formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
-      
+
         if (response?.data?.code === 1) {
           dispatch(setProgress(8));
           dispatch(setUserLocation(values.location_id));
@@ -139,50 +147,104 @@ export default function AddLocation() {
   };
 
   return (
-    <div className="">
-      <h2 className="text-center font-semibold text-lg md:text-xl xl:text-[28px] 2xl:leading-[36px]">
-        <span className="text-red">Where</span> do you want <br /> to work?
-      </h2>
-      <form
-        onSubmit={formik.handleSubmit}
-        className="block mt-8 md:mt-10 xl:mt-14 2xl:mt-16"
-      >
-        <h4 className="text-lg font-semibold !text-[#231F20]">Select job location</h4>
-        <div className="my-2">
-          <MultiSelect
-            options={locationList}
-            placeholder="Job location"
-            isMulti
-            onChange={handleLocation}
-            selectedValues={selectedLocation}
-            icon={
-              <RiMapPin2Line className="absolute left-[15px] top-[20px] size-4 text-[#808080]" />
-            }
-          />
-        </div>
-        <SelectedChips
-          selectedValues={selectedLocation}
-          onRemove={handleRemoveLocation}
-        />
-
-        <div className="flex w-full justify-between items-end mt-14">
-          <div className="whitespace-nowrap">
-            <span className="text-red">{progress - 4}</span> - 6
+    // @ts-ignore
+    <Dialog
+      open={progress === 7}
+      size={size}
+      className={`onboarding-dailog ${
+        size === "md" ? "fixed -top-16 -translate-x-1/2  onboarding-scale" : ""
+      }`}
+    >
+      <div className="pb-6">
+        {/* @ts-ignore */}
+        <DialogHeader>
+          <div className="relative w-full">
+            <div onClick={handleBack}>
+              <FaArrowLeft className="absolute cursor-pointer top-2 z-30 left-2 size-6" />
+            </div>
+            <IoClose
+              className="absolute top-2 right-2 cursor-pointer"
+              size={size === "md" ? 32 : 28}
+              onClick={closePopup}
+            />
+            <div
+              className={`${
+                size === "md"
+                  ? "flex justify-center items-center mt-6"
+                  : "flex justify-start items-start mt-16"
+              }`}
+            >
+              <h2
+                className={`text-[#231F20] font-semibold  ${
+                  size === "md"
+                    ? "!text-[26px] text-center"
+                    : "!text-[22px] text-start"
+                }`}
+              >
+                <span className="text-red">Where {""}</span>
+                <span className={`text-[#231F20]`}>
+                  do you want <br /> to work?
+                </span>
+              </h2>
+            </div>
           </div>
-          <button
-            // className={`max-w-[100px] sm:max-w-[250px]`}
-            disabled={formik.isSubmitting}
-            type="submit"
-            className={`max-w-[100px] sm:max-w-[250px] ${
-              formik.isValid
-                ? "bg-red text-white"
-                : "!opacity-50 !cursor-default"
-            }`}
-          >
-            Next
-          </button>
-        </div>
-      </form>
-    </div>
+        </DialogHeader>
+        <form
+          onSubmit={formik.handleSubmit}
+          className={`${size === "md" ? "block mt-6" : "mt-2"}`}
+        >
+          {/* @ts-ignore */}
+          <DialogBody className="custom-dialog-body custom-scroll">
+            <div
+              className={`pb-2 cursor-pointer ${
+                size === "md" ? "px-12" : "px-0"
+              }`}
+            >
+              <h4 className="text-lg font-semibold !text-[#231F20]">
+                Select job location
+              </h4>
+              <div className="my-2">
+                <MultiSelect
+                  options={locationList}
+                  placeholder="Job location"
+                  isMulti
+                  onChange={handleLocation}
+                  selectedValues={selectedLocation}
+                  icon={
+                    <RiMapPin2Line className="absolute left-[15px] top-[20px] size-4 text-[#808080]" />
+                  }
+                />
+              </div>
+              <SelectedChips
+                size={size}
+                selectedValues={selectedLocation}
+                onRemove={handleRemoveLocation}
+              />
+            </div>
+          </DialogBody>
+
+          {/* @ts-ignore */}
+          <DialogFooter className="p-0 pb-6 !px-12 mt-5 flex justify-center">
+            <div className="flex w-full justify-between items-end ">
+              <div className="whitespace-nowrap">
+                <span className="text-red">{progress - 4}</span> - 6
+              </div>
+              <button
+                // className={`max-w-[100px] sm:max-w-[250px]`}
+                disabled={formik.isSubmitting}
+                type="submit"
+                className={`max-w-[200px] sm:max-w-[250px] ${
+                  formik.isValid
+                    ? "bg-red text-white"
+                    : "!opacity-50 !cursor-default"
+                }`}
+              >
+                Next
+              </button>
+            </div>
+          </DialogFooter>
+        </form>
+      </div>
+    </Dialog>
   );
 }

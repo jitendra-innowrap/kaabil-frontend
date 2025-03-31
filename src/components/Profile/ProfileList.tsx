@@ -33,16 +33,16 @@ const ProfileList = () => {
 
   return (
     <>
-      <div className="grid grid-cols-12 gap-4 mt-2">
+      <div className="grid grid-cols-12 gap-4 sm:mt-2 bg-white sm:bg-transparent">
         {/* Breadcrumb Section */}
-        <div className="col-span-12">
+        <div className="col-span-12 pt-2 sm:pt-0 px-3 sm:px-0">
           <Breadcrumb root="Home" category="My Profile" />
         </div>
         {/* Title */}
-        <div className="col-span-12 mt-3">
+        <div className="hidden sm:block col-span-12 mt-3">
           <h1 className="text-[#231F20] text-[22px] font-medium">My Profile</h1>
         </div>
-        <div className="col-span-12 flex flex-wrap gap-4 md:gap-12 border-b-2 border-[#D4D4D4] text-[#D4D4D4]">
+        <div className="hidden sm:flex col-span-12 sm:col-span-8 flex-wrap gap-4 md:gap-12 border-b-2 border-[#D4D4D4] text-[#D4D4D4]">
           {ProfileTabs?.map((tab) => (
             <h2
               key={tab}
@@ -58,8 +58,23 @@ const ProfileList = () => {
           ))}
         </div>
       </div>
-      <div className="grid grid-cols-12 gap-4 lg:gap-9 mt-6 mb-8">
-        <div className="col-span-12 xl:col-span-8 lg:col-span-7 md:col-span-6">
+      <div className="grid grid-cols-12 sm:gap-4 lg:gap-9 pt:4 sm:pt-0 sm:mt-6 mb-8">
+        <div className="sm:hidden col-span-12 sm:col-span-8 flex flex-wrap gap-4 md:gap-12 bg-white pt-3 px-4 justify-between order-1 sticky top-[52px] z-10">
+          {ProfileTabs?.map((tab) => (
+              <h2
+                  key={tab}
+                  className={`cursor-pointer pb-2 text-sm md:text-base ${
+                      activeTab === tab
+                          ? "border-b-4 border-red text-red font-bold"
+                          : "text-black font-medium"
+                  }`}
+                  onClick={() => handleTabClick(tab)}
+              >
+                {tab}
+              </h2>
+          ))}
+        </div>
+        <div className="col-span-12 xl:col-span-8 lg:col-span-7 md:col-span-7 order-2 sm:order-0 lg:order-0">
           <div ref={sectionRefs.About}>
             <About />
           </div>
@@ -76,7 +91,7 @@ const ProfileList = () => {
             <AboutMe />
           </div>
         </div>
-        <div className="col-span-12 xl:col-span-4 lg:col-span-5 md:col-span-6">
+        <div className="col-span-12 xl:col-span-4 lg:col-span-5 md:col-span-5 order-0 sm:order-3 bg-white sm:bg-transparent  px-3 sm:px-0">
           <ProfileCard />
         </div>
       </div>

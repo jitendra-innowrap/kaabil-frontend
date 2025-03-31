@@ -1,17 +1,32 @@
-import { useAppSelector } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import Image from "next/image";
 import React from "react";
 import { formatJobDates } from "../utils";
+import { useRouter } from "next/navigation";
+import { setSelectedTab } from "@/redux/jobsFilterSlice";
 
 const ProfileCard = () => {
+  const router = useRouter();
   const { profileData } = useAppSelector((state) => state.profile);
+  const dispatch = useAppDispatch();
+  console.log(profileData?.photo_url, "Check Profile Data");
+  // Later we will change
+  const jobStats = [
+    { label: "Applied Jobs", count: 5, tabIndex: 1 },
+    { label: "Shortlisted Jobs", count: 5, tabIndex: 2 },
+    { label: "Saved Jobs", count: 5, tabIndex: 3 },
+  ];
   return (
     <div className="bg-white rounded-2xl py-3">
       <div className="grid grid-col-12">
         <div className="col-span-12">
           <Image
-            className="cursor-pointer mx-auto size-[70px] 2xl:size-[102px] mb-2 rounded-full"
-            src={profileData?.photo_url ?? "/new-assets/icons/avatar.svg"}
+            className="cursor-pointer mx-auto size-[70px] 2xl:size-[102px] mb-2 rounded-full border-4 border-red"
+            src={
+              profileData?.photo_url
+                ? profileData?.photo_url
+                : "/new-assets/icons/avatar.svg"
+            }
             width={287}
             height={253}
             alt="resume-builder"
@@ -19,21 +34,24 @@ const ProfileCard = () => {
         </div>
         <div className="col-span-12">
           <h1 className="text-xl text-center font-medium text-[#231F20]">
-            {profileData?.name ?? "-"}
+            {profileData?.name ?? ""}
           </h1>
         </div>
         <div className="col-span-12">
           <h1 className="text-xs text-center text-[#4D4D4F]">
-            {profileData?.city ?? "-"}
+            {profileData?.city ?? ""}
           </h1>
         </div>
         <div className="col-span-12 mt-2">
           <h1 className="text-sm text-center">
-            {profileData?.company_name} -{" "}
-            {formatJobDates(
-              profileData?.user_experiences?.[0]?.job_start_date || "-",
-              profileData?.user_experiences?.[0]?.job_end_date || "-"
-            )}
+            {profileData?.company_name}{" "}
+            {profileData?.user_experiences?.[0]?.job_start_date &&
+            profileData?.user_experiences?.[0]?.job_end_date
+              ? formatJobDates(
+                  profileData.user_experiences[0].job_start_date,
+                  profileData.user_experiences[0].job_end_date
+                )
+              : ""}
           </h1>
         </div>
         <div className="col-span-12 mt-2">
@@ -67,36 +85,34 @@ const ProfileCard = () => {
           </h1>
         </div>
         <div className="col-span-12 flex justify-center px-6 mt-6">
-          <div className="bg-[#F1F5FE] flex w-full justify-between px-4 rounded-2xl py-3">
-            {/* First */}
-            <div>
-              <h1 className="text-[#7B7B7D] text-md text-center">Applied</h1>
-              <h1 className="text-[#7B7B7D] text-md text-center">Jobs</h1>
-              <h1 className="text-center text-[#4D4D4F] mt-2 text-lg">05</h1>
-              <h1 className="text-center text-[#4D4D4F] mt-2 text-sm font-medium">
-                View all
-              </h1>
-            </div>
-            <div className="border-r border-[#D4D4D4] pr-4" />
-            {/* Second */}
-            <div>
-              <h1 className="text-[#7B7B7D] text-md text-center">Applied</h1>
-              <h1 className="text-[#7B7B7D] text-md text-center">Jobs</h1>
-              <h1 className="text-center text-[#4D4D4F] mt-2 text-lg">05</h1>
-              <h1 className="text-center text-[#4D4D4F] mt-2 text-sm font-medium">
-                View all
-              </h1>
-            </div>
-            <div className="border-r border-[#D4D4D4] pr-4" />
-            {/* Third */}
-            <div>
-              <h1 className="text-[#7B7B7D] text-md text-center">Applied</h1>
-              <h1 className="text-[#7B7B7D] text-md text-center">Jobs</h1>
-              <h1 className="text-center text-[#4D4D4F] mt-2 text-lg">05</h1>
-              <h1 className="text-center text-[#4D4D4F] mt-2 text-sm font-medium">
-                View all
-              </h1>
-            </div>
+          <div className="bg-[#F1F5FE] flex w-full justify-around px-4 rounded-2xl py-3">
+            {jobStats.map((job, index) => (
+              <React.Fragment key={index}>
+                <div>
+                  <h1 className="text-[#7B7B7D] text-[11px] sm:text-md text-center">
+                    {job.label.split(" ")[0]}
+                  </h1>
+                  <h1 className="text-[#7B7B7D] text-[11px] sm:text-md text-center">
+                    {job.label.split(" ")[1]}
+                  </h1>
+                  <h1 className="text-center text-[#4D4D4F] mt-2 text-lg">
+                    {job.count}
+                  </h1>
+                  <h1
+                    className="text-center text-red mt-2 text-[12px] sm:text-sm font-medium cursor-pointer"
+                    onClick={() => {
+                      router.push(`/my-jobs?tab=${job.tabIndex}`);
+                    }}
+                  >
+                    View all
+                  </h1>
+                </div>
+                {/* Add divider except for the last item */}
+                {index < jobStats.length - 1 && (
+                  <div className="border-r border-[#D4D4D4] pr-4" />
+                )}
+              </React.Fragment>
+            ))}
           </div>
         </div>
       </div>

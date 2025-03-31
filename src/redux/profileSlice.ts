@@ -11,6 +11,14 @@ interface LoginPopupState {
   qualificationList: any;
   educationData: any;
   aboutMeModal: boolean;
+  rolesList: any;
+  jobTypes: any;
+  locationList: any;
+  cityList: any;
+  softSkills: any;
+  softSkillsOption: any;
+  skillList: any;
+  skillsOption: any;
 }
 
 const initialState: LoginPopupState = {
@@ -23,6 +31,15 @@ const initialState: LoginPopupState = {
   qualificationList: [],
   educationData: [],
   aboutMeModal: false,
+  rolesList: [],
+  jobTypes: [],
+  locationList: [],
+  cityList: [],
+  softSkills: [],
+  softSkillsOption: [],
+  // Skills
+  skillList: [],
+  skillsOption: [],
 };
 
 export const fetchProfile = createAsyncThunk(
@@ -35,6 +52,69 @@ export const fetchProfile = createAsyncThunk(
         },
       });
       console.log(response.data, "Verify Data Please");
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data || "An error occurred");
+    }
+  }
+);
+
+export const fetchSkills = createAsyncThunk(
+  "auth/fetchSkills",
+  async ({ data }: any, { rejectWithValue }) => {
+    try {
+      const response = await api.post("/MasterData/getUserSkill", data, {
+        headers: { "Content-Type": "multipart/json" },
+      });
+      console.log(response.data, "Verify Data Please");
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data || "An error occurred");
+    }
+  }
+);
+
+export const fetchRoles = createAsyncThunk(
+  "auth/fetchRoles",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await api.get("/MasterData/getDesignation");
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data || "An error occurred");
+    }
+  }
+);
+
+export const fetchJobTypes = createAsyncThunk(
+  "auth/fetchJobTypes",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await api.get("/MasterData/getJobType");
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data || "An error occurred");
+    }
+  }
+);
+
+export const fetchLocation = createAsyncThunk(
+  "auth/fetchLocation",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await api.get("/MasterData/getCity");
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data || "An error occurred");
+    }
+  }
+);
+
+export const fetchSoftSkills = createAsyncThunk(
+  "auth/fetchSoftSkills",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await api.get("/MasterData/getSoftSkills");
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response?.data || "An error occurred");
@@ -123,19 +203,56 @@ const profileSlice = createSlice({
       })
       .addCase(fetchProfile.rejected, (state, action) => {
         state.loading = false;
-        console.error("Fetch Profile Error:", action.payload);
       })
       .addCase(fetchEducationDetail.fulfilled, (state, action) => {
         state.loading = false;
-        state.qualificationList =
-          action.payload?.result?.map((role: any) => ({
-            id: role.id,
-            name: role.name,
-          })) || [];
+        state.qualificationList = action.payload?.result;
       })
       .addCase(fieldStudy.fulfilled, (state, action) => {
-        console.log(action?.payload, "Verify Payload");
         state.educationData = action.payload.result;
+      })
+      .addCase(fetchRoles.fulfilled, (state, action) => {
+        console.log(action.payload, "Fetch Role List");
+        state.rolesList = action.payload?.result?.map((item: any) => ({
+          label: item.name,
+          value: item.id,
+        }));
+      })
+      .addCase(fetchJobTypes.fulfilled, (state, action) => {
+        state.jobTypes = action.payload.result;
+      })
+      .addCase(fetchLocation.fulfilled, (state, action) => {
+        state.cityList = action.payload.result.map((item: any) => ({
+          id: item?.id,
+          location: item?.name,
+          latitude: item?.latitude,
+          longitude: item?.longitude,
+        }));
+        state.locationList = action.payload.result.map((item: any) => ({
+          label: item.name,
+          value: item.id,
+        }));
+      })
+      .addCase(fetchSoftSkills.fulfilled, (state, action) => {
+        state.softSkills = action.payload.result.map((item: any) => ({
+          id: item?.id,
+          name: item?.name,
+        }));
+        state.softSkillsOption = action.payload.result.map((item: any) => ({
+          value: item?.id,
+          label: item?.name,
+        }));
+      })
+      .addCase(fetchSkills.fulfilled, (state, action) => {
+        state.skillList = action.payload.result.map((item: any) => ({
+          id: item?.id,
+          name: item?.name,
+          skill_level_type_id: 0,
+        }));
+        state.skillsOption = action.payload.result.map((item: any) => ({
+          value: item?.id,
+          label: item?.name,
+        }));
       });
   },
 });

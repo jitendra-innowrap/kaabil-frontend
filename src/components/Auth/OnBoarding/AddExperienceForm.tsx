@@ -193,11 +193,11 @@ const AddExperienceForm = forwardRef(
             <p className="text-red text-sm mt-1">{formik?.errors.salary}</p>
           )}
 
-          <div className="grid sm:grid-cols-3 gap-3 3xl:gap-4 mt-3">
+          <div className="flex flex-wrap gap-4">
             {jobTypes.map((jobType) => (
               <div
                 key={jobType.id}
-                className={`col-span-1 label-option cursor-pointer ${
+                className={`col-span-1 label-option cursor-pointermd:grow ${
                   formik.values.type == parseInt(jobType.id)
                     ? "bg-red text-white"
                     : ""
@@ -234,17 +234,8 @@ const AddExperienceForm = forwardRef(
             </label>
           </div>
 
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-3">
             <div className="flex-1">
-              {/* {!formik.values.jobStartDate ? (
-                <div
-                  onClick={() => setEditDateFrom(true)}
-                  className="!text-[#4D4D4F] px-3 flex items-center font-normal justify-between shadow-md rounded-[.75rem] h-[56px]"
-                >
-                  Working From{" "}
-                  <IoMdArrowDropdown className="ml-1 xl:ml-5 text-[#000000] size-5" />
-                </div>
-              ) : ( */}
               <div>
                 <label>Working From</label>
                 <input
@@ -258,7 +249,6 @@ const AddExperienceForm = forwardRef(
                   max={new Date().toISOString().split("T")[0]}
                 />
               </div>
-              {/* )} */}
               {formik.errors.jobStartDate && formik.touched.jobStartDate && (
                 <p className="text-red text-sm mt-1">
                   {formik.errors.jobStartDate}

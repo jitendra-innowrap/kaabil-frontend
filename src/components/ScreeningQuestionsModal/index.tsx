@@ -101,10 +101,7 @@ export default function ScreeningQuesModal({
   }, [currentQuestionIndex, questions.length]);
 
   const validationSchema = Yup.object().shape({
-    answer: Yup.string()
-      .trim()
-      .min(10, "Answer must be at least 10 characters")
-      .required("Answer is required"),
+    answer: Yup.string().required("Answer is required"),
   });
 
   const handleApply = async () => {

@@ -738,6 +738,13 @@ label {
   }
 }
 @media (width >= 1024px) {
+  .onboarding-scale {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) !important;
+    scale: 1;
+  }
   .search-section input#searchbar_input,
   .search-section button {
     height: 52px;

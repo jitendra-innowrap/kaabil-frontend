@@ -232,7 +232,7 @@ export default function AddExperience({ size, closePopup, handleBack }: any) {
                 size === "md" ? "px-12" : "px-0"
               }`}
             >
-              <h4 className="text-lg font-medium">
+              <h4 className="text-[14px] sm:text-lg font-medium">
                 What’s your level of experience?
               </h4>
               <div className="my-4 flex flex-col sm:flex-row gap-4">
@@ -280,14 +280,14 @@ export default function AddExperience({ size, closePopup, handleBack }: any) {
                 </label>
               </div>
               {formik.errors.is_fresher && formik.touched.is_fresher && (
-                <p className="text-red text-sm mt-1">
+                <p className="text-red text-[11px] sm:text-sm mt-1">
                   {formik.errors.is_fresher}
                 </p>
               )}
 
               {formik.values.is_fresher === 1 && user.experience.length < 1 && (
                 <div className="scroll-content-experience cursor-pointer">
-                  <h4 className="text-lg mb-4 font-medium">
+                  <h4 className="text-[14px] sm:text-lg mb-4 font-medium">
                     Please add your latest experience
                   </h4>
                   <AddExperienceForm
@@ -295,7 +295,7 @@ export default function AddExperience({ size, closePopup, handleBack }: any) {
                     formik={formikForm}
                   />
                   <div
-                    className="flex text-red font-semibold mt-7 cursor-pointer"
+                    className="text-[14px] sm:text-lg flex text-red font-semibold mt-7 cursor-pointer"
                     onClick={() => handleSubmitExperience()}
                   >
                     + add more experience
@@ -305,12 +305,12 @@ export default function AddExperience({ size, closePopup, handleBack }: any) {
             </div>
           </DialogBody>
           {/* @ts-ignore */}
-          <DialogFooter className="p-0 pb-6 !px-12 mt-5 flex justify-center">
+          <DialogFooter className="p-0 pb-6 px-6 sm:!px-12 mt-5 flex justify-center">
             <div className="flex w-full items-end">
-              <div className="whitespace-nowrap">
+              <div className="whitespace-nowrap dialog-footer-paging">
                 <span className="text-red">{progress - 4}</span> - 6
               </div>
-              <div className="flex gap-4 items-end w-full justify-end">
+              <div className="flex gap-2 sm:gap-4 items-end w-full justify-end footer-2btn">
                 <span
                   onClick={() => dispatch(setProgress(11))}
                   className={`max-w-[130px] text-[#231F20] cursor-pointer border-[#9C9C9C] flex items-center btn-border !py-3.5 !px-9 !rounded-xl`}

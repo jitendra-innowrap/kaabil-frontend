@@ -151,6 +151,7 @@ export default function AddLocation({ size, closePopup, handleBack }: any) {
     <Dialog
       open={progress === 7}
       size={size}
+
       className={`onboarding-dailog ${
         size === "md" ? "fixed -top-16 -translate-x-1/2  onboarding-scale" : ""
       }`}
@@ -200,7 +201,7 @@ export default function AddLocation({ size, closePopup, handleBack }: any) {
                 size === "md" ? "px-12" : "px-0"
               }`}
             >
-              <h4 className="text-lg font-semibold !text-[#231F20]">
+              <h4 className="text-[14px] sm:text-lg font-semibold !text-[#231F20]">
                 Select job location
               </h4>
               <div className="my-2">
@@ -211,7 +212,7 @@ export default function AddLocation({ size, closePopup, handleBack }: any) {
                   onChange={handleLocation}
                   selectedValues={selectedLocation}
                   icon={
-                    <RiMapPin2Line className="absolute left-[15px] top-[20px] size-4 text-[#808080]" />
+                    <RiMapPin2Line className="absolute left-[15px] top-[14px] sm:top-[20px] size-4 text-[#808080]" />
                   }
                 />
               </div>
@@ -224,16 +225,16 @@ export default function AddLocation({ size, closePopup, handleBack }: any) {
           </DialogBody>
 
           {/* @ts-ignore */}
-          <DialogFooter className="p-0 pb-6 !px-12 mt-5 flex justify-center">
-            <div className="flex w-full justify-between items-end ">
-              <div className="whitespace-nowrap">
+          <DialogFooter className="p-0 pb-6 px-6 sm:!px-12 mt-5 flex justify-center">
+            <div className="flex w-full justify-end sm:justify-between items-end">
+              <div className="whitespace-nowrap dialog-footer-paging">
                 <span className="text-red">{progress - 4}</span> - 6
               </div>
               <button
                 // className={`max-w-[100px] sm:max-w-[250px]`}
                 disabled={formik.isSubmitting}
                 type="submit"
-                className={`max-w-[200px] sm:max-w-[250px] ${
+                className={`dialog-action-btn max-w-[200px] sm:max-w-[250px] ${
                   formik.isValid
                     ? "bg-red text-white"
                     : "!opacity-50 !cursor-default"

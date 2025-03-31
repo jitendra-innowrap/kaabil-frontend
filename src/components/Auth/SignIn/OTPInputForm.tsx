@@ -318,7 +318,7 @@ export default function OTPInputForm({ size, closePopup, handleBack }: any) {
           <button
             type="submit"
             disabled={!formik.isValid || formik.isSubmitting}
-            className={`${
+            className={`sign-btn ${
               size === "md" ? "text-lg" : "text-md"
             } mt-1 no-margin px-6 py-2 !bg-red hover:bg-red text-white rounded-full ${
               !formik.isValid || formik.isSubmitting
@@ -329,7 +329,7 @@ export default function OTPInputForm({ size, closePopup, handleBack }: any) {
             Verify
           </button>
           <div>
-            <p className="mt-4 2xl:mt-5 text-center text-[#000000]">
+            <p className="mt-4 2xl:mt-5 text-[14px] sm:text-[16px] text-center text-[#000000]">
               Didn’t receive code?
               <span
                 tabIndex={0}

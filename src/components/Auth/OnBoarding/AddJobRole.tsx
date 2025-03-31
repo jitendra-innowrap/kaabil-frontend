@@ -46,9 +46,14 @@ export default function AddJobRole({ size, closePopup, handleBack }: any) {
 
   // ✅ Fetch roles and job types from API
   useEffect(() => {
-    fetchRoles();
-    fetchJobTypes();
+    const fetchMaster = async () => {
+      await fetchRoles();
+      await fetchJobTypes();
+    };
+
+    fetchMaster();
   }, []);
+
 
   const fetchRoles = async () => {
     try {
@@ -215,10 +220,10 @@ export default function AddJobRole({ size, closePopup, handleBack }: any) {
                 size === "md" ? "px-12" : "px-0"
               }`}
             >
-              <h4 className="text-lg font-medium text-[#231F20]">
+              <h4 className="text-[14px] sm:text-lg font-medium text-[#231F20]">
                 What job role are you looking for?
               </h4>
-              <p className="text-sm text-[#249D64]">
+              <p className="text-[11px] sm:text-sm text-[#249D64]">
                 (You can select up to 2 job roles)
               </p>
 
@@ -245,7 +250,7 @@ export default function AddJobRole({ size, closePopup, handleBack }: any) {
                   maxSelections={2}
                   // hasSelectAll={false}
                   icon={
-                    <FaMagnifyingGlass className="absolute left-[15px] top-[20px] size-4 text-[#808080]" />
+                    <FaMagnifyingGlass className="absolute left-[15px] top-[14px] sm:top-[20px] size-4 text-[#808080]" />
                   }
                 />
               </div>
@@ -269,7 +274,7 @@ export default function AddJobRole({ size, closePopup, handleBack }: any) {
                 <p className="text-red text-sm mt-1">{formik.errors.role_id}</p>
               )}
 
-              <h4 className="text-lg font-medium my-4 text-[#231F20]">
+              <h4 className="text-[14px] sm:text-lg font-medium my-4 text-[#231F20]">
                 What type of job required?
               </h4>
 
@@ -307,14 +312,14 @@ export default function AddJobRole({ size, closePopup, handleBack }: any) {
           </DialogBody>
 
           {/* @ts-ignore */}
-          <DialogFooter className="p-0 pb-6 !px-12 mt-5 flex justify-center">
-            <div className="flex w-full justify-between items-end">
-              <div className="whitespace-nowrap">
+          <DialogFooter className="p-0 pb-6 px-6 sm:!px-12 mt-5 flex justify-center">
+            <div className="flex w-full justify-end sm:justify-between items-end">
+              <div className="whitespace-nowrap dialog-footer-paging">
                 <span className="text-red">{6 - 4}</span> - 6
               </div>
               <button
                 type="submit"
-                className={`max-w-[200px] sm:max-w-[250px] ${
+                className={`dialog-action-btn max-w-[200px] sm:max-w-[250px] ${
                   size === "md" ? "text-lg" : "text-md"
                 } mt-1 no-margin px-6 py-2 !bg-red hover:bg-red text-white rounded-full ${
                   !formik.isValid || formik.isSubmitting

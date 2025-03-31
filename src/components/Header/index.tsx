@@ -28,7 +28,7 @@ export default function Header() {
                                 />
                         </Link>
                     </div>
-                    <div className="hidden lg:flex h-full flex-col w-[-webkit-fill-available]">
+                    <div className="hidden lg:flex h-full w-full flex-col w-[-webkit-fill-available]">
                         <div className="flex h-full justify-between items-center">
                             <ul className="flex py-4 gap-3 xl:gap-4 3xl:gap-[30px]">
                                 <li className='flex'>

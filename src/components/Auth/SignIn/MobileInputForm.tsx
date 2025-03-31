@@ -163,7 +163,7 @@ export default function MobileInputForm({ size, closePopup }: any) {
                     placeholder="Enter your mobile number to receive OTP"
                     className={`border p-2 w-full rounded-[12px] text-[#231F20] ${
                       values?.mobile ? "font-semibold" : "font-normal"
-                    } ${size === "xxl" ? "text-sm" : "text-lg"}`}
+                    } ${size === "xxl" ? "text-[14px] sm:text-sm" : "text-lg"}`}
                     maxLength={10} // Restricts input to 10 characters
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                       const numericValue = e.target.value.replace(/\D+/g, "");
@@ -174,7 +174,7 @@ export default function MobileInputForm({ size, closePopup }: any) {
                       }
                     }}
                   />
-                  <div className="h-6 text-sm text-red mt-1">
+                  <div className="h-6 text-[11px] sm:text-sm text-red mt-1">
                     <ErrorMessage name="mobile" />
                   </div>
                 </div>
@@ -188,7 +188,7 @@ export default function MobileInputForm({ size, closePopup }: any) {
                 <button
                   type="submit"
                   disabled={!isValid || isSubmitting}
-                  className={`${
+                  className={`sign-btn ${
                     size === "md" ? "text-lg" : "text-md"
                   } mt-1 no-margin px-6 py-2 !bg-red hover:bg-red text-white rounded-full ${
                     isSubmitting ? "opacity-50 cursor-not-allowed" : ""

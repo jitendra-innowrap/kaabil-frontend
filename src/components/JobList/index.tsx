@@ -227,7 +227,8 @@ function JobList() {
           },
         };
         // @ts-ignore
-        if (!isfilterAvailable) dispatch(setJobFiltersMaster(filterMasters));
+        // if (!isfilterAvailable) 
+        dispatch(setJobFiltersMaster(filterMasters));
         setIsfilterAvailable(true);
       } catch (error) {
         console.error("Error fetching jobs:", error);

@@ -37,7 +37,7 @@ export default function FilterSidebar() {
     const handleClearAll = () => {
         // Remove all search parameters and navigate to the base URL
         SetremoveOptionsSearch(!removeOptionsSearch)
-        router.push('/jobs', { scroll: false }); // Replace '/jobs' with your base route
+        router.replace('/jobs', { scroll: false }); // Replace '/jobs' with your base route
     };
   return (
     <>

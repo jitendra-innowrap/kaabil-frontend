@@ -1,6 +1,6 @@
 'use client';
 import React, { Suspense, useEffect, useState } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { GrLocation } from 'react-icons/gr';
 import Select from 'react-select';
 import Image from 'next/image';
@@ -77,6 +77,7 @@ function SearchSection() {
       console.error("Error fetching job types:", error);
     }
   };
+  const pathname  = usePathname();
   const handleSearch = (e: any) => {
     e.preventDefault();
     const params = new URLSearchParams();
@@ -89,7 +90,11 @@ function SearchSection() {
       }
     }
     if (industry) params.set('industries_filter', industry);
-    router.push(`/jobs?${params.toString()}`);
+    if(pathname=='/jobs'){
+      router.replace(`/jobs?${params.toString()}`);
+    }else{
+      router.push(`/jobs?${params.toString()}`);
+    }
   };
 
   return (

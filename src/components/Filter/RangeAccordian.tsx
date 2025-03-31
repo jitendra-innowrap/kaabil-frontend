@@ -15,13 +15,13 @@ function RangeAccordion() {
     // State for the temporary salary range (used for slider and input fields)
     const [tempValue, setTempValue] = useState({ min: reduxMin, max: reduxMax });
 
-    // State for the applied salary range (used for URL params)
-    const [appliedValue, setAppliedValue] = useState({ min: reduxMin, max: reduxMax });
+    // State to track if values have been changed by user
+    const [valuesChanged, setValuesChanged] = useState(false);
 
     // Update the temporary values when Redux state changes
     useEffect(() => {
         setTempValue({ min: reduxMin, max: reduxMax });
-        setAppliedValue({ min: reduxMin, max: reduxMax });
+        setValuesChanged(false); // Reset changed flag when Redux updates
     }, [reduxMin, reduxMax]);
 
     // Load initial salary range from URL if present
@@ -31,34 +31,53 @@ function RangeAccordion() {
 
         if (minSalary && maxSalary) {
             setTempValue({ min: Number(minSalary), max: Number(maxSalary) });
-            setAppliedValue({ min: Number(minSalary), max: Number(maxSalary) });
         }
     }, [searchParams]);
 
     // Handle slider changes
     const handleRangeChange = ([min, max]: number[]) => {
         setTempValue({ min, max });
+        setValuesChanged(true); // Mark as changed when user interacts
     };
 
     // Handle input field changes
     const handleInputChange = (type: 'min' | 'max', newValue: number) => {
-        setTempValue((prev) => ({ ...prev, [type]: newValue }));
+        setTempValue(prev => {
+            const updated = { ...prev, [type]: newValue };
+            // Check if either value has changed from initial Redux state
+            const hasChanged = updated.min !== reduxMin || updated.max !== reduxMax;
+            setValuesChanged(hasChanged);
+            return updated;
+        });
     };
 
     // Handle Apply button click
     const handleApply = () => {
-        setAppliedValue(tempValue); // Set the applied values
-        const button = document.getElementById('filter-pannel-overlay');
-        if (button) {
-            button.click(); // Programmatically triggers the button click
+        if (!valuesChanged) {
+            // If values haven't changed, don't update URL params
+            const button = document.getElementById('filter-pannel-overlay');
+            if (button) button.click();
+            return;
         }
-        // Update the query parameters in the URL
+
         const params = new URLSearchParams(searchParams.toString());
-        params.set('minSalary', tempValue.min.toString());
-        params.set('maxSalary', tempValue.max.toString());
+        
+        // Only update params if values have changed
+        if (valuesChanged) {
+            params.set('minSalary', tempValue.min.toString());
+            params.set('maxSalary', tempValue.max.toString());
+        } else {
+            // Remove params if they exist but values haven't changed
+            params.delete('minSalary');
+            params.delete('maxSalary');
+        }
 
         // Use router to push new URL params without refreshing the page
         router.replace(`?${params.toString()}`, { scroll: false });
+        
+        // Close the filter panel
+        const button = document.getElementById('filter-pannel-overlay');
+        if (button) button.click();
     };
 
     return (
@@ -79,21 +98,20 @@ function RangeAccordion() {
                         </AccordionHeader>
                         <AccordionBody>
                             <div className="block mb-6 mt-2">
-                                {/* Salary range slider */}
                                 <RangeSlider
                                     id="range-slider-salary"
-                                    min={reduxMin} // Use Redux state for min
-                                    max={reduxMax} // Use Redux state for max
+                                    min={reduxMin}
+                                    max={reduxMax}
                                     step={1000}
-                                    value={[tempValue.min, tempValue.max]} // Use temporary values
+                                    value={[tempValue.min, tempValue.max]}
                                     onInput={handleRangeChange}
                                 />
                             </div>
-                            <form className="mb-5">
+                            <form className="lg:mb-5">
                                 <div className="form-group relative mb-2">
                                     <label htmlFor="min-salary" className="absolute block text-sm top-[14px] left-3 mb-1">Min ₹</label>
                                     <input
-                                        type="text"
+                                        type="number"
                                         className='w-full text-sm p-[14px] pl-[65px] rounded-lg bg-[#F6F6F6] mt-[1px]'
                                         id="min-salary"
                                         name="min-salary"
@@ -104,7 +122,7 @@ function RangeAccordion() {
                                 <div className="form-group relative mb-2">
                                     <label htmlFor="max-salary" className="absolute block text-sm top-[14px] left-3 mb-1">Max ₹</label>
                                     <input
-                                        type="text"
+                                        type="number"
                                         className='w-full text-sm p-[14px] pl-[65px] rounded-lg bg-[#F6F6F6] mt-[1px]'
                                         id="max-salary"
                                         name="max-salary"
@@ -114,11 +132,20 @@ function RangeAccordion() {
                                 </div>
                                 <button
                                     type="button"
-                                    className='w-full filter-range-btn !bg-black text-sm font-normal !text-white'
+                                    className='hidden lg:block w-full filter-range-btn !bg-black text-sm font-normal !text-white'
                                     onClick={handleApply}
                                 >
                                     Apply
                                 </button>
+                                <div className="block lg:hidden sticky-apply-on-filter-pannel">
+                                    <button
+                                        type="button"
+                                        className='w-full filter-range-btn !bg-black text-sm font-normal !text-white'
+                                        onClick={handleApply}
+                                    >
+                                        Apply
+                                    </button>
+                                </div>
                             </form>
                         </AccordionBody>
                     </>
@@ -128,7 +155,6 @@ function RangeAccordion() {
     );
 }
 
-// Wrap the component with Suspense in your page or parent component where it's used
 export default function Page() {
     return (
         <Suspense fallback={<div>Loading...</div>}>

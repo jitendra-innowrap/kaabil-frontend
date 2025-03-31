@@ -15,7 +15,7 @@ export default function ProfileCard() {
   };
 
   return (
-    <div className="bg-white rounded-2xl px-4 xl:px-6 py-5 xl:py-8">
+    <div className="bg-white rounded-2xl px-4 xl:px-6 py-5 xl:py-8 w-full">
       <div className="flex flex-col items-center">
         <Image
           className="cursor-pointer mx-auto rounded-full object-cover border size-[70px] 2xl:size-[102px] mb-2"

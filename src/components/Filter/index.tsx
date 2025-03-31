@@ -37,8 +37,9 @@ export default function FilterSidebar() {
     const handleClearAll = () => {
         // Remove all search parameters and navigate to the base URL
         SetremoveOptionsSearch(!removeOptionsSearch)
-        router.push('/jobs', { scroll: false }); // Replace '/jobs' with your base route
+        router.replace('/jobs', { scroll: false }); // Replace '/jobs' with your base route
     };
+    
   return (
     <>
     {open && <div className="hidden lg:block bg-black z-10 opacity-20 w-screen h-screen fixed top-0 left-0" onClick={()=>setOpen(false)}></div>}

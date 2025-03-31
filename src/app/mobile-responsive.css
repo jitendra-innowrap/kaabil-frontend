@@ -126,6 +126,17 @@
         font-weight: 500;
         padding: 0;
     }
+    
+    .profile-options-menu{
+        right: 0;
+    } 
+}
+.sticky-apply-on-filter-pannel{
+    position: absolute;
+    bottom: 10px;
+    z-index: 10;
+    width: calc(100% - 50px);
+    padding-block: 10px;
 }
 
 @media (max-width: 768px){
@@ -138,8 +149,5 @@
     .mobile-header{
         padding-inline: 18px;
         padding-block: 6px;
-    }
-    .profile-options-menu{
-        right: 0;
-    }    
+    }   
 }

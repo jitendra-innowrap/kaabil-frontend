@@ -130,7 +130,7 @@ export default function MyJobs() {
     setJobs(null);
     const params = new URLSearchParams(searchParams.toString());
     params.set("page", page.toString());
-    router.push(`?${params.toString()}`, { scroll: false });
+    router.replace(`?${params.toString()}`, { scroll: false });
   };
   
   const handUnsave=(id:string)=>{
@@ -152,7 +152,7 @@ export default function MyJobs() {
     setSelectedTab(key);
     const params = new URLSearchParams();
     params.set("tab", key.toString());
-    router.push(`?${params.toString()}`, { scroll: false });
+    router.replace(`?${params.toString()}`, { scroll: false });
   };
 
   // Get appropriate empty state message based on selected tab
@@ -301,10 +301,12 @@ export default function MyJobs() {
         </div>
         
         <div className="nudges-bar sm:mt-28 lg:mt-32 flex flex-shrink-0  md:gap-6 max-w-[400px] mx-auto lg:mx-0 sm:w-[300px] lg:w-[280px] 2xl:w-[341px] order-0 sm:order-1">
-          <div className={"sticky top-[80px] flex flex-col gap-4"}>
+          <div className={"sticky w-full top-[80px] flex flex-col gap-4"}>
             <ProfileCard/>
+            <div className="hidden">
             <QuickAction/>
             <BoostProfile/>
+            </div>
           </div>
         </div>
       </div>

@@ -15,7 +15,7 @@ const Experience = () => {
             <h1 className="text-[#231F20] font-semibold text-[14px] sm:text-md">Experience</h1>
           </div>
           <div
-            className="flex items-center gap-2 cursor-pointer"
+            className="!hidden flex items-center gap-2 cursor-pointer"
             onClick={() => {
               dispatch(setExperienceModal(true));
             }}

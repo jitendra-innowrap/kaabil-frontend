@@ -8,6 +8,7 @@ import { MdOutlineArrowRightAlt } from 'react-icons/md'
 import { useDispatch } from 'react-redux'
 import { fetchUserLocation } from '../utils'
 import { setCurrentLocation } from '@/redux/userSlice'
+import Link from 'next/link'
 
 export default function Footer() {
     const dispatch = useDispatch<AppDispatch>();
@@ -53,36 +54,36 @@ const handleFetchLocation = async () => {
 
                 </div>
                     <div className="block">
-                        <strong className='uppercase font-semibold text-xs 3xl:text-sm mb-4 3xl:mb-5 text-[#E3E3E3] block'>COMPANY</strong>
+                        <strong className='uppercase font-semibold text-xs 3xl:text-sm mb-4 3xl:mb-5 text-[#E3E3E3] block'>Quick links</strong>
                         <ul>
-                            <li className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Home</li>
-                            <li className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>About Us</li>
-                            <li className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Resume Builder</li>
-                            <li className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Career Advisor</li>
-                            <li className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Mock Interviews</li>
-                            <li className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Skill Center</li>
-                            <li className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Blogs</li>
+                            <Link href={'/'} className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Home</Link>
+                            <Link href={'/about-us'} className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>About Us</Link>
+                            <Link href={'/companies'} className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Companies</Link>
+                            {/* <Link href={'/'} className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Career Advisor</Link>
+                            <Link href={'/'} className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Mock Interviews</Link>
+                            <Link href={'/'} className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Skill Center</Link>
+                            <Link href={'/'} className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Blogs</Link> */}
                         </ul>
                     </div>
                     <div className="block">
                         <strong className='uppercase font-semibold text-xs 3xl:text-sm mb-4 3xl:mb-5 text-[#E3E3E3] block'>Legal</strong>
                         <ul>
-                            <li className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Privacy Policy</li>
-                            <li className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Terms of Use</li>
-                            <li className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Cookie Policy</li>
+                            <Link href={'https://meuat.kaam.com/privacy_policy'} className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Privacy Policy</Link>
+                            <Link href={'/'} className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Terms of Use</Link>
+                            {/* <Link href={'/'} className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Cookie Policy</Link> */}
                         </ul>
                     </div>
-                    <div className="block">
+                    {/* <div className="block">
                         <strong className='uppercase font-semibold text-xs 3xl:text-sm mb-4 3xl:mb-5 text-[#E3E3E3] block'>Resources</strong>
                         <ul>
-                            <li className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Help Center</li>
-                            <li className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>FAQs</li>
+                            <Link href={'/'} className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Help Center</Link>
+                            <Link href={'/'} className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>FAQs</Link>
                         </ul>
-                    </div>
+                    </div> */}
                     <div className="block">
                         <strong className='uppercase font-semibold text-xs 3xl:text-sm mb-4 3xl:mb-5 text-[#E3E3E3] block'>Contact US</strong>
                         <ul>
-                            <li className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3] w-[190px]'>K. C. Mahindra Education Trust Cecil Court, Near Regal Cinema, Mahakavi Bhushan Marg, Mumbai 400001.</li>
+                            <Link href={'/'} className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3] w-[190px]'>K. C. Mahindra Education Trust Cecil Court, Near Regal Cinema, Mahakavi Bhushan Marg, Mumbai 400001.</Link>
                         </ul>
                     </div>
                 {/* <div className="flex gap-[37px]">
@@ -98,7 +99,7 @@ const handleFetchLocation = async () => {
                 </div>
             </div>
             <div className="flex w-full justify-end py-4 flex-col md:flex-row gap-4 items-center border-t border-[#BDBDBD]">
-                <p className='text-xs text-[#E3E3E3]'>© Copyright 2024 App. All Rights Reserved.</p>
+                <p className='text-xs text-[#E3E3E3]'>© Copyright 2025. All Rights Reserved.</p>
             </div>
         </div>
         <div className="container w-full !px-6 flex md:hidden flex-col mt-6 lg:mt-8 xl:mt-14  mx-auto">
@@ -125,33 +126,33 @@ const handleFetchLocation = async () => {
             <div className="grid grid-cols-2 justify-between mb-5 lg:mb-8 3xl:mb-[20px]">
                 
                     <div className="block col-span-1">
-                        <strong className='uppercase font-semibold text-sm 3xl:text-sm mb-6 text-[#E3E3E3] block'>COMPANY</strong>
+                        <strong className='uppercase font-semibold text-sm 3xl:text-sm mb-6 text-[#E3E3E3] block'>Quick Links</strong>
                         <ul className='flex flex-col gap-5'>
-                            <li className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Home</li>
-                            <li className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>About Us</li>
-                            <li className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Resume Builder</li>
-                            <li className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Career Advisor</li>
-                            <li className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Mock Interviews</li>
-                            <li className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Skill Center</li>
-                            <li className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Blogs</li>
+                            <Link href={'/'} className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Home</Link>
+                            <Link href={'/about-us'} className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>About Us</Link>
+                            <Link href={'/companies'} className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Companies</Link>
+                            {/* <Link href={'/'} className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Career Advisor</Link>
+                            <Link href={'/'} className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Mock Interviews</Link>
+                            <Link href={'/'} className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Skill Center</Link>
+                            <Link href={'/'} className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Blogs</Link> */}
                         </ul>
                     </div>
                     <div className="col-span-1 flex flex-col justify-between">
                         <div className="">
                             <strong className='uppercase font-semibold text-sm 3xl:text-sm mb-6 text-[#E3E3E3] block'>Legal</strong>
                             <ul className='flex flex-col gap-5'>
-                                <li className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Privacy Policy</li>
-                                <li className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Terms of Use</li>
-                                <li className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Cookie Policy</li>
+                                <Link href={'https://meuat.kaam.com/privacy_policy'} className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Privacy Policy</Link>
+                                <Link href={'/'} className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Terms of Use</Link>
+                                {/* <Link href={'/'} className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Cookie Policy</Link> */}
                             </ul>
                         </div>
-                        <div className="">
+                        {/* <div className="">
                             <strong className='uppercase font-semibold text-sm 3xl:text-sm mb-6 text-[#E3E3E3] block'>Resources</strong>
                             <ul className='flex flex-col gap-5'>
-                                <li className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Help Center</li>
-                                <li className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>FAQs</li>
+                                <Link href={'/'} className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Help Center</Link>
+                                <Link href={'/'} className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>FAQs</Link>
                             </ul>
-                        </div>
+                        </div> */}
                     </div>
                     <div className="block col-span-2 mt-11">
                         <strong className='uppercase font-semibold text-sm 3xl:text-sm mb-6 text-[#E3E3E3] block'>Contact US</strong>
@@ -164,7 +165,7 @@ const handleFetchLocation = async () => {
                 
             </div>
             <div className="flex w-full justify-end py-6 flex-col md:flex-row gap-4 border-t border-[#BDBDBD]">
-                <p className='text-xs text-[#E3E3E3]'>© Copyright 2024 App. All Rights Reserved.</p>
+                <p className='text-xs text-[#E3E3E3]'>© Copyright 2025. All Rights Reserved.</p>
             </div>
         </div>
     </footer>

@@ -250,7 +250,7 @@ export default function OTPInputForm({ size, closePopup, handleBack }: any) {
         onSubmit={formik.handleSubmit}
       >
         {/* @ts-ignore */}
-        <DialogBody className="mt-2 max-h-[50vh] sm:max-h-[60vh] md:max-h-[70vh] lg:max-h-[80vh] overflow-y-auto custom-scroll p-0 px-5">
+        <DialogBody className="mt-2 max-h-[50vh] sm:max-h-[60vh] md:max-h-[70vh] lg:max-h-[80vh] p-0 px-5">
           <div className={`${size === "md" ? "px-12" : "px-0"}`}>
             <label
               htmlFor="mobile"
@@ -266,13 +266,13 @@ export default function OTPInputForm({ size, closePopup, handleBack }: any) {
               placeholder="Enter your mobile number to receive OTP"
               readOnly
               required
-              className={`text-[#231F20] ${
+              className={`otp-number text-[#231F20] ${
                 user?.mobile ? "font-semibold" : "font-normal"
               }`}
             />
             <div
               className={`flex ${
-                size === "xxl" ? "gap-10" : "gap-0"
+                size === "xxl" ? "gap-4 justify-between sm:gap-10" : "gap-0"
               } mt-2 xl:mt-[10px] ${
                 size === "xxl" ? "justify-start" : "justify-between"
               }`}
@@ -295,7 +295,7 @@ export default function OTPInputForm({ size, closePopup, handleBack }: any) {
                   {index < 3 && (
                     <span
                       className={`text-[#98A2B3] ${
-                        size === "md" ? "top-4 -right-8" : "top-2 -right-7"
+                        size === "md" ? "top-4 -right-8" : "top-2 -right-5 lg:-right-7"
                       }  text-3xl absolute`}
                     >
                       -
@@ -318,7 +318,7 @@ export default function OTPInputForm({ size, closePopup, handleBack }: any) {
           <button
             type="submit"
             disabled={!formik.isValid || formik.isSubmitting}
-            className={`${
+            className={`sign-btn ${
               size === "md" ? "text-lg" : "text-md"
             } mt-1 no-margin px-6 py-2 !bg-red hover:bg-red text-white rounded-full ${
               !formik.isValid || formik.isSubmitting
@@ -329,7 +329,7 @@ export default function OTPInputForm({ size, closePopup, handleBack }: any) {
             Verify
           </button>
           <div>
-            <p className="mt-4 2xl:mt-5 text-center text-[#000000]">
+            <p className="mt-4 2xl:mt-5 text-[14px] sm:text-[16px] text-center text-[#000000]">
               Didn’t receive code?
               <span
                 tabIndex={0}

@@ -13,7 +13,7 @@ const SelectedChips: React.FC<SelectedChipsProps> = ({
   size,
 }) => {
   return (
-    <div className="flex flex-wrap gap-4">
+    <div className="flex flex-wrap gap-[10px] sm:gap-4">
       {selectedValues.map((role) => (
         <div
           key={role.value}

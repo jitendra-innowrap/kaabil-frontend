@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import type { Viewport } from 'next'
 import { Poppins, Kalam } from 'next/font/google';
 import './globals.css';
 import './mobile-responsive.css';
@@ -32,6 +33,15 @@ export const metadata: Metadata = {
   description: "A Job portal by kaabil",
 };
 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  // Also supported but less commonly used
+  // interactiveWidget: 'resizes-visual',
+}
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -39,6 +49,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" style={{scrollBehavior:'smooth'}}>
+
       <body
         className={`${kalam.variable} ${poppins.className} antialiased`}
       >

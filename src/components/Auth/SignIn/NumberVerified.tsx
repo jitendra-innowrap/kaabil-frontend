@@ -94,7 +94,7 @@ export default function NumberVerified({ size, closePopup }: any) {
           <DialogFooter className={`p-0 pb-6  flex justify-center ${size === "md" ? "!px-[66px]" : "px-[20px]"}`} >
             <div className="mt-4 w-full">
               <button
-                className={`${
+                className={`sign-btn ${
                   size === "md" ? "text-lg" : "text-md"
                 } mt-1 no-margin px-6 py-2 !bg-red hover:bg-red text-white rounded-full`}
                 disabled={!mobile}

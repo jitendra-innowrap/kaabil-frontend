@@ -218,7 +218,7 @@ export default function SaveJobCard(prop:any) {
                     <path d="M5.25737 10.3573C5.20718 10.4078 5.14751 10.4479 5.08179 10.4752C5.01607 10.5025 4.94559 10.5166 4.87441 10.5166C4.80323 10.5166 4.73275 10.5025 4.66703 10.4752C4.60131 10.4479 4.54164 10.4078 4.49145 10.3573L1.4332 7.29853C1.28088 7.14616 1.19531 6.93954 1.19531 6.72409C1.19531 6.50865 1.28088 6.30202 1.4332 6.14966L1.81616 5.7667C1.96853 5.61438 2.17515 5.52881 2.3906 5.52881C2.60604 5.52881 2.81267 5.61438 2.96503 5.7667L4.87441 7.67607L10.0338 2.5167C10.1861 2.36438 10.3928 2.27881 10.6082 2.27881C10.8237 2.27881 11.0303 2.36438 11.1827 2.5167L11.5656 2.89966C11.7179 3.05202 11.8035 3.25865 11.8035 3.47409C11.8035 3.68954 11.7179 3.89616 11.5656 4.04853L5.25737 10.3573Z" fill="#4D4D4F"/>
                     </g>
                 </svg>
-                Applied on {prop?.applied_job_date}
+                Applied on {prop?.applied_job_date || new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'short' })}
             </button>:
             <button type='button' onClick={(e)=>{handleApply(prop?.id); e.stopPropagation();}} className={`grid place-items-center btn-border whitespace-nowrap !py-0 xl:!px-5 3xl:!px-8 h-[30px] 3xl:h-[44px] flex-1 text-[10px] 2xl:text-xs 3xl:text-sm text-white !bg-red !border-red ${isApplied?"opacity-60 disabled cursor-default":""}`}>{isApplied?"Job Applied":"quick Apply"}</button>
             }

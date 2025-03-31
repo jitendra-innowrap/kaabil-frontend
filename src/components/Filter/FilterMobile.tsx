@@ -176,6 +176,7 @@ export default function FilterMobilePannel() {
 
                 <RangeAccordian/>
                 {/* <PopularTags/> */}
+
             </div>
         </div>
     </div>

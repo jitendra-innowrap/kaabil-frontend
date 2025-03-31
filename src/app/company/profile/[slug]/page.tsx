@@ -147,7 +147,8 @@ if(isLoading){
  const tabTitles = ["About", "Jobs", "Perks & Benefits"]
   return (
     <main>
-      <section className="bg-[#0a0100] py-10 2xl:py-16 3xl:py-[76px] relative sm:sticky top-[0] lg:top-[56px] 3xl:top-[90px] z-[11]">
+      {/* Added to stick sm:sticky top-[0] lg:top-[56px] 3xl:top-[90px] z-[11] */}
+      <section className="bg-[#0a0100] py-10 2xl:py-16 3xl:py-[76px] relative"> 
             <Image
                 src="/new-assets/icons/Comapny-profile-bg.png"
                 width={988}
@@ -296,7 +297,7 @@ if(isLoading){
             <div className="flex justify-center">
               <button 
                     className="mx-auto text-xs 2xl:text-base font-normal 3xl:w-[252px] 3xl:h-[50px] mt-6 md:mt-8"
-                    onClick={() => router.push(`/jobs?search=${CompanyDetails?.company_name}`)}
+                    onClick={() => router.push(`/jobs?company=${CompanyDetails?.company_name}&cmp_id=${CompanyDetails?.company_master_id}`)}
                 >
                     View all jobs
               </button>

@@ -95,7 +95,7 @@ function LoadMoreAccordion({
     } else {
       params.delete(filterKey.toLowerCase());
     }
-    router.push(`?${params.toString()}`, { scroll: false });
+    router.replace(`?${params.toString()}`, { scroll: false });
   };
 
   const handleRadio = (item: { key: string, latitude?: number, longitude?: number }) => {
@@ -110,7 +110,7 @@ function LoadMoreAccordion({
     } else {
       params.delete(filterKey.toLowerCase());
     }
-    router.push(`?${params.toString()}`, { scroll: false });
+    router.replace(`?${params.toString()}`, { scroll: false });
   };
 
 

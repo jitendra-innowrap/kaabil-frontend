@@ -381,65 +381,69 @@ export default function Home() {
                     </div>
                 </div>
             </section>
-            <section className="bg-[#F6F7F7]">
-                <div className="container no-pad py-5 md:py-8 xl:py-14 2xl:py-16">
-                    <div className="bg-[#FEF5E4] rounded-[24px] p-4 px-2 flex flex-col lg:flex-row gap-4 lg:gap-6">
-                        <div className="w-full flex items-center">
-                        <h2 className="mx-auto max-w-[300px] xl:max-w-[400px] flex-shrink-0 2xl:max-w-[500px] text-xl md:text-2xl xl:text-3xl 2xl:text-[40px] 2xl:leading-[52px] font-medium">Kaabil helps you create resumes, practice for interviews, and get jobs!</h2>
-                        </div>
-                        <div className="lg:w-1/2 home-nudges">
-                        <GallerySlider
-                        slides={nudges}
-                        arrowOut={false}
-                        spaceBetween={20}
-                        showNavigation
-                        loop={true}
-                        autoplay={true}
-                            autoplayDuration={3000}
-                            freeMode={false}
-                        slidesPerView={1}
-                        />
+            <div className="section-shadow-2">
+                <section className="bg-[#F6F7F7]" style={{
+                        boxShadow: "inset 1px 9px 20px -11px #7F54541F"
+                    }}>
+                    <div className="container no-pad py-5 md:py-8 xl:py-14 2xl:py-16">
+                        <div className="bg-[#FEF5E4] rounded-[24px] p-4 px-2 flex flex-col lg:flex-row gap-4 lg:gap-6">
+                            <div className="w-full flex items-center">
+                            <h2 className="mx-auto max-w-[300px] xl:max-w-[400px] flex-shrink-0 2xl:max-w-[500px] text-xl md:text-2xl xl:text-3xl 2xl:text-[40px] 2xl:leading-[52px] font-medium">Kaabil helps you create resumes, practice for interviews, and get jobs!</h2>
+                            </div>
+                            <div className="lg:w-1/2 home-nudges">
+                            <GallerySlider
+                            slides={nudges}
+                            arrowOut={false}
+                            spaceBetween={20}
+                            showNavigation
+                            loop={true}
+                            autoplay={true}
+                                autoplayDuration={3000}
+                                freeMode={false}
+                            slidesPerView={1}
+                            />
+                            </div>
                         </div>
                     </div>
-                </div>
-            </section>
-            <section className="pb-5 xl:pb-6 bg-[#F5F5F5]">
-                <div className="w-full flex flex-col items-center mb-5 md:mb-8 xl:mb-14 2xl:mb-16  mx-auto">
-                <div className="section-heading mb-5 xl:mb-8 container">
-                    <h2 className='text-black text-center text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[64px] font-medium mb-0'>Learn key <span className="font-kalam text-red font-bold ">skills</span> for career success</h2>
-                    <p className="font-normal text-center xl:text-lg 2xl:text-xl 2xl:leading-9">Access all the tools and skills to transform your professional journey from where you are to where you want to be.</p>
-                </div>
-                <div className="container no-pad">
-                    <div className="block">
-                        <GallerySlider
-                        slides={skillsSlides}
-                        spaceBetween={20}
-                        showNavigation
-                        loop={true}
-                        autoplay={false}
-                            autoplayDuration={3000}
-                            freeMode={false}
-                        slidesPerView={1}
-                        breakpoints={{
-                            320: {
-                                slidesPerView: 2.1,
-                                spaceBetween: 8,
-                            },
-                            480:{
-                                slidesPerView: 1.3,
-                            },
-                            768: {
-                              slidesPerView: 2.5,
-                            },
-                            1024: {
-                              slidesPerView: 3,
-                            },
-                          }}
-                        />
+                </section>
+                <section className="pb-5 xl:pb-6 bg-[#F5F5F5]">
+                    <div className="w-full flex flex-col items-center mb-5 md:mb-8 xl:mb-14 2xl:mb-16  mx-auto">
+                    <div className="section-heading mb-5 xl:mb-8 container">
+                        <h2 className='text-black text-center text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[64px] font-medium mb-0'>Learn key <span className="font-kalam text-red font-bold ">skills</span> for career success</h2>
+                        <p className="font-normal text-center xl:text-lg 2xl:text-xl 2xl:leading-9">Access all the tools and skills to transform your professional journey from where you are to where you want to be.</p>
                     </div>
-                </div>
-                </div>
-            </section>
+                    <div className="container no-pad">
+                        <div className="block">
+                            <GallerySlider
+                            slides={skillsSlides}
+                            spaceBetween={20}
+                            showNavigation
+                            loop={true}
+                            autoplay={false}
+                                autoplayDuration={3000}
+                                freeMode={false}
+                            slidesPerView={1}
+                            breakpoints={{
+                                320: {
+                                    slidesPerView: 2.1,
+                                    spaceBetween: 8,
+                                },
+                                480:{
+                                    slidesPerView: 1.3,
+                                },
+                                768: {
+                                slidesPerView: 2.5,
+                                },
+                                1024: {
+                                slidesPerView: 3,
+                                },
+                            }}
+                            />
+                        </div>
+                    </div>
+                    </div>
+                </section>
+            </div>
             <section className="pt-5 xl:pt-6 bg-[#eeefef] relative">
                 <div className="container small w-90 md:w-full flex flex-col items-center mt-5 md:mt-8 xl:mt-12 mx-auto">
                 <FindCareerSection/>

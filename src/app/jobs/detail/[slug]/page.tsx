@@ -277,7 +277,8 @@ export default function Home() {
   };
   return (
     <main className="bg-white">
-      <section className="bg-[#FDEAC9] py-6 xl:py-8 sm:sticky sm:top-[52px] lg:top-[56px] 3xl:top-[90px] z-10">
+      {/* Add to stick sm:sticky sm:top-[52px] lg:top-[56px] 3xl:top-[90px] z-10 */}
+      <section className="bg-[#FDEAC9] py-6 xl:py-8">
       <div className="container relative z-[1]">
         <div className="flex justify-between flex-wrap flex-col sm:flex-row sm:items-end gap-5 xl:gap-7 2xl:gap-8">
           <div className="flex justify-between flex-row gap-3 2xl:gap-5 3xl:gap-8">

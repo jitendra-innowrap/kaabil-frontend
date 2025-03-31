@@ -40,41 +40,41 @@ export default function BurgerMenu() {
                 </div> */}
                 <ul className="flex flex-col px-6 gap-4 xl:gap-8">
                     <li className='flex'>
-                        <Link href={"/jobs"} className='text-Grey hover:text-black font-medium hover:font-semibold relative after:w-full after:h-1 after:rounded-[4px] hover:after:bg-red after:absolute after:bottom-[-12px] after:left-0'>
+                        <Link onClick={closeSideMenu} href={"/jobs"} className='text-Grey hover:text-black font-medium hover:font-semibold relative after:w-full after:h-1 after:rounded-[4px] hover:after:bg-red after:absolute after:bottom-[-12px] after:left-0'>
                         Jobs
                         </Link>
                     </li>
                     <li className='relative group/menu flex'>
-                        <Link href={"/"} className='text-Grey hover:text-black font-medium group-hover/menu:font-semibold relative after:w-full after:h-1 after:rounded-[4px] group-hover/menu:after:bg-red after:absolute after:bottom-[-12px] after:left-0'>
+                        <Link onClick={closeSideMenu} href={"/"} className='text-Grey hover:text-black font-medium group-hover/menu:font-semibold relative after:w-full after:h-1 after:rounded-[4px] group-hover/menu:after:bg-red after:absolute after:bottom-[-12px] after:left-0'>
                         Career Tools
                         </Link>
                     </li>
                     <li className='flex'>
-                        <Link href={"/"} className='text-Grey hover:text-black font-medium hover:font-semibold relative after:w-full after:h-1 after:rounded-[4px] hover:after:bg-red after:absolute after:bottom-[-12px] after:left-0'>
+                        <Link onClick={closeSideMenu} href={"/"} className='text-Grey hover:text-black font-medium hover:font-semibold relative after:w-full after:h-1 after:rounded-[4px] hover:after:bg-red after:absolute after:bottom-[-12px] after:left-0'>
                         Skill Centre
                         </Link>
                     </li>
                     <li className='flex'>
-                        <Link href={"/"} className='text-Grey hover:text-black font-medium hover:font-semibold relative after:w-full after:h-1 after:rounded-[4px] hover:after:bg-red after:absolute after:bottom-[-12px] after:left-0'>
+                        <Link onClick={closeSideMenu} href={"/"} className='text-Grey hover:text-black font-medium hover:font-semibold relative after:w-full after:h-1 after:rounded-[4px] hover:after:bg-red after:absolute after:bottom-[-12px] after:left-0'>
                         About Us
                         </Link>
                     </li>
                 </ul>
                 <ul className='flex flex-col px-6 gap-7 mt-5'>
                     <li className='relative group/menu flex'>
-                        <Link href={"/"} className='text-Grey hover:text-black font-medium group-hover/menu:font-semibold relative after:w-full after:h-1 after:rounded-[4px] group-hover/menu:after:bg-red after:absolute after:bottom-[-12px] after:left-0'>
+                        <Link onClick={closeSideMenu} href={"/"} className='text-Grey hover:text-black font-medium group-hover/menu:font-semibold relative after:w-full after:h-1 after:rounded-[4px] group-hover/menu:after:bg-red after:absolute after:bottom-[-12px] after:left-0'>
                         Employer Corner
                         </Link>
                     </li>
                     <li className='relative group/menu text-Grey font-medium flex'>
-                        <Link href={"/"} className='relative text-black flex items-center p-2 border border-[#e3e3e3] rounded-lg'>
+                        <div className='relative text-black flex items-center p-2 border border-[#e3e3e3] rounded-lg'>
                         <SlGlobe className='text-black font-medium mr-1'/> English
                         <BiChevronDown className='font-medium text-2xl text-black'/>
-                        </Link>
+                        </div>
                     </li>
-                    <li>
+                    {/* <li>
                         <SignInButton closeSideMenu={closeSideMenu}/>
-                    </li>
+                    </li> */}
                     <li>
                     <Image
                         height={100}

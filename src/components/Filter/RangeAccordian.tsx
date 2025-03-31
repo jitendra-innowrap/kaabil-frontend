@@ -58,7 +58,7 @@ function RangeAccordion() {
         params.set('maxSalary', tempValue.max.toString());
 
         // Use router to push new URL params without refreshing the page
-        router.push(`?${params.toString()}`, { scroll: false });
+        router.replace(`?${params.toString()}`, { scroll: false });
     };
 
     return (

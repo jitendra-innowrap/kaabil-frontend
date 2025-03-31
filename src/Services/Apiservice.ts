@@ -40,7 +40,7 @@ api.interceptors.request.use(async (config) => {
 });
 
 export const api2 = axios.create({
-  baseURL: "http://13.200.132.142:5000",
+  baseURL: "https://feed.meuat.kaam.com",
   headers: {
     "Content-Type": "application/json",
   },

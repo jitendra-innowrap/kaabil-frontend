@@ -92,7 +92,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
             readOnly
           />
           <label
-            className={`text-[12px] sm:text-[14px] !mb-0 !p-0 ${isSelected ? "text-[#E31837]" : ""} ${
+            className={`text-[12px] sm:text-[14px] lg:text-[10px] 2xl:text-[13px] 3xl:text-sm !mb-0 !p-0 ${isSelected ? "text-[#E31837]" : ""} ${
               isDisabled ? "text-[#231F20]" : ""
             } ${isDisabled ? 'cursor-not-allowed' : 'cursor-pointer'}`}
           >

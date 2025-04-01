@@ -1245,6 +1245,19 @@ label {
     margin-bottom: 0 !important;
     height: 40px !important;
   }
+  .onboarding-dailog.onboarding-scale {
+    /* position: absolute !important;
+    left: 50%; */
+    /* top: calc(50% - 229px) !important; */
+    top: 10px !important;
+    width: 620px !important;
+    position: static !important;
+    min-width: 620px !important;
+    max-width: 620px !important;
+    /* max-height: calc(100vh - 450px); */
+    transform: none !important;
+    scale: .8;
+  }
 }
 
 @media (min-width: 1700px) {
@@ -1455,6 +1468,19 @@ label {
   .job_listing_center_top_companies_nudge h3 {
     margin-bottom: 10px !important;
     height: 40px !important;
+  }
+  .onboarding-dailog.onboarding-scale {
+    /* position: absolute !important;
+    left: 50%; */
+    /* top: calc(50% - 229px) !important; */
+    top: 10px !important;
+    width: 620px !important;
+    position: static !important;
+    min-width: 620px !important;
+    max-width: 620px !important;
+    /* max-height: calc(100vh - 450px); */
+    transform: none !important;
+    scale: 1;
   }
 }
 

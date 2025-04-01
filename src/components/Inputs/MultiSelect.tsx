@@ -44,7 +44,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
       }
     }
     if(maxSelections && maxSelections !== updatedSelections.length ){
-      setTimeout(() => setMenuOpen(true), 0.01); // Keep menu open
+      // setTimeout(() => setMenuOpen(true), 0.01); // Keep menu open
     }
     onChange(updatedSelections);
   };

@@ -38,6 +38,7 @@ export default function RegisterInMinutes() {
                 width={287}
                 height={253}
                 alt="resume-builder"
+                onClick={handlelogin}
                 />
             </div>
   </>

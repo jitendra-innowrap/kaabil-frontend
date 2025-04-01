@@ -7,7 +7,7 @@ import RangeAccordian from './RangeAccordian'
 import PopularTags from './PopularTags'
 import { GrLocation } from 'react-icons/gr'
 import { useAppSelector } from '@/redux/hooks'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import Image from 'next/image'
 
 export default function FilterMobilePannel() {
@@ -71,20 +71,34 @@ export default function FilterMobilePannel() {
         document.body.style.overflow = '';
         };
     }, [open]);
-      useEffect(() => {
-        // Add or remove 'no-scroll' class to body when popup is open or closed
-        if (open) {
-          document.addEventListener("click", handleOverlayClick);
-          document.body.classList.add("no-scroll");
-        } else {
-          document.removeEventListener("click", handleOverlayClick);
-          document.body.classList.remove("no-scroll");
+    
+    useEffect(() => {
+    // Add or remove 'no-scroll' class to body when popup is open or closed
+    if (open) {
+        document.addEventListener("click", handleOverlayClick);
+        document.body.classList.add("no-scroll");
+    } else {
+        document.removeEventListener("click", handleOverlayClick);
+        document.body.classList.remove("no-scroll");
+    }
+    return () => {
+        document.removeEventListener("click", handleOverlayClick);
+        document.body.classList.remove("no-scroll");
+    };
+    }, [open]);
+
+    const pathname = usePathname();
+
+    const handleSearch = (e: any) => {
+        e.preventDefault();
+        const params = new URLSearchParams();
+        if (search) params.set('search', search);
+        if(pathname=='/jobs'){
+            router.replace(`/jobs?${params.toString()}`);
+        }else{
+            router.push(`/jobs?${params.toString()}`);
         }
-        return () => {
-          document.removeEventListener("click", handleOverlayClick);
-          document.body.classList.remove("no-scroll");
-        };
-      }, [open]);
+    };
   return (
       <>
       {/* <pre>{JSON.stringify(filters,null,2)}</pre> */}
@@ -92,7 +106,7 @@ export default function FilterMobilePannel() {
     {open && 
     <div ref={overlayRef} id='filter-pannel-overlay' className={`block bg-black opacity-20 z-[103]  w-screen h-screen fixed top-0 left-0 `} onClick={()=>setOpen(false)}></div>}
     <div className="sticky top-[52px] h-fit">
-        <div className="flex mobile-job-search relative lg:hidden justify-between items-center w-full mb-[22px]">
+        <form onSubmit={handleSearch} className="flex mobile-job-search relative lg:hidden justify-between items-center w-full mb-[22px]">
             <input
                 type="text"
                 id="searchbar_input"
@@ -107,7 +121,7 @@ export default function FilterMobilePannel() {
             <div className='absolute size-[18px] top-[21px] left-[19px]' style={{textTransform:'unset'}}>
                 <Image width={18} height={18} src={"/new-assets/icons/mobile-filter-search.svg"} alt='search icon' />
             </div>
-        </div>
+        </form>
     </div>
     <div className="filters-sidebar !static w-screen lg:min-w-[260px] 3xl:min-w-[320px] h-fit lg:p-6 rounded-[20px] flex bg-white flex-col lg:w-fit items-start">
         <div className="flex lg:gap-7 xl:gap-10 2xl:gap-12">

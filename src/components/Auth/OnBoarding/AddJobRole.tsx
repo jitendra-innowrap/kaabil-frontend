@@ -52,7 +52,7 @@ export default function AddJobRole({ size, closePopup, handleBack }: any) {
     };
 
     fetchMaster();
-  }, []);
+  }, [progress==5]);
 
 
   const fetchRoles = async () => {
@@ -315,7 +315,7 @@ export default function AddJobRole({ size, closePopup, handleBack }: any) {
           <DialogFooter className="p-0 pb-6 px-6 sm:!px-12 mt-5 flex justify-center">
             <div className="flex w-full justify-end sm:justify-between items-end">
               <div className="whitespace-nowrap dialog-footer-paging">
-                <span className="text-red">{6 - 4}</span> - 6
+                <span className="text-red">{progress - 4}</span> - 6
               </div>
               <button
                 type="submit"

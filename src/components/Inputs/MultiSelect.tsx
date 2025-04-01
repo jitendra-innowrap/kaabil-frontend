@@ -77,6 +77,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
           {...innerProps}
           onClick={() => {
             if (!isDisabled) handleChange(data);
+            setMenuOpen(false);
           }}
           className={`relative flex items-center gap-3 ${
             isDisabled ? "opacity-90 cursor-not-allowed" : "cursor-pointer"

@@ -1792,10 +1792,10 @@ label {
     padding: 9px 12px !important;
     font-size: 12px;
   }
-  .onboarding-dailog .css-13cymwt-control, .onboarding-dailog .css-t3ipsp-control{
+  .onboarding-dialog .css-13cymwt-control, .onboarding-dialog .css-t3ipsp-control{
     height: 44px !important;
   }
-  .onboarding-dailog .dialog-action-btn {
+  .onboarding-dialog .dialog-action-btn {
     height: 38px !important;
     line-height: 100%;
     width: 159px;
@@ -1817,7 +1817,7 @@ label {
     max-height: calc(100vh - 370px);
     overflow: auto;
   }
-  .onboarding-dailog label.form-group {
+  .onboarding-dialog label.form-group {
     height: 40px;
     font-size: 12px;
     padding: 9px;
@@ -1833,33 +1833,33 @@ label {
     font-size: 14px;
     align-content: center;
   }
-  .onboarding-dailog .sign-btn {
+  .onboarding-dialog .sign-btn {
     height: 40px !important;
     font-size: 14px;
     border-radius: 8px;
   }
-  .onboarding-dailog .scroll-content-experience input:not(.react-select input) {
+  .onboarding-dialog .scroll-content-experience input:not(.react-select input) {
     height: 40px !important;
     font-size: 12px;
     padding: 6px 16px;
     border-radius: 6px;
   }
-  .onboarding-dailog .custom-form-label{
+  .onboarding-dialog .custom-form-label{
     font-size: 12px !important;
   }
-  .onboarding-dailog .otp-number,   .onboarding-dailog  .mobile-input{
+  .onboarding-dialog .otp-number,   .onboarding-dialog  .mobile-input{
     height: 45px !important;
   }
-  .onboarding-dailog  .otp-input{
+  .onboarding-dialog  .otp-input{
     height: 45px !important;
     width: 65px !important;
   }
-  .onboarding-dailog {
+  .onboarding-dialog {
     position: absolute;
     height: 100%;
     width: 100%;
   }
-  .onboarding-dailog input.edu-checkbox{
+  .onboarding-dialog input.edu-checkbox{
     height: 16px !important;
     width: 16px !important;
   }

@@ -15,6 +15,7 @@ import {
   DialogHeader,
 } from "@material-tailwind/react";
 import { IoClose } from "react-icons/io5";
+import styles from "./signIn.module.css";
 
 // Toast ID tracker outside the component
 let toastId: string | null = null;
@@ -23,8 +24,6 @@ export default function MobileInputForm({ size, closePopup }: any) {
   const dispatch = useAppDispatch();
   const { savedMobileNumber } = useAppSelector((state) => state.user);
   const progress = useAppSelector((state) => state.progress.value);
-
-  console.log(size, "Verify Modal Style Over Here Please Check");
   // ✅ Validation schema
   const validationSchema = Yup.object().shape({
     mobile: Yup.string()
@@ -40,8 +39,8 @@ export default function MobileInputForm({ size, closePopup }: any) {
     try {
       const { mobile } = values;
 
-      console.log(mobile, "Verify Mobile Over Here");
-      await dispatch(setSaveMobileNumber(mobile));
+      // console.log(mobile, "Verify Mobile Over Here");
+      dispatch(setSaveMobileNumber(mobile));
       const response = await dispatch(
         login({ mobile, name: "", login_type: 1, role_id: 4 })
       ).unwrap();
@@ -105,7 +104,7 @@ export default function MobileInputForm({ size, closePopup }: any) {
     <Dialog
       open={progress === 1}
       size={size}
-      className={`onboarding-dailog ${
+      className={`${styles.onboarding_dialog} ${
         size === "md" ? "fixed top-12 -translate-x-1/2  onboarding-scale" : ""
       }`}
     >
@@ -151,7 +150,7 @@ export default function MobileInputForm({ size, closePopup }: any) {
                 <div className={`${size === "md" ? "px-12" : "px-0"}`}>
                   <label
                     htmlFor="mobile"
-                    className="text-[#231F20] mobile-text text-lg md:text-xl 2xl:text-[16px]"
+                    className="text-[#231F20] mobile-text text-[14px] sm:text-lg md:text-xl 2xl:text-[16px]"
                   >
                     Mobile Number
                   </label>
@@ -161,7 +160,7 @@ export default function MobileInputForm({ size, closePopup }: any) {
                     name="mobile"
                     value={values?.mobile}
                     placeholder="Enter your mobile number to receive OTP"
-                    className={`otp-number border p-2 w-full rounded-[12px] text-[#231F20] ${
+                    className={`${styles.onboarding_dialog_input} border px-3 py-2 w-full rounded-[8px] sm:rounded-[12px] text-[#231F20] ${
                       values?.mobile ? "font-semibold" : "font-normal"
                     } ${size === "xxl" ? "text-[14px] sm:text-sm" : "text-lg"}`}
                     maxLength={10} // Restricts input to 10 characters
@@ -188,9 +187,9 @@ export default function MobileInputForm({ size, closePopup }: any) {
                 <button
                   type="submit"
                   disabled={!isValid || isSubmitting}
-                  className={`sign-btn ${
+                  className={`${styles.onboarding_dialog_btn} w-full ${
                     size === "md" ? "text-lg" : "text-md"
-                  } mt-1 no-margin px-6 py-2 !bg-red hover:bg-red text-white rounded-full ${
+                  } mt-1 no-margin !bg-red hover:bg-red text-white ${
                     isSubmitting ? "opacity-50 cursor-not-allowed" : ""
                   }`}
                 >

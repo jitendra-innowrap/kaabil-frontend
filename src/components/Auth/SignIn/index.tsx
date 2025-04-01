@@ -1,7 +1,6 @@
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import React, { useEffect, useState } from "react";
 import MobileInputForm from "./MobileInputForm";
-import "./signIn.css";
 import OTPInputForm from "./OTPInputForm";
 import NumberVerified from "./NumberVerified";
 import { setProgress } from "@/redux/progressSlice";
@@ -29,6 +28,7 @@ const index = ({ closePopup }: { closePopup: () => void }) => {
   };
 
   useEffect(() => {
+      dispatch(setProgress(2));
     const updateSize = () => {
       if (window.innerWidth < 768) {
         setDialogSize("xxl");
@@ -45,7 +45,7 @@ const index = ({ closePopup }: { closePopup: () => void }) => {
     <>
       <MobileInputForm size={dialogSize} closePopup={closePopup} />
       <OTPInputForm
-        size={dialogSize}
+        size={"600px"}
         closePopup={closePopup}
         handleBack={handleBack}
       />

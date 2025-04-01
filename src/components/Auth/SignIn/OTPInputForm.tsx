@@ -7,6 +7,8 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import React, { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
+import styles from "./signIn.module.css";
+
 import {
   getAuthUser,
   storeAuthToken,
@@ -194,9 +196,7 @@ export default function OTPInputForm({ size, closePopup, handleBack }: any) {
     <Dialog
       open={progress === 2}
       size={size}
-      className={`onboarding-dailog ${
-        size === "md" ? "fixed -top-8 -translate-x-1/2  onboarding-scale" : ""
-      }`}
+      className={`max-w-[660px] ${styles.onboarding_dialog}`}
     >
       {/* @ts-ignore */}
       <DialogHeader>
@@ -251,7 +251,7 @@ export default function OTPInputForm({ size, closePopup, handleBack }: any) {
       >
         {/* @ts-ignore */}
         <DialogBody className="mt-2 max-h-[50vh] sm:max-h-[60vh] md:max-h-[70vh] lg:max-h-[80vh] p-0 px-5">
-          <div className={`${size === "md" ? "px-12" : "px-0"}`}>
+          <div className={`max-w-[528px]`}>
             <label
               htmlFor="mobile"
               className="text-[#231F20] mobile-text text-lg md:text-xl 2xl:text-[16px]"
@@ -278,9 +278,9 @@ export default function OTPInputForm({ size, closePopup, handleBack }: any) {
               }`}
             >
               {formik.values.otp.map((digit, index) => (
-                <div className="relative" key={index}>
+                <div className={`${styles.onboarding_dialog_otp_dash} relative`} key={index}>
                   <input
-                    className="otp-input border border-borderBlue text-center text-lg md:text-xl font-semibold"
+                    className={`${styles.onboarding_dialog_otp_input} border border-borderBlue text-center text-lg md:text-xl font-semibold`}
                     name={`otp${index}`}
                     type="tel"
                     maxLength={1}
@@ -292,15 +292,15 @@ export default function OTPInputForm({ size, closePopup, handleBack }: any) {
                       inputRefs.current[index] = ref;
                     }}
                   />
-                  {index < 3 && (
-                    <span
-                      className={`text-[#98A2B3] ${
-                        size === "md" ? "top-4 -right-8" : "top-2 -right-5 lg:-right-7"
-                      }  text-3xl absolute`}
-                    >
-                      -
-                    </span>
-                  )}
+                  {/*{index < 3 && (*/}
+                  {/*  <span*/}
+                  {/*    className={`text-[#98A2B3] ${*/}
+                  {/*      size === "md" ? "top-4 -right-8" : "top-2 -right-5 lg:-right-7"*/}
+                  {/*    }  text-3xl absolute`}*/}
+                  {/*  >*/}
+                  {/*    -*/}
+                  {/*  </span>*/}
+                  {/*)}*/}
                 </div>
               ))}
             </div>
@@ -318,9 +318,9 @@ export default function OTPInputForm({ size, closePopup, handleBack }: any) {
           <button
             type="submit"
             disabled={!formik.isValid || formik.isSubmitting}
-            className={`sign-btn ${
+            className={`${styles.onboarding_dialog_btn} w-full ${
               size === "md" ? "text-lg" : "text-md"
-            } mt-1 no-margin px-6 py-2 !bg-red hover:bg-red text-white rounded-full ${
+            } mt-1 no-margin px-6 py-2 !bg-red hover:bg-red text-white ${
               !formik.isValid || formik.isSubmitting
                 ? "opacity-50 cursor-not-allowed"
                 : ""

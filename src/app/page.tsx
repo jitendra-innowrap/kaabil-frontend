@@ -277,7 +277,10 @@ export default function Home() {
             <section className=''>
                 <Link href={'/jobs'} className='block w-full'>
                     <Image src='/new-assets/home/banner.png' quality={100} alt="" width={3840} height={1000}
-                    className="w-full h-auto home-banner"
+                    className="hidden sm:inline-block w-full h-auto home-banner"
+                    />
+                    <Image src='/new-assets/banners/home-mobile-banner.svg' quality={100} alt="" width={3840} height={1000}
+                    className="inline-block sm:hidden !w-full !h-auto home-banner"
                     />
                 </Link>
                 <div className="bg-[#F5F5F5]">

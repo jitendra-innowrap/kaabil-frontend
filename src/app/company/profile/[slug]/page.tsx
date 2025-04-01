@@ -113,10 +113,10 @@ const handleFollow = async () => {
 
     console.log(response?.data?.status);
 
-    if (response.data?.status === '2') {
+    if (response.data?.status == '2') {
       showToast(`You unfollowed ${CompanyDetails?.company_name}!`); // Success toast
       setIsFollowed(false);
-    } else if (response.data?.status === '1') {
+    } else if (response.data?.status == '1') {
       showToast(`You followed ${CompanyDetails?.company_name}!`); // Success toast
       setIsFollowed(true);
     }

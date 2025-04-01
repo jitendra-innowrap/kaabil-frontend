@@ -68,6 +68,28 @@ export default function SignInButton({ closeSideMenu }: prop) {
       closePopup();
     }
   };
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [isDropDownOpen, setIsDropDownOpen] = useState(false);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropDownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  // Close dropdown when an option is selected
+  const handleOptionClick = (action: () => void) => {
+    setIsDropDownOpen(false);
+    action();
+  };
 
   useEffect(() => {
     // Add or remove 'no-scroll' class to body when popup is open or closed
@@ -125,34 +147,34 @@ export default function SignInButton({ closeSideMenu }: prop) {
             </span>
             <PiBellBold className="size-4 3xl:size-5" />
           </div> */}
-          <div className="relative group/menu flex items-center cursor-pointer mobile-profile-option">
+          <div 
+            ref={dropdownRef} 
+            className="relative group/menu flex items-center cursor-pointer mobile-profile-option"
+            onMouseEnter={() => setIsDropDownOpen(true)}
+            onMouseLeave={() => setIsDropDownOpen(false)}
+            onClick={() => setIsDropDownOpen(!isDropDownOpen)}
+          >
             <div
               tabIndex={0}
               className="relative size-[30px] xl:size-[40px] 2xl:size-[50px]"
             >
-              {/* <span className="size-2 xl:size-[14px] bg-success text-white rounded-full absolute text-[10px] grid place-items-center leading-none top-[1px] -right-[2px] border-[1.5px] border-white">
-                5
-              </span> */}
               <Image
                 height={100}
                 width={100}
-                src={
-                  user?.photo_url
-                    ? user?.photo_url
-                    : "/new-assets/icons/avatar.svg"
-                }
+                src={user?.photo_url || "/new-assets/icons/avatar.svg"}
                 className="object-cover border rounded-full flex-shrink-0 size-[30px] w-full xl:size-[40px] 2xl:size-[50px]"
-                alt="kaabil logo"
+                alt="Profile picture"
               />
             </div>
             <BiChevronDown className="font-medium text-xl 3xl:text-2xl text-black" />
-            <div className="absolute z-30 hidden group-focus-within/menu:block group-hover/menu:block top-0 lg:left-0 profile-options-menu">
+            
+            {/* Dropdown menu - now controlled by isOpen state */}
+            <div className={`absolute z-30 ${isDropDownOpen ? 'block' : 'hidden'} top-0 lg:left-0 profile-options-menu`}>
               <div className="bg-white shadow-default mt-[45px] lg:mt-[52px] 2xl:mt-[76px] rounded-xl w-[140px] 2xl:w-[180px] border border-lightGrey divide-y divide-lightGrey">
                 <div
-                  onClick={gotoMyProfile}
+                  onClick={() => handleOptionClick(gotoMyProfile)}
                   className="flex items-center group/link gap-3 3xl:gap-4 text-Grey hover:text-black py-3 2xl:py-4 font-medium hover:font-semibold text-xs 2xl:text-base px-5 cursor-pointer"
                 >
-                  {/* Default (gray) image - hidden on hover */}
                   <Image
                     className="size-4 3xl:size-5 block group-hover/link:hidden"
                     src="/new-assets/icons/user.svg"
@@ -160,7 +182,6 @@ export default function SignInButton({ closeSideMenu }: prop) {
                     height={20}
                     alt="Profile"
                   />
-                  {/* Black image - shown on hover */}
                   <Image
                     className="size-4 3xl:size-5 hidden group-hover/link:block"
                     src="/new-assets/icons/user-black.svg"
@@ -171,42 +192,42 @@ export default function SignInButton({ closeSideMenu }: prop) {
                   View Profile
                 </div>
                 <div
-                  onClick={gotoMyjob}
+                  onClick={() => handleOptionClick(gotoMyjob)}
                   className="flex items-center group/link gap-3 3xl:gap-4 text-Grey hover:text-black py-3 2xl:py-4 font-medium hover:font-semibold text-xs 2xl:text-base px-5 cursor-pointer"
                 >
                   <Image
                     className="size-4 3xl:size-5 block group-hover/link:hidden"
-                    src={"/new-assets/icons/my-jobs.svg"}
+                    src="/new-assets/icons/my-jobs.svg"
                     width={50}
                     height={50}
-                    alt="logout"
+                    alt="My Jobs"
                   />
                   <Image
                     className="size-4 3xl:size-5 hidden group-hover/link:block"
-                    src={"/new-assets/icons/my-jobs-black.svg"}
+                    src="/new-assets/icons/my-jobs-black.svg"
                     width={50}
                     height={50}
-                    alt="logout"
+                    alt="My Jobs"
                   />
                   My Jobs
                 </div>
                 <div
-                  onClick={logout}
+                  onClick={() => handleOptionClick(logout)}
                   className="flex items-center group/link gap-3 3xl:gap-4 text-Grey hover:text-black py-3 2xl:py-4 font-medium hover:font-semibold text-xs 2xl:text-base px-5 cursor-pointer"
                 >
                   <Image
                     className="size-4 3xl:size-5 block group-hover/link:hidden"
-                    src={"/new-assets/icons/logout.svg"}
+                    src="/new-assets/icons/logout.svg"
                     width={50}
                     height={50}
-                    alt="logout"
+                    alt="Logout"
                   />
                   <Image
                     className="size-4 3xl:size-5 hidden group-hover/link:block"
-                    src={"/new-assets/icons/logout-black.svg"}
+                    src="/new-assets/icons/logout-black.svg"
                     width={50}
                     height={50}
-                    alt="logout"
+                    alt="Logout"
                   />
                   Logout
                 </div>

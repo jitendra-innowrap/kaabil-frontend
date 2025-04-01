@@ -23,7 +23,7 @@ export default function LogoutDialog({ onClose }: prop) {
               </div>
               <div>
                 <h2 className="text-center font-semibold text-lg md:text-xl 2xl:text-[28px] 2xl:leading-[36px]">
-                    Are you sure you want to logout
+                    Are you sure you want to logout?
                 </h2>
                     <div className="mt-4 flex gap-3 w-full justify-center">
                     <button

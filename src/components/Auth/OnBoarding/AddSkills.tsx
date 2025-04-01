@@ -21,6 +21,7 @@ import {
   DialogBody,
   DialogFooter,
   DialogHeader,
+  Progress,
 } from "@material-tailwind/react";
 import { FaArrowLeft } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
@@ -40,7 +41,7 @@ export default function AddSkills({ size, closePopup, handleBack }: any) {
 
   useEffect(() => {
     fetchSkills("");
-  }, []);
+  }, [progress]);
 
   // Initialize selectedSkills with user's existing skills
   useEffect(() => {
@@ -59,7 +60,7 @@ export default function AddSkills({ size, closePopup, handleBack }: any) {
         }))
       );
     }
-  }, [user.skills]);
+  }, [user.skills, progress]);
 
   const fetchSkills = async (search: any) => {
     const authUserRole = getAuthUserDesiredRole();

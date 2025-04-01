@@ -60,7 +60,7 @@ export default function LoadGoogleMapsScript() {
     };
     fetchUserSkills();
 
-    }, [dispatch, id]);
+    }, [dispatch, id, isLoggedIn]);
 
   return null; // This component doesn't render anything
 }

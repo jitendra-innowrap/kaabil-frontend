@@ -52,7 +52,7 @@ export default function BurgerMenu() {
             >
                 <div className="flex pl-5 relative mt-4 mb-10 pr-4 items-center">
                     <img
-                        src="/assets/logos/Kaabil logo.svg"
+                        src="/new-assets/logos/kaabil-logo.svg"
                         className='w-auto max-w-fit h-[50px] md:h-[80px] 2xl:h-[100px]'
                         alt='kaabil logo'
                         />

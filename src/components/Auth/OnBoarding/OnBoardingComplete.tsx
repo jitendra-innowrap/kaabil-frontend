@@ -177,7 +177,7 @@ export default function OnBoardingComplete({ size, closePopup }: any) {
                   />
                   <div
                     onClick={handleUploadClick}
-                    className="!rounded-full py-2 px-4 bg-red text-white"
+                    className="!rounded-full py-2 !px-2 lg:text-[10px]  lg:text-center bg-red text-white"
                   >
                     Upload Photo
                   </div>
@@ -218,11 +218,11 @@ export default function OnBoardingComplete({ size, closePopup }: any) {
                   </div>
                 </div>
               </div>
-              <div className="flex items-center gap-2 my-4">
+              <div className="flex items-start gap-2 my-4">
                 <input
                   type="checkbox"
                   name="whatsapp_consent"
-                  className="!mb-0 !mt-1 cursor-pointer inline-block !w-4 !h-4"
+                  className="!mb-0 !mt-1 cursor-pointer !flex-shrink-0 block !w-4 !h-auto wc-check"
                   id="whatsapp_consent"
                   checked={WAConsent}
                   onChange={(e) => {
@@ -237,7 +237,7 @@ export default function OnBoardingComplete({ size, closePopup }: any) {
                   I consent to share my number with the recruiter for connecting
                   with me via
                   <Image
-                    src={"/new-assets/icons/whatsapp.png"}
+                    src={"/new-assets/icons/whatsapp.svg"}
                     alt="whatsapp-icon"
                     className="w-[89px] h-[20px] inline ml-2"
                     width={100}
@@ -246,11 +246,11 @@ export default function OnBoardingComplete({ size, closePopup }: any) {
                   />
                 </label>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-start gap-2">
                 <input
                   type="checkbox"
                   name="is_tnc_checked"
-                  className="!mb-0 !mt-1 cursor-pointer inline-block !w-4 !h-4"
+                  className="!mb-0 !mt-1 cursor-pointer !flex-shrink-0 block !w-4 !h-auto agree-check"
                   id="is_tnc_checked"
                   checked={tncChecked}
                   onChange={(e) => {

@@ -26,7 +26,7 @@ export default function AddEducation({ size, closePopup, handleBack }: any) {
 
   useEffect(() => {
     fetchEducation();
-  }, []);
+  }, [progress==8]);
 
   // Initialize formik values with user's existing education
   useEffect(() => {

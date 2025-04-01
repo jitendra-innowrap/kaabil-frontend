@@ -25,7 +25,7 @@ const {isLoggedIn} = useAppSelector((state) => state.user);
                             <Image
                                 height={70}
                                 width={141}
-                                src="/new-assets/logos/Kaabil logo.png"
+                                src="/new-assets/logos/kaabil-logo.svg"
                                 className='w-auto max-w-fit h-[40px] xl:h-[40px] 3xl:h-[70px]'
                                 alt='kaabil logo'
                                 />

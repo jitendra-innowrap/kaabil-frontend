@@ -16,6 +16,9 @@
 html {
   scroll-behavior: smooth;
 }
+#_rht_toaster{
+  z-index: 99999 !important;
+}
 body {
   max-width: 100vw;
   background-color: #f9f9f9;
@@ -738,13 +741,6 @@ label {
   }
 }
 @media (width >= 1024px) {
-  .onboarding-scale {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%) !important;
-    scale: 1;
-  }
   .search-section input#searchbar_input,
   .search-section button {
     height: 52px;
@@ -932,6 +928,19 @@ label {
   }
   .job-listings .nudges-bar {
     margin-top: 69px;
+  }
+  .onboarding-dailog.onboarding-scale {
+    /* position: absolute !important;
+    left: 50%; */
+    /* top: calc(50% - 229px) !important; */
+    top: 10px !important;
+    width: 620px !important;
+    position: static !important;
+    min-width: 620px !important;
+    max-width: 620px !important;
+    /* max-height: calc(100vh - 400px); */
+    transform: none !important;
+    scale: .6;
   }
 }
 @media (width >=1280px) {
@@ -1236,6 +1245,19 @@ label {
     margin-bottom: 0 !important;
     height: 40px !important;
   }
+  .onboarding-dailog.onboarding-scale {
+    /* position: absolute !important;
+    left: 50%; */
+    /* top: calc(50% - 229px) !important; */
+    top: 10px !important;
+    width: 620px !important;
+    position: static !important;
+    min-width: 620px !important;
+    max-width: 620px !important;
+    /* max-height: calc(100vh - 450px); */
+    transform: none !important;
+    scale: .8;
+  }
 }
 
 @media (min-width: 1700px) {
@@ -1446,6 +1468,19 @@ label {
   .job_listing_center_top_companies_nudge h3 {
     margin-bottom: 10px !important;
     height: 40px !important;
+  }
+  .onboarding-dailog.onboarding-scale {
+    /* position: absolute !important;
+    left: 50%; */
+    /* top: calc(50% - 229px) !important; */
+    top: 10px !important;
+    width: 620px !important;
+    position: static !important;
+    min-width: 620px !important;
+    max-width: 620px !important;
+    /* max-height: calc(100vh - 450px); */
+    transform: none !important;
+    scale: 1;
   }
 }
 
@@ -1776,7 +1811,7 @@ label {
   }
   .home-banner{
     width: auto;
-    height: 269px !important;
+    /* height: 269px !important; */
     object-fit: cover;
     object-position: left;
   }

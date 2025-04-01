@@ -381,7 +381,7 @@ export default function Home() {
                     </div>
                 </div>
             </section>
-            {/* <div className="section-shadow-2">
+            <div className="section-shadow-2">
                 <section className="bg-[#F6F7F7]" style={{
                         boxShadow: "inset 1px 9px 20px -11px #7F54541F"
                     }}>
@@ -443,7 +443,7 @@ export default function Home() {
                     </div>
                     </div>
                 </section>
-            </div> */}
+            </div>
             {/* <section className="pt-5 xl:pt-6 bg-[#eeefef] relative">
                 <div className="container small w-90 md:w-full flex flex-col items-center mt-5 md:mt-8 xl:mt-12 mx-auto">
                 <FindCareerSection/>

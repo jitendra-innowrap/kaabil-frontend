@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { setProgress } from "@/redux/progressSlice";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { GoDotFill } from "react-icons/go";
 import AddExperienceForm from "./AddExperienceForm";
 import Image from "next/image";
@@ -33,6 +33,11 @@ export default function AddMoreExperience({
   const [newExperience, setNewExperience] = useState(false);
   const [isEditing, setIsEditing] = useState<number | null>(null); // Track which experience is being edited
   const [isSubmitting, setIsSubmitting] = useState(false); // Disable buttons during submission
+
+  useEffect(() => {
+    setExperiences(experience)
+  }, [experience])
+  
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -212,7 +217,7 @@ export default function AddMoreExperience({
               >
                 <span className="text-[#231F20]">
                   Your
-                  <span className="text-red">experience </span>
+                  <span className="text-red"> experience </span>
                 </span>
               </h2>
             </div>
@@ -233,16 +238,17 @@ export default function AddMoreExperience({
               <h4 className="text-lg font-medium">
                 Please add all your experience
               </h4>
+              {/* <pre>{JSON.stringify(experiences)}</pre> */}
               {/* Dynamic list of all experience added by the user */}
               {experiences.map((exp, i) => (
                 <>
-                  {isEditing === i ? (
+                  {isEditing == i ? (
                     <div className="mt-3">
                       <AddExperienceForm
                         ref={setFormikFormRef}
                         formik={formikForm}
                       />
-                      {isEditing === i && (
+                      {isEditing == i && (
                         <div className="flex justify-end -translate-y-4">
                           <button
                             type="button"

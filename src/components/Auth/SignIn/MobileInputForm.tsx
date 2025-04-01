@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { login } from "@/redux/authSlice";
 import { setProgress } from "@/redux/progressSlice";
-import { setSaveMobileNumber, setUserMobile, signOut } from "@/redux/userSlice";
+import { setAuthToken, setSaveMobileNumber, setUserId, setUserMobile, signOut } from "@/redux/userSlice";
 import { clearSessionData } from "@/components/utils/deviceId";
 import toast from "react-hot-toast";
 import {
@@ -49,6 +49,8 @@ export default function MobileInputForm({ size, closePopup }: any) {
       if (response?.code === 1) {
         dispatch(setProgress(2));
         dispatch(setUserMobile(mobile));
+        if(response?.token) dispatch(setAuthToken(response?.token))
+        if(response?.user_id) dispatch(setUserId(response?.user_id))
         if (!toastId) {
           toastId = toast.success("An OTP has been sent!", {
             position: "bottom-right",

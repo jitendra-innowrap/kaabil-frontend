@@ -33,7 +33,7 @@ export default function AddLocation({ size, closePopup, handleBack }: any) {
 
   useEffect(() => {
     fetchLocation();
-  }, []);
+  }, [progress==7]);
 
   // Initialize selectedLocation with user's existing location
   useEffect(() => {
@@ -47,7 +47,7 @@ export default function AddLocation({ size, closePopup, handleBack }: any) {
         initialLocations.map((loc) => loc.value)
       );
     }
-  }, [current_location, locationList]);
+  }, [current_location, locationList, progress==7]);
 
   const fetchLocation = async () => {
     try {
@@ -204,7 +204,7 @@ export default function AddLocation({ size, closePopup, handleBack }: any) {
               <h4 className="text-[14px] sm:text-lg font-semibold !text-[#231F20]">
                 Select job location
               </h4>
-              <div className="my-2">
+              <div className="my-2 onboarding-location">
                 <MultiSelect
                   options={locationList}
                   placeholder="Job location"

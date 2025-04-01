@@ -738,13 +738,6 @@ label {
   }
 }
 @media (width >= 1024px) {
-  .onboarding-scale {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%) !important;
-    scale: 1;
-  }
   .search-section input#searchbar_input,
   .search-section button {
     height: 52px;
@@ -932,6 +925,19 @@ label {
   }
   .job-listings .nudges-bar {
     margin-top: 69px;
+  }
+  .onboarding-dailog.onboarding-scale {
+    /* position: absolute !important;
+    left: 50%; */
+    /* top: calc(50% - 229px) !important; */
+    top: 10px !important;
+    width: 620px !important;
+    position: static !important;
+    min-width: 620px !important;
+    max-width: 620px !important;
+    /* max-height: calc(100vh - 400px); */
+    transform: none !important;
+    scale: .6;
   }
 }
 @media (width >=1280px) {

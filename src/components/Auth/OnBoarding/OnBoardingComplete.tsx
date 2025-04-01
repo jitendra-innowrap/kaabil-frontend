@@ -177,7 +177,7 @@ export default function OnBoardingComplete({ size, closePopup }: any) {
                   />
                   <div
                     onClick={handleUploadClick}
-                    className="!rounded-full py-2 px-4 bg-red text-white"
+                    className="!rounded-full py-2 !px-2 lg:text-[10px]  lg:text-center bg-red text-white"
                   >
                     Upload Photo
                   </div>

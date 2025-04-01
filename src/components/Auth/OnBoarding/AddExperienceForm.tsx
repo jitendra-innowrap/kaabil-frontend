@@ -255,7 +255,7 @@ const AddExperienceForm = forwardRef(
                 </p>
               )}
             </div>
-            {isCurrentCompany && (
+            {!isCurrentCompany && (
               <div className="flex-1">
                 <label>Worked Till</label>
                 <input

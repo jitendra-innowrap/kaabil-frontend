@@ -1763,7 +1763,7 @@ label {
   }
   .home-banner{
     width: auto;
-    height: 269px !important;
+    /* height: 269px !important; */
     object-fit: cover;
     object-position: left;
   }

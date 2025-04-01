@@ -124,11 +124,12 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
         value={null} // Ensure the input does not display selected values
         onChange={() => {}} // Do nothing, since we handle selection manually
         className="react-select"
-        menuIsOpen={menuOpen}
+        // menuIsOpen={menuOpen}
         onMenuOpen={() => setMenuOpen(true)}
         onMenuClose={() => setMenuOpen(false)}
         menuPlacement="auto"
         menuPortalTarget={document.body}
+        // menuIsOpen={true}
         styles={{
           menuPortal: (base) => ({ ...base, zIndex: 9999 }),
           option: (base, { isFocused, isSelected }) => ({

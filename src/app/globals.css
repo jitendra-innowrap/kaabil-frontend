@@ -1799,13 +1799,16 @@ label {
     height: 38px !important;
     line-height: 100%;
     width: 159px;
+    margin: 0 !important;
   }
   .dailog-footer-fixed{
-    position: absolute !important;
     bottom: 0;
     left: 0;
     width: 100%;
+    position: absolute !important;
     padding: 16px !important;
+    background: #fff;
+    height: 70px;
   }
   .dailog-height {
     max-height: calc(100vh - 245px) !important;

@@ -70,10 +70,10 @@ export default function OTPInputForm({ size, closePopup, handleBack }: any) {
     validationSchema: Yup.object({
       otp: Yup.array()
         .test("complete-otp", "Mobile otp is required", (value) =>
-          value?.some((digit) => digit.trim() !== "")
+          value?.some((digit) => digit?.trim() !== "")
         )
         .test("required-otp", "Please enter all digits", (value) =>
-          value?.every((digit) => digit.trim() !== "")
+          value?.every((digit) => digit?.trim() !== "")
         ),
     }),
     onSubmit: async (values) => {

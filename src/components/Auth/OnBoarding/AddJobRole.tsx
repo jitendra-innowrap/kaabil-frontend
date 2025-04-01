@@ -214,9 +214,9 @@ export default function AddJobRole({ size, closePopup, handleBack }: any) {
           className={`${size === "md" ? "block mt-6" : "mt-2"}`}
         >
           {/* @ts-ignore */}
-          <DialogBody className="custom-dialog-body custom-scroll">
+          <DialogBody className="">
             <div
-              className={`scroll-content pb-2 cursor-pointer ${
+              className={`pb-2 cursor-pointer ${
                 size === "md" ? "px-12" : "px-0"
               }`}
             >

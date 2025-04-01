@@ -176,7 +176,7 @@ export default function EnterName({ size, closePopup }: any) {
               {/* @ts-ignore */}
               <label
                 htmlFor="name"
-                className={`text-[#231F20] ${
+                className={`!text-[14px] sm:text-[18px] text-[#231F20] ${
                   size === "md" ? "font-semibold" : "font-normal"
                 }`}
               >
@@ -198,7 +198,7 @@ export default function EnterName({ size, closePopup }: any) {
               />
               <div>
                 {formik.errors.name && formik.touched.name && (
-                  <p className="text-red-500 text-sm">{formik.errors.name}</p>
+                  <p className="text-red-500 text-[11px] sm:text-sm">{formik.errors.name}</p>
                 )}
               </div>
             </div>
@@ -211,7 +211,7 @@ export default function EnterName({ size, closePopup }: any) {
           >
             <button
               type="submit"
-              className={`${
+              className={`sign-btn ${
                 size === "md" ? "text-lg" : "text-md"
               } mt-1 no-margin px-6 py-2 !bg-red hover:bg-red text-white rounded-full ${
                 !formik.isValid || formik.isSubmitting

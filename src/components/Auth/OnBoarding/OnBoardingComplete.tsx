@@ -242,6 +242,7 @@ export default function OnBoardingComplete({ size, closePopup }: any) {
                     className="w-[89px] h-[20px] inline ml-2"
                     width={100}
                     height={30}
+                    quality="100"
                   />
                 </label>
               </div>

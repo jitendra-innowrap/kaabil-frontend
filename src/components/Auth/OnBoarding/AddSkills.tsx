@@ -209,16 +209,16 @@ export default function AddSkills({ size, closePopup, handleBack }: any) {
           className={`${size === "md" ? "block mt-6" : "mt-2"}`}
         >
           {/* @ts-ignore */}
-          <DialogBody className="custom-dialog-body custom-scroll">
+          <DialogBody className="custom-dialog-body custom-scroll dailog-height">
             <div
               className={`pb-2 cursor-pointer ${
                 size === "md" ? "px-12" : "px-0"
               }`}
             >
-              <h4 className="text-lg font-medium text-[#231F20]">Add Skills</h4>
+              <h4 className="text-[14px] sm:text-lg font-medium text-[#231F20]">Add Skills</h4>
               <p
                 className={`${
-                  size === "xxl" ? "text-xs" : "text-sm"
+                  size === "xxl" ? "text-[11px] sm:text-xs" : "text-sm"
                 } text-[#249D64]`}
               >
                 (You can search and add all your relevant skills)
@@ -242,104 +242,106 @@ export default function AddSkills({ size, closePopup, handleBack }: any) {
                   }}
                   selectedValues={selectedSkills}
                   icon={
-                    <FaMagnifyingGlass className="absolute left-[15px] top-[20px] size-4 text-[#808080]" />
+                    <FaMagnifyingGlass className="absolute left-[15px] top-[14px] sm:top-[20px] size-4 text-[#808080]" />
                   }
                 />
               </div>
-              <SelectedChips
-                selectedValues={selectedSkills}
-                size={size}
-                onRemove={(value) => {
-                  const updatedSkills = selectedSkills.filter(
-                    (skill) => skill.value !== value
-                  );
-                  setSelectedSkills(updatedSkills);
-                  formik.setFieldValue(
-                    "user_skill",
-                    updatedSkills.map((skill) => ({
-                      id: skill.value,
-                      name: skill.label,
-                      skill_level_type_id: "1",
-                    }))
-                  );
-                }}
-              />
-              {formik.errors.user_skill && formik.touched.user_skill && (
-                <div className="text-red text-sm mt-1">
-                  {formik.errors.user_skill as string}
-                </div>
-              )}
+              <div className={"selected-option-list"}>
+                <SelectedChips
+                    selectedValues={selectedSkills}
+                    size={size}
+                    onRemove={(value) => {
+                      const updatedSkills = selectedSkills.filter(
+                          (skill) => skill.value !== value
+                      );
+                      setSelectedSkills(updatedSkills);
+                      formik.setFieldValue(
+                          "user_skill",
+                          updatedSkills.map((skill) => ({
+                            id: skill.value,
+                            name: skill.label,
+                            skill_level_type_id: "1",
+                          }))
+                      );
+                    }}
+                />
+                {formik.errors.user_skill && formik.touched.user_skill && (
+                    <div className="text-red text-sm mt-1">
+                      {formik.errors.user_skill as string}
+                    </div>
+                )}
 
-              <h4 className="text-lg font-medium my-4 text-[#231F20]">
-                Suggested skills
-              </h4>
-              <div className="flex flex-wrap gap-4">
-                {skillsList.slice(0, 6).map((skill) => (
-                  <React.Fragment key={skill.value}>
-                    {selectedSkills.some((s) => s.value === skill.value) ? (
-                      <div
-                        className={`label-option selected flex items-center gap-2 bg-gray-200 px-3 py-1 rounded ${
-                          size === "xxl" ? "text-xs" : "text-md"
-                        }`}
-                        onClick={() => {
-                          const updatedSkills = selectedSkills.filter(
-                            (s) => s.value !== skill.value
-                          );
-                          setSelectedSkills(updatedSkills);
-                          formik.setFieldValue(
-                            "user_skill",
-                            updatedSkills.map((skill) => ({
-                              id: skill.value,
-                              name: skill.label,
-                              skill_level_type_id: "1",
-                            }))
-                          );
-                        }}
-                      >
-                        {skill.label}
-                        <span className="cursor-pointer">
+                <h4 className="text-[14px] sm:text-lg font-medium my-4 text-[#231F20]">
+                  Suggested skills
+                </h4>
+                <div className="flex flex-wrap gap-4">
+                  {skillsList.slice(0, 6).map((skill) => (
+                      <React.Fragment key={skill.value}>
+                        {selectedSkills.some((s) => s.value === skill.value) ? (
+                            <div
+                                className={`label-option selected flex items-center gap-2 bg-gray-200 px-3 py-1 rounded ${
+                                    size === "xxl" ? "text-xs" : "text-md"
+                                }`}
+                                onClick={() => {
+                                  const updatedSkills = selectedSkills.filter(
+                                      (s) => s.value !== skill.value
+                                  );
+                                  setSelectedSkills(updatedSkills);
+                                  formik.setFieldValue(
+                                      "user_skill",
+                                      updatedSkills.map((skill) => ({
+                                        id: skill.value,
+                                        name: skill.label,
+                                        skill_level_type_id: "1",
+                                      }))
+                                  );
+                                }}
+                            >
+                              {skill.label}
+                              <span className="cursor-pointer">
                           <RxCross2 />
                         </span>
-                      </div>
-                    ) : (
-                      <div
-                        className={`label-option add flex items-center gap-2 bg-gray-200 px-3 py-1 rounded ${
-                          size === "xxl" ? "text-xs" : "text-md"
-                        }`}
-                        onClick={() => {
-                          const updatedSkills = [...selectedSkills, skill];
-                          setSelectedSkills(updatedSkills);
-                          formik.setFieldValue(
-                            "user_skill",
-                            updatedSkills.map((skill) => ({
-                              id: skill.value,
-                              name: skill.label,
-                              skill_level_type_id: "1",
-                            }))
-                          );
-                        }}
-                      >
-                        {skill.label}
-                        <span className="cursor-pointer">
+                            </div>
+                        ) : (
+                            <div
+                                className={`label-option add flex items-center gap-2 bg-gray-200 px-3 py-1 rounded ${
+                                    size === "xxl" ? "text-xs" : "text-md"
+                                }`}
+                                onClick={() => {
+                                  const updatedSkills = [...selectedSkills, skill];
+                                  setSelectedSkills(updatedSkills);
+                                  formik.setFieldValue(
+                                      "user_skill",
+                                      updatedSkills.map((skill) => ({
+                                        id: skill.value,
+                                        name: skill.label,
+                                        skill_level_type_id: "1",
+                                      }))
+                                  );
+                                }}
+                            >
+                              {skill.label}
+                              <span className="cursor-pointer">
                           <IoIosAdd />
                         </span>
-                      </div>
-                    )}
-                  </React.Fragment>
-                ))}
+                            </div>
+                        )}
+                      </React.Fragment>
+                  ))}
+                </div>
               </div>
             </div>
           </DialogBody>
 
           {/* @ts-ignore */}
-          <DialogFooter className="p-0 pb-6 !px-12 mt-5 flex justify-center">
+          <DialogFooter className="p-0 pb-6 !px-12 mt-5 flex justify-center dailog-footer-fixed">
             <div className="flex w-full justify-between items-end">
               <div className="whitespace-nowrap">
                 <span className="text-red">{progress - 4}</span> - 6
               </div>
               <button
                 type="submit"
-                className={`max-w-[200px] sm:max-w-[250px] ${
+                className={`dialog-action-btn max-w-[200px] sm:max-w-[250px] ${
                   formik.isValid
                     ? "bg-red text-white"
                     : "!opacity-50 !cursor-default"

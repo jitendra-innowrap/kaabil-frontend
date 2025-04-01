@@ -141,7 +141,7 @@ const AddExperienceForm = forwardRef(
             )}
           </div>
           {formik.errors.designation && formik.touched.designation && (
-            <p className="text-red text-sm mt-1">{formik.errors.designation}</p>
+            <p className="text-red text-[11px] sm:text-sm mb-1 mt-1">{formik.errors.designation}</p>
           )}
 
           <div className="relative mb-2">
@@ -177,7 +177,7 @@ const AddExperienceForm = forwardRef(
             )}
           </div>
           {formik.errors.companyName && formik.touched.companyName && (
-            <p className="text-red text-sm mt-1">{formik.errors.companyName}</p>
+            <p className="text-red text-[11px] sm:text-sm  mb-1 mt-1">{formik.errors.companyName}</p>
           )}
 
           <input
@@ -190,7 +190,7 @@ const AddExperienceForm = forwardRef(
             className="mb-2 w-full p-2 border rounded"
           />
           {formik.errors.salary && formik.touched.salary && (
-            <p className="text-red text-sm mt-1">{formik?.errors.salary}</p>
+            <p className="text-red text-[11px] sm:text-sm  mb-1 mt-1">{formik?.errors.salary}</p>
           )}
 
           <div className="flex flex-wrap gap-4">
@@ -214,7 +214,7 @@ const AddExperienceForm = forwardRef(
           </div>
 
           {formik.errors.type && formik.touched.type && (
-            <p className="text-red text-sm mt-1">{formik.errors.type}</p>
+            <p className="text-red text-[11px] sm:text-sm  mb-1 mt-1">{formik.errors.type}</p>
           )}
 
           <div className="flex items-center gap-2 my-4">
@@ -229,7 +229,7 @@ const AddExperienceForm = forwardRef(
               }}
               className="!mb-0 inline-block !w-4 !h-4 cursor-pointer"
             />
-            <label htmlFor="isCurrentCompany" className="!mb-0 inline-block">
+            <label htmlFor="isCurrentCompany" className="!mb-0 inline-block custom-form-label">
               Currently working here
             </label>
           </div>
@@ -237,7 +237,7 @@ const AddExperienceForm = forwardRef(
           <div className="flex flex-col sm:flex-row gap-3">
             <div className="flex-1">
               <div>
-                <label>Working From</label>
+                <label className="custom-form-label">Working From</label>
                 <input
                   type="date"
                   id="jobStartDate"
@@ -250,7 +250,7 @@ const AddExperienceForm = forwardRef(
                 />
               </div>
               {formik.errors.jobStartDate && formik.touched.jobStartDate && (
-                <p className="text-red text-sm mt-1">
+                <p className="text-red text-[11px] sm:text-sm  mb-1 mt-1">
                   {formik.errors.jobStartDate}
                 </p>
               )}
@@ -269,7 +269,7 @@ const AddExperienceForm = forwardRef(
                   max={new Date().toISOString().split("T")[0]}
                 />
                 {formik.errors.jobEndDate && formik.touched.jobEndDate && (
-                  <p className="text-red text-sm mt-1">
+                  <p className="text-red text-[11px] sm:text-sm  mb-1 mt-1">
                     {formik.errors.jobEndDate}
                   </p>
                 )}

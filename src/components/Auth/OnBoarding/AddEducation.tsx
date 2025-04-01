@@ -162,10 +162,10 @@ export default function AddEducation({ size, closePopup, handleBack }: any) {
                 size === "md" ? "px-12" : "px-0"
               }`}
             >
-              <h4 className="text-lg font-medium mb-1">
+              <h4 className="text-[14px] mb-2 sm:text-lg font-medium sm:mb-1">
                 What is your highest level of education?
               </h4>
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-2 sm:gap-4 selected-option-list">
                 {qualificationList?.map((education) => (
                   <label
                     htmlFor={education.id}
@@ -173,7 +173,7 @@ export default function AddEducation({ size, closePopup, handleBack }: any) {
                     onClick={() =>
                       formik.setFieldValue("education_id", education.id)
                     }
-                    className={`form-group !flex !mb-0 gap-4 rounded-lg px-5  border shadow-sm items-center ${
+                    className={`form-group !flex !mb-0 gap-3 sm:gap-4 rounded-lg px-3 sm:px-5  border shadow-sm items-center ${
                       education.id === formik.values.education_id
                         ? "border-red bg-[#FDF1F3]"
                         : "border-[#C8C9CB1A]"
@@ -184,7 +184,7 @@ export default function AddEducation({ size, closePopup, handleBack }: any) {
                       id={education.id}
                       checked={education.id === formik.values.education_id}
                       name="experience"
-                      className={`cursor-pointer inline-block !m-0 !w-4 !h-4 ${
+                      className={`cursor-pointer edu-checkbox inline-block !m-0 sm:!w-4 sm:!h-4 ${
                         education.id === formik.values.education_id
                           ? "selected"
                           : ""
@@ -213,15 +213,15 @@ export default function AddEducation({ size, closePopup, handleBack }: any) {
           </DialogBody>
 
           {/* @ts-ignore */}
-          <DialogFooter className="p-0 pb-6 !px-12 mt-5 flex justify-center">
+          <DialogFooter className="p-0 pb-6 px-6 sm:!px-12 mt-5 flex justify-center">
             <div className="flex w-full items-end">
-              <div className="whitespace-nowrap">
+              <div className="whitespace-nowrap dialog-footer-paging">
                 <span className="text-red">{progress - 4}</span> - 6
               </div>
-              <div className="flex gap-4 items-end w-full justify-end">
+              <div className="flex gap-2 sm:gap-4 items-end w-full justify-between sm:justify-end footer-2btn">
                 <span
                   onClick={() => dispatch(setProgress(11))}
-                  className={`max-w-[130px] text-[#231F20] cursor-pointer border-[#9C9C9C] flex items-center btn-border !py-3.5 !px-9 !rounded-xl`}
+                  className={` sm:max-w-[130px] text-[#231F20] cursor-pointer border-[#9C9C9C] flex items-center btn-border !py-3.5 !px-9 !rounded-xl`}
                 >
                   Skip
                 </span>

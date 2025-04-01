@@ -8,18 +8,19 @@
   background: none !important;
   width: fit-content !important;
 }
-
-.onboarding-dailog input:not(.react-select input),
-.onboarding-dailog button {
-  height: 60px !important;
-}
-
-@media (max-width: 600px) {
+@media (min-width: 601px) {
   .onboarding-dailog input:not(.react-select input),
   .onboarding-dailog button {
-    height: 48px !important;
+    height: 60px !important;
   }
 }
+
+/*@media (max-width: 600px) {*/
+/*  .onboarding-dailog input:not(.react-select input),*/
+/*  .onboarding-dailog button {*/
+/*    height: 48px !important;*/
+/*  }*/
+/*}*/
 
 .onboarding-dailog label {
   display: block;

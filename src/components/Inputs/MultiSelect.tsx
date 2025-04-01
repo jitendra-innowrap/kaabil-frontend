@@ -43,7 +43,9 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
         updatedSelections.push(selectedOption);
       }
     }
-    setTimeout(() => setMenuOpen(true), 0.01); // Keep menu open
+    if(maxSelections && maxSelections !== updatedSelections.length ){
+      setTimeout(() => setMenuOpen(true), 0.01); // Keep menu open
+    }
     onChange(updatedSelections);
   };
 
@@ -82,14 +84,14 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
         >
           <input
             type="checkbox"
-            className={`!w-3 !h-3 ${
+            className={`w-4 h-4 sm:!w-3 sm:!h-3 ${
               isDisabled ? "opacity-60 cursor-not-allowed" : "cursor-pointer"
             }`}
             checked={isSelected}
             readOnly
           />
           <label
-            className={`!mb-0 !p-0 ${isSelected ? "text-[#E31837]" : ""} ${
+            className={`text-[12px] sm:text-[14px] !mb-0 !p-0 ${isSelected ? "text-[#E31837]" : ""} ${
               isDisabled ? "text-[#231F20]" : ""
             } ${isDisabled ? 'cursor-not-allowed' : 'cursor-pointer'}`}
           >
@@ -116,7 +118,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
       <ReactSelect
         options={updatedOptions}
         components={{ Option, DropdownIndicator }}
-        closeMenuOnSelect={false}
+        closeMenuOnSelect={true}
         hideSelectedOptions={false}
         placeholder={placeholder}
         value={null} // Ensure the input does not display selected values
@@ -148,7 +150,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
         }}
       />
       <div
-        className="absolute right-[20px] top-[21px] cursor-pointer"
+        className="absolute right-[20px] top-[14px] sm:top-[21px] cursor-pointer"
         onClick={() => setMenuOpen((prev) => !prev)}
       >
         {menuOpen ? (

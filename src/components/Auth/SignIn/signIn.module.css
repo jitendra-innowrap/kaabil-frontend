@@ -9,6 +9,7 @@
     width: 100%;
     height: 56px;
     border-radius: 12px;
+    background: #F5F5F5;
 }
 
 .onboarding_dialog_btn{
@@ -54,9 +55,9 @@
         border-radius: 8px
     }
     .onboarding_dialog_btn{
-        height: 38px;
+        height: 40px;
         border-radius: 8px;
-        line-height: 38px;
+        line-height: 40px;
     }
     .onboarding_dialog_otp_input{
         width: 64px;

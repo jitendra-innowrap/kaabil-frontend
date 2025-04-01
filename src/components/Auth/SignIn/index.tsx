@@ -1,5 +1,10 @@
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import React, { useEffect, useState } from "react";
+import {
+  Dialog,
+  DialogBody,
+  Drawer
+} from "@material-tailwind/react";
 import MobileInputForm from "./MobileInputForm";
 import OTPInputForm from "./OTPInputForm";
 import NumberVerified from "./NumberVerified";
@@ -12,6 +17,33 @@ import AddEducation from "../OnBoarding/AddEducation";
 import AddExperience from "../OnBoarding/AddExperience";
 import AddMoreExperience from "../OnBoarding/AddMoreExperience";
 import OnBoardingComplete from "../OnBoarding/OnBoardingComplete";
+
+const RenderModelDrawer = ({ size, children }: { size: "xs" | "sm" | "md" | "lg" | "xl" | "xxl"; children: React.ReactNode }) => {
+  switch (size) {
+    case "xxl":
+      return <Drawer
+        overlay={true}
+        placement="bottom"
+        open={true}
+        size="100%"
+        onClose={() => {}}
+        className="overflow-hidden"
+      >
+        <DialogBody>
+          {children}
+        </DialogBody>
+      </Drawer>;
+    default:
+      return  <Dialog
+        open={true}
+        handler={() => {}}
+        className="overflow-hidden"
+        size={size as "xs" | "sm" | "md" | "lg" | "xl" | "xxl"}
+      >
+          {children}
+      </Dialog>;
+  }
+};
 
 const index = ({ closePopup }: { closePopup: () => void }) => {
   const progress = useAppSelector((state) => state.progress.value);
@@ -28,7 +60,7 @@ const index = ({ closePopup }: { closePopup: () => void }) => {
   };
 
   useEffect(() => {
-      dispatch(setProgress(2));
+      dispatch(setProgress(3));
     const updateSize = () => {
       if (window.innerWidth < 768) {
         setDialogSize("xxl");
@@ -42,14 +74,14 @@ const index = ({ closePopup }: { closePopup: () => void }) => {
   }, []);
 
   return (
-    <>
-      <MobileInputForm size={dialogSize} closePopup={closePopup} />
-      <OTPInputForm
-        size={"600px"}
+    <RenderModelDrawer size={dialogSize}>
+      {progress == 1 && <MobileInputForm size={dialogSize} closePopup={closePopup} />}
+      {progress == 2 && <OTPInputForm
+        size={dialogSize}
         closePopup={closePopup}
         handleBack={handleBack}
-      />
-      <NumberVerified size={dialogSize} closePopup={closePopup} />
+      />}
+      {progress == 3 && <NumberVerified size={dialogSize} closePopup={closePopup} />}
       <EnterName size={dialogSize} closePopup={closePopup} />
       <AddJobRole
         size={dialogSize}
@@ -86,7 +118,7 @@ const index = ({ closePopup }: { closePopup: () => void }) => {
         closePopup={closePopup}
         onClose={closePopup}
       />
-    </>
+    </RenderModelDrawer>
   );
 };
 

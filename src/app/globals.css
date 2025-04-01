@@ -16,6 +16,9 @@
 html {
   scroll-behavior: smooth;
 }
+#_rht_toaster{
+  z-index: 99999 !important;
+}
 body {
   max-width: 100vw;
   background-color: #f9f9f9;

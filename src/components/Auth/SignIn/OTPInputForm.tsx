@@ -43,6 +43,7 @@ export default function OTPInputForm({ size, closePopup, handleBack }: any) {
     if (progress === 2) {
       inputRefs.current[0]?.focus();
     }
+    if(progress=== 2) setTimer(60)
   }, [progress]);
 
   useEffect(() => {

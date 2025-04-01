@@ -13,6 +13,10 @@
   .onboarding-dailog button {
     height: 60px !important;
   }
+  .onboarding-dailog input.agree-check:not(.react-select input),
+  .onboarding-dailog input.wc-check:not(.react-select input){
+    height: 20px !important;
+  }
 }
 
 /*@media (max-width: 600px) {*/
@@ -283,6 +287,14 @@
   }
   .css-qr46ko{
     max-height: 200px !important;
+  }
+  .css-1limbg7-option,
+   .css-1jy9mwy-option{
+    padding: 8px 10px !important;
+  }
+  .onboarding-dailog input.agree-check, 
+  .onboarding-dailog input.wa-check {
+    height: 10px !important;
   }
 }
 /* Large screens (min-width: 1024px) */

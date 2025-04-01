@@ -374,9 +374,9 @@ function JobList() {
           return items;
         })}
       </div>}
-      <div className="block lg:hidden mt-4">
+      {/* <div className="block lg:hidden mt-4">
         <FindCareer />
-      </div>
+      </div> */}
 
       {/* Pagination */}
       <div className="mobile-container mt-12 mb-5 lg:mb-0 lg:mt-14 2xl:mt-16">

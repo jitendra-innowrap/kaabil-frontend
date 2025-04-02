@@ -71,7 +71,7 @@ function SearchSection() {
 
       const response = await api.get("/MasterData/getCity");
       console.log(response);
-      setLocationOptions(response.data?.result.map((ind:{id:string, name:string}) => ({ value: ind.id, label: ind.name })))
+      setLocationOptions(response?.data?.result?.map((ind:{id:string, name:string}) => ({ value: ind.id, label: ind.name })))
      
     } catch (error) {
       console.error("Error fetching job types:", error);

@@ -5,8 +5,8 @@ import React from "react";
 
 const About = () => {
   const { profileData } = useAppSelector((state) => state.profile);
-  console.log(profileData, "Verify Profile Data");
   const dispatch = useAppDispatch();
+
   return (
     <div className="profile-card bg-white rounded-lg">
       <div className="grid grid-cols-12 sm:pt-6 py-4 p-[16px] sm:p-[20px] lg:px-12">
@@ -46,7 +46,7 @@ const About = () => {
           </div>
         </div>
         <div
-          className="hidden col-span-2 flex justify-end gap-2 cursor-pointer"
+          className="col-span-2 flex justify-end gap-2 cursor-pointer"
           onClick={() => dispatch(setProfileModal(true))}
         >
           <img
@@ -54,7 +54,9 @@ const About = () => {
             className="h-3 mt-1"
             alt=""
           />
-          <span className="text-[13px] sm:text-sm font-bold text-red">Edit</span>
+          <span className="text-[13px] sm:text-sm font-bold text-red">
+            Edit
+          </span>
         </div>
       </div>
       <hr className="border-[#D4D4D4]" />
@@ -70,7 +72,9 @@ const About = () => {
             className="h-3 mt-1"
             alt=""
           />
-          <span className="text-[13px] sm:text-sm font-bold text-red">Edit</span>
+          <span className="text-[13px] sm:text-sm font-bold text-red">
+            Edit
+          </span>
         </div>
       </div>
       <div className="p-[16px] sm:p-[20px] lg:px-12 pb-8">

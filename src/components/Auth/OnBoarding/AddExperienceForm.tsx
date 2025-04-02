@@ -3,6 +3,7 @@ import React, {
   useEffect,
   forwardRef,
   useImperativeHandle,
+  useRef,
 } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -100,6 +101,26 @@ const AddExperienceForm = forwardRef(
       formik, // Expose the entire formik object if needed
     }));
 
+    // Add refs for the suggestion containers
+    const designationSuggestionsRef = useRef<HTMLDivElement>(null);
+    const companySuggestionsRef = useRef<HTMLDivElement>(null);
+
+    // Close suggestions when clicking outside
+    useEffect(() => {
+      const handleClickOutside = (event: MouseEvent) => {
+        if (designationSuggestionsRef?.current) {
+          setDesignationSuggestions([]);
+        }
+        if(companySuggestionsRef?.current){
+          setCompanySuggestions([]);
+        }
+      };
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }, []);
+
     return (
       <div className="p-4 xl:p-6 3xl:p-7 rounded-lg shadow-default experience-form-container">
         <form onSubmit={formik.handleSubmit}>
@@ -113,14 +134,16 @@ const AddExperienceForm = forwardRef(
                 formik.handleChange(e);
                 fetchDesignationSuggestions(e.target.value);
               }}
-              onFocus={() =>
-                fetchDesignationSuggestions(formik.values.designation)
+              onFocus={() =>{
+                fetchDesignationSuggestions(formik.values.designation);
+                setCompanySuggestions([]);
+              }
               }
               placeholder="Enter your designation"
               className="w-full p-2 border rounded"
             />
             {designationSuggestions?.length > 0 && (
-              <div className="absolute suggestion-option-list z-10 w-full max-h-[250px] min-h-[50px] overflow-auto p-0 bg-white border rounded-xl shadow-lg mt-1">
+              <div ref={designationSuggestionsRef} className="absolute suggestion-option-list z-10 w-full max-h-[250px] min-h-[50px] overflow-auto p-0 bg-white border rounded-xl shadow-lg mt-1">
                 {designationSuggestions?.map((suggestion) => (
                   <div
                     key={suggestion.id}
@@ -154,12 +177,15 @@ const AddExperienceForm = forwardRef(
                 formik.handleChange(e);
                 fetchCompanySuggestions(e.target.value);
               }}
-              onFocus={() => fetchCompanySuggestions(formik.values.companyName)}
+              onFocus={() => {
+                fetchCompanySuggestions(formik.values.companyName);
+                setDesignationSuggestions([])
+              }}
               placeholder="Enter your company name"
               className="w-full p-2 border rounded"
             />
             {companySuggestions?.length > 0 && (
-              <div className="absolute suggestion-option-list z-10 w-full max-h-[250px] min-h-[50px] overflow-auto p-0 bg-white border rounded-xl shadow-lg mt-1">
+              <div ref={companySuggestionsRef} className="absolute suggestion-option-list z-10 w-full max-h-[250px] min-h-[50px] overflow-auto p-0 bg-white border rounded-xl shadow-lg mt-1">
                 {companySuggestions?.map((suggestion) => (
                   <div
                     key={suggestion.id}

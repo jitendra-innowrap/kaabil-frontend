@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { default as ReactSelect, components } from "react-select";
 import { FaMagnifyingGlass, FaChevronDown, FaChevronUp } from "react-icons/fa6";
-import styles from "../Auth/SignIn/signIn.module.css"
 
 export interface OptionType {
   value: string;
@@ -86,7 +85,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
         >
           <input
             type="checkbox"
-            className={` w-4 h-4 sm:!w-3 sm:!h-3 ${
+            className={`w-4 h-4 sm:!w-3 sm:!h-3 ${
               isDisabled ? "opacity-60 cursor-not-allowed" : "cursor-pointer"
             }`}
             checked={isSelected}
@@ -125,13 +124,12 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
         placeholder={placeholder}
         value={null} // Ensure the input does not display selected values
         onChange={() => {}} // Do nothing, since we handle selection manually
-        className="react-select2"
-        // menuIsOpen={menuOpen}
+        className="react-select"
+        menuIsOpen={menuOpen}
         onMenuOpen={() => setMenuOpen(true)}
         onMenuClose={() => setMenuOpen(false)}
         menuPlacement="auto"
         menuPortalTarget={document.body}
-        // menuIsOpen={true}
         styles={{
           menuPortal: (base) => ({ ...base, zIndex: 9999 }),
           option: (base, { isFocused, isSelected }) => ({

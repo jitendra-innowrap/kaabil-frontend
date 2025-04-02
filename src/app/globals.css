@@ -32,9 +32,14 @@ body {
 
 .no-scroll {
   overflow: hidden !important;
-  height: 100vh !important;
+  /*height: 100vh !important;*/
   scrollbar-width:none !important;
-
+  touch-action: none;
+  -ms-touch-action: none;
+  height: 100%;
+  overflow: hidden;
+  width: 100%;
+  position: fixed;
 }
 
 .otp-input {
@@ -1827,20 +1832,23 @@ label {
     padding: 9px 12px !important;
     font-size: 12px;
   }
-  .onboarding-dailog .css-13cymwt-control, .onboarding-dailog .css-t3ipsp-control{
+  .onboarding-dialog .css-13cymwt-control, .onboarding-dialog .css-t3ipsp-control{
     height: 44px !important;
   }
-  .onboarding-dailog .dialog-action-btn {
+  .onboarding-dialog .dialog-action-btn {
     height: 38px !important;
     line-height: 100%;
     width: 159px;
+    margin: 0 !important;
   }
   .dailog-footer-fixed{
-    position: absolute !important;
     bottom: 0;
     left: 0;
     width: 100%;
+    position: absolute !important;
     padding: 16px !important;
+    background: #fff;
+    height: 70px;
   }
   .dailog-height {
     max-height: calc(100vh - 245px) !important;
@@ -1849,7 +1857,7 @@ label {
     max-height: calc(100vh - 370px);
     overflow: auto;
   }
-  .onboarding-dailog label.form-group {
+  .onboarding-dialog label.form-group {
     height: 40px;
     font-size: 12px;
     padding: 9px;
@@ -1865,33 +1873,33 @@ label {
     font-size: 14px;
     align-content: center;
   }
-  .onboarding-dailog .sign-btn {
+  .onboarding-dialog .sign-btn {
     height: 40px !important;
     font-size: 14px;
     border-radius: 8px;
   }
-  .onboarding-dailog .scroll-content-experience input:not(.react-select input) {
+  .onboarding-dialog .scroll-content-experience input:not(.react-select input) {
     height: 40px !important;
     font-size: 12px;
     padding: 6px 16px;
     border-radius: 6px;
   }
-  .onboarding-dailog .custom-form-label{
+  .onboarding-dialog .custom-form-label{
     font-size: 12px !important;
   }
-  .onboarding-dailog .otp-number,   .onboarding-dailog  .mobile-input{
+  .onboarding-dialog .otp-number,   .onboarding-dialog  .mobile-input{
     height: 45px !important;
   }
-  .onboarding-dailog  .otp-input{
+  .onboarding-dialog  .otp-input{
     height: 45px !important;
     width: 65px !important;
   }
-  .onboarding-dailog {
+  .onboarding-dialog {
     position: absolute;
     height: 100%;
     width: 100%;
   }
-  .onboarding-dailog input.edu-checkbox{
+  .onboarding-dialog input.edu-checkbox{
     height: 16px !important;
     width: 16px !important;
   }
@@ -1940,5 +1948,60 @@ label {
   border-radius: 8px !important;
   height: 53px !important;
 }
-
+.multi-select .react-select2{
+  /*background: #C8C9CB3B;*/
+}
 /* .css-t3ipsp-control */
+.multi-select .react-select2 div:nth-child(1) {
+  height: 56px !important;
+  width: 100%;
+  line-height: 50px;
+  padding-left: 20px;
+  border-radius: 8px !important;
+  background: rgba(245, 245, 245, 1);
+}
+
+.multi-select .react-select2 div[data-value]{
+  padding-left: 20px;
+  background: transparent;
+}
+
+.multi-select .react-select2 div[data-value] input{
+  height: 40px !important;
+  padding-left: 40px;
+  width: 100%;
+  background: transparent;
+}
+
+.multi-select  .css-13cymwt-control,
+.multi-select  .css-t3ipsp-control {
+  border: none;
+  border-radius: 8px;
+}
+
+@media (max-width: 768px) {
+  .multi-select .react-select2{
+    /*background: #C8C9CB3B;*/
+  }
+  /* .css-t3ipsp-control */
+  .multi-select .react-select2 div:nth-child(1) {
+    height: 48px !important;
+    width: 100%;
+    line-height: 42px;
+    padding-left: 20px;
+    border-radius: 8px !important;
+    background: rgba(245, 245, 245, 1);
+  }
+
+  .multi-select .react-select2 div[data-value]{
+    padding-left: 20px;
+    background: transparent;
+  }
+
+  .multi-select .react-select2 div[data-value] input{
+    height: 32px !important;
+    padding-left: 40px;
+    width: 100%;
+    background: transparent;
+  }
+}

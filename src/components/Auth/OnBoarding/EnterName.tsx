@@ -198,7 +198,7 @@ export default function EnterName({ size, closePopup }: any) {
               />
               <div>
                 {formik.errors.name && formik.touched.name && (
-                  <p className="text-red-500 text-[11px] sm:text-sm">{formik.errors.name}</p>
+                  <p className="text-red validation-error text-[11px] sm:text-sm">{formik.errors.name}</p>
                 )}
               </div>
             </div>

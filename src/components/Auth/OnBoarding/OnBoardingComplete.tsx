@@ -127,7 +127,7 @@ export default function OnBoardingComplete({ size, closePopup }: any) {
         size === "md" ? "fixed -top-10 -translate-x-1/2  onboarding-scale" : ""
       }`}
     >
-      <div className="pb-6">
+      <div className="pb-6 onboarding-complete">
         {/* @ts-ignore */}
         <DialogHeader>
           <div className="relative w-full">
@@ -136,21 +136,21 @@ export default function OnBoardingComplete({ size, closePopup }: any) {
               size={size === "md" ? 32 : 28}
               onClick={closePopup}
             />
-            <div className="flex justify-center items-center mt-16">
+            <div className="flex justify-center items-center mt-16 xl:mt-6 xl:mb-1 2xl:mt-6 3xl:my-8">
               <h2
                 className={`text-[#231F20] font-semibold ${
                   size === "md" ? "!text-[26px]" : "!text-[22px]"
                 } text-center`}
               >
-                <span className="text-red">Congrats!</span> <br />
-                <span>Your profile is active</span>
+                <span className="text-red font-semibold">Congrats!</span> <br />
+                <span className="font-semibold">Your profile is active</span>
               </h2>
             </div>
           </div>
         </DialogHeader>
         <form
           onSubmit={handleSubmit}
-          className={`${size === "md" ? "block mt-6" : "mt-2"}`}
+          className={`${size === "md" ? "block mt-6 xl:mt-0" : "mt-2"}`}
         >
           {/* @ts-ignore */}
           <DialogBody className="custom-dialog-body custom-scroll">
@@ -159,8 +159,8 @@ export default function OnBoardingComplete({ size, closePopup }: any) {
                 size === "md" ? "px-12" : "px-0"
               }`}
             >
-              <div className="p-4 flex-col sm:flex-row rounded-lg border-[1.6px] border-[#E3ECFB] shadow-tertiary justify-start flex sm:gap-4">
-                <div className="flex flex-col justify-center items-center">
+              <div className="wlcm-profile-card p-4 flex-col sm:flex-row rounded-lg border-[1.6px] border-[#E3ECFB] shadow-tertiary justify-start flex sm:gap-4">
+                <div className="flex flex-col justify-center items-center profile-photo-wrapper">
                   <Image
                     src={photo_url || "/new-assets/icons/avatar.svg"}
                     alt="profile-photo"
@@ -186,9 +186,9 @@ export default function OnBoardingComplete({ size, closePopup }: any) {
                   <h5 className="font-semibold text-black mb-1 text-center sm:text-left">
                     {name}
                   </h5>
-                  <h5 className="text-black mb-1 font-medium text-center sm:text-left">
-                    {/* {role_id === 1 ? 'UI/UX Designer' : 'Other Role'} Replace with actual role mapping */}
-                  </h5>
+                  {/* <h5 className="text-black mb-1 font-medium text-center sm:text-left">
+                    {role_id === 1 ? 'UI/UX Designer' : 'Other Role'} Replace with actual role mapping
+                  </h5> */}
                   {experience.length > 0 && (
                     <>
                       <h6 className="text-sm text-[#4D4D4F] mb-2">
@@ -196,9 +196,10 @@ export default function OnBoardingComplete({ size, closePopup }: any) {
                         <GoDotFill className="inline-block size-3" />{" "}
                         {experience[0].job_type_name}
                       </h6>
-                      <h6 className="text-sm text-[#4D4D4F]">
+                      <h6 className="text-sm text-[#4D4D4F] select-job-role-label">
                         Selected job roles:
                       </h6>
+                      <div className="line-clamp-1">
                       {experience.map((exp, i) => (
                         <h6
                           key={i}
@@ -208,6 +209,7 @@ export default function OnBoardingComplete({ size, closePopup }: any) {
                           {exp.designation_name}
                         </h6>
                       ))}
+                      </div>
                     </>
                   )}
                   <div className="flex gap-1 text-[#4D4D4F] text-sm mt-2">
@@ -218,11 +220,11 @@ export default function OnBoardingComplete({ size, closePopup }: any) {
                   </div>
                 </div>
               </div>
-              <div className="flex items-start gap-2 my-4">
+              <div className="flex items-start gap-2 my-4 xl:my-2 xl:mt-3 3xl:mt-4 3xl:my-4">
                 <input
                   type="checkbox"
                   name="whatsapp_consent"
-                  className="!mb-0 !mt-1 cursor-pointer !flex-shrink-0 block !w-4 !h-auto wc-check"
+                  className="!mb-0 !mt-1 cursor-pointer !flex-shrink-0 block !w-4 !h-auto wc-check "
                   id="whatsapp_consent"
                   checked={WAConsent}
                   onChange={(e) => {
@@ -231,7 +233,7 @@ export default function OnBoardingComplete({ size, closePopup }: any) {
                   }}
                 />
                 <label
-                  className="!mb-0 inline-block"
+                  className="!mb-0 inline-block wc-label text-[#4D4D4F]"
                   htmlFor="whatsapp_consent"
                 >
                   I consent to share my number with the recruiter for connecting
@@ -260,7 +262,7 @@ export default function OnBoardingComplete({ size, closePopup }: any) {
                 />
                 <div className="flex">
                   <label
-                    className="!mb-0 inline-block text-[#4D4D4F] whitespace-nowrap"
+                    className="!mb-0 inline-block text-[#4D4D4F] whitespace-nowrap agree-label"
                     htmlFor="is_tnc_checked"
                   >
                     <div className="flex gap-1">
@@ -286,7 +288,7 @@ export default function OnBoardingComplete({ size, closePopup }: any) {
             </div>
           </DialogBody>
           {/* @ts-ignore */}
-          <DialogFooter className="p-0 pb-6 !px-12 mt-5 flex justify-center">
+          <DialogFooter className="p-0 pb-6 !px-12 mt-5 flex justify-center progress-footer">
             <button
               className={`flex-shrink-0 justify-start bg-red text-white px-4 py-2 rounded ${
                 isSubmitting || !tncChecked

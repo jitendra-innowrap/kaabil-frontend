@@ -226,12 +226,12 @@ export default function AddMoreExperience({
 
         <form
           onSubmit={handleSubmit}
-          className={`${size === "md" ? "block mt-6" : "mt-2"}`}
+          className={`${size === "md" ? "block mt-6 xl:mt-0" : "mt-2"}`}
         >
           {/* @ts-ignore */}
           <DialogBody className="custom-dialog-body custom-scroll">
             <div
-              className={`pb-2 cursor-pointer ${
+              className={`pb-2 xl:mb-0 cursor-pointer ${
                 size === "md" ? "px-12" : "px-0"
               }`}
             >
@@ -265,7 +265,7 @@ export default function AddMoreExperience({
                   ) : (
                     <div
                       key={i}
-                      className="my-4 p-4 rounded-lg shadow-default justify-between flex gap-4"
+                      className="my-4 xl:my-1 3xl:my-4 p-4 rounded-lg shadow-default justify-between flex gap-4 experience-card"
                     >
                       <div className="">
                         <h5 className="font-medium text-black mb-2">
@@ -314,7 +314,7 @@ export default function AddMoreExperience({
               )}
               {
                 <div
-                  className="flex text-red font-semibold mt-7 cursor-pointer"
+                  className="flex text-red font-semibold mt-7 cursor-pointer add-more-exp-btn"
                   onClick={() => {
                     if (!newExperience) {
                       formikForm.resetForm();
@@ -332,7 +332,7 @@ export default function AddMoreExperience({
           </DialogBody>
 
           {/* @ts-ignore */}
-          <DialogFooter className="p-0 pb-6 !px-12 mt-5 flex justify-center">
+          <DialogFooter className="p-0 pb-6 !px-12 mt-5 flex justify-center progress-footer">
             <div className="flex w-full items-end">
               <div className="whitespace-nowrap">
                 <span className="text-red">{progress - 4}</span> - 6

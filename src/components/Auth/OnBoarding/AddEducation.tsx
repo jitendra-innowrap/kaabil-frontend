@@ -31,7 +31,7 @@ export default function AddEducation({ size, closePopup, handleBack }: any) {
   // Initialize formik values with user's existing education
   useEffect(() => {
     if (user.users_education && user.users_education.length > 0) {
-      formik.setFieldValue("education_id", user.users_education[0]);
+      user.users_education[0] !=="0" && formik.setFieldValue("education_id", user.users_education[0]);
     }
   }, [user.users_education]);
 
@@ -148,12 +148,13 @@ export default function AddEducation({ size, closePopup, handleBack }: any) {
                   <span>background</span>
                 </span>
               </h2>
+              {/* <pre>{JSON.stringify(formik.values.education_id)}</pre> */}
             </div>
           </div>
         </DialogHeader>
         <form
           onSubmit={formik.handleSubmit}
-          className={`${size === "md" ? "block mt-6" : "mt-2"}`}
+          className={`${size === "md" ? "block mt-6" : "mt-2"} education-dialog`}
         >
           {/* @ts-ignore */}
           <DialogBody className="custom-dialog-body custom-scroll">
@@ -192,7 +193,7 @@ export default function AddEducation({ size, closePopup, handleBack }: any) {
                       value={education?.id}
                     />
                     <div
-                      className={`!mb-0 gap-2 radio inline-block cursor-pointer ${
+                      className={`!mb-0 gap-2 radio inline-block edu-label cursor-pointer ${
                         education.id === formik.values.education_id
                           ? "selected"
                           : ""
@@ -204,7 +205,7 @@ export default function AddEducation({ size, closePopup, handleBack }: any) {
                 ))}
                 {/* ✅ Validation Error */}
                 {formik.errors.education_id && formik.touched.education_id && (
-                  <p className="text-red text-sm mt-1">
+                  <p className="text-red validation-error text-sm mt-1">
                     {formik.errors.education_id}
                   </p>
                 )}
@@ -213,7 +214,7 @@ export default function AddEducation({ size, closePopup, handleBack }: any) {
           </DialogBody>
 
           {/* @ts-ignore */}
-          <DialogFooter className="p-0 pb-6 px-6 sm:!px-12 mt-5 flex justify-center">
+          <DialogFooter className="p-0 pb-6 px-6 sm:!px-12 mt-5 flex justify-center progress-footer">
             <div className="flex w-full items-end">
               <div className="whitespace-nowrap dialog-footer-paging">
                 <span className="text-red">{progress - 4}</span> - 6

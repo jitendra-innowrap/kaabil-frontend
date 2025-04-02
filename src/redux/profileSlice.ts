@@ -61,10 +61,14 @@ export const fetchProfile = createAsyncThunk(
 
 export const fetchSkills = createAsyncThunk(
   "auth/fetchSkills",
-  async ({ data }: any, { rejectWithValue }) => {
+  async (
+    { data, search }: { data: any; search?: string },
+    { rejectWithValue }
+  ) => {
     try {
-      const response = await api.post("/MasterData/getUserSkill", data, {
-        headers: { "Content-Type": "multipart/json" },
+      const requestData = { ...data, search }; 
+      const response = await api.post("/MasterData/getUserSkill", requestData, {
+        headers: { "Content-Type": "application/json" },
       });
       console.log(response.data, "Verify Data Please");
       return response.data;

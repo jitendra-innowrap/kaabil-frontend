@@ -183,7 +183,7 @@ export default function AddExperience({ size, closePopup, handleBack }: any) {
       open={progress === 9}
       size={size}
       className={`onboarding-dailog ${
-        size === "md" ? "fixed -top-16 -translate-x-1/2  onboarding-scale" : ""
+        size === "md" ? "fixed -top-16 -translate-x-1/2  onboarding-scale experience-screen" : ""
       }`}
     >
       <div className="">
@@ -223,19 +223,19 @@ export default function AddExperience({ size, closePopup, handleBack }: any) {
         </DialogHeader>
         <form
           onSubmit={formik.handleSubmit}
-          className={`${size === "md" ? "block mt-6" : "mt-2"}`}
+          className={`${size === "md" ? "block mt-6" : "mt-2"} education-dialog`}
         >
           {/* @ts-ignore */}
           <DialogBody className="custom-dialog-body custom-scroll">
             <div
-              className={`pb-2 cursor-pointer ${
+              className={`pb-2 xl:pb-0 cursor-pointer ${
                 size === "md" ? "px-12" : "px-0"
               }`}
             >
               <h4 className="text-[14px] sm:text-lg font-medium">
                 What’s your level of experience?
               </h4>
-              <div className="my-4 flex flex-row gap-4">
+              <div className="mb-4 mt-2 flex flex-row gap-4 selected-option-list">
                 <label
                   htmlFor="fresher"
                   className={`form-group !flex flex-1 !mb-0 gap-4 rounded-lg px-5  border cursor-pointer shadow-sm items-center ${
@@ -253,7 +253,7 @@ export default function AddExperience({ size, closePopup, handleBack }: any) {
                     onChange={handleExperienceChange}
                     checked={formik.values.is_fresher === 2}
                   />
-                  <div className="!mb-0 gap-2 inline-block cursor-pointer">
+                  <div className="!mb-0 gap-2 inline-block cursor-pointer edu-label">
                     I'm a Fresher
                   </div>
                 </label>
@@ -274,7 +274,7 @@ export default function AddExperience({ size, closePopup, handleBack }: any) {
                     onChange={handleExperienceChange}
                     checked={formik.values.is_fresher === 1}
                   />
-                  <div className="!mb-0 gap-2 inline-block cursor-pointer">
+                  <div className="!mb-0 gap-2 inline-block cursor-pointer edu-label">
                     I'm Experienced
                   </div>
                 </label>
@@ -287,7 +287,7 @@ export default function AddExperience({ size, closePopup, handleBack }: any) {
 
               {formik.values.is_fresher === 1 && user.experience.length < 1 && (
                 <div className="scroll-content-experience cursor-pointer">
-                  <h4 className="text-[14px] sm:text-lg mb-4 font-medium">
+                  <h4 className="text-[14px] sm:text-lg xl:mb-1 2xl:mb-2 3xl:mb-3 font-medium">
                     Please add your latest experience
                   </h4>
                   <AddExperienceForm
@@ -295,7 +295,7 @@ export default function AddExperience({ size, closePopup, handleBack }: any) {
                     formik={formikForm}
                   />
                   <div
-                    className="text-[14px] sm:text-lg flex text-red font-semibold mt-7 cursor-pointer"
+                    className="text-[14px] sm:text-lg flex text-red font-semibold mt-7 cursor-pointer add-more-exp-btn"
                     onClick={() => handleSubmitExperience()}
                   >
                     + add more experience
@@ -305,7 +305,7 @@ export default function AddExperience({ size, closePopup, handleBack }: any) {
             </div>
           </DialogBody>
           {/* @ts-ignore */}
-          <DialogFooter className="p-0 pb-6 px-6 sm:!px-12 mt-5 flex justify-center">
+          <DialogFooter className="p-0 pb-6 px-6 sm:!px-12 mt-5 flex justify-center progress-footer">
             <div className="flex w-full items-end">
               <div className="whitespace-nowrap dialog-footer-paging">
                 <span className="text-red">{progress - 4}</span> - 6

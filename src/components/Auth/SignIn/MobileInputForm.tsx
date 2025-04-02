@@ -125,7 +125,7 @@ export default function MobileInputForm({ size, closePopup }: any) {
                 size === "md"
                   ? "flex justify-center items-center"
                   : "flex justify-start items-start"
-              } mt-16`}
+              } mt-16 xl:mt-6 xl:mb-3 2xl:my-6 3xl:my-8`}
             >
               <h2
                 className={`text-[#231F20] font-semibold ${
@@ -150,7 +150,7 @@ export default function MobileInputForm({ size, closePopup }: any) {
                   size === "md" ? "mt-2" : "mt-0"
                 } custom-dialog-body custom-scroll p-0 px-5`}
               >
-                <div className={`${size === "md" ? "px-12" : "px-0"}`}>
+                <div className={`${size === "md" ? "px-12 xl:px-8 3xl:px-12" : "px-0"}`}>
                   <label
                     htmlFor="mobile"
                     className="text-[#231F20] mobile-text text-lg md:text-xl 2xl:text-[16px]"
@@ -176,16 +176,16 @@ export default function MobileInputForm({ size, closePopup }: any) {
                       }
                     }}
                   />
-                  <div className="h-6 text-[11px] sm:text-sm text-red mt-1">
+                  <div className="h-6 text-[11px] sm:text-sm text-red mt-1 validation-error">
                     <ErrorMessage name="mobile" />
                   </div>
                 </div>
               </DialogBody>
               {/* @ts-ignore */}
               <DialogFooter
-                className={`p-0 pb-6 ${
-                  size === "md" ? "!px-[66px]" : "px-[20px]"
-                }`}
+                className={`pt-0 pb-6 ${
+                  size === "md" ? "px-[66px] xl:px-12 3xl:px-[66px]" : "px-[20px]"
+                } `}
               >
                 <button
                   type="submit"

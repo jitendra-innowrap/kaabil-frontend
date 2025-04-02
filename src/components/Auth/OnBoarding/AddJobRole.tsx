@@ -223,7 +223,7 @@ export default function AddJobRole({ size, closePopup, handleBack }: any) {
               <h4 className="text-[14px] sm:text-lg font-medium text-[#231F20]">
                 What job role are you looking for?
               </h4>
-              <p className="text-[11px] sm:text-sm text-[#249D64]">
+              <p className="text-[11px] sm:text-sm text-[#249D64] green-label">
                 (You can select up to 2 job roles)
               </p>
 
@@ -312,7 +312,7 @@ export default function AddJobRole({ size, closePopup, handleBack }: any) {
           </DialogBody>
 
           {/* @ts-ignore */}
-          <DialogFooter className="p-0 pb-6 px-6 sm:!px-12 mt-5 flex justify-center">
+          <DialogFooter className="p-0 pb-6 px-6 sm:!px-12 mt-5 flex justify-center progress-footer">
             <div className="flex w-full justify-end sm:justify-between items-end">
               <div className="whitespace-nowrap dialog-footer-paging">
                 <span className="text-red">{progress - 4}</span> - 6

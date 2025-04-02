@@ -42,12 +42,12 @@ export default function NumberVerified({ size, closePopup }: any) {
                 size === "md"
                   ? "flex justify-center items-center mt-6"
                   : "flex justify-start items-start mt-16"
-              } `}
+              } xl:mt-6 2xl:mt-6 3xl:mt-8`}
             >
               <h2
                 className={`text-[#231F20] font-semibold ${
                   size === "md" ? "!text-[26px]" : "!text-[22px]"
-                }`}
+                } `}
               >
                 Number Verified
               </h2>
@@ -57,13 +57,13 @@ export default function NumberVerified({ size, closePopup }: any) {
                 src={"/new-assets/icons/number-verified.png"}
                 width={100}
                 height={100}
-                className="w-16 h-16 lg:w-20 lg:h-20 mx-auto mt-2"
+                className="w-16 h-16 lg:size-[74px] 3xl:size-20 mx-auto mt-2"
                 alt="number-verified"
               />
             )}
           </div>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className="block mt-6">
+        <form onSubmit={handleSubmit} className="block mt-6 xl:mt-4 3xl:mt-6">
           {/* @ts-ignore */}
           <DialogBody className="mt-2 max-h-[50vh] sm:max-h-[60vh] md:max-h-[70vh] lg:max-h-[80vh] overflow-y-auto custom-scroll p-0 px-5">
             <div className={`${size === "md" ? "px-12" : "px-0"}`}>

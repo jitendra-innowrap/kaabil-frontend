@@ -929,19 +929,7 @@ label {
   .job-listings .nudges-bar {
     margin-top: 69px;
   }
-  .onboarding-dailog.onboarding-scale {
-    /* position: absolute !important;
-    left: 50%; */
-    /* top: calc(50% - 229px) !important; */
-    top: 10px !important;
-    width: 620px !important;
-    position: static !important;
-    min-width: 620px !important;
-    max-width: 620px !important;
-    /* max-height: calc(100vh - 400px); */
-    transform: none !important;
-    scale: .6;
-  }
+  
 }
 @media (width >=1280px) {
   .popup-content {
@@ -1249,14 +1237,6 @@ label {
     /* position: absolute !important;
     left: 50%; */
     /* top: calc(50% - 229px) !important; */
-    top: 10px !important;
-    width: 620px !important;
-    position: static !important;
-    min-width: 620px !important;
-    max-width: 620px !important;
-    /* max-height: calc(100vh - 450px); */
-    transform: none !important;
-    scale: .8;
   }
 }
 
@@ -1481,6 +1461,9 @@ label {
     /* max-height: calc(100vh - 450px); */
     transform: none !important;
     scale: 1;
+  }
+  .custom-dialog-body{
+    max-height: calc(100vh - 320px) !important;
   }
 }
 

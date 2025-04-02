@@ -225,7 +225,7 @@ export default function AddLocation({ size, closePopup, handleBack }: any) {
           </DialogBody>
 
           {/* @ts-ignore */}
-          <DialogFooter className="p-0 pb-6 px-6 sm:!px-12 mt-5 flex justify-center">
+          <DialogFooter className="p-0 pb-6 px-6 sm:!px-12 mt-5 flex justify-center progress-footer">
             <div className="flex w-full justify-end sm:justify-between items-end">
               <div className="whitespace-nowrap dialog-footer-paging">
                 <span className="text-red">{progress - 4}</span> - 6

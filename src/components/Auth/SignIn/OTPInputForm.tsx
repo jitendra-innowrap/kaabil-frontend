@@ -216,7 +216,7 @@ export default function OTPInputForm({ size, closePopup, handleBack }: any) {
               size === "md"
                 ? "flex justify-center items-center mt-8"
                 : "flex justify-start items-start mt-16"
-            } `}
+            } xl:mt-6 2xl:mt-6 3xl:mt-8`}
           >
             <h2
               className={`text-[#231F20] font-semibold ${
@@ -247,7 +247,7 @@ export default function OTPInputForm({ size, closePopup, handleBack }: any) {
         </div>
       </DialogHeader>
       <form
-        className={`block ${size === "xxl" ? "mt-2" : "mt-10"}`}
+        className={`block ${size === "xxl" ? "mt-2" : "mt-10"} xl:mt-6 3xl:mt-10`}
         onSubmit={formik.handleSubmit}
       >
         {/* @ts-ignore */}
@@ -297,7 +297,7 @@ export default function OTPInputForm({ size, closePopup, handleBack }: any) {
                     <span
                       className={`text-[#98A2B3] ${
                         size === "md" ? "top-4 -right-8" : "top-2 -right-5 lg:-right-7"
-                      }  text-3xl absolute`}
+                      }  text-3xl absolute otp-dash`}
                     >
                       -
                     </span>
@@ -306,7 +306,7 @@ export default function OTPInputForm({ size, closePopup, handleBack }: any) {
               ))}
             </div>
             {formik.errors.otp && (
-              <p className="text-red-500 mt-2">{formik.errors.otp}</p>
+              <p className="text-red-500 mt-2 validation-error">{formik.errors.otp}</p>
             )}
           </div>
         </DialogBody>
@@ -318,7 +318,7 @@ export default function OTPInputForm({ size, closePopup, handleBack }: any) {
         >
           <button
             type="submit"
-            disabled={!formik.isValid || formik.isSubmitting}
+            disabled={formik.isSubmitting}
             className={`sign-btn ${
               size === "md" ? "text-lg" : "text-md"
             } mt-1 no-margin px-6 py-2 !bg-red hover:bg-red text-white rounded-full ${
@@ -330,7 +330,7 @@ export default function OTPInputForm({ size, closePopup, handleBack }: any) {
             Verify
           </button>
           <div>
-            <p className="mt-4 2xl:mt-5 text-[14px] sm:text-[16px] text-center text-[#000000]">
+            <p className="mt-4 2xl:mt-5 text-[14px] sm:text-[16px] text-center text-[#000000] resend-otp">
               Didn’t receive code?
               <span
                 tabIndex={0}

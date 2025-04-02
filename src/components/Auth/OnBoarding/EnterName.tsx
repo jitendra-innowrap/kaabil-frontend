@@ -17,13 +17,8 @@ import {
   setUserSkills,
   setUserWAConsent,
 } from "@/redux/userSlice";
-import {
-  Dialog,
-  DialogBody,
-  DialogFooter,
-  DialogHeader,
-} from "@material-tailwind/react";
 import { IoClose } from "react-icons/io5";
+import styles from "../SignIn/signIn.module.css"
 
 export default function EnterName({ size, closePopup }: any) {
   const dispatch = useAppDispatch();
@@ -131,58 +126,38 @@ export default function EnterName({ size, closePopup }: any) {
   });
 
   return (
-    // @ts-ignore
-    <Dialog
-      open={progress === 4}
-      size={size}
-      className={`onboarding-dailog ${
-        size === "md" ? "fixed top-10 -translate-x-1/2  onboarding-scale" : ""
-      }`}
-    >
-      <div className="pb-6">
-        {/* @ts-ignore */}
-        <DialogHeader>
-          <div className="relative w-full">
-            <IoClose
+      <div className="pb-6 sm:max-w-[528px] sm:mx-auto sm:p-4">
+        <div className="relative w-full">
+          <IoClose
               className="absolute top-2 right-2 cursor-pointer"
               size={size === "md" ? 32 : 28}
               onClick={closePopup}
-            />
-            <div
-              className={`${
-                size === "md"
-                  ? "flex justify-center items-center mt-6"
-                  : "flex justify-start items-start mt-16"
-              }`}
-            >
-              <h2
+          />
+          <div
+              className={`flex sm:justify-center items-center pt-[74px] sm:pt-[27px]`}
+          >
+            <h2
                 className={`text-[#231F20] font-semibold ${
-                  size === "md" ? "!text-[26px]" : "!text-[22px]"
+                    size === "md" ? "!text-[28px]" : "!text-[20x]"
                 }`}
-              >
-                Welcome to <span className="text-red">Kaabil</span>
-              </h2>
-            </div>
+            >
+              Welcome to <span className="text-red">Kaabil</span>
+            </h2>
           </div>
-        </DialogHeader>
-        {/* ✅ Formik Form */}
+        </div>
         <form
           onSubmit={formik.handleSubmit}
-          className={`${size === "md" ? "block mt-6" : "mt-2"}`}
+          className={`${size === "md" ? "block mt-[71px]" : "mt-[20px]"}`}
         >
-          {/* @ts-ignore */}
-          <DialogBody className="mt-2 max-h-[50vh] sm:max-h-[60vh] md:max-h-[70vh] lg:max-h-[80vh] overflow-y-auto custom-scroll p-0 px-5">
-            <div className={`${size === "md" ? "px-12" : "px-0"}`}>
-              {/* @ts-ignore */}
-              <label
+          <div className={``}>
+            {/* @ts-ignore */}
+            <label
                 htmlFor="name"
-                className={`!text-[14px] sm:text-[18px] text-[#231F20] ${
-                  size === "md" ? "font-semibold" : "font-normal"
-                }`}
-              >
-                Enter your full name
-              </label>
-              <input
+                className={`text-[#231F20] mb-[8px] sm:mb-[10px] text-[14px] sm:text-lg md:text-xl 2xl:text-[16px] block`}
+            >
+              Enter your full name
+            </label>
+            <input
                 type="text"
                 id="name"
                 name="name"
@@ -190,30 +165,24 @@ export default function EnterName({ size, closePopup }: any) {
                 value={formik.values.name}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                className={`border p-2 w-full ${
-                  formik.errors.name && formik.touched.name
-                    ? "border-red-500"
-                    : "border-gray-300"
+                className={`${styles.onboarding_dialog_input} border p-2 w-full ${
+                    formik.errors.name && formik.touched.name
+                        ? "border-red-500"
+                        : "border-gray-300"
                 } ${formik.values.name ? "font-semibold" : "font-normal"}`}
-              />
-              <div>
-                {formik.errors.name && formik.touched.name && (
+            />
+            <div>
+              {formik.errors.name && formik.touched.name && (
                   <p className="text-red-500 text-[11px] sm:text-sm">{formik.errors.name}</p>
-                )}
-              </div>
+              )}
             </div>
-          </DialogBody>
-          {/* @ts-ignore */}
-          <DialogFooter
-            className={`p-0 pb-6 mt-5 flex justify-center ${
-              size === "md" ? "!px-[66px]" : "px-[20px]"
-            }`}
-          >
+          </div>
+          <div className={`p-0 pb-6 mt-4 w-full flex justify-center`} >
             <button
               type="submit"
-              className={`sign-btn ${
+              className={`${styles.onboarding_dialog_btn} w-full ${
                 size === "md" ? "text-lg" : "text-md"
-              } mt-1 no-margin px-6 py-2 !bg-red hover:bg-red text-white rounded-full ${
+              } mt-1 no-margin px-6 py-2 !bg-red hover:bg-red text-white ${
                 !formik.isValid || formik.isSubmitting
                   ? "opacity-50 cursor-not-allowed"
                   : ""
@@ -223,9 +192,8 @@ export default function EnterName({ size, closePopup }: any) {
               {/* {formik.isSubmitting ? "Submitting..." : "Next"} */}
               Next
             </button>
-          </DialogFooter>
+          </div>
         </form>
       </div>
-    </Dialog>
   );
 }

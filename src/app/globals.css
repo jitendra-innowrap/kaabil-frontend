@@ -32,9 +32,14 @@ body {
 
 .no-scroll {
   overflow: hidden !important;
-  height: 100vh !important;
+  /*height: 100vh !important;*/
   scrollbar-width:none !important;
-
+  touch-action: none;
+  -ms-touch-action: none;
+  height: 100%;
+  overflow: hidden;
+  width: 100%;
+  position: fixed;
 }
 
 .otp-input {
@@ -1943,5 +1948,60 @@ label {
   border-radius: 8px !important;
   height: 53px !important;
 }
-
+.multi-select .react-select2{
+  /*background: #C8C9CB3B;*/
+}
 /* .css-t3ipsp-control */
+.multi-select .react-select2 div:nth-child(1) {
+  height: 56px !important;
+  width: 100%;
+  line-height: 50px;
+  padding-left: 20px;
+  border-radius: 8px !important;
+  background: rgba(245, 245, 245, 1);
+}
+
+.multi-select .react-select2 div[data-value]{
+  padding-left: 20px;
+  background: transparent;
+}
+
+.multi-select .react-select2 div[data-value] input{
+  height: 40px !important;
+  padding-left: 40px;
+  width: 100%;
+  background: transparent;
+}
+
+.multi-select  .css-13cymwt-control,
+.multi-select  .css-t3ipsp-control {
+  border: none;
+  border-radius: 8px;
+}
+
+@media (max-width: 768px) {
+  .multi-select .react-select2{
+    /*background: #C8C9CB3B;*/
+  }
+  /* .css-t3ipsp-control */
+  .multi-select .react-select2 div:nth-child(1) {
+    height: 48px !important;
+    width: 100%;
+    line-height: 42px;
+    padding-left: 20px;
+    border-radius: 8px !important;
+    background: rgba(245, 245, 245, 1);
+  }
+
+  .multi-select .react-select2 div[data-value]{
+    padding-left: 20px;
+    background: transparent;
+  }
+
+  .multi-select .react-select2 div[data-value] input{
+    height: 32px !important;
+    padding-left: 40px;
+    width: 100%;
+    background: transparent;
+  }
+}

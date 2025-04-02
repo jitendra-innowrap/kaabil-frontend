@@ -8,6 +8,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import api from "@/Services/Apiservice";
 import { IoMdArrowDropdown } from "react-icons/io";
+import styles from "../SignIn/signIn.module.css"
 
 interface AddExperienceFormProps {
   formik: any; // formik object
@@ -101,7 +102,7 @@ const AddExperienceForm = forwardRef(
     }));
 
     return (
-      <div className="p-4 md:p-7 rounded-lg shadow-default">
+      <div className="p-3 md:p-7 rounded-lg shadow-default">
         <form onSubmit={formik.handleSubmit}>
           <div className="relative mb-2">
             <input
@@ -117,14 +118,14 @@ const AddExperienceForm = forwardRef(
                 fetchDesignationSuggestions(formik.values.designation)
               }
               placeholder="Enter your designation"
-              className="w-full p-2 border rounded"
+              className={`${styles.onboarding_dialog_input} w-full p-2 border`}
             />
             {designationSuggestions?.length > 0 && (
               <div className="absolute z-10 w-full max-h-[250px] min-h-[50px] overflow-auto p-0 bg-white border rounded-xl shadow-lg mt-1">
                 {designationSuggestions?.map((suggestion) => (
                   <div
                     key={suggestion.id}
-                    className="p-2 hover:bg-gray-100 cursor-pointer"
+                    className="p-2 hover:bg-gray-100 cursor-pointer text-[12px] sm:text-[14px]"
                     onClick={() => {
                       formik.setFieldValue("designation", suggestion.name);
                       formik.setFieldValue(
@@ -156,14 +157,14 @@ const AddExperienceForm = forwardRef(
               }}
               onFocus={() => fetchCompanySuggestions(formik.values.companyName)}
               placeholder="Enter your company name"
-              className="w-full p-2 border rounded"
+              className={`${styles.onboarding_dialog_input} w-full p-2 border`}
             />
             {companySuggestions?.length > 0 && (
               <div className="absolute z-10 w-full max-h-[250px] min-h-[50px] overflow-auto p-0 bg-white border rounded-xl shadow-lg mt-1">
                 {companySuggestions?.map((suggestion) => (
                   <div
                     key={suggestion.id}
-                    className="p-2 hover:bg-gray-100 cursor-pointer"
+                    className="p-2 hover:bg-gray-100 cursor-pointer text-[12px] sm:text-[14px]"
                     onClick={() => {
                       formik.setFieldValue("companyName", suggestion?.name);
                       formik.setFieldValue("company_master_id", suggestion?.id);
@@ -187,7 +188,7 @@ const AddExperienceForm = forwardRef(
             value={formik?.values.salary}
             onChange={formik.handleChange}
             placeholder="Monthly salary eg: 15000"
-            className="mb-2 w-full p-2 border rounded"
+            className={`${styles.onboarding_dialog_input} mb-2 w-full p-2 border`}
           />
           {formik.errors.salary && formik.touched.salary && (
             <p className="text-red text-[11px] sm:text-sm  mb-1 mt-1">{formik?.errors.salary}</p>
@@ -197,7 +198,7 @@ const AddExperienceForm = forwardRef(
             {jobTypes.map((jobType) => (
               <div
                 key={jobType.id}
-                className={`col-span-1 label-option cursor-pointermd:grow ${
+                className={`col-span-1 label-option cursor-pointer md:grow  text-[12px] sm:text-[14px] ${
                   formik.values.type == parseInt(jobType.id)
                     ? "bg-red text-white"
                     : ""
@@ -227,9 +228,9 @@ const AddExperienceForm = forwardRef(
                 formik.setFieldValue("isCurrentCompany", e.target.checked);
                 setIsCurrentCompany(e.target.checked);
               }}
-              className="!mb-0 inline-block !w-4 !h-4 cursor-pointer"
+              className={`!mb-0 inline-block !w-4 !h-4 cursor-pointer`}
             />
-            <label htmlFor="isCurrentCompany" className="!mb-0 inline-block custom-form-label">
+            <label htmlFor="isCurrentCompany" className="!mb-0 inline-block text-[12px] sm:text-[14px]">
               Currently working here
             </label>
           </div>
@@ -237,7 +238,7 @@ const AddExperienceForm = forwardRef(
           <div className="flex flex-col sm:flex-row gap-3">
             <div className="flex-1">
               <div>
-                <label className="custom-form-label">Working From</label>
+                <label className="custom-form-label  text-[12px] sm:text-[14px] mb-[8px] block">Working From</label>
                 <input
                   type="date"
                   id="jobStartDate"
@@ -245,7 +246,7 @@ const AddExperienceForm = forwardRef(
                   value={formik.values.jobStartDate}
                   onChange={formik.handleChange}
                   placeholder="Start Date"
-                  className="mb-2 w-full p-2 border rounded !bg-white shadow-md"
+                  className={`${styles.onboarding_dialog_input} w-full p-2 border !bg-white `}
                   max={new Date().toISOString().split("T")[0]}
                 />
               </div>
@@ -257,7 +258,7 @@ const AddExperienceForm = forwardRef(
             </div>
             {!isCurrentCompany && (
               <div className="flex-1">
-                <label>Worked Till</label>
+                <label className={' text-[12px] sm:text-[14px] mb-[8px] block'}>Worked Till</label>
                 <input
                   type="date"
                   id="jobEndDate"
@@ -265,7 +266,7 @@ const AddExperienceForm = forwardRef(
                   value={formik.values.jobEndDate}
                   onChange={formik.handleChange}
                   placeholder="End Date"
-                  className="mb-2 w-full p-2 border rounded !bg-white shadow-md"
+                  className={`${styles.onboarding_dialog_input} w-full p-2 border !bg-white`}
                   max={new Date().toISOString().split("T")[0]}
                 />
                 {formik.errors.jobEndDate && formik.touched.jobEndDate && (

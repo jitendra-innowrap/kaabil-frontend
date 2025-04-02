@@ -16,7 +16,7 @@ export default function NumberVerified({ size, closePopup }: any) {
   };
 
   return (
-    <div className="pb-6">
+    <div className="pb-6 sm:max-w-[528px] sm:mx-auto">
         {/* @ts-ignore */}
         <div>
           <div className="relative w-full">
@@ -30,7 +30,7 @@ export default function NumberVerified({ size, closePopup }: any) {
             >
               <h2
                 className={`text-[#231F20] font-semibold ${
-                  size === "md" ? "!text-[26px]" : "!text-[22px]"
+                  size === "md" ? "!text-[28px]" : "!text-[20px]"
                 }`}
               >
                 Number Verified
@@ -48,19 +48,18 @@ export default function NumberVerified({ size, closePopup }: any) {
         <form onSubmit={handleSubmit} className="block mt-6">
           {/* @ts-ignore */}
           <div className="mt-2">
-            <div className={`${size === "md" ? "px-12" : "px-0"}`}>
-              <label htmlFor="mobile" className="text-[#231F20] mb-[8px] sm:mb-[10px] text-[14px] sm:text-lg md:text-xl 2xl:text-[16px]">
-                Mobile Number
-              </label>
-              <div className="form-group relative">
-                <Image
+            <label htmlFor="mobile" className="text-[#231F20] mb-[8px] sm:mb-[10px] text-[14px] sm:text-lg md:text-xl 2xl:text-[16px] block">
+              Mobile Number
+            </label>
+            <div className="form-group relative">
+              <Image
                   src={"/new-assets/icons/number-verified.png"}
                   width={100}
                   height={100}
                   className="w-8 h-8 absolute right-3 top-[7px] sm:top-3"
                   alt="number-verified"
-                />
-                <input
+              />
+              <input
                   type="tel"
                   id="mobile"
                   value={mobile}
@@ -68,8 +67,7 @@ export default function NumberVerified({ size, closePopup }: any) {
                   name="mobile"
                   placeholder="Enter your mobile number to receive OTP"
                   className={`form-control ${styles.onboarding_dialog_input} border px-3 py-2 w-full rounded-[8px] sm:rounded-[12px] text-[#231F20]`}
-                />
-              </div>
+              />
             </div>
           </div>
           {/* @ts-ignore */}

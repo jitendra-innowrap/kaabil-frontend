@@ -16,13 +16,7 @@ import * as Yup from "yup";
 import toast from "react-hot-toast";
 import { setUserSkills } from "@/redux/userSlice";
 import { FaMagnifyingGlass } from "react-icons/fa6";
-import {
-  Dialog,
-  DialogBody,
-  DialogFooter,
-  DialogHeader,
-  Progress,
-} from "@material-tailwind/react";
+import  styles from "../SignIn/signIn.module.css"
 import { FaArrowLeft } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 
@@ -157,60 +151,44 @@ export default function AddSkills({ size, closePopup, handleBack }: any) {
   });
 
   return (
-    // @ts-ignore
-    <Dialog
-      open={progress === 6}
-      size={size}
-      className={`onboarding-dailog ${
-        size === "md" ? "fixed -top-24 -translate-x-1/2  onboarding-scale" : ""
-      }`}
-    >
-      <div className="pb-6">
-        {/* @ts-ignore */}
-        <DialogHeader>
-          <div className="relative w-full">
-            <div onClick={handleBack}>
-              <FaArrowLeft className="absolute cursor-pointer top-2 z-30 left-2 size-6" />
-            </div>
-            <IoClose
+      <div className={`pb-6 sm:p-6 ${styles.formscrollitem}`}>
+        <div className="relative w-full">
+          <div onClick={handleBack}>
+            <FaArrowLeft className="absolute cursor-pointer top-2 z-30 left-2 size-6" />
+          </div>
+          <IoClose
               className="absolute top-2 right-2 cursor-pointer"
               size={size === "md" ? 32 : 28}
               onClick={closePopup}
-            />
-            <div
-              className={`${
-                size === "md"
-                  ? "flex justify-center items-center mt-6"
-                  : "flex justify-start items-start mt-16"
-              }`}
-            >
-              <h2
+          />
+          <div
+              className={`flex sm:justify-center items-center pt-[74px] sm:pt-[30px]`}
+          >
+            <h2
                 className={`text-[#231F20] font-semibold  ${
-                  size === "md"
-                    ? "!text-[26px] text-center"
-                    : "!text-[22px] text-start"
+                    size === "md"
+                        ? "!text-[28px] text-center"
+                        : "!text-[20px] text-start"
                 }`}
-              >
-                <span className="text-red">Skills</span>
-                <br />
-                <span
+            >
+              <span className="text-red">Skills</span>
+              <br />
+              <span
                   className={`text-[#231F20] ${
-                    size === "xxl" ? "text-sm" : "text-[20px]"
+                      size === "xxl" ? "text-sm" : "text-[20px]"
                   }`}
-                >
+              >
                   Add skills to find the right job for you.
                 </span>
-              </h2>
-            </div>
+            </h2>
           </div>
-        </DialogHeader>
-
+        </div>
         <form
           onSubmit={formik.handleSubmit}
-          className={`${size === "md" ? "block mt-6" : "mt-2"}`}
+          className={`${size === "md" ? "block mt-6" : `mt-2`}`}
         >
           {/* @ts-ignore */}
-          <DialogBody className="">
+          <div className={`${styles.formscrollitemlg}`}>
             <div
               className={`pb-2 cursor-pointer ${
                 size === "md" ? "px-12" : "px-0"
@@ -224,7 +202,7 @@ export default function AddSkills({ size, closePopup, handleBack }: any) {
               >
                 (You can search and add all your relevant skills)
               </p>
-              <div className="my-4">
+              <div className="my-4 multi-select">
                 <MultiSelect
                   options={skillsList}
                   placeholder="Select Skills"
@@ -247,7 +225,7 @@ export default function AddSkills({ size, closePopup, handleBack }: any) {
                   }
                 />
               </div>
-              <div className={"selected-option-list"}>
+              <div className={""}>
                 <SelectedChips
                     selectedValues={selectedSkills}
                     size={size}
@@ -275,7 +253,7 @@ export default function AddSkills({ size, closePopup, handleBack }: any) {
                 <h4 className="text-[14px] sm:text-lg font-medium my-4 text-[#231F20]">
                   Suggested skills
                 </h4>
-                <div className="flex flex-wrap gap-4">
+                <div className="flex flex-wrap gap-4 pb-10 sm:pb-0">
                   {skillsList.slice(0, 6).map((skill) => (
                       <React.Fragment key={skill.value}>
                         {selectedSkills.some((s) => s.value === skill.value) ? (
@@ -332,17 +310,17 @@ export default function AddSkills({ size, closePopup, handleBack }: any) {
                 </div>
               </div>
             </div>
-          </DialogBody>
+          </div>
 
           {/* @ts-ignore */}
-          <DialogFooter className="p-0 pb-6 !px-12 mt-5 flex justify-center dailog-footer-fixed">
+          <div className={`py-2 sm:py-0 sm:pb-6 sm:!px-12 mt-5 flex justify-center fixed sm:relative w-full bottom-2 bg-white ${styles.formactionbtn}`}>
             <div className="flex w-full justify-between items-end">
               <div className="whitespace-nowrap">
                 <span className="text-red">{progress - 4}</span> - 6
               </div>
               <button
                 type="submit"
-                className={`dialog-action-btn max-w-[200px] sm:max-w-[250px] ${
+                className={`dialog-action-btn font-semibold max-w-[200px] w-[160px] sm:w-[250px] ${
                   formik.isValid
                     ? "bg-red text-white"
                     : "!opacity-50 !cursor-default"
@@ -353,9 +331,8 @@ export default function AddSkills({ size, closePopup, handleBack }: any) {
                 Next
               </button>
             </div>
-          </DialogFooter>
+          </div>
         </form>
       </div>
-    </Dialog>
   );
 }

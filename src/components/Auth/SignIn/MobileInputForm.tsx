@@ -102,107 +102,84 @@ export default function MobileInputForm({ size, closePopup }: any) {
   };
 
   return (
-    // @ts-ignore
-    <Dialog
-      open={progress === 1}
-      size={size}
-      className={`${styles.onboarding_dialog} ${
-        size === "md" ? "fixed top-12 -translate-x-1/2  onboarding-scale" : ""
-      }`}
-    >
       <div className="pb-6">
         {/* @ts-ignore */}
-        <DialogHeader>
-          <div className="relative w-full">
-            <IoClose
+        <div className="relative w-full sm:mb-[50px]">
+          <IoClose
               className="absolute top-2 right-2 cursor-pointer"
               size={size === "md" ? 32 : 28}
               onClick={closePopup}
-            />
-            <div
-              className={`${
-                size === "md"
-                  ? "flex justify-center items-center"
-                  : "flex justify-start items-start"
-              } mt-16`}
-            >
-              <h2
+          />
+          <div
+              className={`flex sm:justify-center items-center pt-[74px] sm:mt-5 sm:pt-[30px]`}
+          >
+            <h2
                 className={`text-[#231F20] font-semibold ${
-                  size === "md" ? "!text-[26px]" : "!text-[22px]"
+                    size === "md" ? "!text-[26px]" : "!text-[22px] mb-[18px]"
                 }`}
-              >
-                Let's start with your mobile number
-              </h2>
-            </div>
+            >
+              Let's start with your mobile number
+            </h2>
           </div>
-        </DialogHeader>
+        </div>
         <Formik
-          initialValues={{ mobile: savedMobileNumber || "" }}
-          validationSchema={validationSchema}
-          onSubmit={handleSubmit}
+            initialValues={{ mobile: savedMobileNumber || "" }}
+            validationSchema={validationSchema}
+            onSubmit={handleSubmit}
         >
           {({ isSubmitting, isValid, dirty, setFieldValue, values }) => (
-            <Form>
-              {/* @ts-ignore */}
-              <DialogBody
-                className={`${
-                  size === "md" ? "mt-2" : "mt-0"
-                } custom-dialog-body custom-scroll p-0 px-5`}
-              >
-                <div className={`${size === "md" ? "px-12" : "px-0"}`}>
+              <Form>
+                <div className={`${size === "md" ? "max-w-[528px] mx-auto" : "px-0"}`}>
                   <label
-                    htmlFor="mobile"
-                    className="text-[#231F20] mobile-text text-[14px] sm:text-lg md:text-xl 2xl:text-[16px]"
+                      htmlFor="mobile"
+                      className="text-[#231F20] mb-[8px] sm:mb-[10px] text-[14px] sm:text-lg md:text-xl 2xl:text-[16px] block"
                   >
                     Mobile Number
                   </label>
                   <Field
-                    type="tel"
-                    id="mobile"
-                    name="mobile"
-                    value={values?.mobile}
-                    placeholder="Enter your mobile number to receive OTP"
-                    className={`${styles.onboarding_dialog_input} border px-3 py-2 w-full rounded-[8px] sm:rounded-[12px] text-[#231F20] ${
-                      values?.mobile ? "font-semibold" : "font-normal"
-                    } ${size === "xxl" ? "text-[14px] sm:text-sm" : "text-lg"}`}
-                    maxLength={10} // Restricts input to 10 characters
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                      const numericValue = e.target.value.replace(/\D+/g, "");
-                      if (numericValue.length <= 10) {
-                        setFieldValue("mobile", numericValue);
-                      } else {
-                        setFieldValue("mobile", numericValue.slice(0, 10));
-                      }
-                    }}
+                      type="tel"
+                      id="mobile"
+                      name="mobile"
+                      value={values?.mobile}
+                      placeholder="Enter your mobile number to receive OTP"
+                      className={`${styles.onboarding_dialog_input} border px-3 py-2 w-full rounded-[8px] sm:rounded-[12px] text-[#231F20] ${
+                          values?.mobile ? "font-semibold" : "font-normal"
+                      } ${size === "xxl" ? "text-[14px] sm:text-sm" : "text-lg"}`}
+                      maxLength={10} // Restricts input to 10 characters
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        const numericValue = e.target.value.replace(/\D+/g, "");
+                        if (numericValue.length <= 10) {
+                          setFieldValue("mobile", numericValue);
+                        } else {
+                          setFieldValue("mobile", numericValue.slice(0, 10));
+                        }
+                      }}
                   />
                   <div className="h-6 text-[11px] sm:text-sm text-red mt-1">
                     <ErrorMessage name="mobile" />
                   </div>
                 </div>
-              </DialogBody>
-              {/* @ts-ignore */}
-              <DialogFooter
-                className={`p-0 pb-6 ${
-                  size === "md" ? "!px-[66px]" : "px-[20px]"
-                }`}
-              >
-                <button
-                  type="submit"
-                  disabled={!isValid || isSubmitting}
-                  className={`${styles.onboarding_dialog_btn} w-full ${
-                    size === "md" ? "text-lg" : "text-md"
-                  } mt-1 no-margin !bg-red hover:bg-red text-white ${
-                    isSubmitting ? "opacity-50 cursor-not-allowed" : ""
-                  }`}
+                <div
+                    className={`p-0 pb-6 ${
+                        size === "md" ? "max-w-[528px] mx-auto" : "px-0"
+                    }`}
                 >
-                  Next
-                </button>
-                {/* @ts-ignore */}
-              </DialogFooter>
-            </Form>
+                  <button
+                      type="submit"
+                      disabled={!isValid || isSubmitting}
+                      className={`${styles.onboarding_dialog_btn} w-full ${
+                          size === "md" ? "text-lg" : "text-md"
+                      } mt-1 no-margin !bg-red hover:bg-red text-white ${
+                          isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+                      }`}
+                  >
+                    Next
+                  </button>
+                  {/* @ts-ignore */}
+                </div>
+              </Form>
           )}
         </Formik>
       </div>
-    </Dialog>
   );
 }

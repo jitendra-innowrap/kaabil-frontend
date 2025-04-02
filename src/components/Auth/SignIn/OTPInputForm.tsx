@@ -214,7 +214,7 @@ export default function OTPInputForm({ size, closePopup, handleBack }: any) {
               OTP Verification
             </h2>
           </div>
-          <div className={`${size === "md" ? "text-center" : "text-center"}`}>
+          <div className={`${size === "md" ? "text-center" : "text-left"}`}>
             <p
               className={`font-normal ${
                 size === "md" ? "mt-2" : "text-[14px] mt-1"
@@ -240,7 +240,7 @@ export default function OTPInputForm({ size, closePopup, handleBack }: any) {
           <div className={`max-w-[528px] mx-auto`}>
             <label
               htmlFor="mobile"
-              className="text-[#231F20] mb-[8px] sm:mb-[10px] text-[14px] sm:text-lg md:text-xl 2xl:text-[16px]"
+              className="text-[#231F20] mb-[8px] sm:mb-[10px] text-[14px] sm:text-lg md:text-xl 2xl:text-[16px] block"
             >
               Mobile Number
             </label>

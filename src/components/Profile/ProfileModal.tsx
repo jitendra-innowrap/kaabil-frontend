@@ -203,11 +203,6 @@ const ProfileModal = () => {
         >
           {({ setFieldValue, isSubmitting, values }) => (
             <Form>
-              {console.log(
-                values,
-                profileData,
-                "Please Verify Values Over here"
-              )}
               {/* @ts-ignore */}
               <DialogBody className="p-0 max-h-[70vh] overflow-y-auto custom-scroll">
                 <div className="px-12 space-y-2 pb-8">
@@ -613,7 +608,7 @@ const ProfileModal = () => {
                         )}
                         onRemove={(value: string) => {
                           const updatedSelectedSoftSkills =
-                            values.soft_skill?.filter((id) => id !== value);
+                            values.soft_skill?.filter((id: any) => id !== value);
                           setFieldValue(
                             "soft_skill",
                             updatedSelectedSoftSkills

@@ -178,7 +178,6 @@ const EducationModal = () => {
         >
           {({ setFieldValue, isSubmitting, values, dirty, errors }) => (
             <Form>
-              {console.log(errors, "Please check Errors")}
               {/* @ts-ignore */}
               <DialogBody className="p-0 mt-8 max-h-[50vh] sm:max-h-[60vh] md:max-h-[70vh] lg:max-h-[80vh] overflow-y-auto custom-scroll">
                 <div className="px-12">

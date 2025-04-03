@@ -56,7 +56,7 @@ export function formatToK(number: number | string): string {
 
   if (num >= 1000) {
     return (num / 1000).toFixed(1).replace(".0", "") + "k"; // Format as thousands
-  }  else {
+  } else {
     return num.toString(); // Return the number as is for values less than 1000
   }
 }
@@ -606,3 +606,16 @@ export const lightBoxStyle = {
   },
 };
 
+export function convertToNumber(value: any) {
+  if (typeof value === "string") {
+    value = value.toLowerCase().trim(); // Normalize input
+    if (value.endsWith("k")) {
+      return parseFloat(value) * 1000;
+    } else if (value.endsWith("m")) {
+      return parseFloat(value) * 1000000;
+    } else if (value.endsWith("b")) {
+      return parseFloat(value) * 1000000000;
+    }
+  }
+  return parseFloat(value) || 0; // Handle numeric values or invalid input
+}

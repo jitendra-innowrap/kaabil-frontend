@@ -38,14 +38,17 @@ const ProfileModal = () => {
     softSkills,
     skillsOption,
     skillList,
+    profileData,
   } = useAppSelector((state) => state.profile);
   const { token } = useAppSelector((state) => state.auth);
+
+  console.log(profileData, "Please Verify Profile Data Over here");
   const dispatch = useAppDispatch();
 
   console.log(rolesList, "Check Role List");
 
   const validationSchema = Yup.object().shape({
-    photo_url: Yup.mixed().required("Required"),
+    photo_url: Yup.mixed(),
     first_name: Yup.string().required("Required"),
     date_of_birth: Yup.date().required("Required"),
     role_id: Yup.array()
@@ -73,9 +76,17 @@ const ProfileModal = () => {
     dispatch(fetchJobTypes());
     dispatch(fetchLocation());
     dispatch(fetchSoftSkills());
-    dispatch(fetchSkills({ data: {} }));
+    dispatch(
+      fetchSkills({
+        data: profileData?.user_job_roles?.map((item: any) => ({
+          department_id: "0",
+          profession_id: item?.id,
+        })),
+        search: "",
+      })
+    );
     // dispatch
-  }, []);
+  }, [profileData]);
 
   return (
     // @ts-ignore
@@ -103,26 +114,33 @@ const ProfileModal = () => {
         </DialogHeader>
         <Formik
           initialValues={{
-            photo_img: "/new-assets/icons/avatar.svg", //Exclude this
-            photo_url: null,
-            first_name: "",
-            date_of_birth: formatDateExperience(new Date()),
-            role_id: [],
-            job_type_master_id: [],
+            photo_img: profileData?.photo_url || "/new-assets/icons/avatar.svg", //Exclude this
+            photo_url: profileData?.photo_url || null,
+            first_name: profileData?.first_name || "",
+            date_of_birth: profileData?.date_of_birth || "",
+            role_id:
+              profileData?.user_job_roles?.map((item: any) => item?.id) || [],
+            job_type_master_id:
+              profileData?.jobs_types?.map((item: any) => item?.id) || [],
             //  Location
-            city: "",
-            user_city: "",
-            city_latitude: "",
-            city_longitude: "",
-            user_willing_to_relocate: [],
+            city: profileData?.city || "",
+            user_city: profileData?.user_city || "",
+            city_latitude: profileData?.city_latitude || "",
+            city_longitude: profileData?.city_longitude || "",
+            user_willing_to_relocate:
+              profileData?.user_willing_to_relocate || [],
             is_willing_to_relocate: 1,
-            selectedLocation: [], //exclude this
+            selectedLocation:
+              profileData?.user_willing_to_relocate?.map(
+                (item: any) => item?.id
+              ) || [], //exclude this
             //  Soft  Skills
-            soft_skill: [], //Exclude this
-            user_soft_skill: [],
+            soft_skill:
+              profileData?.soft_skills?.map((item: any) => item?.id) || [],
+            user_soft_skill: profileData?.soft_skills || [],
             //  Skills
-            skills: [], //Exclude this
-            user_skill: [],
+            skills: profileData?.skills?.map((item: any) => item?.id) || [],
+            user_skill: profileData?.skills || [],
           }}
           validationSchema={validationSchema}
           onSubmit={async (values) => {
@@ -139,7 +157,9 @@ const ProfileModal = () => {
               if (
                 key === "user_willing_to_relocate" ||
                 key === "user_soft_skill" ||
-                key === "user_skill"
+                key === "user_skill" ||
+                key === "role_id" ||
+                key === "job_type_master_id"
               ) {
                 // Convert these keys' values to JSON strings
                 // @ts-ignore
@@ -181,7 +201,7 @@ const ProfileModal = () => {
             }
           }}
         >
-          {({ setFieldValue, isSubmitting, values, errors }) => (
+          {({ setFieldValue, isSubmitting, values }) => (
             <Form>
               {/* @ts-ignore */}
               <DialogBody className="p-0 max-h-[70vh] overflow-y-auto custom-scroll">
@@ -211,7 +231,7 @@ const ProfileModal = () => {
                         <input
                           id="photoInput"
                           type="file"
-                          accept="image/*"
+                          accept=".jpg,.jpeg,.png"
                           className="hidden"
                           onChange={(e) => {
                             const file: any = e.target.files?.[0];
@@ -228,22 +248,6 @@ const ProfileModal = () => {
                             }
                           }}
                         />
-                        <div
-                          className="!border-2 flex gap-2 items-center cursor-pointer font-medium text-[#231F20] !bg-white !border-black text-lg px-4 rounded-md"
-                          onClick={() => {
-                            setFieldValue("photo_url", null);
-                            setFieldValue(
-                              "photo_img",
-                              "/new-assets/icons/avatar.svg"
-                            );
-                          }}
-                        >
-                          <img
-                            src="/new-assets/icons/delete-icon.svg"
-                            className="h-8 w-8"
-                          />
-                          Delete Picture
-                        </div>
                       </div>
                     </div>
                     <div className="h-4">
@@ -316,7 +320,7 @@ const ProfileModal = () => {
                       ) =>
                         setFieldValue(
                           "role_id",
-                          selectedRoles.map((role) => role.value)
+                          selectedRoles?.map((role) => role.value)
                         )
                       }
                       selectedValues={rolesList?.filter((role: any) =>
@@ -334,7 +338,7 @@ const ProfileModal = () => {
                         onRemove={(value: string) =>
                           setFieldValue(
                             "role_id",
-                            values.role_id?.filter((id) => id !== value)
+                            values.role_id?.filter((id: any) => id !== value)
                           )
                         }
                       />
@@ -354,7 +358,7 @@ const ProfileModal = () => {
                       Job type
                     </label>
                     <div className="grid sm:grid-cols-3 gap-3 3xl:gap-4 ">
-                      {jobTypes.map((jobType: any) => (
+                      {jobTypes?.map((jobType: any) => (
                         <div
                           key={jobType.id}
                           className={`col-span-1 label-option cursor-pointer ${
@@ -402,12 +406,12 @@ const ProfileModal = () => {
                           selectedLocationValues?.includes(item?.id)
                         );
                         if (selectedLocation.length > 0) {
-                          setFieldValue("city", cityData[0]?.id);
-                          setFieldValue("user_city", cityData[0]?.name);
+                          setFieldValue("city", cityData[0]?.location);
+                          setFieldValue("user_city", cityData[0]?.location);
                           setFieldValue("city_latitude", cityData[0]?.latitude);
                           setFieldValue(
                             "city_longitude",
-                            cityData[0]?.latitude
+                            cityData[0]?.longitude
                           );
                           setFieldValue("user_willing_to_relocate", cityData);
                         } else {
@@ -436,7 +440,7 @@ const ProfileModal = () => {
                         onRemove={async (value: string) => {
                           const updatedSelectedLocations =
                             values.selectedLocation?.filter(
-                              (id) => id !== value
+                              (id: any) => id !== value
                             );
                           await setFieldValue(
                             "selectedLocation",
@@ -447,10 +451,13 @@ const ProfileModal = () => {
                             updatedSelectedLocations?.includes(city.id)
                           );
                           if (filteredCities.length > 0) {
-                            await setFieldValue("city", filteredCities[0].id);
+                            await setFieldValue(
+                              "city",
+                              filteredCities[0].location
+                            );
                             await setFieldValue(
                               "user_city",
-                              filteredCities[0]?.name
+                              filteredCities[0]?.location
                             );
                             await setFieldValue(
                               "city_latitude",
@@ -483,37 +490,46 @@ const ProfileModal = () => {
                       />
                     </div>
                   </div>
-
                   {/* Field 7 */}
                   <div className="skills-select">
                     <label className="block text-lg font-semibold text-[#231F20] mb-2">
                       Skills
                     </label>
                     <MultiSelect
-                      options={skillsOption}
+                      options={skillsOption} // Dynamically updated from API
                       placeholder="Search your skills"
                       isMulti
-                      onChange={(
-                        skills: { value: string; label: string }[]
-                      ) => {
+                      onInputChange={async (value: string) => {
+                        if (value) {
+                          await dispatch(
+                            fetchSkills({
+                              data: values?.role_id?.map((item: any) => ({
+                                department_id: "0",
+                                profession_id: item,
+                              })),
+                              search: value, // API search query
+                            })
+                          );
+                        }
+                      }}
+                      onChange={(skills) => {
                         setFieldValue(
                           "skills",
-                          skills.map((skill) => skill.value)
+                          skills?.map((skill) => skill.value)
                         );
+
                         const selectedSkillValues = skills?.map(
                           (item) => item.value
                         );
                         const skillsData = skillList?.filter((item: any) =>
                           selectedSkillValues?.includes(item?.id)
                         );
-                        if (skillsData?.length > 0) {
-                          setFieldValue("user_skill", skillsData);
-                        } else {
-                          setFieldValue("user_skill", []);
-                        }
+                        setFieldValue(
+                          "user_skill",
+                          skillsData?.length > 0 ? skillsData : []
+                        );
                       }}
                       selectedValues={skillsOption?.filter((role: any) =>
-                        // @ts-ignore
                         values.skills.includes(role.value)
                       )}
                       icon={
@@ -528,7 +544,7 @@ const ProfileModal = () => {
                         )}
                         onRemove={(value: string) => {
                           const updatedSelectedSoftSkills =
-                            values.skills?.filter((id) => id !== value);
+                            values.skills?.filter((id: any) => id !== value);
                           setFieldValue("skills", updatedSelectedSoftSkills);
                           const filteredSoftSkills = skillList?.filter(
                             (skill: any) =>
@@ -562,7 +578,7 @@ const ProfileModal = () => {
                       ) => {
                         setFieldValue(
                           "soft_skill",
-                          selectedSoftSkills.map((role) => role.value)
+                          selectedSoftSkills?.map((role) => role.value)
                         );
                         const selectedSoftSkillValues = selectedSoftSkills?.map(
                           (item) => item.value
@@ -592,7 +608,7 @@ const ProfileModal = () => {
                         )}
                         onRemove={(value: string) => {
                           const updatedSelectedSoftSkills =
-                            values.soft_skill?.filter((id) => id !== value);
+                            values.soft_skill?.filter((id: any) => id !== value);
                           setFieldValue(
                             "soft_skill",
                             updatedSelectedSoftSkills

@@ -13,10 +13,6 @@
   .onboarding-dailog button {
     height: 60px !important;
   }
-  .onboarding-dailog input.agree-check:not(.react-select input),
-  .onboarding-dailog input.wc-check:not(.react-select input){
-    height: 20px !important;
-  }
 }
 
 /*@media (max-width: 600px) {*/
@@ -266,21 +262,6 @@
   padding: 0 1.25rem !important; /* equivalent to p-0 and px-5 */
 }
 
-/* Custom scrollbar styles (optional) */
-.custom-scroll::-webkit-scrollbar {
-  width: 6px !important;
-}
-
-.custom-scroll::-webkit-scrollbar-track {
-  background-color: #e6e7e8 !important;
-}
-
-.custom-scroll::-webkit-scrollbar-thumb {
-  background: #d3d3d3 !important;
-  border-radius: 4px !important;
-}
-
-
 /* Small screens (min-width: 640px) */
 @media (min-width: 640px) {
   .custom-dialog-body {
@@ -298,245 +279,20 @@
 /* Large screens (min-width: 1024px) */
 @media (min-width: 1024px) {
   .custom-dialog-body {
-    max-height: 250px !important; /* lg:max-h-[80vh] */
-  }
-  .css-qr46ko{
-    max-height: 200px !important;
-  }
-  .css-1limbg7-option,
-   .css-1jy9mwy-option{
-    padding: 8px 10px !important;
-  }
-  .onboarding-dailog input.agree-check, 
-  .onboarding-dailog input.wa-check {
-    height: 10px !important;
-  }
-  .onboarding-dailog button{
-    margin-top: 0 !important;
-  }
-}
-/* Large screens (min-width: 1440px) */
-@media (min-width: 1280px) and (max-width:1399px) {
-  .custom-dialog-body {
-    max-height: calc(100vh - 300px) !important; /* lg:max-h-[80vh] */
-  }
-  .css-qr46ko{
-    max-height: 200px !important;
-  }
-  .onboarding-dailog.onboarding-scale {
-    scale: 1 !important;
-    width: 500px !important;
-    position: static !important;
-    min-width: 500px !important;
-    max-width: 500px !important;
-    transform: none !important;
-  }
-  
-}
-/* Large screens (min-width: 1440px) */
-@media (min-width: 1280px) and (max-width:1699px) {
-  .custom-dialog-body {
-    max-height: calc(100vh - 240px) !important; /* lg:max-h-[80vh] */
-  }
-  .add-skill-dailog .custom-dialog-body{
-    max-height: calc(100vh - 300px) !important;
-  }
-  .css-qr46ko{
-    max-height: 200px !important;
-  }
-  .onboarding-dailog.onboarding-scale {
-    scale: .9 !important;
-    width: 560px !important;
-    position: static !important;
-    min-width: 560px !important;
-    max-width: 560px !important;
-    transform: none !important;
-  }
-  .onboarding-dailog.onboarding-scale h2{
-    font-size: 22px !important;
-    line-height: 28px;
-    font-weight: 500;
-  }
-  .onboarding-dailog label{
-    font-size: 14px !important;
-    line-height: 16px !important;
-    font-weight: 500;
-  }
-  .validation-error{
-    font-size: 11px !important;
-    line-height: 14px !important;
-    height: 20px !important;
-    margin-top: 1px !important;
-  }
-  .onboarding-dailog input,
-  .onboarding-dailog button{
-    height: 52px !important;
-    font-size: 16px !important;
-    border-radius: 10px !important;
-    padding-inline: 20px !important;
-  }
-  .onboarding-dailog input.otp-input{
-    height: 56px !important;
-    width: 78px !important;
-  }
-  .onboarding-dailog .otp-dash{
-    right: -23px !important;
-    font-size: 26px !important;
-  }
-  .onboarding-dailog .resend-otp{
-    font-size: 14px !important;
-    margin-top: 16px;
-  }
-  .onboarding-dailog h4{
-    font-size: 16px !important;
-  }
-  .onboarding-dailog p.green-label{
-    font-size: 13px !important;
-  }
-  .onboarding-dailog .css-13cymwt-control, .onboarding-dailog .css-t3ipsp-control{
-    height: 52px !important;
-  }
-  .onboarding-dailog .css-19bb58m input{
-    height: 43px !important;
-  }
-  .onboarding-dailog .label-option{
-    height: 42px !important;
-    font-size: 14px !important;
-  }
-  .onboarding-dailog .progress-footer{
-    padding-inline: 65px !important;
-  }
-
-  .onboarding-dailog .education-dialog label{
-    box-shadow: 0px 4px 4px 0px #00000017;
-    border-radius: 6px;
-  }
-  .onboarding-dailog .education-dialog label input{
-    height: 42px !important;
-  }
-  .onboarding-dailog .education-dialog .edu-label{
-    font-size: 13px !important;
-  }
-  .onboarding-dailog .footer-2btn button{
-    width: 180px !important;
-  }
-  .onboarding-dailog .footer-2btn span{
-    height: 52px !important;
-  }
-  .onboarding-dailog .education-dialog .selected-option-list{
-    gap: 8px !important;
-  }
-  .onboarding-dailog .experience-form-container input[type="text"],
-  .onboarding-dailog .experience-form-container input[type="number"]{
-    height: 42px !important;
-    font-size: 12px !important;
-  }
-  .onboarding-dailog .experience-form-container .label-option{
-    height: 38px !important;
-  }
-  
-  .onboarding-dailog .experience-form-container .experience-date, .onboarding-dailog .experience-form-container input.experience-date{
-    height: 40px !important;
-    font-size: 12px !important;
-    border-radius: 6px !important;
-  }
-  .onboarding-dailog .add-more-exp-btn{
-    margin-top: 12px !important;
-    margin-bottom: 0px !important;
-    font-size: 14px !important;
-  }
-  .onboarding-dailog form.education-dialog{
-    margin-top: 0px !important;
-  }
-  .onboarding-dailog .experience-form-container .currently-working label{
-    font-size: 12px !important;
-  }
-  .onboarding-dailog .wc-check, .onboarding-dailog .agree-check{
-    width: 12px !important;
-  }
-  .onboarding-dailog .experience-form-container .suggestion-option{
-    font-size: 14px !important;
-    line-height: 16px !important;
-    padding-inline: 14px !important;
-    padding-block: 4px;
-  }
-  .onboarding-dailog .experience-form-container .suggestion-option-list{
-    border-radius: 6px !important;
-    box-shadow: 0px 4px 4px 0px #00000021;;
-    max-height: 140px !important;
-    overflow-y: auto;
-    padding-block: 4px;
-    min-height: 30px !important;
-  }
-  .onboarding-dailog .experience-form-container .job-type.label-option{
-    font-size: 12px !important;
-    height: 32px !important;
-  }
-  .onboarding-dailog .experience-card{
-    padding: 12px !important;
-    margin-bottom: 10px !important;
-  }
-  .onboarding-dailog .experience-card h5{
-    font-size: 14px !important;
-    margin-bottom: 2px !important;
-  }
-  .onboarding-dailog .experience-card h6{
-    font-size: 12px !important;
-    margin-bottom: 2px !important;
-  }
-  .onboarding-dailog .experience-form-container{
-    padding: 16px !important;
-  }
-  .onboarding-complete .wlcm-profile-card{
-    align-items: start;
-  }
-  .onboarding-complete .wlcm-profile-card h5{
-    font-size: 14px !important;
-    line-height: 16px !important;
-  }
-  .onboarding-complete .wlcm-profile-card h6{
-    font-size: 12px !important;
-    line-height: 14px !important;
-    margin-bottom: 2px !important;
-  }
-  .onboarding-complete .wlcm-profile-card .select-job-role-label{
-    margin-bottom: 5px !important;
-    line-height: 12px !important;
-    margin-top: 10px !important;
-  }
-  .onboarding-complete .wlcm-profile-card .profile-photo-wrapper{
-    min-width: 100px !important;
-    transform: translateY(-10px);
-  }
-  .onboarding-dailog .onboarding-complete .wc-check,
-  .onboarding-dailog .onboarding-complete .agree-check{
-    margin-top: 0 !important;
-  }
-  .onboarding-dailog .onboarding-complete .agree-label,
-  .onboarding-dailog .onboarding-complete .wc-label{
-    font-weight: 400 !important;
-    font-size: 12px !important;
+    max-height: 70vh !important; /* lg:max-h-[80vh] */
   }
 }
 
-@media (min-width: 1280px) and (max-width:1399px){
-  .onboarding-dailog.onboarding-scale{
-    scale: .75 !important;
-  }
-  .onboarding-dailog .education-dialog .custom-dialog-body{
-    max-height: calc(100vh - 145px) !important;
-  }
-  .onboarding-dailog.experience-screen{
-    transform: translateY(-55px) !important;
-  }
+/* Custom scrollbar styles (optional) */
+.custom-scroll::-webkit-scrollbar {
+  width: 6px !important;
 }
-/* Large screens (min-width: 1700px) */
-@media (min-width: 1700px) {
-  .onboarding-dailog label{
-    font-size: 18px !important;
-    font-weight: 500;
-  }
-  .onboarding-dailog .experience-date{
-    height: 48px !important;
-  }
+
+.custom-scroll::-webkit-scrollbar-track {
+  background-color: #e6e7e8 !important;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+  background: #d3d3d3 !important;
+  border-radius: 4px !important;
 }

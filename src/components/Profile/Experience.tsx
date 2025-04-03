@@ -6,16 +6,25 @@ import { setExperienceModal } from "@/redux/profileSlice";
 const Experience = () => {
   const { profileData } = useAppSelector((state) => state.profile);
   const dispatch = useAppDispatch();
+
+  const getInitials = (companyName: any) => {
+    if (!companyName) return "-";
+    const words = companyName.split(" ");
+    return words.length > 1 ? words[0][0] + words[1][0] : words[0][0];
+  };
+
   return (
     <div className="profile-card bg-white rounded-lg mt-3 p-[16px] sm:p-[20px] lg:px-12 py-6">
       <div className="grid grid-cols-12">
         <div className="col-span-12 flex justify-between">
           <div className="flex gap-3 items-center">
             <img src="/new-assets/icons/briefcase-exprience.svg" />
-            <h1 className="text-[#231F20] font-semibold text-[14px] sm:text-md">Experience</h1>
+            <h1 className="text-[#231F20] font-semibold text-[14px] sm:text-md">
+              Experience
+            </h1>
           </div>
           <div
-            className="!hidden flex items-center gap-2 cursor-pointer"
+            className="flex items-center gap-2 cursor-pointer"
             onClick={() => {
               dispatch(setExperienceModal(true));
             }}
@@ -25,20 +34,22 @@ const Experience = () => {
               className="h-3 mt-1"
               alt=""
             />
-            <span className="text-[13px] sm:text-sm font-bold text-red">Edit</span>
+            <span className="text-[13px] sm:text-sm font-bold text-red">
+              Edit
+            </span>
           </div>
         </div>
       </div>
       <div className="grid grid-cols-12 pr-2 mt-5 gap-3">
         {profileData?.user_experiences?.length > 0 ? (
-          profileData.user_experiences.map((exp: any, index: number) => (
+          profileData.user_experiences.map((exp: any, index: any) => (
             <div
               key={index}
               className="col-span-12 bg-white p-3 rounded-lg shadow-md light-shadow"
             >
               <div className="flex items-center gap-4">
                 {/* Image Section */}
-                <div className="w-14 h-14 rounded-md overflow-hidden">
+                <div className="w-14 h-14 rounded-md overflow-hidden flex items-center justify-center bg-gray-200 text-gray-700 font-bold text-lg">
                   {exp?.company_logo ? (
                     <img
                       src={exp.company_logo}
@@ -46,7 +57,7 @@ const Experience = () => {
                       className="w-full h-full object-contain"
                     />
                   ) : (
-                    <div className="bg-gradient-to-r from-[#F5F5F5] to-[#E0E0E0] w-full h-full rounded-md shadow-inner"></div>
+                    <span>{getInitials(exp.company_name)}</span>
                   )}
                 </div>
                 {/* Text Section */}
@@ -69,7 +80,7 @@ const Experience = () => {
             </div>
           ))
         ) : (
-          <div className="col-span-12  text-[#4D4D4F] text-sm font-medium">
+          <div className="col-span-12 text-[#4D4D4F] text-sm font-medium">
             Help recruiters find you – Update your work experience details
             today!
           </div>

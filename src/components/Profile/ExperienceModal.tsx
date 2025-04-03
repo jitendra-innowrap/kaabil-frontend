@@ -12,11 +12,13 @@ import { useDispatch } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import api from "@/Services/Apiservice";
 import * as Yup from "yup";
-import { formatDateExperience } from "../utils";
+import { convertToNumber, formatDateExperience } from "../utils";
 import toast from "react-hot-toast";
 
 const ExperienceModal = () => {
-  const { experienceModal } = useAppSelector((state) => state.profile);
+  const { experienceModal, profileData } = useAppSelector(
+    (state) => state.profile
+  );
   const { token } = useAppSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [designationSuggestionsSearch, setDesignationSuggestionsSearch] =
@@ -169,19 +171,40 @@ const ExperienceModal = () => {
 
       <Formik
         initialValues={{
-          is_fresher: 2,
-          designation_name: "",
-          designation_master_id: "2698", // It Will Be Replaced
-          company_master_id: "1578", // It Will Be Replaced
-          company_name: "",
-          in_hand_salary: "",
-          job_type_id: "",
-          // job_type_name: "",
-          is_current_company: "0",
-          job_start_date: formatDateExperience(new Date()),
-          job_end_date: formatDateExperience(new Date()),
-          additional_info: "",
-          company_logo: "",
+          is_fresher: Number(profileData?.is_fresher) || 2,
+          designation_name: profileData?.user_experiences?.length
+            ? profileData.user_experiences[0]?.designation
+            : "",
+          designation_master_id: profileData?.user_experiences?.length
+            ? profileData.user_experiences[0].designation_master_id
+            : "",
+          company_master_id: profileData?.user_experiences?.length
+            ? profileData.user_experiences[0].company_master_id
+            : "",
+          company_name: profileData?.user_experiences?.length
+            ? profileData.user_experiences[0].company_name
+            : "",
+          in_hand_salary: profileData?.user_experiences?.length
+            ? profileData.user_experiences[0].in_hand_salary
+            : "",
+          job_type_id: profileData?.user_experiences?.length
+            ? profileData.user_experiences[0].job_type_id
+            : "",
+          is_current_company: profileData?.user_experiences?.length
+            ? profileData.user_experiences[0].is_current_company
+            : "0",
+          job_start_date: profileData?.user_experiences?.length
+            ? profileData.user_experiences[0].job_start_date
+            : formatDateExperience(new Date()),
+          job_end_date: profileData?.user_experiences?.length
+            ? profileData.user_experiences[0].job_end_date
+            : formatDateExperience(new Date()),
+          additional_info: profileData?.user_experiences?.length
+            ? profileData.user_experiences[0].additional_info
+            : "",
+          company_logo: profileData?.user_experiences?.length
+            ? profileData.user_experiences[0].company_logo
+            : "",
         }}
         validationSchema={validationSchema}
         onSubmit={async (values) => {
@@ -308,9 +331,12 @@ const ExperienceModal = () => {
                             setFieldValue("designation_name", value);
                             fetchDesignationSuggestions(value);
                           }}
-                          onFocus={() =>
-                            fetchDesignationSuggestions(values.designation_name)
-                          }
+                          onFocus={() => {
+                            setCompanySuggestions([]);
+                            fetchDesignationSuggestions(
+                              values.designation_name
+                            );
+                          }}
                           placeholder="Enter your designation"
                           className="w-full p-3 border bg-[#C8C9CB3B] rounded-lg"
                         />
@@ -346,7 +372,8 @@ const ExperienceModal = () => {
                         </div>
                       </div>
                       {/* Input Field 2 */}
-                      <div className="relative mb-2 mt-6">
+                      {/* @ts-ignore */}
+                      <div className="relative mb-2 mt-6" key={companySuggestions}>
                         <input
                           type="text"
                           id="companyName"
@@ -354,11 +381,13 @@ const ExperienceModal = () => {
                           value={values.company_name}
                           onChange={(e) => {
                             const value = e.target.value;
+                            setFieldValue("company_name", value);
                             fetchCompanySuggestions(value);
                           }}
-                          onFocus={() =>
-                            fetchCompanySuggestions(values.company_name)
-                          }
+                          onFocus={() => {
+                            setDesignationSuggestions([]);
+                            fetchCompanySuggestions(values.company_name);
+                          }}
                           placeholder="Enter your company name"
                           className="w-full p-3 border bg-[#C8C9CB3B] rounded-lg"
                         />

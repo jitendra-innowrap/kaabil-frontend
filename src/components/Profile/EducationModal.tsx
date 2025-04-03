@@ -29,7 +29,6 @@ const EducationModal = () => {
     useAppSelector((state) => state.profile);
   const [educationSearch, setEducationSearch] = useState(educationData);
   const [showEducation, setShowEducation] = useState(false);
-
   const { token } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
@@ -39,17 +38,28 @@ const EducationModal = () => {
       .test(
         "fileCount",
         "You can only upload up to 6 files.",
-        (value: any) => !value || value?.length <= 6
+        (value: any) =>
+          profileData?.user_certifications?.length > 0 ||
+          !value ||
+          value.length <= 6
       )
-      .required("Required"),
+      .nullable() // Allows null if existing certifications are present
+      .test(
+        "requiredIfNoExistingCerts",
+        "Required",
+        (value: any) =>
+          profileData?.user_certifications?.length > 0 ||
+          (value && value.length > 0)
+      ),
     year_of_graduation: Yup.string().required("Required"),
   });
+
   const closeModal = () => {
+    setShowEducation(false);
     dispatch(setEducationModal(false));
   };
 
   useEffect(() => {
-    setShowEducation(false);
     dispatch(fetchEducationDetail());
   }, []);
 
@@ -96,12 +106,19 @@ const EducationModal = () => {
               qualificationList?.find(
                 (item: any) => item?.name === profileData?.education_name
               )?.id || "",
-            institute_name: "",
+            institute_name:
+              profileData?.educations?.length > 0
+                ? profileData?.educations[0]?.institute_name
+                : "",
             user_certification: null,
-            year_of_graduation: "",
+            year_of_graduation:
+              profileData?.educations?.length > 0
+                ? profileData?.educations[0]?.year_of_graduation
+                : "",
           }}
           validationSchema={validationSchema}
           onSubmit={async (values: any) => {
+            console.log(values, "From Submit Or Not");
             const formData = new FormData();
             const data: any = [
               {
@@ -119,10 +136,12 @@ const EducationModal = () => {
               "user_certification_title",
               JSON.stringify(certificationTitles)
             );
-            formData.append(
-              "user_certification[]",
-              values?.user_certification[0]
-            );
+            if (values?.user_certification !== null) {
+              formData.append(
+                "user_certification[]",
+                values?.user_certification[0]
+              );
+            }
             formData.append("users_education", JSON.stringify(data));
             try {
               const response: any = await api.post(
@@ -157,7 +176,7 @@ const EducationModal = () => {
             }
           }}
         >
-          {({ setFieldValue, isSubmitting, values, dirty }) => (
+          {({ setFieldValue, isSubmitting, values, dirty, errors }) => (
             <Form>
               {/* @ts-ignore */}
               <DialogBody className="p-0 mt-8 max-h-[50vh] sm:max-h-[60vh] md:max-h-[70vh] lg:max-h-[80vh] overflow-y-auto custom-scroll">
@@ -175,13 +194,9 @@ const EducationModal = () => {
                         className={`${
                           education.id === values.education_id &&
                           education?.is_field_study_show !== "0"
-                            ? "border-2 border-red bg-[#FDF1F3]"
+                            ? "border-2 border-red"
                             : ""
-                        } py-2 rounded-lg px-4 ${
-                          education.id === values.education_id
-                            ? "bg-[#FDF1F3]"
-                            : ""
-                        }`}
+                        } py-2 rounded-lg px-4`}
                       >
                         <label
                           htmlFor={education.id}
@@ -242,6 +257,7 @@ const EducationModal = () => {
                                   src="/new-assets/icons/search.svg"
                                   className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#231F20] mt-0.5"
                                 />
+
                                 {educationSearch?.length > 0 &&
                                   showEducation && (
                                     <>
@@ -277,6 +293,11 @@ const EducationModal = () => {
                                       option?.value
                                     )
                                   }
+                                  value={yearOfPassingOptions?.find(
+                                    (item) =>
+                                      item?.value ===
+                                      Number(values?.year_of_graduation)
+                                  )}
                                 />
                                 <div className="h-1 mb-4">
                                   <ErrorMessage
@@ -305,6 +326,65 @@ const EducationModal = () => {
                     >
                       Certification
                     </label>
+                    <div className="col-span-12 mt-2 flex gap-3 sm:flex-wrap overflow-auto">
+                      {profileData?.user_certifications?.length > 0 ? (
+                        profileData.user_certifications.map(
+                          (
+                            cert: {
+                              id: string;
+                              media_url: string;
+                              user_certification_title: string;
+                              attachment_type: string;
+                            },
+                            index: number
+                          ) => (
+                            <div
+                              key={cert.id}
+                              className="certification-card text-center"
+                            >
+                              {cert.attachment_type === "2" ? (
+                                <a
+                                  href={cert.media_url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="flex flex-col items-center"
+                                >
+                                  <img
+                                    src="/new-assets/icons/pdf_logo (1).png"
+                                    className="h-24 w-24 object-cover rounded-md light-shadow"
+                                    alt={
+                                      cert.user_certification_title ||
+                                      "Certificate"
+                                    }
+                                  />
+                                  <h1 className="text-xs mt-2 text-[#231F20]">
+                                    {cert.user_certification_title ||
+                                      "PDF Certification"}
+                                  </h1>
+                                </a>
+                              ) : (
+                                <div className="cursor-pointer">
+                                  <img
+                                    src={cert.media_url}
+                                    alt={
+                                      cert.user_certification_title ||
+                                      "Certificate"
+                                    }
+                                    className="h-24 w-24 object-cover rounded-md"
+                                  />
+                                  <h1 className="text-xs mt-2 text-[#231F20]">
+                                    {cert.user_certification_title ||
+                                      "Untitled Certification"}
+                                  </h1>
+                                </div>
+                              )}
+                            </div>
+                          )
+                        )
+                      ) : (
+                        <div>-</div>
+                      )}
+                    </div>
                     <div className="flex gap-4 mt-2 pb-2">
                       <label className="cursor-pointer">
                         <input

@@ -91,6 +91,11 @@ export default function FilterMobilePannel() {
 
     const handleSearch = (e: any) => {
         e.preventDefault();
+        
+        // Blur the active input to dismiss mobile keyboard
+        if (document.activeElement instanceof HTMLElement) {
+            document.activeElement.blur();
+        }
         const params = new URLSearchParams();
         if (search) params.set('search', search);
         if(pathname=='/jobs'){

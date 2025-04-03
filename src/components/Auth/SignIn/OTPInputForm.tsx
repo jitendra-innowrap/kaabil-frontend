@@ -7,6 +7,8 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import React, { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
+import styles from "./signIn.module.css";
+
 import {
   getAuthUser,
   storeAuthToken,
@@ -71,10 +73,10 @@ export default function OTPInputForm({ size, closePopup, handleBack }: any) {
     validationSchema: Yup.object({
       otp: Yup.array()
         .test("complete-otp", "Mobile otp is required", (value) =>
-          value?.some((digit) => digit.trim() !== "")
+          value?.some((digit) => digit?.trim() !== "")
         )
         .test("required-otp", "Please enter all digits", (value) =>
-          value?.every((digit) => digit.trim() !== "")
+          value?.every((digit) => digit?.trim() !== "")
         ),
     }),
     onSubmit: async (values) => {
@@ -192,18 +194,10 @@ export default function OTPInputForm({ size, closePopup, handleBack }: any) {
 
   return (
     // @ts-ignore
-    <Dialog
-      open={progress === 2}
-      size={size}
-      className={`onboarding-dailog ${
-        size === "md" ? "fixed -top-8 -translate-x-1/2  onboarding-scale" : ""
-      }`}
-    >
-      {/* @ts-ignore */}
-      <DialogHeader>
-        <div className="relative w-full">
+    <div>
+      <div className="relative w-full mb-[28px] sm:mb-0">
           <div onClick={handleBack}>
-            <FaArrowLeft className="absolute cursor-pointer top-2 z-30 left-2 size-6" />
+            <FaArrowLeft className="sm:hidden absolute cursor-pointer top-2 z-30 left-2 size-6" />
           </div>
 
           <IoClose
@@ -212,50 +206,41 @@ export default function OTPInputForm({ size, closePopup, handleBack }: any) {
             onClick={closePopup}
           />
           <div
-            className={`${
-              size === "md"
-                ? "flex justify-center items-center mt-8"
-                : "flex justify-start items-start mt-16"
-            } `}
+            className={`flex sm:justify-center items-center pt-[74px] sm:mt-5 sm:pt-0`}
           >
             <h2
-              className={`text-[#231F20] font-semibold ${
-                size === "md" ? "!text-[26px]" : "!text-[22px]"
-              }`}
+              className={`text-[#231F20] font-semibold text-[20px] sm:text-[28px]`}
             >
               OTP Verification
             </h2>
           </div>
-          <div className={`${size === "md" ? "text-center" : "text-start"}`}>
+          <div className={`${size === "md" ? "text-center" : "text-left"}`}>
             <p
               className={`font-normal ${
-                size === "md" ? "mt-2" : "mt-1"
+                size === "md" ? "mt-2" : "text-[14px] mt-1"
               } text-[#000000] text-sm`}
             >
               We have sent the code verification to your number
             </p>
           </div>
-          {size === "md" && (
-            <Image
+          <Image
               src="/new-assets/icons/otp-icon.png"
               alt="OTP verification form"
               width={60}
               height={60}
-              className="mx-auto mt-2"
+              className="hidden sm:block mx-auto mt-2"
             />
-          )}
         </div>
-      </DialogHeader>
       <form
         className={`block ${size === "xxl" ? "mt-2" : "mt-10"}`}
         onSubmit={formik.handleSubmit}
       >
         {/* @ts-ignore */}
-        <DialogBody className="mt-2 max-h-[50vh] sm:max-h-[60vh] md:max-h-[70vh] lg:max-h-[80vh] p-0 px-5">
-          <div className={`${size === "md" ? "px-12" : "px-0"}`}>
+        <div className="">
+          <div className={`max-w-[528px] mx-auto`}>
             <label
               htmlFor="mobile"
-              className="text-[#231F20] mobile-text text-lg md:text-xl 2xl:text-[16px]"
+              className="text-[#231F20] mb-[8px] sm:mb-[10px] text-[14px] sm:text-lg md:text-xl 2xl:text-[16px] block"
             >
               Mobile Number
             </label>
@@ -267,7 +252,7 @@ export default function OTPInputForm({ size, closePopup, handleBack }: any) {
               placeholder="Enter your mobile number to receive OTP"
               readOnly
               required
-              className={`otp-number text-[#231F20] ${
+              className={`${styles.onboarding_dialog_input} border px-3 py-2 w-full rounded-[8px] sm:rounded-[12px] text-[#231F20] ${
                 user?.mobile ? "font-semibold" : "font-normal"
               }`}
             />
@@ -279,9 +264,9 @@ export default function OTPInputForm({ size, closePopup, handleBack }: any) {
               }`}
             >
               {formik.values.otp.map((digit, index) => (
-                <div className="relative" key={index}>
+                <div className={`${styles.onboarding_dialog_otp_dash} relative`} key={index}>
                   <input
-                    className="otp-input border border-borderBlue text-center text-lg md:text-xl font-semibold"
+                    className={`${styles.onboarding_dialog_otp_input} border border-borderBlue text-center text-lg md:text-xl font-semibold`}
                     name={`otp${index}`}
                     type="tel"
                     maxLength={1}
@@ -293,15 +278,15 @@ export default function OTPInputForm({ size, closePopup, handleBack }: any) {
                       inputRefs.current[index] = ref;
                     }}
                   />
-                  {index < 3 && (
-                    <span
-                      className={`text-[#98A2B3] ${
-                        size === "md" ? "top-4 -right-8" : "top-2 -right-5 lg:-right-7"
-                      }  text-3xl absolute`}
-                    >
-                      -
-                    </span>
-                  )}
+                  {/*{index < 3 && (*/}
+                  {/*  <span*/}
+                  {/*    className={`text-[#98A2B3] ${*/}
+                  {/*      size === "md" ? "top-4 -right-8" : "top-2 -right-5 lg:-right-7"*/}
+                  {/*    }  text-3xl absolute`}*/}
+                  {/*  >*/}
+                  {/*    -*/}
+                  {/*  </span>*/}
+                  {/*)}*/}
                 </div>
               ))}
             </div>
@@ -309,19 +294,17 @@ export default function OTPInputForm({ size, closePopup, handleBack }: any) {
               <p className="text-red-500 mt-2">{formik.errors.otp}</p>
             )}
           </div>
-        </DialogBody>
+        </div>
         {/* @ts-ignore */}
-        <DialogFooter
-          className={`p-0 pb-6 mt-5 flex justify-center ${
-            size === "md" ? "!px-[66px]" : "px-[20px]"
-          }`}
+        <div
+          className={`sm:max-w-[528px] mx-auto p-0 pb-6 mt-5 sm:flex sm:flex-col justify-center sm:mb-4`}
         >
           <button
             type="submit"
             disabled={!formik.isValid || formik.isSubmitting}
-            className={`sign-btn ${
+            className={`${styles.onboarding_dialog_btn} w-full ${
               size === "md" ? "text-lg" : "text-md"
-            } mt-1 no-margin px-6 py-2 !bg-red hover:bg-red text-white rounded-full ${
+            } mt-1 no-margin px-6 py-2 !bg-red hover:bg-red text-white ${
               !formik.isValid || formik.isSubmitting
                 ? "opacity-50 cursor-not-allowed"
                 : ""
@@ -345,8 +328,8 @@ export default function OTPInputForm({ size, closePopup, handleBack }: any) {
               </span>
             </p>
           </div>
-        </DialogFooter>
+        </div>
       </form>
-    </Dialog>
+    </div>
   );
 }

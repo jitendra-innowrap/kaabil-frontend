@@ -37,7 +37,7 @@ const initialState: AuthState = {
   id: user?.id || "",
   is_profile_verify: user?.is_profile_verify =="1"? "1":"0",
   isLoggedIn: user?.is_profile_verify =="1",
-  is_whatsapp_show: user?.is_whatsapp_show? user?.is_whatsapp_show : true,
+  is_whatsapp_show: user?.is_whatsapp_show === false? false : true,
   mobile: user?.mobile,
   name: user?.name || "",
   role_id: user?.role_id || [],

@@ -25,9 +25,7 @@ export default function OnBoardingComplete({size, closePopup}: any) {
     const dispatch = useAppDispatch();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const [WAConsent, setWAConsent] = useState(
-        is_whatsapp_show === false ? false : true
-    );
+    const [WAConsent, setWAConsent] = useState(true);
     const [tncChecked, setTncChecked] = useState(true);
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();

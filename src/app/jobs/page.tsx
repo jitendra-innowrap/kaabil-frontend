@@ -7,10 +7,16 @@ import FilterMobilePannel from "@/components/Filter/FilterMobile";
 import GallerySlider from "@/components/JobDetail/Slider/GallarySlider";
 import JobList from "@/components/JobList";
 import BoostProfile from "@/components/Nudges/Listing/BoostProfile";
+import EditProfileNudge from "@/components/Nudges/Listing/EditProfileNudge";
+import EducationUpdateNudge from "@/components/Nudges/Listing/EducationUpdateNudge";
 import FindCareer from "@/components/Nudges/Listing/FindCareer";
 import ProfileCard from "@/components/Nudges/Listing/ProfileCard";
+import ProfileUploadNudge from "@/components/Nudges/Listing/ProfileUploadNudge";
 import QuickAction from "@/components/Nudges/Listing/QuickAction";
 import ResumeBuilder from "@/components/Nudges/Listing/ResumeBuilder";
+import ShareStrength from "@/components/Nudges/Listing/ShareStrength";
+import UpdloadCvNudge from "@/components/Nudges/Listing/UpdloadCvNudge";
+import WelcomeVideoNudge from "@/components/Nudges/Listing/welcomeNudge";
 import SearchSection from "@/components/SearchSection";
 import { getSessionData } from "@/components/utils/deviceId";
 import { useAppSelector } from "@/redux/hooks";
@@ -19,7 +25,7 @@ import Image from "next/image";
 import { Suspense, useEffect, useState } from "react";
 
 export default function Home() {
-    const {isLoggedIn} = useAppSelector((state) => state.user);
+    const {isLoggedIn, showHelpVideo, showProfilePhoto, showSoftSkills, showUpdateEducation, showUpdateProfile, showUploadCV} = useAppSelector((state) => state.user);
 
   const [isLoading, setIsLoading] = useState(true);
   const [topCompanies, setTopCompanies] = useState<jobcardtype[]>([]);
@@ -89,9 +95,15 @@ export default function Home() {
               <div className="nudges-bar hidden lg:flex flex-shrink-0 flex-col gap-4 md:gap-6 max-w-[400px] mx-auto lg:w-[280px] 2xl:w-[341px]">
                 {/* {!isLoggedIn && <FindCareer/>} */}
                 {isLoggedIn && <ProfileCard/>}
-                {/* {isLoggedIn && <QuickAction/>} */}
+                {isLoggedIn && <QuickAction/>}
                 {/* {!isLoggedIn && <ResumeBuilder/>} */}
                 {/* {isLoggedIn && <BoostProfile/>} */}
+                {isLoggedIn && showSoftSkills && <ShareStrength/>}
+                {isLoggedIn && showUploadCV && <UpdloadCvNudge/>}
+                {isLoggedIn && showUpdateEducation && <EducationUpdateNudge/>}
+                {isLoggedIn && showProfilePhoto && <ProfileUploadNudge/>}
+                {isLoggedIn && showUpdateProfile && <EditProfileNudge/>}
+                {isLoggedIn && showHelpVideo && <WelcomeVideoNudge/>}
               </div>
             </div>
         </div>

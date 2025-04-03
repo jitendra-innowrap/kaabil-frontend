@@ -5,7 +5,7 @@ import { setAutocompleteService, setScriptLoaded } from '@/redux/searchSlice';
 import { getSessionData } from '../utils/deviceId';
 import api from '@/Services/Apiservice';
 import { useAppSelector } from '@/redux/hooks';
-import { setUserDesignation, setUserName, setUserPhotoUrl, setUserProfilePercentage, setUserSkills } from '@/redux/userSlice';
+import { setNudgesVisibility, setUserDesignation, setUserName, setUserPhotoUrl, setUserProfilePercentage, setUserSkills } from '@/redux/userSlice';
 
 export default function LoadGoogleMapsScript() {
   const dispatch = useDispatch();
@@ -53,6 +53,17 @@ export default function LoadGoogleMapsScript() {
           dispatch(setUserDesignation(response.data?.user_profile?.[0]?.designation))
           dispatch(setUserProfilePercentage(response.data?.user_profile?.[0]?.user_profile_percentage))
           dispatch(setUserPhotoUrl(response.data?.user_profile?.[0]?.photo_url))
+          // Handle dynamic nudges
+          const dynamicRows = response.data?.result || [];
+          const nudgeVisibility = {
+            showUploadCV: dynamicRows.some((row:any) => row?.row === 'upload_cv'),
+            showUpdateEducation: dynamicRows.some((row:any) => row?.row === 'update_education'),
+            showProfilePhoto: dynamicRows.some((row:any) => row?.row === 'update_profile_photo'),
+            showSoftSkills: dynamicRows.some((row:any) => row?.row === 'add_soft_skills'),
+            showUpdateProfile: dynamicRows.some((row:any) => row?.row === 'update_profile'),
+            showHelpVideo: dynamicRows.some((row:any) => row?.row === 'help_video')
+          };
+          dispatch(setNudgesVisibility(nudgeVisibility));
         }
       } catch (error) {
         console.error("Error fetching job types:", error);

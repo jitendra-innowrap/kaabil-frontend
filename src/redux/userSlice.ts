@@ -24,6 +24,13 @@ interface AuthState extends User {
   loading: boolean;
   error: string | null;
   savedMobileNumber: string | null;
+  showUploadCV: boolean,
+  showUpdateEducation: boolean,
+  showProfilePhoto: boolean,
+  showSoftSkills: boolean,
+  showUpdateProfile: boolean,
+  showHelpVideo: boolean,
+  helpVideoData: any,
 }
 const { deviceId, secret } = getSessionData();
 const user = getAuthUser() as User;
@@ -32,6 +39,13 @@ const initialState: AuthState = {
   deviceId,
   secret,
   token,
+  showUploadCV: false,
+  showUpdateEducation: false,
+  showProfilePhoto: false,
+  showSoftSkills: false,
+  showUpdateProfile: false,
+  showHelpVideo: false,
+  helpVideoData: null,
   email: user?.email || "",
   photo_url: user?.photo_url || "",
   id: user?.id || "",
@@ -136,12 +150,19 @@ const userSlice = createSlice({
       setSaveMobileNumber: (state, action) => {
         state.savedMobileNumber = action.payload;
       },
+      setNudgesVisibility: (state, action) => {
+        return { ...state, ...action.payload };
+      },
+      setHelpVideoData: (state, action) => {
+        state.helpVideoData = action.payload;
+      }
     },
 });
 
 // Export actions
 export const {
   signOut,
+  setNudgesVisibility, setHelpVideoData,
   setUserProfilePercentage,
   setUserDesignation,
   setAuthToken,

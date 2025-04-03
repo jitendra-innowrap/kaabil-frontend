@@ -1,383 +1,411 @@
 "use client"
 
+import GallerySlider from "@/components/JobDetail/Slider/GallarySlider"
 import Image from "next/image"
 import { useState } from "react"
 
 export default function AboutUs() {
-  const [activeSlide, setActiveSlide] = useState(0)
-
-  const nextSlide = () => {
-    setActiveSlide((prev) => (prev === 2 ? 0 : prev + 1))
-  }
-
-  const prevSlide = () => {
-    setActiveSlide((prev) => (prev === 0 ? 2 : prev - 1))
-  }
-
-  return (
-    <div className="w-full font-sans overflow-x-hidden">
-      {/* Hero Section */}
-      <div className="relative w-full h-[300px] sm:h-[350px] md:h-[450px]">
-        {/* Image */}
-        <div className="relative w-full h-full overflow-hidden">
+  const testimonials = [
+    <div
+      className="bg-white impact-testimonial rounded-2xl xl:rounde-[20px] 3xl:rounded-3xl p-4 md:p-5 xl:p-7 3xl:p-10"
+    >
+      {/* User Details */}
+      <div className="flex flex-col md:flex-row md:items-center mb-3 md:mb-4 xl:mb-5 3xl:mb-6">
+        <div className="">
           <Image
-            src="/new-assets/banners/aboutus.png"
-            alt="Woman using tablet"
-            fill
-            className="object-cover"
-            priority
+            src="/new-assets/images/about/testimonial-profile.svg"
+            alt="Shashikala Bandaru"
+            width={80}
+            height={80}
+            className="rounded-full object-cover size-20 xl:size-16 3xl:size-20"
           />
         </div>
-
-        {/* Text Overlay */}
-        <div className="absolute top-1/2 right-0 transform -translate-y-1/2 text-white max-w-xs sm:max-w-sm md:max-w-md p-4 bg-black bg-opacity-40 rounded-lg md:bg-transparent md:right-0 lg:right-0 xl:right-0 mr-4 md:mr-10 lg:mr-40">
-          <div className="bg-black bg-opacity-50 p-4 rounded-lg md:bg-transparent md:p-0">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium leading-tight">
-              <span className="whitespace-nowrap">
-                Empowering <span className="font-kalam font-bold">women</span>
-              </span>
-              <br />
-              <span className="whitespace-nowrap">and transforming lives.</span>
-            </h1>
-            <p className="mt-2 sm:mt-3 md:mt-4 text-sm sm:text-base md:text-lg">
-              By equipping 1 million women with skills and career opportunities.
-            </p>
-          </div>
+        <div className="md:ml-4 mt-[10px] md:mt-0">
+          <h3 className="font-semibold xl:text-lg 3xl:text-xl text-black truncate">Shashikala Bandaru</h3>
+          <p className="text-sm xl:text-base text-gray-600 truncate">Process Associate, TCS</p>
         </div>
       </div>
+
+      {/* Testimonial Content */}
+      <p className="impact-desc text-sm xl:text-base leading-relaxed text-gray-700 md:line-clamp-6">
+        Overcoming adversity, Shashikala rose above her challenges, transforming from a stone grinder to a
+        successful Software Tester at Tata Consultancy Services Ltd. With the support of the Pride School
+        Programme, she turned her dreams into reality, proving that resilience and determination can create
+        a brighter future.
+      </p>
+    </div>,
+    <div
+      className="bg-white impact-testimonial rounded-2xl xl:rounde-[20px] 3xl:rounded-3xl p-4 md:p-5 xl:p-7 3xl:p-10"
+    >
+      {/* User Details */}
+      <div className="flex flex-col md:flex-row md:items-center mb-3 md:mb-4 xl:mb-5 3xl:mb-6">
+        <div className="">
+          <Image
+            src="/new-assets/images/about/testimonial-profile.svg"
+            alt="Shashikala Bandaru"
+            width={80}
+            height={80}
+            className="rounded-full object-cover size-20 xl:size-16 3xl:size-20"
+          />
+        </div>
+        <div className="md:ml-4 mt-[10px] md:mt-0">
+          <h3 className="font-semibold xl:text-lg 3xl:text-xl text-black truncate">Shashikala Bandaru</h3>
+          <p className="text-sm xl:text-base text-gray-600 truncate">Process Associate, TCS</p>
+        </div>
+      </div>
+
+      {/* Testimonial Content */}
+      <p className="impact-desc text-sm xl:text-base leading-relaxed text-gray-700 md:line-clamp-6">
+        Overcoming adversity, Shashikala rose above her challenges, transforming from a stone grinder to a
+        successful Software Tester at Tata Consultancy Services Ltd. With the support of the Pride School
+        Programme, she turned her dreams into reality, proving that resilience and determination can create
+        a brighter future.
+      </p>
+    </div>,
+    <div
+      className="bg-white impact-testimonial rounded-2xl xl:rounde-[20px] 3xl:rounded-3xl p-4 md:p-5 xl:p-7 3xl:p-10"
+    >
+      {/* User Details */}
+      <div className="flex flex-col md:flex-row md:items-center mb-3 md:mb-4 xl:mb-5 3xl:mb-6">
+        <div className="">
+          <Image
+            src="/new-assets/images/about/testimonial-profile.svg"
+            alt="Shashikala Bandaru"
+            width={80}
+            height={80}
+            className="rounded-full object-cover size-20 xl:size-16 3xl:size-20"
+          />
+        </div>
+        <div className="md:ml-4 mt-[10px] md:mt-0">
+          <h3 className="font-semibold xl:text-lg 3xl:text-xl text-black truncate">Shashikala Bandaru</h3>
+          <p className="text-sm xl:text-base text-gray-600 truncate">Process Associate, TCS</p>
+        </div>
+      </div>
+
+      {/* Testimonial Content */}
+      <p className="impact-desc text-sm xl:text-base leading-relaxed text-gray-700 md:line-clamp-6">
+        Overcoming adversity, Shashikala rose above her challenges, transforming from a stone grinder to a
+        successful Software Tester at Tata Consultancy Services Ltd. With the support of the Pride School
+        Programme, she turned her dreams into reality, proving that resilience and determination can create
+        a brighter future.
+      </p>
+    </div>,
+    <div
+      className="bg-white impact-testimonial rounded-2xl xl:rounde-[20px] 3xl:rounded-3xl p-4 md:p-5 xl:p-7 3xl:p-10"
+    >
+      {/* User Details */}
+      <div className="flex flex-col md:flex-row md:items-center mb-3 md:mb-4 xl:mb-5 3xl:mb-6">
+        <div className="">
+          <Image
+            src="/new-assets/images/about/testimonial-profile.svg"
+            alt="Shashikala Bandaru"
+            width={80}
+            height={80}
+            className="rounded-full object-cover size-20 xl:size-16 3xl:size-20"
+          />
+        </div>
+        <div className="md:ml-4 mt-[10px] md:mt-0">
+          <h3 className="font-semibold xl:text-lg 3xl:text-xl text-black truncate">Shashikala Bandaru</h3>
+          <p className="text-sm xl:text-base text-gray-600 truncate">Process Associate, TCS</p>
+        </div>
+      </div>
+
+      {/* Testimonial Content */}
+      <p className="impact-desc text-sm xl:text-base leading-relaxed text-gray-700 md:line-clamp-6">
+        Overcoming adversity, Shashikala rose above her challenges, transforming from a stone grinder to a
+        successful Software Tester at Tata Consultancy Services Ltd. With the support of the Pride School
+        Programme, she turned her dreams into reality, proving that resilience and determination can create
+        a brighter future.
+      </p>
+    </div>,
+    
+  ]
+  return (
+    <main>
+      {/* Hero Section */}
+      <section>
+          <Image src='/new-assets/images/about/hero-banner.svg' quality={100} alt="" width={3840} height={1000} draggable={false}
+          className="hidden sm:inline-block w-full h-auto home-banner"
+          />
+          <Image src='/new-assets/images/about/hero-banner-mobile.svg' quality={100} alt="" width={3840} height={1000} draggable={false}
+          className="inline-block sm:hidden !w-full !h-auto home-banner"
+          />
+      </section>
 
       {/* Our Approach Section */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 md:py-12 relative">
-        {/* Section Heading */}
-        <h2 className="text-3xl md:text-4xl font-medium mb-8 md:mb-12 text-left">
-          Our <span className="font-kalam font-extrabold italic text-red">approach</span>
-        </h2>
+      <section className="bg-white">
+        <div className="container py-8 md:py-10 xl:py-12 2xl:py-14 3xl:py-[72px]">
+          {/* Section Heading */}
+          <h2 className='text-black text-start text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[36px] mb-4 md:mb-6 xl:mb-7 3xl:mb-8 font-medium'>Our <span className="font-kalam font-bold text-red"> approch</span></h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 relative">
-          {/* Card 01 */}
-          <div className="relative bg-rose-300 rounded-2xl p-6 md:p-8 pt-14 md:pt-16 pb-8 md:pb-12 shadow-lg z-10">
-            <div className="absolute top-4 md:top-6 left-4 md:left-6 text-2xl md:text-3xl font-extrabold text-white">
-              01
-            </div>
-            <h3 className="text-base md:text-lg font-extrabold mb-3 md:mb-4 text-black leading-tight">
-              Empowering Women, Creating Opportunities
-            </h3>
-            <p className="text-xs md:text-sm text-gray-700 leading-relaxed">
-              Imagine a world where every woman has the power to shape her future, where talent is nurtured, and
-              opportunities are limitless. This vision is what drives kaabilprogram.org — a pioneering initiative
-              dedicated to empowering women across India.
-            </p>
-          </div>
 
-          {/* Card 02 */}
-          <div className="relative bg-green-200 rounded-2xl p-6 md:p-8 pt-14 md:pt-16 pb-8 md:pb-12 shadow-lg z-10">
-            <div className="absolute top-4 md:top-6 left-4 md:left-6 text-2xl md:text-3xl font-extrabold text-white">
-              02
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 xl:gap-7 3xl:gap-8 relative">
+            {/* Card 01 */}
+            <div className="relative bg-[#F4A3AF] rounded-[14px] md:rounded-2xl 3xl:rounded-[20px] p-6 xl:p-7 3xl:p-8">
+              <Image src={'/new-assets/images/about/elements/aeroplane-line-left.svg'} alt="element" width={900} height={500} className="aeroplane-element-line" />
+              <div className="text-white text-[50px] leading-[60px] xl:text-[60px] 3xl:text-[70px] font-medium mb-4 md:mb-6 xl:mb-8 3xl:mb-9">
+                01
+              </div>
+              <h3 className="text-[18px] leading-[26px] xl:text-[24px] xl:leading-[28px] 3xl:text-[28px] 3xl:leading-[44px] font-medium mb-4 xl:mb-5 3xl:mb-6">
+                Empowering Women, Creating Opportunities
+              </h3>
+              <p className="text-[#4D4D4F] text-sm xl:text-base 3xl:text-lg">
+              Imagine a world where every woman has the power to shape her future, where talent is nurtured, and opportunities are limitless. This vision is what drives <span className="text-black font-medium">Kaabilprogram.org</span>—a pioneering initiative dedicated to empowering women across India.
+              </p>
             </div>
-            <h3 className="text-base md:text-lg font-extrabold mb-3 md:mb-4 text-black leading-tight">
-              Bridging the Gap Between Talent and Opportunity
-            </h3>
-            <p className="text-xs md:text-sm text-gray-700 leading-relaxed">
-              Through comprehensive skilling, career development, and job placement programs, we provide
-              industry-relevant training and career guidance tailored to women's unique aspirations.
-            </p>
-          </div>
-
-          {/* Card 03 */}
-          <div className="relative bg-orange-200 rounded-2xl p-6 md:p-8 pt-14 md:pt-16 pb-8 md:pb-12 shadow-lg z-10">
-            <div className="absolute top-4 md:top-6 left-4 md:left-6 text-2xl md:text-3xl font-extrabold text-white">
-              03
+            {/* Card 02 */}
+            <div className="relative bg-[#BAE8D3] rounded-[14px] md:rounded-2xl 3xl:rounded-[20px] p-6 xl:p-7 3xl:p-8">
+              <div className="text-white text-[50px] leading-[60px] xl:text-[60px] 3xl:text-[70px] font-medium mb-4 md:mb-6 xl:mb-8 3xl:mb-9">
+                02
+              </div>
+              <h3 className="text-[18px] leading-[26px] xl:text-[24px] xl:leading-[28px] 3xl:text-[28px] 3xl:leading-[44px] font-medium mb-4 xl:mb-5 3xl:mb-6">
+                Bridging the Gap Between Talent and Opportunity
+              </h3>
+              <p className="text-[#4D4D4F] text-sm xl:text-base 3xl:text-lg">
+              Through comprehensive skilling, career development, and job placement programs, we provide <span className="text-black font-medium">industry-relevant training and career guidance</span> tailored to women's unique aspirations.
+              </p>
             </div>
-            <h3 className="text-base md:text-lg font-extrabold mb-3 md:mb-4 text-black leading-tight">
-              Driving Impact, Shaping the Future
-            </h3>
-            <p className="text-xs md:text-sm text-gray-700 leading-relaxed">
-              At kaabil, we believe that when women rise, communities thrive. Our mission is to ensure that every woman
-              has access to meaningful employment, unlocking her full potential and building a better tomorrow.
-            </p>
+            {/* Card 03 */}
+            <div className="relative bg-[#FDEAC9] rounded-[14px] md:rounded-2xl 3xl:rounded-[20px] p-6 xl:p-7 3xl:p-8">
+              <Image src={'/new-assets/images/about/elements/aeroplane-right.svg'} alt="element" width={900} height={500} className="aeroplane-element" />
+              <div className="text-white text-[50px] leading-[60px] xl:text-[60px] 3xl:text-[70px] font-medium mb-4 md:mb-6 xl:mb-8 3xl:mb-9">
+                03
+              </div>
+              <h3 className="text-[18px] leading-[26px] xl:text-[24px] xl:leading-[28px] 3xl:text-[28px] 3xl:leading-[44px] font-medium mb-4 xl:mb-5 3xl:mb-6">
+                Driving Impact, Shaping the Future
+              </h3>
+              <p className="text-[#4D4D4F] text-sm xl:text-base 3xl:text-lg">
+              At Kaabil, we believe that when women rise, communities thrive. Our mission is to ensure that every woman has access to meaningful  <span className="text-black font-medium">employment</span>, unlocking her full potential and building a better tomorrow.
+              </p>
+            </div>
+            
           </div>
         </div>
-      </div>
-
-      {/* Image Gallery Section */}
-      <div className="relative w-full h-48 sm:h-64 md:h-80 lg:h-96 mt-16 md:mt-24 overflow-hidden">
-        <Image
-          src="/new-assets/banners/aboutus1.png"
-          alt="Map of India with glowing network"
-          fill
-          className="object-cover"
-        />
-      </div>
+      </section>
 
       {/* Why Choose Kaabil Section */}
-      <section className="bg-gray-100">
-        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16">
-          <h2 className="text-center text-2xl sm:text-3xl font-bold mb-2">
-            Why choose <span className="font-kalam font-bold text-red">Kaabil?</span>
-          </h2>
-          <p className="text-center text-sm sm:text-base text-gray-600 mb-8 md:mb-12 max-w-3xl mx-auto px-4">
+      <section className="bg-[#f6f7f7] py-8 md:py-10 xl:py-12 2xl:py-14 3xl:py-[72px]">
+        <div className="container">
+        <h2 className='text-black text-center text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[36px] mb-2 font-medium'>Why choose <span className="font-kalam font-bold text-red"> Kaabil?</span></h2>
+        <p className="text-center text-sm md:text-base 3xl:text-lg space-x-2 3xl:max-w-[950px] m-auto mb-16 2xl:mb-16 3xl:mb-[82px]">
             Women registered on our platform gain access to a wide range of services to help them find the right
             resources and guidance to transform their lives and livelihoods.
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 px-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-14 md:gap-12 xl:gap-4 3xl:gap-[22px]">
             {/* Card 1 */}
-            <div className="relative bg-white p-4 md:p-6 rounded-xl shadow-lg text-center">
-              <div className="absolute -top-5 md:-top-6 left-1/2 transform -translate-x-1/2 bg-[#D9333F] rounded-full w-10 h-10 md:w-14 md:h-14 flex items-center justify-center">
+            <div className="about-usp-card relative bg-white rounded-[20px] px-[38px] py-[64px] xl:px-[30px] 2xl:px-[38px] 3xl:px-[44px] 3xl:py-[106px]">
+              <div className=" absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2">
                 <Image
-                  src="/new-assets/company-icons/about1.png"
+                  src="/new-assets/icons/about/usp-1.svg"
                   alt="Icon"
                   width={20}
                   height={20}
-                  className="w-5 h-5 md:w-6 md:h-6"
+                  className="size-20 xl:size-16 3xl:size-20 mx-auto"
                 />
               </div>
-              <h3 className="font-semibold text-base md:text-lg mt-8 mb-2">21st-century skills</h3>
-              <p className="text-xs md:text-sm text-gray-600">Training to prepare women for the future of work.</p>
+              <h3 className="text-[#231F20] text-sm md:text-base 3xl:text-xl text-center"><span className="font-semibold">21st-century skills training</span> to prepare women for the future of work.</h3>
             </div>
-
             {/* Card 2 */}
-            <div className="relative bg-white p-4 md:p-6 rounded-xl shadow-lg text-center">
-              <div className="absolute -top-5 md:-top-6 left-1/2 transform -translate-x-1/2 bg-[#D9333F] rounded-full w-10 h-10 md:w-14 md:h-14 flex items-center justify-center">
+            <div className="about-usp-card relative bg-white rounded-[20px] px-[38px] py-[64px] xl:px-[30px] 2xl:px-[38px] 3xl:px-[44px] 3xl:py-[106px]">
+              <div className=" absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2">
                 <Image
-                  src="/new-assets/company-icons/about2.png"
+                  src="/new-assets/icons/about/usp-2.svg"
                   alt="Icon"
                   width={20}
                   height={20}
-                  className="w-5 h-5 md:w-6 md:h-6"
+                  className="size-20 xl:size-16 3xl:size-20 mx-auto"
                 />
               </div>
-              <h3 className="font-semibold text-base md:text-lg mt-8 mb-2">Career readiness programs</h3>
-              <p className="text-xs md:text-sm text-gray-600">
-                That offer interview prep, business communication, and job placement support.
-              </p>
+              <h3 className="text-[#231F20] text-sm md:text-base 3xl:text-xl text-center"><span className="font-semibold">Career readiness programs</span> that offer interview prep, business communication, and job placement support.</h3>
             </div>
-
             {/* Card 3 */}
-            <div className="relative bg-white p-4 md:p-6 rounded-xl shadow-lg text-center">
-              <div className="absolute -top-5 md:-top-6 left-1/2 transform -translate-x-1/2 bg-[#D9333F] rounded-full w-10 h-10 md:w-14 md:h-14 flex items-center justify-center">
+            <div className="about-usp-card relative bg-white rounded-[20px] px-[38px] py-[64px] xl:px-[30px] 2xl:px-[38px] 3xl:px-[44px] 3xl:py-[106px]">
+              <div className=" absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2">
                 <Image
-                  src="/new-assets/company-icons/about3.png"
+                  src="/new-assets/icons/about/usp-3.svg"
                   alt="Icon"
                   width={20}
                   height={20}
-                  className="w-5 h-5 md:w-6 md:h-6"
+                  className="size-20 xl:size-16 3xl:size-20 mx-auto"
                 />
               </div>
-              <h3 className="font-semibold text-base md:text-lg mt-8 mb-2">Digital and financial literacy</h3>
-              <p className="text-xs md:text-sm text-gray-600">
-                Enabling women to navigate the modern world with confidence.
-              </p>
+              <h3 className="text-[#231F20] text-sm md:text-base 3xl:text-xl text-center"><span className="font-semibold">Digital and financial literacy</span> , enabling women to navigate the modern world with confidence.</h3>
             </div>
-
             {/* Card 4 */}
-            <div className="relative bg-white p-4 md:p-6 rounded-xl shadow-lg text-center">
-              <div className="absolute -top-5 md:-top-6 left-1/2 transform -translate-x-1/2 bg-[#D9333F] rounded-full w-10 h-10 md:w-14 md:h-14 flex items-center justify-center">
+            <div className="about-usp-card relative bg-white rounded-[20px] px-[38px] py-[64px] xl:px-[30px] 2xl:px-[38px] 3xl:px-[44px] 3xl:py-[106px]">
+              <div className=" absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2">
                 <Image
-                  src="/new-assets/company-icons/about4.png"
+                  src="/new-assets/icons/about/usp-4.svg"
                   alt="Icon"
                   width={20}
                   height={20}
-                  className="w-5 h-5 md:w-6 md:h-6"
+                  className="size-20 xl:size-16 3xl:size-20 mx-auto"
                 />
               </div>
-              <h3 className="font-semibold text-base md:text-lg mt-8 mb-2">Job opportunities</h3>
-              <p className="text-xs md:text-sm text-gray-600">Through our growing network of partner companies.</p>
+              <h3 className="text-[#231F20] text-sm md:text-base 3xl:text-xl text-center"><span className="font-semibold">Job opportunities 
+              through </span> our growing network of partner companies</h3>
             </div>
           </div>
         </div>
       </section>
 
       {/* How It Works Section */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-8 md:pt-12 pb-0">
-        <div className="grid md:grid-cols-2 gap-8 md:gap-12">
-          <div className="flex flex-col items-start justify-center">
-            <h2 className="text-2xl md:text-3xl font-bold mb-4 md:mb-8">
-              How it <span className="font-kalam font-extrabold text-red">works</span>
-            </h2>
-            <p className="text-sm md:text-base text-gray-700 mb-4">
-              Kaabilprogram.org connects skilled and job-ready women with companies across various industries. We
-              simplify the job search process and offer ongoing career support to ensure a smooth transition into the
-              workforce.
-            </p>
-            <p className="text-sm md:text-base text-gray-700 mb-6">
-              Our platform is designed to create quick and meaningful connections between employers and candidates,
-              ensuring the hiring process is efficient and transparent while bringing value to both parties.
-            </p>
-          </div>
+      <section className="bg-white">
+        <div className="container py-8 md:py-10 xl:py-12 2xl:py-14 3xl:py-16">
+          <div className="grid md:grid-cols-2 gap-8 md:gap-12">
+            <div className="flex flex-col items-start justify-center">
+              <h2 className='text-black text-center text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[36px] mb-4 md:mb-6 xl:mb-7 3xl:mb-8 font-medium'>How It <span className="font-kalam font-bold text-red"> Works</span></h2>
+              <div className="md:hidden mb-6">
+                <Image
+                  src="/new-assets/images/about/how-it-works.svg"
+                  alt="Women in training"
+                  width={1200}
+                  height={1200}
+                  className="rounded-lg md:max-w-[624px] w-full"
+                />
+              </div>
+              <p className="text-sm md:text-base 3xl:text-lg 3xl:leading-[30px] md:max-w-[518px]">
+              Kaabilprogram.org connects skilled and job-ready women with companies across various industries. We simplify the job search process and offer ongoing career support to ensure a smooth transition into the workforce. <br />
+              Our platform is designed to foster quick connections between employers and candidates, ensuring the hiring process is efficient and transparent.
+              </p>
+            </div>
 
-          <div className="grid grid-cols-2 gap-2 md:gap-3 -mb-16 md:mb-0 relative">
-            <div className="relative h-40 sm:h-48 md:h-56 lg:h-64">
-              <Image
-                src="/new-assets/images/aboutus1.png"
-                alt="Women in training"
-                fill
-                className="rounded-lg object-cover"
-              />
-            </div>
-            <div className="relative h-32 sm:h-40 md:h-48 lg:h-56 -translate-y-4">
-              <Image
-                src="/new-assets/images/aboutus2.png"
-                alt="Group workshop"
-                fill
-                className="rounded-lg object-cover"
-              />
-            </div>
-            <div className="relative h-32 sm:h-40 md:h-48 lg:h-56 ml-8 md:ml-16 translate-y-4">
-              <Image
-                src="/new-assets/images/aboutus3.png"
-                alt="Woman working"
-                fill
-                className="rounded-lg object-cover"
-              />
-            </div>
-            <div className="relative h-40 sm:h-48 md:h-56 lg:h-64 -translate-y-8 md:-translate-y-16 lg:-translate-y-20">
-              <Image
-                src="/new-assets/images/aboutus4.png"
-                alt="Computer training"
-                fill
-                className="rounded-lg object-cover"
-              />
+            <div className="hidden md:block">
+                <Image
+                  src="/new-assets/images/about/how-it-works.svg"
+                  alt="Women in training"
+                  width={1200}
+                  height={1200}
+                  className="rounded-lg max-w-[624px] w-full"
+                />
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
       {/* Our Reach Section */}
-      <div className="relative w-full h-48 sm:h-64 md:h-80 lg:h-96 mt-16 md:mt-24 overflow-hidden">
-        <Image
-          src="/new-assets/banners/aboutus1.png"
-          alt="Map of India with glowing network"
-          fill
-          className="object-cover"
-        />
+      <div className="bg-[#051525] relative overflow-hidden">
+        <div className="flex lg:justify-end gap-8 md:gap-12 container py-8 md:py-10 xl:py-12 2xl:py-14 3xl:py-[82px]">
+                <Image
+                  src="/new-assets/images/about/reach-map-mobile.svg"
+                  alt="Women in training"
+                  width={1200}
+                  height={1200}
+                  className=" lg:hidden rounded-lg z-[1] xl:w-[100%] absolute top-0 left-0  w-full"
+                />
+                <Image
+                  src="/new-assets/images/about/reach-map.svg"
+                  alt="Women in training"
+                  width={1200}
+                  height={1200}
+                  className="hidden lg:block rounded-lg z-[1] xl:w-[100%] absolute top-0 left-0  w-full"
+                />
+            <div className="flex flex-col items-start justify-center relative z-[2] mt-[calc(35vw)] lg:mt-0">
+              <h2 className='text-white text-center text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[36px] mb-4 md:mb-6 xl:mb-7 3xl:mb-8 font-medium'>Our <span className="font-kalam font-bold"> reach</span></h2>
+              <p className="text-white font-normal text-sm md:text-base 3xl:text-lg 3xl:leading-[30px] lg:max-w-[518px] mb-4 md:mb-6 xl:mb-14 3xl:mb-[72px]">
+              Kaabil is enabling women across India to build brighter futures by connecting them with skill development and job opportunities. From cities to rural communities, we empower them to rise with confidence and economic independence.
+              </p>
+              <div className="flex gap-5 flex-col md:flex-row items-center justify-between w-full md:gap-6 xl:gap-10 3xl:gap-12">
+                <div className="flex flex-col items-center">
+                  <strong className="text-white text-[36px] md:text-[40px] xl:text-[54px] 3xl:text-[62px] leading-[140%]">437</strong>
+                  <p className="text-white text-sm md:text-base xl:text-lg 3xl:text-xl tracking-[0%]">Districts covered</p>
+                </div>
+                <div className="flex flex-col items-center">
+                  <strong className="text-white text-[36px] md:text-[40px] xl:text-[54px] 3xl:text-[62px] leading-[140%]">10</strong>
+                  <p className="text-white text-sm md:text-base xl:text-lg 3xl:text-xl tracking-[0%]">States covered</p>
+                </div>
+                <div className="flex flex-col items-center">
+                  <strong className="text-white text-[36px] md:text-[40px] xl:text-[54px] 3xl:text-[62px] leading-[140%]">2000+</strong>
+                  <p className="text-white text-center md:max-w-[255px] text-sm md:text-base xl:text-lg 3xl:text-xl tracking-[0%]">Partnered with educational institutions</p>
+                </div>
+              </div>
+            </div>
+        </div>
       </div>
 
       {/* Powered by Collaboration Section */}
-      <div className="bg-gray-100">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 md:py-12">
-          <h2 className="text-2xl md:text-3xl font-bold mb-6">
-            Powered by <span className="font-kalam font-extrabold text-red">collaboration</span>
-          </h2>
-
-          <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
-            <div>
-              <p className="text-sm md:text-base text-gray-700 mb-4 md:mb-6">
-                Kaabilprogram.org thrives on collaboration and shared purpose. With Mahindra & Mahindra's strong
-                foundation, we are creating a sustainable impact.
-              </p>
-              <p className="text-sm md:text-base text-gray-700 mb-4 md:mb-6">
-                We also work closely with various NGOs, community organizations, and corporate partners to expand the
-                reach and effectiveness of our programs.
-              </p>
-              <p className="text-sm md:text-base text-gray-700">
-                We believe that empowering women is not just about employment—it's about building a better future for
-                families, communities, and the nation. Kaabilprogram.org is a step toward that brighter, more inclusive
-                future.
+      <section className="bg-[#f6f7f7]">
+        <div className="container py-8 md:py-10 xl:py-12 2xl:py-14 3xl:py-[91px]">
+          <div className="grid md:grid-cols-2 gap-8 md:gap-12">
+            <div className="flex flex-col items-start justify-center">
+              <h2 className='text-black text-center text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[36px] mb-4 md:mb-6 xl:mb-7 3xl:mb-8 font-medium'>Powered by <span className="font-kalam font-bold text-red"> collaboration</span></h2>
+              <p className="text-sm md:text-base 3xl:text-lg 3xl:leading-[30px] max-w-[682px]">
+              Kaabilprogram.org thrives on collaboration and shared purpose. With Mahindra & Mahindra’s strong foundation, we are creating a sustainable impact. We also work closely with various NGOs, community organizations, and corporate partners to expand the reach and effectiveness of our programs. <br />
+              We believe that empowering women is not just about employment—it’s about building a better future for families, communities, and the nation. Kaabilprogram.org is a step toward that brighter, more inclusive future.
               </p>
             </div>
 
-            <div className="relative h-64 md:h-80 lg:h-96">
-              <Image
-                src="/new-assets/banners/aboutus2.png"
-                alt="Woman smiling with headset"
-                fill
-                className="rounded-lg object-cover"
-              />
+            <div className="">
+                <Image
+                  src="/new-assets/images/about/collaboration.svg"
+                  alt="Women in training"
+                  width={1200}
+                  height={1200}
+                  className="rounded-lg max-w-[624px] w-full"
+                />
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
       {/* Our Impact Section - FIXED SECTION */}
       <section className="relative w-full  py-12 md:py-16 lg:py-36 bg-white overflow-hidden">
-        <div className="container mx-auto px-4 sm:px-6 flex flex-col md:flex-row items-start gap-8 md:gap-16 relative z-10 w-full">
+        <div className="container impact-section flex flex-col md:flex-row items-start gap-8 xl:gap-0 relative z-10">
           {/* Left Section: Title & Text */}
-          <div className="w-full md:w-[300px] lg:w-[350px] text-left flex flex-col justify-center relative">
+          <div className="w-full flex-shrink-0 md:w-[300px] lg:w-[350px] text-left flex flex-col justify-center relative">
             {/* Large Background Quote Icon */}
-            <div className="absolute top-[-80px] md:top-[-120px] right-[-40px] md:right-[-70px] w-[150px] h-[150px] md:w-[220px] md:h-[220px] z-[-1]">
+            <div className="absolute top-[-80px] md:top-[-120px] left-[93px] w-[150px] h-[150px] md:w-[220px] md:h-[220px] z-[-1]">
               <Image
-                src="/new-assets/company-icons/about5.png"
+                src="/new-assets/images/about/elements/qoute.svg"
                 alt="Background Quote Icon"
                 width={220}
                 height={220}
-                className="object-contain opacity-50"
+                className="object-contain opacity-20"
               />
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-black relative">
-              Our <span className="font-kalam text-red">impact</span>
-            </h2>
-            <p className="text-black text-base mt-4 md:mt-6 leading-relaxed">
-              Mahindra has established <br /> itself as a lead catalyst and <br />
-              <span className="font-semibold">empowered 770K women</span><br />
-              through several
-              programs.
-            </p>
-
-            {/* Carousel Buttons */}
-            <div className="flex items-center gap-4 mt-6 md:mt-8">
-              <button
-                onClick={prevSlide}
-                className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white text-black flex items-center justify-center hover:bg-gray-200 shadow-md border border-gray-200"
-                aria-label="Previous slide"
-              >
-                ❮
-              </button>
-              <button
-                onClick={nextSlide}
-                className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-black text-white flex items-center justify-center hover:bg-gray-700 shadow-md"
-                aria-label="Next slide"
-              >
-                ❯
-              </button>
-            </div>
+            <h2 className='text-black text-start text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[36px] mb-4 md:mb-6 xl:mb-7 3xl:mb-8 font-medium'>Our <span className="font-kalam font-bold text-red"> impact</span></h2>
+              <p className="text-sm md:text-base 3xl:text-lg 3xl:leading-[30px] md:max-w-[267px]">
+              Mahindra has established itself as a lead catalyst and <span className="font-semibold">empowered 770K women</span> through several programs
+              </p>
           </div>
 
           {/* Right Section: Testimonials */}
-          <div className="w-full md:w-[calc(100%-350px)] overflow-hidden">
-            <div
-              className="flex gap-6 transition-transform duration-300 ease-in-out"
-              style={{ transform: `translateX(-${activeSlide * 100}%)` }}
-            >
-              {/* Testimonial Cards - Repeated 3 times for the carousel */}
-              {[0, 1, 2].map((index) => (
-                <div
-                  key={index}
-                  className="bg-white rounded-xl shadow-lg w-full md:w-[350px] lg:w-[400px] flex-shrink-0 p-6"
-                >
-                  {/* User Details */}
-                  <div className="flex items-center mb-5">
-                    <div className="relative w-12 h-12 md:w-14 md:h-14">
-                      <Image
-                        src="/new-assets/company-icons/impact1.png"
-                        alt="Shashikala Bandaru"
-                        width={56}
-                        height={56}
-                        className="rounded-full object-cover"
-                      />
-                    </div>
-                    <div className="ml-4">
-                      <h3 className="font-bold text-lg text-black">Shashikala Bandaru</h3>
-                      <p className="text-sm text-gray-600">Process Associate, TCS</p>
-                    </div>
-                  </div>
-
-                  {/* Testimonial Content */}
-                  <p className="text-sm leading-relaxed text-gray-700">
-                    Overcoming adversity, Shashikala rose above her challenges, transforming from a stone grinder to a
-                    successful Software Tester at Tata Consultancy Services Ltd. With the support of the Pride School
-                    Programme, she turned her dreams into reality, proving that resilience and determination can create
-                    a brighter future.
-                  </p>
-                </div>
-              ))}
-            </div>
+          <div className="w-[calc(100%_+_200px)] impact-slides-container">
+            {/* User Details */}
+            <GallerySlider
+                    slides={testimonials}
+                    spaceBetween={24}
+                    showNavigation
+                    arrowColor="white"
+                    loop={true}
+                    arrowFloat
+                    autoplay={false}
+                    autoplayDuration={3000}
+                    freeMode={false}
+                    slidesPerView={2}
+                    breakpoints={{
+                        320: {
+                            slidesPerView: 2,
+                        },
+                        1280: {
+                            slidesPerView: 3.2,
+                        },
+                        1400:{
+                            slidesPerView: 2.95,
+                        },
+                        1700: {
+                          spaceBetween:40,
+                          slidesPerView: 2.6,
+                        },
+                      }}
+                    />
           </div>
         </div>
 
         {/* Red Background Block Behind Testimonials */}
-        <div className="absolute top-0 right-0 w-[65%] h-full bg-[#D9333F] z-0"></div>
+        <div className="absolute impact-red-bg top-0 right-0 w-full md:w-[43%] xl:w-[58%] 2xl:w-[60%] 3xl:w-[64%] h-full bg-[#D9333F] z-0"></div>
       </section>
-    </div>
+    </main>
   )
 }
 

@@ -6,6 +6,7 @@ import {GoDotFill} from "react-icons/go";
 import api from "@/Services/Apiservice";
 import toast from "react-hot-toast";
 import {
+    RefreshProfileData,
     setUserIsProfileVerified,
     setUserPhotoUrl,
     setUserWAConsent,
@@ -25,9 +26,7 @@ export default function OnBoardingComplete({size, closePopup}: any) {
     const dispatch = useAppDispatch();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const [WAConsent, setWAConsent] = useState(
-        is_whatsapp_show === false ? false : true
-    );
+    const [WAConsent, setWAConsent] = useState(true);
     const [tncChecked, setTncChecked] = useState(true);
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -39,7 +38,7 @@ export default function OnBoardingComplete({size, closePopup}: any) {
             formData.append("is_profile_verify", "1"); // Append the file safely
             formData.append("is_tnc_checked", tncChecked ? "1" : "0");
             // Submit the form data
-            const response = await api.post("/Auth/editJobSeekerPrpfile", formData, {
+            const response = await api.post("/Auth/verifyProfileStatus", formData, {
                 headers: {"Content-Type": "multipart/form-data"},
             });
 
@@ -49,6 +48,7 @@ export default function OnBoardingComplete({size, closePopup}: any) {
                 });
                 dispatch(setUserWAConsent(WAConsent));
                 dispatch(setUserIsProfileVerified("1"));
+                dispatch(RefreshProfileData())
                 closePopup(); // Close the modal or navigate to the next step
             } else {
                 toast.error(response?.data?.message || "Submission failed!", {

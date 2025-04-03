@@ -24,6 +24,15 @@ interface AuthState extends User {
   loading: boolean;
   error: string | null;
   savedMobileNumber: string | null;
+  showUploadCV: boolean,
+  showUpdateEducation: boolean,
+  showProfilePhoto: boolean,
+  showSoftSkills: boolean,
+  showUpdateProfile: boolean,
+  showHelpVideo: boolean,
+  helpVideoData: any,
+  user_willing_to_relocate: string[],
+  isProfileUpdate?: boolean,
 }
 const { deviceId, secret } = getSessionData();
 const user = getAuthUser() as User;
@@ -32,12 +41,21 @@ const initialState: AuthState = {
   deviceId,
   secret,
   token,
+  showUploadCV: false,
+  showUpdateEducation: false,
+  showProfilePhoto: false,
+  showSoftSkills: false,
+  showUpdateProfile: false,
+  showHelpVideo: false,
+  helpVideoData: null,
+  isProfileUpdate: false,
+  user_willing_to_relocate: [],
   email: user?.email || "",
   photo_url: user?.photo_url || "",
   id: user?.id || "",
   is_profile_verify: user?.is_profile_verify =="1"? "1":"0",
   isLoggedIn: user?.is_profile_verify =="1",
-  is_whatsapp_show: user?.is_whatsapp_show? user?.is_whatsapp_show : true,
+  is_whatsapp_show: user?.is_whatsapp_show === false? false : true,
   mobile: user?.mobile,
   name: user?.name || "",
   role_id: user?.role_id || [],
@@ -136,12 +154,27 @@ const userSlice = createSlice({
       setSaveMobileNumber: (state, action) => {
         state.savedMobileNumber = action.payload;
       },
+      setNudgesVisibility: (state, action) => {
+        return { ...state, ...action.payload };
+      },
+      setHelpVideoData: (state, action) => {
+        state.helpVideoData = action.payload;
+      },
+      setUserWillingToRelocate: (state, action:PayloadAction<string[]>) => {
+        state.user_willing_to_relocate = action.payload;
+      },
+      RefreshProfileData: (state) => {
+        state.isProfileUpdate = !state.isProfileUpdate;
+      }
     },
 });
 
 // Export actions
 export const {
   signOut,
+  RefreshProfileData,
+  setNudgesVisibility, setHelpVideoData,
+  setUserWillingToRelocate,
   setUserProfilePercentage,
   setUserDesignation,
   setAuthToken,

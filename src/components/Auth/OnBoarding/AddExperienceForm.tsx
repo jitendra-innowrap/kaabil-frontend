@@ -114,9 +114,10 @@ const AddExperienceForm = forwardRef(
                 formik.handleChange(e);
                 fetchDesignationSuggestions(e.target.value);
               }}
-              onFocus={() =>
-                fetchDesignationSuggestions(formik.values.designation)
-              }
+              onFocus={() =>{
+                fetchDesignationSuggestions(formik.values.designation);
+                setCompanySuggestions([])
+              }}
               placeholder="Enter your designation"
               className={`${styles.onboarding_dialog_input} w-full p-2 border`}
             />
@@ -155,7 +156,7 @@ const AddExperienceForm = forwardRef(
                 formik.handleChange(e);
                 fetchCompanySuggestions(e.target.value);
               }}
-              onFocus={() => fetchCompanySuggestions(formik.values.companyName)}
+              onFocus={() => {fetchCompanySuggestions(formik.values.companyName); setDesignationSuggestions([])}}
               placeholder="Enter your company name"
               className={`${styles.onboarding_dialog_input} w-full p-2 border`}
             />
@@ -256,7 +257,7 @@ const AddExperienceForm = forwardRef(
                 </p>
               )}
             </div>
-            {!isCurrentCompany && (
+            {!isCurrentCompany ? (
               <div className="flex-1">
                 <label className={' text-[12px] sm:text-[14px] mb-[8px] block'}>Worked Till</label>
                 <input
@@ -275,7 +276,10 @@ const AddExperienceForm = forwardRef(
                   </p>
                 )}
               </div>
-            )}
+            )
+            :
+            <div className="flex-1"></div>
+          }
           </div>
         </form>
       </div>

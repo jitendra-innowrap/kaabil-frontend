@@ -26,6 +26,7 @@ import api from "@/Services/Apiservice";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import SelectedChips from "../Inputs/SelectedChips";
 import toast from "react-hot-toast";
+import { RefreshProfileData } from "@/redux/userSlice";
 
 const ProfileModal = () => {
   const {
@@ -197,6 +198,7 @@ const ProfileModal = () => {
                   data: { latitude: 0, longitude: 0 },
                 })
               );
+              dispatch(RefreshProfileData());
               closePopup();
             }
           }}
@@ -254,7 +256,7 @@ const ProfileModal = () => {
                       <ErrorMessage
                         name="photo_url"
                         component="div"
-                        className="text-red-500 text-lg"
+                        className="text-red text-lg"
                       />
                     </div>
                   </div>

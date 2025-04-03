@@ -953,8 +953,44 @@ label {
     max-width: 600px;
   }
 }
-
+.aeroplane-element{
+  display: none;
+}
+.aeroplane-element-line{
+  display: none;
+}
+.impact-testimonial{
+  box-shadow: 0px 0px 20px 0px #0000001A;
+}
 @media (min-width: 1280px) {
+  .impact-section .swiper-button-prev.out-arrow{
+    left: 55px !important;
+    transform: translateY(65px);
+  }
+  .impact-section .swiper-button-next{
+    right: unset !important;
+    left: 100px !important;
+    transform: translateY(65px);
+  }
+  .impact-section .slider-wrapper{
+    padding-inline: 0 !important;
+  }
+  .aeroplane-element{
+    display: block;
+    position: absolute;
+    top: -68px;
+    left: -30px;
+    min-width: 463px;
+    height: auto;
+  }
+  .aeroplane-element-line{
+    display: block;
+    position: absolute;
+    bottom: -55px;
+    right: -34px;
+    min-width: 550px;
+    height: auto;
+  }
   .job-card .skills-wrapper {
     max-width: 50% !important;
   }
@@ -1097,6 +1133,34 @@ label {
   }
 }
 @media (min-width: 1400px) {
+  .impact-section .swiper-button-prev.out-arrow{
+    left: 75px !important;
+    transform: translateY(75px);
+  }
+  .impact-section .swiper-button-next.out-arrow{
+    right: unset !important;
+    left: 145px !important;
+    transform: translateY(75px);
+  }
+  .impact-testimonial{
+    box-shadow: 0px 0px 20px 0px #0000001A;
+  }
+  .aeroplane-element{
+    display: block;
+    position: absolute;
+    top: -82px;
+    left: -28px;
+    min-width: 513px;
+    height: auto;
+  }
+  .aeroplane-element-line{
+    display: block;
+    position: absolute;
+    bottom: -115px;
+    right: -34px;
+    min-width: 600px;
+    height: 292px;
+  }
   .container {
     max-width: 1340px;
     padding-inline: 80px;
@@ -1266,6 +1330,34 @@ label {
 }
 
 @media (min-width: 1700px) {
+  .impact-section .swiper-button-prev.out-arrow{
+    left: 50px !important;
+    transform: translateY(85px);
+  }
+  .impact-section .swiper-button-next.out-arrow{
+    right: unset !important;
+    left: 120px !important;
+    transform: translateY(85px);
+  }
+  .impact-testimonial{
+    box-shadow: 0px 0px 20px 0px #0000001A;
+  }
+  .aeroplane-element{
+    display: block;
+    position: absolute;
+    top: -115px;
+    left: -32px;
+    min-width: 633px;
+    height: 292px;
+  }
+  .aeroplane-element-line{
+    display: block;
+    position: absolute;
+    bottom: -115px;
+    right: -34px;
+    min-width: 760px;
+    height: 292px;
+  }
   button,
   .btn,
   a.btn {

@@ -3,12 +3,12 @@ import React, {
   useEffect,
   forwardRef,
   useImperativeHandle,
-  useRef,
 } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import api from "@/Services/Apiservice";
 import { IoMdArrowDropdown } from "react-icons/io";
+import styles from "../SignIn/signIn.module.css"
 
 interface AddExperienceFormProps {
   formik: any; // formik object
@@ -101,28 +101,8 @@ const AddExperienceForm = forwardRef(
       formik, // Expose the entire formik object if needed
     }));
 
-    // Add refs for the suggestion containers
-    const designationSuggestionsRef = useRef<HTMLDivElement>(null);
-    const companySuggestionsRef = useRef<HTMLDivElement>(null);
-
-    // Close suggestions when clicking outside
-    useEffect(() => {
-      const handleClickOutside = (event: MouseEvent) => {
-        if (designationSuggestionsRef?.current) {
-          setDesignationSuggestions([]);
-        }
-        if(companySuggestionsRef?.current){
-          setCompanySuggestions([]);
-        }
-      };
-      document.addEventListener('mousedown', handleClickOutside);
-      return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
-      };
-    }, []);
-
     return (
-      <div className="p-4 xl:p-6 3xl:p-7 rounded-lg shadow-default experience-form-container">
+      <div className="p-3 md:p-7 rounded-lg shadow-default">
         <form onSubmit={formik.handleSubmit}>
           <div className="relative mb-2">
             <input
@@ -134,20 +114,18 @@ const AddExperienceForm = forwardRef(
                 formik.handleChange(e);
                 fetchDesignationSuggestions(e.target.value);
               }}
-              onFocus={() =>{
-                fetchDesignationSuggestions(formik.values.designation);
-                setCompanySuggestions([]);
-              }
+              onFocus={() =>
+                fetchDesignationSuggestions(formik.values.designation)
               }
               placeholder="Enter your designation"
-              className="w-full p-2 border rounded"
+              className={`${styles.onboarding_dialog_input} w-full p-2 border`}
             />
             {designationSuggestions?.length > 0 && (
-              <div ref={designationSuggestionsRef} className="absolute suggestion-option-list z-10 w-full max-h-[250px] min-h-[50px] overflow-auto p-0 bg-white border rounded-xl shadow-lg mt-1">
+              <div className="absolute z-10 w-full max-h-[250px] min-h-[50px] overflow-auto p-0 bg-white border rounded-xl shadow-lg mt-1">
                 {designationSuggestions?.map((suggestion) => (
                   <div
                     key={suggestion.id}
-                    className="p-2 hover:bg-gray-100 cursor-pointer suggestion-option"
+                    className="p-2 hover:bg-gray-100 cursor-pointer text-[12px] sm:text-[14px]"
                     onClick={() => {
                       formik.setFieldValue("designation", suggestion.name);
                       formik.setFieldValue(
@@ -177,19 +155,16 @@ const AddExperienceForm = forwardRef(
                 formik.handleChange(e);
                 fetchCompanySuggestions(e.target.value);
               }}
-              onFocus={() => {
-                fetchCompanySuggestions(formik.values.companyName);
-                setDesignationSuggestions([])
-              }}
+              onFocus={() => fetchCompanySuggestions(formik.values.companyName)}
               placeholder="Enter your company name"
-              className="w-full p-2 border rounded"
+              className={`${styles.onboarding_dialog_input} w-full p-2 border`}
             />
             {companySuggestions?.length > 0 && (
-              <div ref={companySuggestionsRef} className="absolute suggestion-option-list z-10 w-full max-h-[250px] min-h-[50px] overflow-auto p-0 bg-white border rounded-xl shadow-lg mt-1">
+              <div className="absolute z-10 w-full max-h-[250px] min-h-[50px] overflow-auto p-0 bg-white border rounded-xl shadow-lg mt-1">
                 {companySuggestions?.map((suggestion) => (
                   <div
                     key={suggestion.id}
-                    className="p-2 hover:bg-gray-100 cursor-pointer suggestion-option"
+                    className="p-2 hover:bg-gray-100 cursor-pointer text-[12px] sm:text-[14px]"
                     onClick={() => {
                       formik.setFieldValue("companyName", suggestion?.name);
                       formik.setFieldValue("company_master_id", suggestion?.id);
@@ -213,17 +188,17 @@ const AddExperienceForm = forwardRef(
             value={formik?.values.salary}
             onChange={formik.handleChange}
             placeholder="Monthly salary eg: 15000"
-            className="mb-2 w-full p-2 border rounded"
+            className={`${styles.onboarding_dialog_input} mb-2 w-full p-2 border`}
           />
           {formik.errors.salary && formik.touched.salary && (
             <p className="text-red text-[11px] sm:text-sm  mb-1 mt-1">{formik?.errors.salary}</p>
           )}
 
-          <div className="grid grid-cols-3 mt-2 gap-4 xl:gap-3 3xl:gap-4">
+          <div className="flex flex-wrap gap-4">
             {jobTypes.map((jobType) => (
               <div
                 key={jobType.id}
-                className={`col-span-1 label-option job-type cursor-pointermd:grow ${
+                className={`col-span-1 label-option cursor-pointer md:grow  text-[12px] sm:text-[14px] ${
                   formik.values.type == parseInt(jobType.id)
                     ? "bg-red text-white"
                     : ""
@@ -243,7 +218,7 @@ const AddExperienceForm = forwardRef(
             <p className="text-red text-[11px] sm:text-sm  mb-1 mt-1">{formik.errors.type}</p>
           )}
 
-          <div className="flex items-center gap-2 xl:my-2 3xl:my-4 currently-working">
+          <div className="flex items-center gap-2 my-4">
             <input
               type="checkbox"
               id="isCurrentCompany"
@@ -253,9 +228,9 @@ const AddExperienceForm = forwardRef(
                 formik.setFieldValue("isCurrentCompany", e.target.checked);
                 setIsCurrentCompany(e.target.checked);
               }}
-              className="!mb-0 inline-block !w-4 !h-4 cursor-pointer wc-check"
+              className={`!mb-0 inline-block !w-4 !h-4 cursor-pointer`}
             />
-            <label htmlFor="isCurrentCompany" style={{boxShadow:'none'}} className="!mb-0 inline-block custom-form-label">
+            <label htmlFor="isCurrentCompany" className="!mb-0 inline-block text-[12px] sm:text-[14px]">
               Currently working here
             </label>
           </div>
@@ -263,17 +238,7 @@ const AddExperienceForm = forwardRef(
           <div className="flex flex-col sm:flex-row gap-3">
             <div className="flex-1">
               <div>
-                {/* <label className="custom-form-label">Working From</label> */}
-                {
-                  !editDateFrom?
-                  <div
-                  onClick={() => setEditDateFrom(true)}
-                  className="experience-date !text-[#4D4D4F] px-3 flex items-center font-normal justify-between shadow-md rounded-[.75rem] h-[56px]"
-                >
-                  Working From{" "}
-                  <IoMdArrowDropdown className="ml-1 xl:ml-5 text-[#000000] size-5" />
-                </div>
-                :
+                <label className="custom-form-label  text-[12px] sm:text-[14px] mb-[8px] block">Working From</label>
                 <input
                   type="date"
                   id="jobStartDate"
@@ -281,11 +246,9 @@ const AddExperienceForm = forwardRef(
                   value={formik.values.jobStartDate}
                   onChange={formik.handleChange}
                   placeholder="Start Date"
-                  className="experience-date mb-2 w-full p-2 border rounded !bg-white shadow-md"
+                  className={`${styles.onboarding_dialog_input} w-full p-2 border !bg-white `}
                   max={new Date().toISOString().split("T")[0]}
                 />
-                }
-
               </div>
               {formik.errors.jobStartDate && formik.touched.jobStartDate && (
                 <p className="text-red text-[11px] sm:text-sm  mb-1 mt-1">
@@ -293,19 +256,9 @@ const AddExperienceForm = forwardRef(
                 </p>
               )}
             </div>
-            {!isCurrentCompany ? (
+            {!isCurrentCompany && (
               <div className="flex-1">
-                {/* <label>Worked Till</label> */}
-                {
-                  !editDateTill?
-                  <div
-                  onClick={() => setEditDateTill(true)}
-                  className="experience-date !text-[#4D4D4F] px-3 flex items-center font-normal justify-between shadow-md rounded-[.75rem] h-[56px]"
-                >
-                  Worked Till{" "}
-                  <IoMdArrowDropdown className="ml-1 xl:ml-5 text-[#000000] size-5" />
-                </div>
-                :
+                <label className={' text-[12px] sm:text-[14px] mb-[8px] block'}>Worked Till</label>
                 <input
                   type="date"
                   id="jobEndDate"
@@ -313,21 +266,16 @@ const AddExperienceForm = forwardRef(
                   value={formik.values.jobEndDate}
                   onChange={formik.handleChange}
                   placeholder="End Date"
-                  className="experience-date mb-2 w-full p-2 border rounded !bg-white shadow-md"
+                  className={`${styles.onboarding_dialog_input} w-full p-2 border !bg-white`}
                   max={new Date().toISOString().split("T")[0]}
                 />
-
-                }
                 {formik.errors.jobEndDate && formik.touched.jobEndDate && (
                   <p className="text-red text-[11px] sm:text-sm  mb-1 mt-1">
                     {formik.errors.jobEndDate}
                   </p>
                 )}
               </div>
-            )
-            :
-            <div className="flex-1"></div>
-          }
+            )}
           </div>
         </form>
       </div>

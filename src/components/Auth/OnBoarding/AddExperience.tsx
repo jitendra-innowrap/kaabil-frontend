@@ -8,12 +8,7 @@ import toast from "react-hot-toast";
 import { setIsFresher, setUserExperience } from "@/redux/userSlice";
 import api from "@/Services/Apiservice";
 import { Experience } from "@/Types/common";
-import {
-  Dialog,
-  DialogBody,
-  DialogFooter,
-  DialogHeader,
-} from "@material-tailwind/react";
+import styles from "../SignIn/signIn.module.css"
 import { FaArrowLeft } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 
@@ -178,17 +173,7 @@ export default function AddExperience({ size, closePopup, handleBack }: any) {
   };
 
   return (
-    // @ts-ignore
-    <Dialog
-      open={progress === 9}
-      size={size}
-      className={`onboarding-dailog ${
-        size === "md" ? "fixed -top-16 -translate-x-1/2  onboarding-scale experience-screen" : ""
-      }`}
-    >
-      <div className="">
-        {/* @ts-ignore */}
-        <DialogHeader>
+      <div className="pb-6 sm:p-6">
           <div className="relative w-full">
             <div onClick={handleBack}>
               <FaArrowLeft className="absolute cursor-pointer top-2 z-30 left-2 size-6" />
@@ -199,17 +184,13 @@ export default function AddExperience({ size, closePopup, handleBack }: any) {
               onClick={closePopup}
             />
             <div
-              className={`${
-                size === "md"
-                  ? "flex justify-center items-center mt-6"
-                  : "flex justify-start items-start mt-16"
-              }`}
+              className={`flex sm:justify-center items-center pt-[74px] sm:pt-[30px] mb-[27px] sm:mb-0`}
             >
               <h2
                 className={`text-[#231F20] font-semibold  ${
-                  size === "md"
-                    ? "!text-[26px] text-center"
-                    : "!text-[22px] text-start"
+                    size === "md"
+                        ? "!text-[28px] text-center"
+                        : "!text-[20px] text-start"
                 }`}
               >
                 <span className="text-[#231F20]">
@@ -220,25 +201,22 @@ export default function AddExperience({ size, closePopup, handleBack }: any) {
               </h2>
             </div>
           </div>
-        </DialogHeader>
         <form
           onSubmit={formik.handleSubmit}
-          className={`${size === "md" ? "block mt-6" : "mt-2"} education-dialog`}
+          className={`${size === "md" ? "block mt-6" : "mt-2"}`}
         >
-          {/* @ts-ignore */}
-          <DialogBody className="custom-dialog-body custom-scroll">
             <div
-              className={`pb-2 xl:pb-0 cursor-pointer ${
-                size === "md" ? "px-12" : "px-0"
+              className={`pb-2 cursor-pointer ${styles.selected_option_list} ${
+                size === "md" ? "max-w-[548px] mx-auto px-3" : "px-0"
               }`}
             >
-              <h4 className="text-[14px] sm:text-lg font-medium">
+              <h4 className="text-[14px] mb-[8px] sm:text-[18px] font-medium sm:mb-1">
                 What’s your level of experience?
               </h4>
-              <div className="mb-4 mt-2 flex flex-row gap-4 selected-option-list">
+              <div className="my-4 flex flex-row gap-4">
                 <label
                   htmlFor="fresher"
-                  className={`form-group !flex flex-1 !mb-0 gap-4 rounded-lg px-5  border cursor-pointer shadow-sm items-center ${
+                  className={`${styles.form_group} !flex flex-1 !mb-0 gap-4 rounded-lg px-3 sm:px-5  border cursor-pointer shadow-sm items-center ${
                     2 === formik.values.is_fresher
                       ? "border-red bg-[#FDF1F3]"
                       : "border-[#C8C9CB1A]"
@@ -253,13 +231,13 @@ export default function AddExperience({ size, closePopup, handleBack }: any) {
                     onChange={handleExperienceChange}
                     checked={formik.values.is_fresher === 2}
                   />
-                  <div className="!mb-0 gap-2 inline-block cursor-pointer edu-label">
+                  <div className="!mb-0 gap-2 inline-block cursor-pointer text-[11px] sm:text-[14px]">
                     I'm a Fresher
                   </div>
                 </label>
                 <label
                   htmlFor="experienced"
-                  className={`form-group !flex flex-1 !mb-0 gap-4 rounded-lg px-5  border cursor-pointer shadow-sm items-center ${
+                  className={`${styles.form_group} !flex flex-1 !mb-0 gap-4 rounded-lg  px-3 sm:px-5  border cursor-pointer shadow-sm items-center ${
                     1 === formik.values.is_fresher
                       ? "border-red bg-[#FDF1F3]"
                       : "border-[#C8C9CB1A]"
@@ -274,7 +252,7 @@ export default function AddExperience({ size, closePopup, handleBack }: any) {
                     onChange={handleExperienceChange}
                     checked={formik.values.is_fresher === 1}
                   />
-                  <div className="!mb-0 gap-2 inline-block cursor-pointer edu-label">
+                  <div className="!mb-0 gap-2 inline-block cursor-pointer text-[11px] sm:text-[14px]">
                     I'm Experienced
                   </div>
                 </label>
@@ -287,7 +265,7 @@ export default function AddExperience({ size, closePopup, handleBack }: any) {
 
               {formik.values.is_fresher === 1 && user.experience.length < 1 && (
                 <div className="scroll-content-experience cursor-pointer">
-                  <h4 className="text-[14px] sm:text-lg xl:mb-1 2xl:mb-2 3xl:mb-3 font-medium">
+                  <h4 className="text-[14px] sm:text-lg mb-4 font-medium">
                     Please add your latest experience
                   </h4>
                   <AddExperienceForm
@@ -295,7 +273,7 @@ export default function AddExperience({ size, closePopup, handleBack }: any) {
                     formik={formikForm}
                   />
                   <div
-                    className="text-[14px] sm:text-lg flex text-red font-semibold mt-7 cursor-pointer add-more-exp-btn"
+                    className="text-[14px] sm:text-lg flex text-red font-semibold mt-7 cursor-pointer"
                     onClick={() => handleSubmitExperience()}
                   >
                     + add more experience
@@ -303,22 +281,21 @@ export default function AddExperience({ size, closePopup, handleBack }: any) {
                 </div>
               )}
             </div>
-          </DialogBody>
           {/* @ts-ignore */}
-          <DialogFooter className="p-0 pb-6 px-6 sm:!px-12 mt-5 flex justify-center progress-footer">
+          <div className="p-0 pb-6 mt-[44px] flex justify-center">
             <div className="flex w-full items-end">
-              <div className="whitespace-nowrap dialog-footer-paging">
+              <div className={`whitespace-nowrap ${styles.page_show}`}>
                 <span className="text-red">{progress - 4}</span> - 6
               </div>
               <div className="flex gap-2 sm:gap-4 items-end w-full justify-end footer-2btn">
                 <span
                   onClick={() => dispatch(setProgress(11))}
-                  className={`max-w-[130px] text-[#231F20] cursor-pointer border-[#9C9C9C] flex items-center btn-border !py-3.5 !px-9 !rounded-xl`}
+                  className={`${styles.onboarding_dialog_btn} w-1/2 max-w-[130px] text-[#231F20] cursor-pointer border-[#9C9C9C] flex items-center btn-border !py-3.5 !px-9 !rounded-xl`}
                 >
                   Skip
                 </span>
                 <button
-                  className="max-w-[100px] sm:max-w-[250px] flex-shrink-0 justify-start"
+                  className={`${styles.onboarding_dialog_btn} w-1/2 max-w-[100px] sm:max-w-[250px] flex-shrink-0 justify-start`}
                   disabled={formik.isSubmitting}
                   type="submit"
                 >
@@ -326,9 +303,8 @@ export default function AddExperience({ size, closePopup, handleBack }: any) {
                 </button>
               </div>
             </div>
-          </DialogFooter>
+          </div>
         </form>
       </div>
-    </Dialog>
   );
 }

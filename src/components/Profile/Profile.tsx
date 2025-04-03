@@ -1,5 +1,5 @@
 "use client";
-import React, { use, useEffect } from "react";
+import React, { use, useEffect, useState } from "react";
 import ProfileList from "./ProfileList";
 import ResumeModal from "./ResumeModal";
 import EducationModal from "./EducationModal";
@@ -8,9 +8,11 @@ import ProfileModal from "./ProfileModal";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { fetchProfile } from "@/redux/profileSlice";
 import { AboutModal } from "./AboutModal";
+import AddMoreExperienceModal from "./AddMoreExperienceModal";
 
 const Profile = () => {
   const { token } = useAppSelector((state) => state.auth);
+  const [dialogSize, setDialogSize] = useState<"md" | "xxl">("md");
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -19,14 +21,28 @@ const Profile = () => {
     );
   }, [token]);
 
+  useEffect(() => {
+    const updateSize = () => {
+      if (window.innerWidth < 768) {
+        setDialogSize("xxl");
+      } else {
+        setDialogSize("md");
+      }
+    };
+    updateSize();
+    window.addEventListener("resize", updateSize);
+    return () => window.removeEventListener("resize", updateSize);
+  }, []);
+
   return (
     <div className="container mobile-container-zero-padding">
-      <ProfileModal />
-      <ExperienceModal />
-      <EducationModal />
-      <ResumeModal />
+      <AddMoreExperienceModal />
       <ProfileList />
-      <AboutModal />
+      <ExperienceModal size={dialogSize} />
+      <ProfileModal size={dialogSize} />
+      <EducationModal size={dialogSize} />
+      <ResumeModal size={dialogSize} />
+      <AboutModal size={dialogSize} />
     </div>
   );
 };

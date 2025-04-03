@@ -14,14 +14,14 @@ const About = () => {
           <div className="flex gap-3 items-center">
             <div className="hidden md:block">
               <Image
-                className="cursor-pointer mx-auto size-[70px] 2xl:size-[102px] mb-2 rounded-full"
+                className="cursor-pointer size-[70px] 2xl:size-[102px] object-cover mb-2 rounded-full"
                 src={
                   profileData?.photo_url
                     ? profileData?.photo_url
                     : "/new-assets/icons/avatar.svg"
                 }
-                width={500}
-                height={500}
+                width={102}
+                height={102}
                 alt="resume-builder"
               />
             </div>

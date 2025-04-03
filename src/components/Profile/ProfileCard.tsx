@@ -9,19 +9,28 @@ const ProfileCard = () => {
   const router = useRouter();
   const { profileData } = useAppSelector((state) => state.profile);
   const dispatch = useAppDispatch();
-  console.log(profileData?.photo_url, "Check Profile Data");
+ 
   // Later we will change
   const jobStats = [
-    { label: "Applied Jobs", count: 5, tabIndex: 1 },
-    { label: "Shortlisted Jobs", count: 5, tabIndex: 2 },
-    { label: "Saved Jobs", count: 5, tabIndex: 3 },
+    {
+      label: "Applied Jobs",
+      count: profileData?.total_applied_jobs,
+      tabIndex: 1,
+    },
+    {
+      label: "Shortlisted Jobs",
+      count: profileData?.total_shortlisted_jobs,
+      tabIndex: 2,
+    },
+    { label: "Saved Jobs", count: profileData?.total_save_job, tabIndex: 3 },
   ];
+  
   return (
     <div className="bg-white rounded-2xl py-3">
       <div className="grid grid-col-12">
         <div className="col-span-12">
           <Image
-            className="cursor-pointer mx-auto size-[70px] 2xl:size-[102px] mb-2 rounded-full border-4 border-red"
+            className="cursor-pointer mx-auto size-[70px] 2xl:size-[102px] mb-2 rounded-full object-cover border-4 border-red"
             src={
               profileData?.photo_url
                 ? profileData?.photo_url
@@ -84,7 +93,7 @@ const ProfileCard = () => {
             Complete!
           </h1>
         </div>
-        <div className=" !hidden col-span-12 flex justify-center px-6 mt-6">
+        <div className="col-span-12 flex justify-center px-6 mt-6">
           <div className="bg-[#F1F5FE] flex w-full justify-around px-4 rounded-2xl py-3">
             {jobStats.map((job, index) => (
               <React.Fragment key={index}>

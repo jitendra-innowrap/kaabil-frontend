@@ -13,14 +13,18 @@ const Education = () => {
   const [slides, setSlides] = useState<{ src: string }[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const handleImageClick = (index: number) => {
+  const handleImageClick = (clickedIndex: number) => {
+    // Filter out only images
     const imageSlides =
       profileData?.user_certifications
         ?.filter((item: any) => item.attachment_type === "1")
         .map((item: any) => ({ src: item.media_url })) || [];
-
+    const actualIndex = imageSlides.findIndex(
+      (slide: any) =>
+        slide.src === profileData?.user_certifications[clickedIndex]?.media_url
+    );
     setSlides(imageSlides);
-    setCurrentIndex(index);
+    setCurrentIndex(actualIndex !== -1 ? actualIndex : 0); // Ensure valid index
     setOpen(true);
   };
 

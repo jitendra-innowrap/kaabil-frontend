@@ -8,6 +8,7 @@ import SignInButton from './SignInButton';
 import Image from 'next/image';
 import { useAppSelector } from '@/redux/hooks';
 import ProfileCard from '../Nudges/SideMenu/Profile';
+import { useRouter } from 'next/navigation';
 
 export default function BurgerMenu() {
     const [isOpen, setOpen] = useState(false);
@@ -35,6 +36,7 @@ export default function BurgerMenu() {
         setOpen(false);
         return
     }
+    const router = useRouter();
     return (
         <div className="relative">
 
@@ -50,7 +52,7 @@ export default function BurgerMenu() {
             <div
                 className={`fixed z-10 top-0 left-0 h-full w-[calc(100vw_-_60px)] rounded-e-2xl max-w-[380px] bg-white shadow-lg transform transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
             >
-                <div className="flex pl-5 relative mt-4 mb-10 pr-4 items-center">
+                <div onClick={()=>{router.push('/'); setOpen(false)}} className="flex pl-5 relative mt-4 mb-10 pr-4 items-center">
                     <img
                         src="/new-assets/logos/kaabil-logo.svg"
                         className='w-auto max-w-fit h-[50px] md:h-[80px] 2xl:h-[100px]'

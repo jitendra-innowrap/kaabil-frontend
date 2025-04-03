@@ -9,7 +9,9 @@ const ProfileCard = () => {
   const router = useRouter();
   const { profileData } = useAppSelector((state) => state.profile);
   const dispatch = useAppDispatch();
- 
+
+  console.log(profileData, "Verify Profile Data From jobStats");
+
   // Later we will change
   const jobStats = [
     {
@@ -24,7 +26,7 @@ const ProfileCard = () => {
     },
     { label: "Saved Jobs", count: profileData?.total_save_job, tabIndex: 3 },
   ];
-  
+
   return (
     <div className="bg-white rounded-2xl py-3">
       <div className="grid grid-col-12">
@@ -93,7 +95,7 @@ const ProfileCard = () => {
             Complete!
           </h1>
         </div>
-        <div className="col-span-12 flex justify-center px-6 mt-6">
+        <div className="hidden col-span-12 flex justify-center px-6 mt-6">
           <div className="bg-[#F1F5FE] flex w-full justify-around px-4 rounded-2xl py-3">
             {jobStats.map((job, index) => (
               <React.Fragment key={index}>

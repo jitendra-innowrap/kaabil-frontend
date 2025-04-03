@@ -16,7 +16,7 @@
 html {
   scroll-behavior: smooth;
 }
-#_rht_toaster{
+#_rht_toaster {
   z-index: 99999 !important;
 }
 body {
@@ -154,7 +154,7 @@ a.btn {
 }
 
 @media (max-width: 520px) {
-  .btn-m{
+  .btn-m {
     padding: 4px 10px !important;
     border-radius: 4px !important;
   }
@@ -487,18 +487,20 @@ css-10wo9uf-option:hover,
 .css-tr4s17-option,
 .css-10wo9uf-option,
 .css-d7l1ni-option {
-  white-space: nowrap;  /* Prevents text from wrapping */
-  overflow: hidden;      /* Hides overflowing text */
+  white-space: nowrap; /* Prevents text from wrapping */
+  overflow: hidden; /* Hides overflowing text */
   text-overflow: ellipsis; /* Adds '...' for overflowed text */
-  display: flex;         /* Ensures proper alignment */
-  align-items: center;   /* Vertically centers the text */
-  padding: 0 10px;       /* Adds padding to avoid text touching the edges */
-  max-width: 100%;       /* Ensures it does not exceed its container */
+  display: flex; /* Ensures proper alignment */
+  align-items: center; /* Vertically centers the text */
+  padding: 0 10px; /* Adds padding to avoid text touching the edges */
+  max-width: 100%; /* Ensures it does not exceed its container */
 }
-.select-industry__menu.css-1nmdiq5-menu, .select-location__menu.css-1nmdiq5-menu{
+.select-industry__menu.css-1nmdiq5-menu,
+.select-location__menu.css-1nmdiq5-menu {
   padding-block: 10px !important;
 }
-.select-industry__menu-list.css-qr46ko, .select-location__menu-list.css-qr46ko{
+.select-industry__menu-list.css-qr46ko,
+.select-location__menu-list.css-qr46ko {
   padding-block: 0 !important;
 }
 .search-section .css-13cymwt-control {
@@ -724,7 +726,7 @@ label {
   border-color: #f2f2f2 !important;
 }
 
-.job_listing_center_top_companies_nudge h3{
+.job_listing_center_top_companies_nudge h3 {
   margin-bottom: 10px !important;
 }
 @media (width >= 768px) {
@@ -945,7 +947,7 @@ label {
     max-width: 620px !important;
     /* max-height: calc(100vh - 400px); */
     transform: none !important;
-    scale: .6;
+    scale: 0.6;
   }
 }
 @media (width >=1280px) {
@@ -1121,11 +1123,11 @@ label {
   .job-card .action-btns.update a {
     width: 100px !important;
   }
-  
-.job_listing_center_top_companies_nudge h3{
-  margin-bottom: 8px !important;
-  height: 40px !important;
-}
+
+  .job_listing_center_top_companies_nudge h3 {
+    margin-bottom: 8px !important;
+    height: 40px !important;
+  }
 }
 @media (width >=1500px) {
   .popup-content {
@@ -1325,7 +1327,7 @@ label {
     max-width: 620px !important;
     /* max-height: calc(100vh - 450px); */
     transform: none !important;
-    scale: .8;
+    scale: 0.8;
   }
 }
 
@@ -1822,14 +1824,14 @@ label {
     scale: 0.7;
   }
 }
-.job-action-btn-sx{
-  display: none
+.job-action-btn-sx {
+  display: none;
 }
 @media (max-width: 999px) {
-  .job-card .action-btns{
+  .job-card .action-btns {
     margin-top: 0 !important;
   }
-  .job-card .action-btns .applied-btn{
+  .job-card .action-btns .applied-btn {
     min-width: 50%;
     max-width: 50%;
     padding: 0 10px !important;
@@ -1838,7 +1840,7 @@ label {
     width: fit-content !important;
     height: 34px;
   }
-  .job-card .action-btns a{
+  .job-card .action-btns a {
     height: 34px !important;
   }
 }
@@ -1849,14 +1851,14 @@ label {
   .company-detail-gallary .slider-wrapper {
     padding-inline: 0px !important;
   }
-  .slider-wrapper .swiper.swiper-horizontal{
+  .slider-wrapper .swiper.swiper-horizontal {
     padding-inline: 0 0 !important;
   }
-  .job-description-content{
+  .job-description-content {
     margin-top: -54px !important;
     padding-bottom: 54px !important;
   }
-  .job-action-btn-sx{
+  .job-action-btn-sx {
     display: block !important;
     position: sticky !important;
     top: calc(100vh - 55px) !important;
@@ -1868,33 +1870,33 @@ label {
     height: 55px !important;
     width: 55px !important;
   }
-  .popup-content{
+  .popup-content {
     width: 100% !important;
   }
-  .job-card{
+  .job-card {
     padding: 16px !important;
   }
   .job-card img[alt="company profile logo"] {
     height: 40px !important;
     width: 40px !important;
   }
-  .job-card .action-btns{
+  .job-card .action-btns {
     margin-top: 0 !important;
   }
-  .single-company-jobs   .job-card .action-btns{
+  .single-company-jobs .job-card .action-btns {
     margin-top: 15px !important;
   }
   .job-card .action-btns .applied-btn {
     min-width: 155px;
     max-width: 160px;
   }
-  .mobile-container-zero-padding{
+  .mobile-container-zero-padding {
     padding-inline: 0 !important;
   }
-  .profile-card{
+  .profile-card {
     margin: 16px !important;
   }
-  .certification-card{
+  .certification-card {
     width: 122px;
     display: block;
     flex-basis: 122px;
@@ -1902,20 +1904,20 @@ label {
     flex-shrink: 0;
     text-align: center;
   }
-  .certification-card img{
+  .certification-card img {
     width: 100px;
     margin: auto;
   }
-  .home-banner{
+  .home-banner {
     width: auto;
     /* height: 269px !important; */
     object-fit: cover;
     object-position: left;
   }
-  .job-card .action-btns button{
+  .job-card .action-btns button {
     height: 34px !important;
   }
-  .dialog-footer-paging{
+  .dialog-footer-paging {
     position: fixed !important;
     bottom: 20px !important;
     left: 20px;
@@ -1954,7 +1956,8 @@ label {
     font-size: 12px;
     padding: 9px;
   }
-  .footer-2btn span, .footer-2btn button {
+  .footer-2btn span,
+  .footer-2btn button {
     width: 50%;
     text-align: center;
     display: block;
@@ -2030,6 +2033,7 @@ label {
   padding-left: 5px !important;
   border-radius: 8px !important;
   height: 53px !important;
+  box-shadow: none !important;
 }
 
 .custom-dialog .skills-select .css-13cymwt-control,
@@ -2039,11 +2043,45 @@ label {
   padding-left: 36px !important;
   border-radius: 8px !important;
   height: 53px !important;
+  box-shadow: none !important;
 }
 .multi-select .react-select2{
   /*background: #C8C9CB3B;*/
 }
 /* .css-t3ipsp-control */
+
+.sm-dailog .role-preference .css-hlgwow,
+.sm-dailog .role-preference .css-13cymwt-control {
+  background: white;
+  height: 43px;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+.sm-dailog .job-role-select .css-13cymwt-control,
+.sm-dailog .job-role-select .css-hlgwow {
+  border: none !important;
+  background-color: #f2f3f3 !important;
+  padding-left: 5px !important;
+  border-radius: 8px !important;
+  height: 43px !important;
+}
+
+.sm-dailog .skills-select .css-13cymwt-control,
+.sm-dailog .skills-select .css-hlgwow {
+  border: none !important;
+  background-color: #f2f3f3 !important;
+  padding-left: 18px !important;
+  border-radius: 8px !important;
+  height: 43px !important;
+}
+
+.sm-dailog .css-t3ipsp-control {
+  padding-left: 16px;
+  background-color: #f2f3f3 !important;
+}
+
 .multi-select .react-select2 div:nth-child(1) {
   height: 56px !important;
   width: 100%;

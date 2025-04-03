@@ -12,13 +12,23 @@ import { useDispatch } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import api from "@/Services/Apiservice";
 import * as Yup from "yup";
-import { convertToNumber, formatDateExperience } from "../utils";
+import {
+  convertToNumber,
+  formatDateExperience,
+  formatJobDuration,
+  formatMonthYear,
+} from "../utils";
 import toast from "react-hot-toast";
+import Image from "next/image";
+import { GoDotFill } from "react-icons/go";
 
-const ExperienceModal = ({ size }: any) => {
+const AddMoreExperienceModal = () => {
   const { experienceModal, profileData } = useAppSelector(
     (state) => state.profile
   );
+
+  const [editField, setEditField] = useState(false);
+
   const { token } = useAppSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [designationSuggestionsSearch, setDesignationSuggestionsSearch] =
@@ -36,14 +46,13 @@ const ExperienceModal = ({ size }: any) => {
   };
 
   const validationSchema = Yup.object().shape({
-    is_fresher: Yup.number().required("Required"),
-    designation_name: Yup.string().when("is_fresher", {
-      is: (isFresher: any) => isFresher === 1,
+    designation_name: Yup.string().when("editExperience", {
+      is: (editExperience: any) => editExperience === true,
       then: (schema) => schema.required("Required"),
       otherwise: (schema) => schema.nullable(),
     }),
-    company_name: Yup.string().when("is_fresher", {
-      is: (isFresher: any) => isFresher === 1,
+    company_name: Yup.string().when("editExperience", {
+      is: (editExperience: any) => editExperience === true,
       then: (schema) => schema.required("Required"),
       otherwise: (schema) => schema.nullable(),
     }),
@@ -53,25 +62,25 @@ const ExperienceModal = ({ size }: any) => {
         "Must not exceed 10 digits",
         (value) => !value || value.toString().length <= 10
       )
-      .when("is_fresher", {
-        is: (isFresher: any) => isFresher === 1,
+      .when("editExperience", {
+        is: (editExperience: any) => editExperience === true,
         then: (schema) => schema.required("Required"),
         otherwise: (schema) => schema.nullable(),
       }),
-    job_type_id: Yup.string().when("is_fresher", {
-      is: (isFresher: any) => isFresher === 1,
+    job_type_id: Yup.string().when("editExperience", {
+      is: (editExperience: any) => editExperience === true,
       then: (schema) => schema.required("Required"),
       otherwise: (schema) => schema.nullable(),
     }),
     job_start_date: Yup.date()
       .max(new Date(), "Cannot be a future date")
-      .when("is_fresher", {
-        is: (isFresher: any) => isFresher === 1,
+      .when("editExperience", {
+        is: (editExperience: any) => editExperience === true,
         then: (schema) => schema.required("Required"),
         otherwise: (schema) => schema.nullable(),
       }),
-    job_end_date: Yup.string().when("is_fresher", {
-      is: (isFresher: any) => isFresher === 1,
+    job_end_date: Yup.string().when("editExperience", {
+      is: (editExperience: any) => editExperience === true,
       then: (schema) =>
         schema.test("job-end-date", "Invalid end date", function (value) {
           const { is_current_company, job_start_date } = this.parent;
@@ -143,83 +152,73 @@ const ExperienceModal = ({ size }: any) => {
 
     fetchJobTypes();
   }, []);
-  console.log(profileData?.is_fresher, "Verify isFresher");
 
   return (
     // @ts-ignore
     <Dialog
-      size={size}
-      open={experienceModal}
-      handler={closeModal}
-      className={`${
-        size === "xxl"
-          ? "top-14 mx-auto fixed bottom-0 rounded-2xl sm-dailog"
-          : "fixed -top-10 -translate-x-1/2 custom-dialog"
-      }`}
+      open={false}
+      // handler={closeModal}
+      size="md"
+      className="fixed -top-10 -translate-x-1/2 custom-dialog"
     >
       {/* @ts-ignore  */}
       <DialogHeader>
         <div className="relative w-full">
           <IoClose
             className="absolute top-0 right-0 cursor-pointer"
-            size={size === "md" ? 36 : 28}
+            size={38}
             onClick={closeModal}
           />
-          <div
-            className={`flex items-center mt-6 ${
-              size === "xxl"
-                ? "justify-start text-md"
-                : "justify-center text-3xl"
-            }`}
-          >
-            <h2 className="text-center text-[#231F20]  font-semibold">
+          <div className="flex justify-center items-center mt-6">
+            <h2 className="text-center text-[#231F20] text-3xl font-semibold">
               Edit your <span className="text-red">experience</span>
             </h2>
           </div>
         </div>
       </DialogHeader>
       {/* @ts-ignore  */}
+
       <Formik
         initialValues={{
           is_fresher: Number(profileData?.is_fresher) || 2,
-          designation_name: profileData?.user_experiences?.length
-            ? profileData.user_experiences[0]?.designation
+          designation_name: editField
+            ? profileData?.user_experiences[0]?.designation
             : "",
-          designation_master_id: profileData?.user_experiences?.length
+          designation_master_id: editField
             ? profileData.user_experiences[0].designation_master_id
             : "",
-          company_master_id: profileData?.user_experiences?.length
+          company_master_id: editField
             ? profileData.user_experiences[0].company_master_id
             : "",
-          company_name: profileData?.user_experiences?.length
+          company_name: editField
             ? profileData.user_experiences[0].company_name
             : "",
-          in_hand_salary: profileData?.user_experiences?.length
+          in_hand_salary: editField
             ? profileData.user_experiences[0].in_hand_salary
             : "",
-          job_type_id: profileData?.user_experiences?.length
+          job_type_id: editField
             ? profileData.user_experiences[0].job_type_id
             : "",
-          is_current_company: profileData?.user_experiences?.length
+          is_current_company: editField
             ? profileData.user_experiences[0].is_current_company
             : "0",
-          job_start_date: profileData?.user_experiences?.length
+          job_start_date: editField
             ? profileData.user_experiences[0].job_start_date
             : formatDateExperience(new Date()),
-          job_end_date: profileData?.user_experiences?.length
+          job_end_date: editField
             ? profileData.user_experiences[0].job_end_date
             : formatDateExperience(new Date()),
-          additional_info: profileData?.user_experiences?.length
+          additional_info: editField
             ? profileData.user_experiences[0].additional_info
             : "",
-          company_logo: profileData?.user_experiences?.length
+          company_logo: editField
             ? profileData.user_experiences[0].company_logo
             : "",
+          editExperience: editField,
         }}
         validationSchema={validationSchema}
         onSubmit={async (values) => {
-          console.log(values, "Hitted");
-          const { is_fresher, ...payload } = values;
+          const { is_fresher, editExperience, ...payload } = values;
           const formData = new FormData();
           if (is_fresher === 1) {
             formData.append("is_fresher", is_fresher.toString());
@@ -261,93 +260,60 @@ const ExperienceModal = ({ size }: any) => {
         {({ values, setFieldValue, isSubmitting }) => (
           <Form>
             {/* @ts-ignore */}
-            <DialogBody
-              className={`p-0 max-h-[60vh] sm:max-h-[68vh] md:max-h-[70vh] lg:max-h-[80vh] overflow-y-auto custom-scroll ${
-                size === "xxl" ? "mt-4" : "mt-8"
-              }`}
-            >
-              <div
-                className={`${
-                  size === "xxl" ? "px-4" : "px-12"
-                } space-y-2 pb-8`}
-              >
+            <DialogBody className="p-0 mt-8  max-h-[50vh] sm:max-h-[60vh] md:max-h-[70vh] lg:max-h-[80vh] overflow-y-auto custom-scroll">
+              <div className="px-12">
                 <label
-                  className={`block font-semibold mb-1 !text-[#231F20] ${
-                    size === "xxl" ? "!text-[16px]" : "!text-xl"
-                  }`}
+                  className="block font-semibold mb-1 !text-[#231F20] !text-lg"
                   htmlFor="fileInput"
                 >
-                  What’s your level of experience?
+                  your experience
                 </label>
-                <div className="my-2 flex  gap-4">
-                  <label
-                    htmlFor="fresher"
-                    className={`form-group !flex flex-1 !mb-0 gap-4 rounded-lg px-5 border cursor-pointer shadow-sm items-center ${
-                      2 === values.is_fresher
-                        ? "border-[#E31837] bg-[#FDF1F3] text-[#E31837]"
-                        : "border-[#C8C9CB1A]"
-                    } ${size === "xxl" ? "py-3" : "py-4"} ${
-                      values?.is_fresher == 1 ? "!pointer-events-none opacity-50" : ""
-                    }`}
+                <div className="my-4 p-4 rounded-lg shadow-default justify-between flex gap-4">
+                  <div className="">
+                    <h5 className="font-medium text-black mb-2">
+                      {profileData?.user_experiences?.length > 0
+                        ? profileData?.user_experiences[0]?.designation
+                        : ""}
+                    </h5>
+                    <h6 className="text-sm mb-2">
+                      {profileData?.user_experiences?.length > 0
+                        ? profileData.user_experiences[0].company_name
+                        : ""}
+                      <GoDotFill className="inline-block size-2" />
+                    </h6>
+                    <h6 className="text-sm mb-2">
+                      {formatMonthYear(values?.job_start_date)} -
+                      {profileData?.user_experiences[0]?.is_current_company ==
+                      "1"
+                        ? "Present"
+                        : formatMonthYear(values?.job_end_date)}
+                      <GoDotFill className="inline-block size-2" />
+                      {formatJobDuration(
+                        values?.job_start_date,
+                        values?.job_end_date
+                      )}
+                    </h6>
+                  </div>
+                  <div
+                    className="flex items-center h-fit cursor-pointer"
+                    // onClick={() => handleEditExperience(i)}
                   >
-                    <Field
-                      type="radio"
-                      id="fresher"
-                      name="is_fresher"
-                      className="cursor-pointer inline-block !m-0 !w-5 !h-5"
-                      value={2}
-                      onChange={(e: any) => {
-                        const value = parseInt(e.target.value);
-                        setFieldValue("is_fresher", value);
-                      }}
-                      checked={values.is_fresher === 2}
-                      disabled={profileData?.is_fresher === 1} // Disable if profileData.is_fresher is 1
+                    <Image
+                      src={"/new-assets/icons/pencil.png"}
+                      alt="edit-pencil"
+                      aria-label="edit icon"
+                      className="w-3 h-3 mr-1"
+                      width={90}
+                      height={90}
                     />
-                    <div
-                      className={`!mb-0 gap-2 inline-block cursor-pointer ${
-                        size === "xxl" ? "text-xs" : "text-lg"
-                      }`}
-                    >
-                      I'm a Fresher
-                    </div>
-                  </label>
-
-                  <label
-                    htmlFor="experienced"
-                    className={`form-group !flex flex-1 !mb-1 gap-4 rounded-lg px-5  border cursor-pointer shadow-sm items-center ${
-                      1 === values.is_fresher
-                        ? "border-[#E31837] bg-[#FDF1F3] text-[#E31837]"
-                        : "border-[#C8C9CB1A]"
-                    } ${size === "xxl" ? "py-3" : "py-4"}`}
-                  >
-                    <Field
-                      type="radio"
-                      id="experienced"
-                      name="is_fresher"
-                      className="cursor-pointer inline-block !m-0 !w-5 !h-5"
-                      value={1}
-                      onChange={(e: any) => {
-                        const value = parseInt(e.target.value);
-                        setFieldValue("is_fresher", value);
-                      }}
-                      checked={values.is_fresher === 1}
-                    />
-                    <div
-                      className={`!mb-0 gap-2 inline-block cursor-pointer ${
-                        size === "xxl" ? "text-xs" : "text-lg"
-                      }`}
-                    >
-                      I'm Experienced
-                    </div>
-                  </label>
+                    <span className="text-red text-sm font-semibold">Edit</span>
+                  </div>
                 </div>
                 {/* Fields */}
                 {values?.is_fresher === 1 && (
-                  <div>
+                  <div className="mt-8">
                     <label
-                      className={`block font-semibold mb-1 mt-8 !text-[#231F20] ${
-                        size === "xxl" ? "!text-[16px]" : "!text-xl"
-                      }`}
+                      className="block font-semibold mb-1 !text-[#231F20] !text-lg"
                       htmlFor="fileInput"
                     >
                       Please add your latest experience
@@ -372,9 +338,7 @@ const ExperienceModal = ({ size }: any) => {
                             );
                           }}
                           placeholder="Enter your designation"
-                          className={`w-full border bg-[#C8C9CB3B] rounded-lg ${
-                            size === "xxl" ? "p-2" : "p-3"
-                          }`}
+                          className="w-full p-3 border bg-[#C8C9CB3B] rounded-lg"
                         />
                         {designationSuggestions?.length > 0 && (
                           <div className="absolute z-10 w-full max-h-[250px] min-h-[50px] overflow-auto p-0 bg-white border rounded-xl shadow-lg mt-1">
@@ -425,9 +389,7 @@ const ExperienceModal = ({ size }: any) => {
                             fetchCompanySuggestions(values.company_name);
                           }}
                           placeholder="Enter your company name"
-                          className={`w-full border bg-[#C8C9CB3B] rounded-lg ${
-                            size === "xxl" ? "p-2" : "p-3"
-                          }`}
+                          className="w-full p-3 border bg-[#C8C9CB3B] rounded-lg"
                         />
                         {companySuggestions?.length > 0 && (
                           <div className="absolute z-10 w-full max-h-[250px] min-h-[50px] overflow-auto p-0 bg-white border rounded-xl shadow-lg mt-1">
@@ -471,9 +433,7 @@ const ExperienceModal = ({ size }: any) => {
                           }
                           value={values.in_hand_salary}
                           placeholder="Monthly in_hand_salary eg: 15000"
-                          className={`w-full border bg-[#C8C9CB3B] rounded-lg ${
-                            size === "xxl" ? "p-2" : "p-3"
-                          }`}
+                          className="w-full p-3 border bg-[#C8C9CB3B] rounded-lg"
                         />
                         <div className="h-1">
                           <ErrorMessage
@@ -485,11 +445,11 @@ const ExperienceModal = ({ size }: any) => {
                       </div>
 
                       {/* Field 4 */}
-                      <div className="flex flex-wrap gap-3 3xl:gap-4 mt-6">
+                      <div className="grid sm:grid-cols-3 gap-3 3xl:gap-4 mt-6">
                         {jobTypes.map((jobType) => (
                           <div
                             key={jobType.id}
-                            className={`col-span-1 label-option cursor-pointer flex-grow ${
+                            className={`col-span-1 label-option cursor-pointer ${
                               values.job_type_id == jobType.id
                                 ? "bg-red text-white"
                                 : ""
@@ -525,28 +485,18 @@ const ExperienceModal = ({ size }: any) => {
                             const isChecked = e.target.checked ? "1" : "0"; // Set "1" for true and "0" for false
                             setFieldValue("is_current_company", isChecked);
                           }}
-                          className={`!mb-0 inline-block cursor-pointer ${
-                            size === "xxl" ? "!w-4 !h-4" : "!w-5 !h-5"
-                          }`}
+                          className="!mb-0 inline-block !w-5 !h-5 cursor-pointer"
                         />
                         <label
                           htmlFor="is_current_company"
-                          className={`!mb-0 inline-block ${
-                            size === "xxl" ? "!text-[16px]" : "!text-xl"
-                          }`}
+                          className="!mb-0 inline-block text-lg"
                         >
                           Currently working here
                         </label>
                       </div>
-                      <div className="flex flex-col md:flex-row gap-2 md:gap-4">
+                      <div className="flex gap-4 ">
                         <div>
-                          <label
-                            className={`${
-                              size === "xxl" ? "!text-[16px]" : "!text-xl"
-                            }`}
-                          >
-                            Working From
-                          </label>
+                          <label className="text-lg">Working From</label>
                           <input
                             type="date"
                             id="job_start_date"
@@ -576,13 +526,7 @@ const ExperienceModal = ({ size }: any) => {
                         {/* Field 7 */}
                         {values?.is_current_company === "0" && (
                           <div>
-                            <label
-                              className={`${
-                                size === "xxl" ? "!text-[16px]" : "!text-xl"
-                              }`}
-                            >
-                              Working Till
-                            </label>
+                            <label className="text-lg">Working Till</label>
                             <input
                               type="date"
                               id="job_end_date"
@@ -613,25 +557,29 @@ const ExperienceModal = ({ size }: any) => {
                     </div>
                   </div>
                 )}
-                {/* <button
-                  // onClick={() => dispatch(setAddmoreExperience(true))}
-                  className="flex text-red !bg-neutral-50 !lowercase  font-semibold mt-6 cursor-pointer text-lg"
+                <div
+                  className="flex text-red font-semibold mt-7 text-lg cursor-pointer"
+                  // onClick={() => {
+                  //   if (!newExperience) {
+                  //     formikForm.resetForm();
+                  //     setNewExperience(true);
+                  //     setIsEditing(null); // Reset edit mode
+                  //   } else {
+                  //     formikForm.handleSubmit();
+                  //   }
+                  // }}
                 >
                   + add more experience
-                </button> */}
+                </div>
               </div>
             </DialogBody>
             {/* @ts-ignore */}
-            <DialogFooter
-              className={`flex justify-end p-0 pb-3 ${
-                size === "xxl" ? "px-6 mt-2" : "px-12 mt-4"
-              }`}
-            >
+            <DialogFooter className="flex justify-end p-0 pb-3 mt-3 px-12">
               <button
                 type="submit"
-                className={`px-24 bg-[#E31837] text-white rounded-xl ${
+                className={`px-24 py-4  bg-[#E31837] text-white rounded-xl ${
                   isSubmitting ? "opacity-50 cursor-not-allowed" : ""
-                } ${size === "xxl" ? "py-3" : "py-4"}`}
+                }`}
                 disabled={isSubmitting}
               >
                 Save
@@ -644,4 +592,4 @@ const ExperienceModal = ({ size }: any) => {
   );
 };
 
-export default ExperienceModal;
+export default AddMoreExperienceModal;

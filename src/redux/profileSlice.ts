@@ -66,7 +66,7 @@ export const fetchSkills = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const requestData = { ...data, search }; 
+      const requestData = { ...data, search };
       const response = await api.post("/MasterData/getUserSkill", requestData, {
         headers: { "Content-Type": "application/json" },
       });
@@ -226,6 +226,7 @@ const profileSlice = createSlice({
         state.jobTypes = action.payload.result;
       })
       .addCase(fetchLocation.fulfilled, (state, action) => {
+        console.log(action.payload, "From Location List");
         state.cityList = action.payload.result.map((item: any) => ({
           id: item?.id,
           location: item?.name,
@@ -251,7 +252,7 @@ const profileSlice = createSlice({
         state.skillList = action.payload.result.map((item: any) => ({
           id: item?.id,
           name: item?.name,
-          skill_level_type_id: 0,
+          skill_level_type_id: "0",
         }));
         state.skillsOption = action.payload.result.map((item: any) => ({
           value: item?.id,

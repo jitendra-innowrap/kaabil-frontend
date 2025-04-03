@@ -6,6 +6,7 @@ import {GoDotFill} from "react-icons/go";
 import api from "@/Services/Apiservice";
 import toast from "react-hot-toast";
 import {
+    RefreshProfileData,
     setUserIsProfileVerified,
     setUserPhotoUrl,
     setUserWAConsent,
@@ -47,6 +48,7 @@ export default function OnBoardingComplete({size, closePopup}: any) {
                 });
                 dispatch(setUserWAConsent(WAConsent));
                 dispatch(setUserIsProfileVerified("1"));
+                dispatch(RefreshProfileData())
                 closePopup(); // Close the modal or navigate to the next step
             } else {
                 toast.error(response?.data?.message || "Submission failed!", {

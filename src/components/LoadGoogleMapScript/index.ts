@@ -5,12 +5,12 @@ import { setAutocompleteService, setScriptLoaded } from '@/redux/searchSlice';
 import { getSessionData } from '../utils/deviceId';
 import api from '@/Services/Apiservice';
 import { useAppSelector } from '@/redux/hooks';
-import { setNudgesVisibility, setUserDesignation, setUserName, setUserPhotoUrl, setUserProfilePercentage, setUserSkills } from '@/redux/userSlice';
+import { setHelpVideoData, setNudgesVisibility, setUserDesignation, setUserName, setUserPhotoUrl, setUserProfilePercentage, setUserSkills, setUserWillingToRelocate } from '@/redux/userSlice';
 
 export default function LoadGoogleMapsScript() {
   const dispatch = useDispatch();
   const {token} = useAppSelector((state) => state.auth);
-  const {id, isLoggedIn} = useAppSelector((state) => state.user);
+  const {id, isLoggedIn, isProfileUpdate} = useAppSelector((state) => state.user);
 
   // useEffect(() => {
   //   // Load Google Maps script
@@ -53,7 +53,15 @@ export default function LoadGoogleMapsScript() {
           dispatch(setUserDesignation(response.data?.user_profile?.[0]?.designation))
           dispatch(setUserProfilePercentage(response.data?.user_profile?.[0]?.user_profile_percentage))
           dispatch(setUserPhotoUrl(response.data?.user_profile?.[0]?.photo_url))
-          // Handle dynamic nudges
+          const willingToRelocate = response.data?.user_profile?.[0]?.user_willing_to_relocate;
+         
+          dispatch(
+            setUserWillingToRelocate(
+              typeof willingToRelocate === 'string'
+                ? willingToRelocate.split(',').map(item => item.trim()).filter(Boolean)
+                : []
+            )
+          );          // Handle dynamic nudges
           const dynamicRows = response.data?.result || [];
           const nudgeVisibility = {
             showUploadCV: dynamicRows.some((row:any) => row?.row === 'upload_cv'),
@@ -64,6 +72,16 @@ export default function LoadGoogleMapsScript() {
             showHelpVideo: dynamicRows.some((row:any) => row?.row === 'help_video')
           };
           dispatch(setNudgesVisibility(nudgeVisibility));
+          // Handle help video data separately
+          const helpVideo = dynamicRows.find((row:any) => row.row === 'help_video');
+          if (helpVideo) {
+            dispatch(setHelpVideoData({
+              title: helpVideo.title,
+              subtitle: helpVideo.sub_title,
+              thumbnail: helpVideo.media_thumbnail,
+              videoUrl: helpVideo.video_url
+            }));
+          }
         }
       } catch (error) {
         console.error("Error fetching job types:", error);
@@ -71,7 +89,7 @@ export default function LoadGoogleMapsScript() {
     };
     fetchUserSkills();
 
-    }, [dispatch, id, isLoggedIn]);
+    }, [dispatch, id, isLoggedIn, isProfileUpdate]);
 
   return null; // This component doesn't render anything
 }

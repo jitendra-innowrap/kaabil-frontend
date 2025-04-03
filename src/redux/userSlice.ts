@@ -31,6 +31,8 @@ interface AuthState extends User {
   showUpdateProfile: boolean,
   showHelpVideo: boolean,
   helpVideoData: any,
+  user_willing_to_relocate: string[],
+  isProfileUpdate?: boolean,
 }
 const { deviceId, secret } = getSessionData();
 const user = getAuthUser() as User;
@@ -46,6 +48,8 @@ const initialState: AuthState = {
   showUpdateProfile: false,
   showHelpVideo: false,
   helpVideoData: null,
+  isProfileUpdate: false,
+  user_willing_to_relocate: [],
   email: user?.email || "",
   photo_url: user?.photo_url || "",
   id: user?.id || "",
@@ -155,6 +159,12 @@ const userSlice = createSlice({
       },
       setHelpVideoData: (state, action) => {
         state.helpVideoData = action.payload;
+      },
+      setUserWillingToRelocate: (state, action:PayloadAction<string[]>) => {
+        state.user_willing_to_relocate = action.payload;
+      },
+      RefreshProfileData: (state) => {
+        state.isProfileUpdate = !state.isProfileUpdate;
       }
     },
 });
@@ -162,7 +172,9 @@ const userSlice = createSlice({
 // Export actions
 export const {
   signOut,
+  RefreshProfileData,
   setNudgesVisibility, setHelpVideoData,
+  setUserWillingToRelocate,
   setUserProfilePercentage,
   setUserDesignation,
   setAuthToken,

@@ -104,6 +104,7 @@ export default function Home() {
                 {isLoggedIn && showProfilePhoto && <ProfileUploadNudge/>}
                 {isLoggedIn && showUpdateProfile && <EditProfileNudge/>}
                 {isLoggedIn && showHelpVideo && <WelcomeVideoNudge/>}
+                {/* 6767672767 dynamic random nudge available on this number */}
               </div>
             </div>
         </div>

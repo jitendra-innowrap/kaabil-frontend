@@ -37,7 +37,7 @@ export default function OnBoardingComplete({size, closePopup}: any) {
             formData.append("is_profile_verify", "1"); // Append the file safely
             formData.append("is_tnc_checked", tncChecked ? "1" : "0");
             // Submit the form data
-            const response = await api.post("/Auth/editJobSeekerPrpfile", formData, {
+            const response = await api.post("/Auth/verifyProfileStatus", formData, {
                 headers: {"Content-Type": "multipart/form-data"},
             });
 

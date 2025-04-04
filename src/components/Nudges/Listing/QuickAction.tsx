@@ -5,9 +5,9 @@ import { useRouter } from 'next/navigation'
 import React from 'react'
 
 export default function QuickAction() {
-  const router = useRouter();
   const {skills, user_willing_to_relocate} = useAppSelector((state) => state.user);
-
+  
+  const router = useRouter();
   const handleClick=()=>{
     router.push('/my-profile')
   }

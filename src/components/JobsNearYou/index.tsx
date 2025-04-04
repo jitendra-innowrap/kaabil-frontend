@@ -107,6 +107,7 @@ export default function JobsNearYou() {
 
      // Handle location selection from autocomplete
      const handleLocationSelect = (option: PlacePrediction) => {
+        router.replace(`?page=1`, { scroll: true });
         setInputValue(option.description);
         setSearchOptions([]);
         setShowAutoCompleteOptions(false);
@@ -230,11 +231,11 @@ export default function JobsNearYou() {
     useEffect(() => {
         if(!inputValue) setInputValue(currentLocation?.city || "")
         fetchJobs();
-    }, [page, user?.id, searchParams, currentPage, selectedradius, selectedLocation]);
+    }, [page, selectedradius, selectedLocation]);
 
 
     const fetchJobs = async () => {   
-        if(!currentLocation?.city && !selectedLocation){
+        if(!currentLocation?.city && !selectedLocation && !selectedradius){
             handleFetchLocation();
             setJobs([]);
             if(!inputValue) setInputValue(currentLocation?.city || "")
@@ -314,7 +315,7 @@ export default function JobsNearYou() {
                     Jobs near me
                 </h2>
                 <div className="mobile-container">
-                    <form onSubmit={handleSearch} className="flex relative near-me-search flex-row gap-3 lg:gap-0 mx-auto rounded-xl 2xl:rounded-[16px] lg:shadow-default bg-white h-[50px] lg:h-[55px] 3xl:h-[68px] items-center mb-1 xl:mb-6 3xl:mb-[26px]">
+                    <div className="flex relative near-me-search flex-row gap-3 lg:gap-0 mx-auto rounded-xl 2xl:rounded-[16px] lg:shadow-default bg-white h-[50px] lg:h-[55px] 3xl:h-[68px] items-center mb-1 xl:mb-6 3xl:mb-[26px]">
                         <svg className='lg:hidden absolute left-3 top-4' width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M8.25 14.25C11.5637 14.25 14.25 11.5637 14.25 8.25C14.25 4.93629 11.5637 2.25 8.25 2.25C4.93629 2.25 2.25 4.93629 2.25 8.25C2.25 11.5637 4.93629 14.25 8.25 14.25Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             <path d="M15.7503 15.7508L12.4878 12.4883" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -368,7 +369,7 @@ export default function JobsNearYou() {
                             </svg>
                             }
                         </div>
-                    </form>
+                    </div>
                 </div>
                 <div className={`w-screen block lg:hidden ${isMapopen?"h-[350px]":"h-0"} transition-all duration-200`}>
                     <JobsNearYouMap lat={selectedLocation?.lat || currentLocation?.city_latitude || ""} lng={selectedLocation?.lng || currentLocation?.city_longitude || ""} />
@@ -383,50 +384,80 @@ export default function JobsNearYou() {
                     }
                 </div>
                 </div>}
-                {jobs.length>0 ?<div className={`mobile-container ${isMapopen?"near-me-jobs-pannel border -translate-y-5 bg-[#F9F9F9]":""}`}>
-                    <h3 className="font-medium text-base leading-7 xl:text-lg 3xl:text-2xl 3xl:leading-7 mb-1 xl:mb-5 3xl:mb-[22px] mt-2 lg:mt-6 xl:mt-6 3xl:mt-8">
-                        {totalJobs} Jobs found!
-                    </h3>
-                    {isJobsLoading ?
+                <div className={`mobile-container ${isMapopen ? "near-me-jobs-pannel border -translate-y-5 bg-[#F9F9F9]" : ""}`}>
+                    {isJobsLoading ? (
                         <div className="flex justify-center items-center h-[200px]">
                             <div className="flex animate-spin h-7 w-7 rounded-full border-l-0 border-b-0 border-red border-[3px]"></div>
                         </div>
-                        :
-                        <div className="flex flex-col gap-4 lg:gap-3 3xl:gap-4">
-                            {jobs?.map((job: any, index) => {
-                            const items = [];
-
-                            // Add the job listing
-                            items.push(
-                                <div className="flex w-[100%]" key={`job-${job?.id}`}>
-                                <NearestjobCard {...job} />
-                                </div>
-                            );
-                            return items;
-                            })}
-                        </div>}
-                        {/* <div className="block lg:hidden mt-4">
-                            <FindCareer />
-                        </div> */}
-
-                        {/* Pagination */}
-                        <div className="mobile-container my-12 lg:my-10 2xl:my-12">
-                            <Pagination
-                            currentPage={currentPage}
-                            handleActive={handleActive}
-                            totalPages={totalPages}
-                            />
-                        </div>
+                    ) : (
+                        <>
+                            
+                            {jobs.length > 0 ? (
+                                <>
+                                    <h3 className="font-medium text-base leading-7 xl:text-lg 3xl:text-2xl 3xl:leading-7 mb-1 xl:mb-5 3xl:mb-[22px] mt-2 lg:mt-6 xl:mt-6 3xl:mt-8">
+                                        {jobs.length > 0 ? `${totalJobs} Jobs found!` : "No Jobs Found"}
+                                    </h3>
+                                    <div className="flex flex-col gap-4 lg:gap-3 3xl:gap-4">
+                                        {jobs.map((job: any) => (
+                                            <div className="flex w-[100%]" key={`job-${job?.id}`}>
+                                                <NearestjobCard {...job} />
+                                            </div>
+                                        ))}
+                                    </div>
+                                    
+                                    <div className="mobile-container my-12 lg:my-10 2xl:my-12">
+                                        <Pagination
+                                            currentPage={currentPage}
+                                            handleActive={handleActive}
+                                            totalPages={totalPages}
+                                        />
+                                    </div>
+                                </>
+                            ) : (
+                                <div className="container pt-5 bg-[#f9f9f9] mx-auto w-full px-4 pb-12">
+                                    <Image 
+                                        className="w-[160px] h-auto mx-auto 3xl:w-[323px] 3xl:h-[262px]" 
+                                        width={650} 
+                                        height={520} 
+                                        src={'/new-assets/images/no-company.svg'} 
+                                        alt="no-jobs-found"
+                                    />
+                                    {selectedLocation ? (
+                                        // When user searched a specific location
+                                        <>
+                                        <h3 className="text-xl 3xl:text-2xl font-medium text-center">
+                                            No jobs found near {inputValue}
+                                        </h3>
+                                        <p className="text-sm 3xl:text-base font-normal text-center mt-2">
+                                            Try expanding your search radius or checking nearby cities
+                                        </p>
+                                        </>
+                                    ) : currentLocation?.city ? (
+                                        // When using current location but no jobs
+                                        <>
+                                        <h3 className="text-xl 3xl:text-2xl font-medium text-center">
+                                            No jobs found in your area
+                                        </h3>
+                                        <p className="text-sm 3xl:text-base font-normal text-center mt-2">
+                                            Try searching a different location or expanding your search radius
+                                        </p>
+                                        </>
+                                    ) : (
+                                        // When location isn't available
+                                        <>
+                                        <h3 className="text-xl 3xl:text-2xl font-medium text-center">
+                                            Let's find jobs near you
+                                        </h3>
+                                        <p className="text-sm 3xl:text-base font-normal text-center mt-2">
+                                        Search for a city or enable location access to find jobs in your area
+                                        </p>
+                                        </>
+                                    )}
+                                    </div>
+                            )}
+                        </>
+                    )}
                 </div>
-                :
-                <div className="">
-                    <div className="container mt-5 bg-[#f9f9f9] mx-auto w-full px-4 pb-12">
-                        <Image className="w-[160px] h-auto mx-auto 3xl:w-[323px] 3xl:h-[262px]" width={650} height={520} src={'/new-assets/images/no-company.svg'} alt="no-company-found"/>
-                        <h3 className="text-xl 3xl:text-2xl font-medium text-center">No Jobs Found</h3>
-                        <p className="text-sm 3xl:text-base font-normal text-center">Please enable location or search city </p>
-                    </div>
-                </div>
-                }
                 <div className="w-full hidden lg:block absolute top-[0] right-0 max-w-[calc(50vw_-_50px)] max-h-[80vh] h-[100%]">
                     <JobsNearYouMap lat={selectedLocation?.lat || currentLocation?.city_latitude || ""} lng={selectedLocation?.lng || currentLocation?.city_longitude || ""} />
                 </div>

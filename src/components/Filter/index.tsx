@@ -44,7 +44,7 @@ export default function FilterSidebar() {
     <>
     {open && <div className="hidden lg:block bg-black z-10 opacity-20 w-screen h-screen fixed top-0 left-0" onClick={()=>setOpen(false)}></div>}
     {/* <pre>{JSON.stringify(filters,null,2)}</pre> */}
-    <div className="filters-sidebar sticky top-16 3xl:top-[104px] lg:min-w-[260px] 3xl:min-w-[320px] h-fit p-4 md:p-6 rounded-[20px] hidden lg:flex bg-white flex-col lg:w-fit items-start">
+    <div className="filters-sidebar top-16 3xl:top-[104px] lg:min-w-[260px] 3xl:min-w-[320px] h-fit p-4 md:p-6 rounded-[20px] hidden lg:flex bg-white flex-col lg:w-fit items-start">
         <div className="flex justify-between items-center w-full mb-2 md:mb-4 xl:mb-6 2xl:mb-8">
             <h2 className="text-lg 2xl:text-xl font-medium">All Filters
             <VscListFilter onClick={()=>setOpen(!open)} name="allFilters"  id="allFilters" className="inline lg:hidden ml-3 cursor-pointer size-5"/></h2>

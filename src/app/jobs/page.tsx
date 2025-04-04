@@ -92,7 +92,7 @@ export default function Home() {
             <Suspense fallback={<>... Loading</>}>
               <JobList />
             </Suspense>
-            <div className="lg:sticky lg:-top-1 3xl:top-6 h-fit">
+            <div className="lg: lg:-top-1 3xl:top-6 h-fit">
               <div className="nudges-bar hidden lg:flex flex-shrink-0 flex-col gap-4 md:gap-6 max-w-[400px] mx-auto lg:w-[280px] 2xl:w-[341px]">
                 {/* {!isLoggedIn && <FindCareer/>} */}
                 <JobsNearYouNudge/>

@@ -65,6 +65,13 @@
         padding-inline: 20px;
         margin-inline: auto !important;
     }
+    .no-mobile-container{
+        padding-inline: 0px;
+    }
+    .near-me-jobs-pannel{
+        border-start-end-radius: 18px;
+        border-start-start-radius: 18px;
+    }
     .mobile-job-search{
         width: calc(100% - 40px);
         margin-top: 20px;
@@ -130,6 +137,14 @@
     .profile-options-menu{
         right: 0;
     } 
+    .jobs-near-me .near-me-search{
+        margin-block: 11px;
+        background: transparent;
+    }
+    .jobs-near-me .near-me-search input{
+        box-shadow: 0px 4px 48px 0px #00000017;
+        background: white;
+    }
 }
 .sticky-apply-on-filter-pannel{
     position: absolute;

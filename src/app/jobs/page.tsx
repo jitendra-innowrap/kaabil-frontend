@@ -10,6 +10,7 @@ import BoostProfile from "@/components/Nudges/Listing/BoostProfile";
 import EditProfileNudge from "@/components/Nudges/Listing/EditProfileNudge";
 import EducationUpdateNudge from "@/components/Nudges/Listing/EducationUpdateNudge";
 import FindCareer from "@/components/Nudges/Listing/FindCareer";
+import JobsNearYouNudge from "@/components/Nudges/Listing/JobNearYouNudge";
 import ProfileCard from "@/components/Nudges/Listing/ProfileCard";
 import ProfileUploadNudge from "@/components/Nudges/Listing/ProfileUploadNudge";
 import QuickAction from "@/components/Nudges/Listing/QuickAction";
@@ -94,16 +95,17 @@ export default function Home() {
             <div className="lg:sticky lg:-top-1 3xl:top-6 h-fit">
               <div className="nudges-bar hidden lg:flex flex-shrink-0 flex-col gap-4 md:gap-6 max-w-[400px] mx-auto lg:w-[280px] 2xl:w-[341px]">
                 {/* {!isLoggedIn && <FindCareer/>} */}
+                <JobsNearYouNudge/>
                 {isLoggedIn && <ProfileCard/>}
                 {isLoggedIn && <QuickAction/>}
-                {/* {!isLoggedIn && <ResumeBuilder/>} */}
-                {/* {isLoggedIn && <BoostProfile/>} */}
                 {isLoggedIn && showSoftSkills && <ShareStrength/>}
                 {isLoggedIn && showUploadCV && <UpdloadCvNudge/>}
                 {isLoggedIn && showUpdateEducation && <EducationUpdateNudge/>}
                 {isLoggedIn && showProfilePhoto && <ProfileUploadNudge/>}
                 {isLoggedIn && showUpdateProfile && <EditProfileNudge/>}
                 {isLoggedIn && showHelpVideo && <WelcomeVideoNudge/>}
+                {/* {!isLoggedIn && <ResumeBuilder/>} */}
+                {/* {isLoggedIn && <BoostProfile/>} */}
                 {/* 6767672767 dynamic random nudge available on this number */}
               </div>
             </div>

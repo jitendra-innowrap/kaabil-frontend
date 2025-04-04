@@ -18,6 +18,13 @@ import { setJobFiltersMaster } from "@/redux/jobsFilterSlice";
 import { useDispatch } from "react-redux";
 import TopCompaniesHiring from "../Nudges/Listing/TopCompaniesHiring";
 import FindCareer from "../Nudges/Listing/FindCareer";
+import JobsNearYouNudge from "../Nudges/Listing/JobNearYouNudge";
+import ShareStrength from "../Nudges/Listing/ShareStrength";
+import UpdloadCvNudge from "../Nudges/Listing/UpdloadCvNudge";
+import EducationUpdateNudge from "../Nudges/Listing/EducationUpdateNudge";
+import ProfileUploadNudge from "../Nudges/Listing/ProfileUploadNudge";
+import EditProfileNudge from "../Nudges/Listing/EditProfileNudge";
+import WelcomeVideoNudge from "../Nudges/Listing/welcomeNudge";
 
 function JobList() {
   const searchParams = useSearchParams();
@@ -30,12 +37,65 @@ function JobList() {
   const [totalPages, setTotalPages] = useState(0);
   const maxPagesToShow = 5; // Maximum pages to display
   const user = useAppSelector((state) => state.user);
-  const { isLoggedIn } = useAppSelector((state) => state.user);
+  const { isLoggedIn, showSoftSkills, showUploadCV, showUpdateEducation, showProfilePhoto, showUpdateProfile, showHelpVideo } = useAppSelector((state) => state.user);
   const { token } = useAppSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [jobs, setJobs] = useState<object[]>([]);
   const [isJobsLoading, setIsJobsLoading] = useState(true);
-  const sort = searchParams.get("sort") || (isLoggedIn?"1":"3"); // Default to '1' (Relevance)
+  const sort = searchParams.get("sort") || (isLoggedIn?"1":"3"); // Default to '1' (Relevance);
+  const [isMobile, setIsMobile] = useState(false);
+
+useEffect(() => {
+  const updateSize = () => {
+    setIsMobile(window.innerWidth < 1024);
+  };
+  
+  // Initialize on mount
+  updateSize();
+  
+  // Add resize listener
+  window.addEventListener("resize", updateSize);
+  
+  // Cleanup
+  return () => window.removeEventListener("resize", updateSize);
+}, []);
+
+// Nudges that appear on all screen sizes
+const commonNudges = [
+...(!isLoggedIn ? [<RegisterInMinutes key="register" />]: [])
+];
+
+// Nudges that only appear on mobile (<1024px)
+const mobileOnlyNudges = isMobile ? [
+  <JobsNearYouNudge key="jobs-near-you" />,
+] : [];
+
+// Conditional nudges for logged-in users (mobile only)
+const loggedInMobileNudges = isLoggedIn && isMobile ? [
+  ...(showSoftSkills ? [<ShareStrength key="share-strength" />] : []),
+  ...(showUploadCV ? [<UpdloadCvNudge key="upload-cv" />] : []),
+  ...(showUpdateEducation ? [<EducationUpdateNudge key="update-education" />] : []),
+  ...(showProfilePhoto ? [<ProfileUploadNudge key="profile-photo" />] : []),
+  ...(showUpdateProfile ? [<EditProfileNudge key="edit-profile" />] : []),
+  ...(showHelpVideo ? [<WelcomeVideoNudge key="welcome-video" />] : []),
+] : [];
+
+// Nudges for non-logged-in users
+const nudges = [
+  ...mobileOnlyNudges,
+  ...commonNudges,
+];
+
+// Nudges for logged-in users
+const nudgesForLoggedInUser = [
+  ...mobileOnlyNudges,
+  ...(isLoggedIn ? [
+    // <ProfileCard key="profile-card" />,
+    // <QuickAction key="quick-action" />,
+    ...loggedInMobileNudges,
+    <TopCompaniesHiring key="top-companies" />,
+  ] : []),
+];
 
   // Reset page to 1 when filters change
   useEffect(() => {
@@ -253,15 +313,7 @@ function JobList() {
     router.replace(`?${params.toString()}`, { scroll: true });
   };
 
-  const nudges = [
-    <RegisterInMinutes key="register" />,
-    // <Interview key="interview" />,
-  ];
-  const nudgesForLoggedInUser = [
-    // <Interview key="interview" />,
-    <TopCompaniesHiring key="top-companies" />,
-  ];
-
+  
   return (
     <div
       style={{ width: "-webkit-fill-available" }}

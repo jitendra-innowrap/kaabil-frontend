@@ -1,16 +1,17 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Breadcrumb from '../Breadcrumb'
 import Image from 'next/image'
 import { useRouter, useSearchParams } from 'next/navigation';
-import Map from '../Map';
 import { useAppSelector } from '@/redux/hooks';
 import JobsNearYouMap from '../Map/JobsNearYouMap';
 import { useDispatch } from 'react-redux';
 import { getSessionData } from '../utils/deviceId';
 import api from '@/Services/Apiservice';
-import JobListingCard from '../Cards/JobListingCard';
 import Pagination from '../Pagination';
+import NearestjobCard from '../Cards/NearestJobCard';
+import { setCurrentLocation } from '@/redux/userSlice';
+import { fetchUserLocation } from '../utils';
 interface radius {
     created_by: string,
     created_date: string,
@@ -33,7 +34,6 @@ export default function JobsNearYou() {
     const currentLocation = useAppSelector((state) => state.user.current_location);
     const searchParams = useSearchParams();
     const router = useRouter();
-    const [isfilterAvailable, setIsfilterAvailable] = useState(false);
     const page = searchParams.get("page") || "1"; // Get the current page from the URL
     const search = searchParams.get("search") || ""; // Get the current page from the URL
     const [currentPage, setCurrentPage] = useState(parseInt(page, 10));
@@ -52,52 +52,119 @@ export default function JobsNearYou() {
     const [inputValue, setInputValue] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [autocompleteService, setAutocompleteService] = useState<any>(null);
+    const [geocoder, setGeocoder] = useState<any>(null);
+    const [showAutoCompleteOptions, setShowAutoCompleteOptions] = useState(false);
+    const [selectedLocation, setSelectedLocation] = useState<{
+        lat: string;
+        lng: string;
+        address: string;
+    } | null>(null);
+
+    // Load Google Maps API script
+    useEffect(() => {
+        const loadGoogleMapsScript = () => {
+            if (typeof window !== 'undefined' && !window.google) {
+                const script = document.createElement('script');
+                script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyCp-H598wbMhBWMz9I_zbvdcknH-fiBVCo&libraries=places`;
+                script.async = true;
+                script.defer = true;
+                script.onload = () => {
+                    if (window.google) {
+                        setAutocompleteService(new window.google.maps.places.AutocompleteService());
+                        setGeocoder(new window.google.maps.Geocoder());
+                    }
+                };
+                document.head.appendChild(script);
+            } else if (window.google) {
+                setAutocompleteService(new window.google.maps.places.AutocompleteService());
+                setGeocoder(new window.google.maps.Geocoder());
+            }
+        };
+
+        loadGoogleMapsScript();
+    }, []);
+
+    // Geocode the selected location
+    const geocodeAddress = (address: string) => {
+        if (!geocoder) return;
+
+        geocoder.geocode({ address }, (results: any[], status: string) => {
+            if (status === 'OK' && results[0]) {
+                const location = results[0].geometry.location;
+                setSelectedLocation({
+                    lat: location.lat().toString(),
+                    lng: location.lng().toString(),
+                    address
+                });
+            } else {
+                console.error('Geocode was not successful for the following reason:', status);
+                // Fallback to current location
+                setSelectedLocation(null);
+            }
+        });
+    };
+
+     // Handle location selection from autocomplete
+     const handleLocationSelect = (option: PlacePrediction) => {
+        setInputValue(option.description);
+        setSearchOptions([]);
+        setShowAutoCompleteOptions(false);
+        geocodeAddress(option.description);
+    };
+
+    // Update payload with selected or current location
+    const getPayload = () => {
+        return {
+            latitude: selectedLocation?.lat || currentLocation?.city_latitude || '',
+            longitude: selectedLocation?.lng || currentLocation?.city_longitude || '',
+            radius_id: selectedradius?.id || '2',
+            radius_value: selectedradius?.value || '20',
+            page: currentPage.toString(),
+            filter_flag: '3',
+        };
+    };
+
+    // Handle autocomplete requests
+    const fetchAutocompleteResults = (input: string) => {
+        if (!autocompleteService || input.length < 2) {
+            setSearchOptions([]);
+            return;
+        }
+
+        setIsLoading(true);
+        setError(null);
+
+        autocompleteService.getPlacePredictions(
+            {
+                input,
+                componentRestrictions: { country: 'in' },
+                types: ['geocode']
+            },
+            (predictions: PlacePrediction[], status: string) => {
+                setIsLoading(false);
+                if (status === 'OK') {
+                    setSearchOptions(predictions);
+                } else {
+                    setError(status === 'ZERO_RESULTS' ? 'No results found' : 'Failed to fetch predictions');
+                    setSearchOptions([]);
+                }
+            }
+        );
+    };
 
     // Debounce function to limit API calls
     useEffect(() => {
         const timerId = setTimeout(() => {
-        if (inputValue.length > 2) { // Only search after 2+ characters
             fetchAutocompleteResults(inputValue);
-        } else {
-            setSearchOptions([]);
-        }
-        }, 300); // 300ms debounce delay
+        }, 300);
 
         return () => clearTimeout(timerId);
-    }, [inputValue]);
-
-    const fetchAutocompleteResults = async (input: string) => {
-        setIsLoading(true);
-        setError(null);
-        
-        try {
-            
-        const response = await fetch(
-            `https://maps.googleapis.com/maps/api/place/autocomplete/json?sensor=false&types=geocode&language=en&components=country:IN&input=m&key=AIzaSyCp-H598wbMhBWMz9I_zbvdcknH-fiBVCo`
-        );
-
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-
-        const data = await response.json();
-        
-        if (data.status === 'OK') {
-            setSearchOptions(data.predictions);
-        } else {
-            setError(data.error_message || 'Failed to fetch predictions');
-            setSearchOptions([]);
-        }
-        } catch (err) {
-        setError('Failed to fetch location suggestions');
-        setSearchOptions([]);
-        } finally {
-        setIsLoading(false);
-        }
-    };
+    }, [inputValue, autocompleteService]);
 
     const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInputValue(e.target.value);
+        setShowAutoCompleteOptions(true);
     };
 
     useEffect(() => {
@@ -150,23 +217,30 @@ export default function JobsNearYou() {
         // Push the updated query parameters to the URL
         router.replace(`?${params.toString()}`, { scroll: true });
     };
+
+    const handleFetchLocation = async () => {
+        try {
+          const location = await fetchUserLocation();
+          dispatch(setCurrentLocation(location)); // Update the user location in the Redux store
+        } catch (error) {
+          console.error('Error fetching location:', error);
+        }
+      };
     // Fetch jobs based on the current page
     useEffect(() => {
-    const fetchJobs = async () => {
-        // Parse URL parameters
-        const jobTypesFilter =
-        searchParams.get("job_types_filter")?.split("|") || [];
-        
-        // Construct payload
-        let payload = {
-        latitude:'19.1982549',
-        longitude:'72.8732658',
-        radius_id:'2',
-        radius_value:'20',
-        page:currentPage.toString(),
-        filter_flag:'3',
+        if(!inputValue) setInputValue(currentLocation?.city || "")
+        fetchJobs();
+    }, [page, user?.id, searchParams, currentPage, selectedradius, selectedLocation]);
 
-        };
+
+    const fetchJobs = async () => {   
+        if(!currentLocation?.city && !selectedLocation){
+            handleFetchLocation();
+            setJobs([]);
+            if(!inputValue) setInputValue(currentLocation?.city || "")
+            return
+        }     
+        const payload = getPayload();
 
         const { deviceId, secret, salt } = getSessionData();
 
@@ -181,7 +255,7 @@ export default function JobsNearYou() {
         const formData = new FormData();
         // ✅ Automatically append all fields from the object
         Object.entries(payload).forEach(([key, value]) => {
-            formData.append(key, value); // Convert all values to strings
+            formData.append(key, value as string); // Convert all values to strings
         });
         setIsJobsLoading(true)
         const response = await api.post(
@@ -193,22 +267,41 @@ export default function JobsNearYou() {
             },
             }
         );
-        setJobs(response.data?.nearest_jobs as object[]);
+        if(response?.data?.code==1){
+            setJobs(response.data?.nearest_jobs as object[]);
+            // Calculate total pages based on total jobs and jobs per page
+            const totalJobs = response.data?.total_nearest_jobs;
+            const jobsPerPage = 20;
+            const totalPages = Math.ceil(totalJobs / jobsPerPage);
+            setTotalPages(totalPages);
+            setTotalJobs(totalJobs);
+        }else{
+            setTotalJobs(0)
+            setTotalPages(0)
+            setJobs([]);
+        }
         setIsJobsLoading(false);
-        // Calculate total pages based on total jobs and jobs per page
-        const totalJobs = response.data?.total_nearest_jobs;
-        const jobsPerPage = 20;
-        const totalPages = Math.ceil(totalJobs / jobsPerPage);
-        setTotalPages(totalPages);
-        setTotalJobs(totalJobs);
         } catch (error) {
         console.error("Error fetching jobs:", error);
         }
     };
-
-    fetchJobs();
-    }, [page, user?.id, searchParams, currentPage, selectedradius]);
-
+    const searchOptionRef = useRef<HTMLDivElement | null>(null);
+    // Close dropdown when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+        if (searchOptionRef.current && !searchOptionRef.current.contains(event.target as Node)) {
+            setShowAutoCompleteOptions(false);
+        }
+        };
+    
+        if (showAutoCompleteOptions) {
+        document.addEventListener("mousedown", handleClickOutside);
+        }
+        
+        return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [showAutoCompleteOptions]);
 
   return (
     <div className="relative jobs-near-me">
@@ -227,31 +320,34 @@ export default function JobsNearYou() {
                             <path d="M15.7503 15.7508L12.4878 12.4883" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
 
-                        {isLoading && <div className="absolute z-10 w-full p-2 bg-white">Loading...</div>}
-        
-                        {error && <div className="text-red-500 text-sm mt-1">{error}</div>}
-                        
-                        {searchOptions.length > 0 && (
-                        <ul className="absolute z-10 w-full mt-1 bg-white border rounded shadow-lg max-h-60 overflow-auto">
-                            {searchOptions.map((option) => (
-                                <li
-                                key={option.place_id}
-                                className="p-2 hover:bg-gray-100 cursor-pointer"
-                                onClick={() => {
-                                    setInputValue(option.description);
-                                    setSearchOptions([]);
-                                }}
-                                >
-                                {option.description}
-                                </li>
-                            ))}
-                            </ul>
-                        )}
+                        {showAutoCompleteOptions && <div className="absolute bottom-0 w-full" ref={searchOptionRef}>
+                            {isLoading && <div className="absolute z-10 w-full mt-1 bg-white border shadow-default rounded-xl 2xl:rounded-[16px] h-10">
+                                <div className="flex justify-center items-center h-full">
+                            <div className="flex animate-spin h-7 w-7 rounded-full border-l-0 border-b-0 border-red border-[3px]"></div>
+                        </div>
+                                </div>}
+                            
+                            {error && <div className="text-red-500 text-sm mt-1">{error}</div>}
+                            
+                            {searchOptions.length > 0 && (
+                            <ul className="absolute z-10 w-full mt-1 bg-white border shadow-default rounded-xl 2xl:rounded-[16px] max-h-60 overflow-auto">
+                                {searchOptions?.map((option) => (
+                                    <li
+                                    key={option.place_id}
+                                    className="p-2 hover:bg-gray-100 cursor-pointer text-xs lg:text-xs"
+                                    onClick={() => handleLocationSelect(option)}                                    >
+                                    {option.description}
+                                    </li>
+                                ))}
+                                </ul>
+                            )}
+                        </div>}
                         <input
                             type="text"
                             id="searchbar_input"
                             placeholder="Enter location"
                             value={inputValue}
+                            onFocus={()=> setShowAutoCompleteOptions(true)}
                             onChange={onSearchChange}
                             className="placeholder:truncate w-full h-full rounded-xl text-xs 2xl:text-base 3xl:text-lg lg:font-semibold placeholder:text-gray-400 pl-9 px-4 py-2 lg:px-6 3xl:pl-[31px] lg:py-4"
                         />
@@ -275,7 +371,7 @@ export default function JobsNearYou() {
                     </form>
                 </div>
                 <div className={`w-screen block lg:hidden ${isMapopen?"h-[350px]":"h-0"} transition-all duration-200`}>
-                    <JobsNearYouMap lat={currentLocation?.city_latitude || ""} lng={currentLocation?.city_longitude || ""} />
+                    <JobsNearYouMap lat={selectedLocation?.lat || currentLocation?.city_latitude || ""} lng={selectedLocation?.lng || currentLocation?.city_longitude || ""} />
                 </div>
                 {!isMapopen && <div className='mobile-container'>
                     <p className='lg:hidden text-sm mb-[10px]'>Radius (in Kms)</p>
@@ -287,9 +383,9 @@ export default function JobsNearYou() {
                     }
                 </div>
                 </div>}
-                <div className={`mobile-container ${isMapopen?"near-me-jobs-pannel border -translate-y-5 bg-[#F9F9F9]":""}`}>
+                {jobs.length>0 ?<div className={`mobile-container ${isMapopen?"near-me-jobs-pannel border -translate-y-5 bg-[#F9F9F9]":""}`}>
                     <h3 className="font-medium text-base leading-7 xl:text-lg 3xl:text-2xl 3xl:leading-7 mb-1 xl:mb-5 3xl:mb-[22px] mt-2 lg:mt-6 xl:mt-6 3xl:mt-8">
-                        120 Jobs found!
+                        {totalJobs} Jobs found!
                     </h3>
                     {isJobsLoading ?
                         <div className="flex justify-center items-center h-[200px]">
@@ -297,13 +393,13 @@ export default function JobsNearYou() {
                         </div>
                         :
                         <div className="flex flex-col gap-4 lg:gap-3 3xl:gap-4">
-                            {jobs.map((job: any, index) => {
+                            {jobs?.map((job: any, index) => {
                             const items = [];
 
                             // Add the job listing
                             items.push(
                                 <div className="flex w-[100%]" key={`job-${job?.id}`}>
-                                <JobListingCard {...job} />
+                                <NearestjobCard {...job} />
                                 </div>
                             );
                             return items;
@@ -322,8 +418,17 @@ export default function JobsNearYou() {
                             />
                         </div>
                 </div>
+                :
+                <div className="">
+                    <div className="container mt-5 bg-[#f9f9f9] mx-auto w-full px-4 pb-12">
+                        <Image className="w-[160px] h-auto mx-auto 3xl:w-[323px] 3xl:h-[262px]" width={650} height={520} src={'/new-assets/images/no-company.svg'} alt="no-company-found"/>
+                        <h3 className="text-xl 3xl:text-2xl font-medium text-center">No Jobs Found</h3>
+                        <p className="text-sm 3xl:text-base font-normal text-center">Please enable location or search city </p>
+                    </div>
+                </div>
+                }
                 <div className="w-full hidden lg:block absolute top-[0] right-0 max-w-[calc(50vw_-_50px)] max-h-[80vh] h-[100%]">
-                    <JobsNearYouMap lat={currentLocation?.city_latitude || ""} lng={currentLocation?.city_longitude || ""} />
+                    <JobsNearYouMap lat={selectedLocation?.lat || currentLocation?.city_latitude || ""} lng={selectedLocation?.lng || currentLocation?.city_longitude || ""} />
                 </div>
             </div>
         </div>

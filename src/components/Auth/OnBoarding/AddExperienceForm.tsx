@@ -122,7 +122,7 @@ const AddExperienceForm = forwardRef(
               className={`${styles.onboarding_dialog_input} w-full p-2 border`}
             />
             {designationSuggestions?.length > 0 && (
-              <div className="absolute z-10 w-full max-h-[250px] min-h-[50px] overflow-auto p-0 bg-white border rounded-xl shadow-lg mt-1">
+              <div className="absolute z-10 w-full max-h-[250px] min-h-[38px] sm:min-h-[50px] overflow-auto p-0 bg-white border rounded-xl shadow-lg mt-1">
                 {designationSuggestions?.map((suggestion) => (
                   <div
                     key={suggestion.id}
@@ -161,7 +161,7 @@ const AddExperienceForm = forwardRef(
               className={`${styles.onboarding_dialog_input} w-full p-2 border`}
             />
             {companySuggestions?.length > 0 && (
-              <div className="absolute z-10 w-full max-h-[250px] min-h-[50px] overflow-auto p-0 bg-white border rounded-xl shadow-lg mt-1">
+              <div className="absolute z-10 w-full max-h-[250px] min-h-[38px] sm:min-h-[50px] overflow-auto p-0 bg-white border rounded-xl shadow-lg mt-1">
                 {companySuggestions?.map((suggestion) => (
                   <div
                     key={suggestion.id}

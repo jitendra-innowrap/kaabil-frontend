@@ -206,7 +206,7 @@ export default function AddJobRole({ size, closePopup, handleBack }: any) {
               </p>
 
               {/* ✅ MultiSelect for Job Roles */}
-              <div className="my-3 multi-select">
+              <div className={`my-3 multi-select ${styles.multi_select}`}>
                 <MultiSelect
                     options={rolesList.map((role) => ({
                       ...role,

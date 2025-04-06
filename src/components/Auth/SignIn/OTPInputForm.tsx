@@ -257,37 +257,37 @@ export default function OTPInputForm({ size, closePopup, handleBack }: any) {
               }`}
             />
             <div
-              className={`flex ${
-                size === "xxl" ? "gap-4 justify-between sm:gap-10" : "gap-0"
+              className={`flex items-center ${
+                size === "xxl" ? "gap-2 justify-between sm:gap-10" : "gap-0"
               } mt-2 xl:mt-[10px] ${
                 size === "xxl" ? "justify-start" : "justify-between"
               }`}
             >
               {formik.values.otp.map((digit, index) => (
-                <div className={`${styles.onboarding_dialog_otp_dash} relative`} key={index}>
-                  <input
-                    className={`${styles.onboarding_dialog_otp_input} border border-borderBlue text-center text-lg md:text-xl font-semibold`}
-                    name={`otp${index}`}
-                    type="tel"
-                    maxLength={1}
-                    autoComplete="off"
-                    value={digit}
-                    onChange={(e) => handleOtpChange(index, e.target.value)}
-                    onKeyDown={(e) => handleKeyDown(index, e)}
-                    ref={(ref) => {
-                      inputRefs.current[index] = ref;
-                    }}
-                  />
-                  {/*{index < 3 && (*/}
-                  {/*  <span*/}
-                  {/*    className={`text-[#98A2B3] ${*/}
-                  {/*      size === "md" ? "top-4 -right-8" : "top-2 -right-5 lg:-right-7"*/}
-                  {/*    }  text-3xl absolute`}*/}
-                  {/*  >*/}
-                  {/*    -*/}
-                  {/*  </span>*/}
-                  {/*)}*/}
-                </div>
+                 <>
+                   <div className={`relative`} key={index}>
+                     <input
+                         className={`${styles.onboarding_dialog_otp_input} border border-borderBlue text-center text-lg md:text-xl font-semibold`}
+                         name={`otp${index}`}
+                         type="tel"
+                         maxLength={1}
+                         autoComplete="off"
+                         value={digit}
+                         onChange={(e) => handleOtpChange(index, e.target.value)}
+                         onKeyDown={(e) => handleKeyDown(index, e)}
+                         ref={(ref) => {
+                           inputRefs.current[index] = ref;
+                         }}
+                     />
+                   </div>
+                   {index < 3 && (
+                       <span
+                           className={`text-[#98A2B3]`}
+                       >
+                      -
+                    </span>
+                   )}
+                 </>
               ))}
             </div>
             {formik.errors.otp && (

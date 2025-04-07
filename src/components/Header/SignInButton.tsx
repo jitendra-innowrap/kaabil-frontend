@@ -17,6 +17,7 @@ import { IoClose } from "react-icons/io5";
 import { closeLoginDialog, openLoginDialog } from "@/redux/loginDialogSlice";
 import { useRouter } from "next/navigation";
 import LogoutDialog from "../Auth/LogoutDialog";
+import Notification from "./Notification";
 
 interface prop {
   closeSideMenu?: () => void;
@@ -141,12 +142,7 @@ export default function SignInButton({ closeSideMenu }: prop) {
         </button>
       ) : (
         <div className="flex items-center gap-3 2xl:gap-7">
-          {/* <div className="relative" tabIndex={0}>
-            <span className="size-2 xl:size-[14px] bg-success text-white rounded-full absolute text-[10px] grid place-items-center leading-none -top-[4px] -right-[4px] border-[1.5px] border-white">
-              5
-            </span>
-            <PiBellBold className="size-4 3xl:size-5" />
-          </div> */}
+          <Notification/>
           <div 
             ref={dropdownRef} 
             className="relative group/menu flex items-center cursor-pointer mobile-profile-option"

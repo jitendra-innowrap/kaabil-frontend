@@ -4,7 +4,7 @@ import Breadcrumb from '../Breadcrumb'
 import Image from 'next/image'
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAppSelector } from '@/redux/hooks';
-import JobsNearYouMap from '../Map/JobsNearYouMap';
+import JobsNearYouMap, { MapJobLocation } from '../Map/JobsNearYouMap';
 import { useDispatch } from 'react-redux';
 import { getSessionData } from '../utils/deviceId';
 import api from '@/Services/Apiservice';
@@ -12,6 +12,8 @@ import Pagination from '../Pagination';
 import NearestjobCard from '../Cards/NearestJobCard';
 import { setCurrentLocation } from '@/redux/userSlice';
 import { fetchUserLocation } from '../utils';
+import CustomGoogleMap from '../Map/JobsNearYouMap';
+
 interface radius {
     created_by: string,
     created_date: string,
@@ -39,10 +41,6 @@ export default function JobsNearYou() {
     const [currentPage, setCurrentPage] = useState(parseInt(page, 10));
     const [totalJobs, setTotalJobs] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
-    const maxPagesToShow = 5; // Maximum pages to display
-    const user = useAppSelector((state) => state.user);
-    const { isLoggedIn, showSoftSkills, showUploadCV, showUpdateEducation, showProfilePhoto, showUpdateProfile, showHelpVideo } = useAppSelector((state) => state.user);
-    const { token } = useAppSelector((state) => state.auth);
     const dispatch = useDispatch();
     const [jobs, setJobs] = useState<object[]>([]);
     const [isJobsLoading, setIsJobsLoading] = useState(true);
@@ -55,11 +53,22 @@ export default function JobsNearYou() {
     const [autocompleteService, setAutocompleteService] = useState<any>(null);
     const [geocoder, setGeocoder] = useState<any>(null);
     const [showAutoCompleteOptions, setShowAutoCompleteOptions] = useState(false);
+    const [jobLocations, setJobLocations] = useState<MapJobLocation[] | null>(null);
     const [selectedLocation, setSelectedLocation] = useState<{
         lat: string;
         lng: string;
         address: string;
     } | null>(null);
+    const [selectedJobId, setSelectedJobId] = useState<string >();
+
+    const handleMarkerClick = (jobId: string) => {
+    setSelectedJobId(jobId);
+    // Scroll to the job card
+    const element = document.getElementById(`job-${jobId}`);
+    if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    };
 
     // Load Google Maps API script
     useEffect(() => {
@@ -269,6 +278,7 @@ export default function JobsNearYou() {
             }
         );
         if(response?.data?.code==1){
+            setJobLocations(response?.data?.job_location as MapJobLocation[])
             setJobs(response.data?.nearest_jobs as object[]);
             // Calculate total pages based on total jobs and jobs per page
             const totalJobs = response.data?.total_nearest_jobs;
@@ -280,6 +290,7 @@ export default function JobsNearYou() {
             setTotalJobs(0)
             setTotalPages(0)
             setJobs([]);
+            setJobLocations(null)
         }
         setIsJobsLoading(false);
         } catch (error) {
@@ -326,10 +337,7 @@ export default function JobsNearYou() {
                                 <div className="flex justify-center items-center h-full">
                             <div className="flex animate-spin h-7 w-7 rounded-full border-l-0 border-b-0 border-red border-[3px]"></div>
                         </div>
-                                </div>}
-                            
-                            {error && <div className="text-red-500 text-sm mt-1">{error}</div>}
-                            
+                                </div>}                            
                             {searchOptions.length > 0 && (
                             <ul className="absolute z-10 w-full mt-1 bg-white border shadow-default rounded-xl 2xl:rounded-[16px] max-h-60 overflow-auto">
                                 {searchOptions?.map((option) => (
@@ -399,7 +407,7 @@ export default function JobsNearYou() {
                                     </h3>
                                     <div className="flex flex-col gap-4 lg:gap-3 3xl:gap-4">
                                         {jobs.map((job: any) => (
-                                            <div className="flex w-[100%]" key={`job-${job?.id}`}>
+                                            <div className="flex w-[100%]" key={`job-${job?.id}`} id={`job-${job.id}`}>
                                                 <NearestjobCard {...job} />
                                             </div>
                                         ))}
@@ -459,7 +467,13 @@ export default function JobsNearYou() {
                     )}
                 </div>
                 <div className="w-full hidden lg:block absolute top-[0] right-0 max-w-[calc(50vw_-_50px)] max-h-[80vh] h-[100%]">
-                    <JobsNearYouMap lat={selectedLocation?.lat || currentLocation?.city_latitude || ""} lng={selectedLocation?.lng || currentLocation?.city_longitude || ""} />
+                <CustomGoogleMap
+                    lat={selectedLocation?.lat || currentLocation?.city_latitude || ""} 
+                    lng={selectedLocation?.lng || currentLocation?.city_longitude || ""}
+                    jobLocations={jobLocations || []}
+                    onMarkerClick={handleMarkerClick}
+                    selectedJobId={selectedJobId}
+                />
                 </div>
             </div>
         </div>

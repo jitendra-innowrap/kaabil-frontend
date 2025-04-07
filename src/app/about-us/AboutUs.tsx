@@ -136,45 +136,45 @@ export default function AboutUs() {
       <section className="bg-white">
         <div className="container py-8 md:py-10 xl:py-12 2xl:py-14 3xl:py-[72px]">
           {/* Section Heading */}
-          <h2 className='text-black text-start text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[36px] mb-4 md:mb-6 xl:mb-7 3xl:mb-8 font-medium'>Our <span className="font-kalam font-bold text-red"> approch</span></h2>
+          <h2 className='text-black text-start text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[36px] mb-4 md:mb-6 xl:mb-7 3xl:mb-8 font-medium'>Our <span className="font-kalam font-bold text-red"> approach</span></h2>
 
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 xl:gap-7 3xl:gap-8 relative">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-5 xl:gap-5 2xl:gap-7 3xl:gap-8 relative">
             {/* Card 01 */}
-            <div className="relative bg-[#F4A3AF] rounded-[14px] md:rounded-2xl 3xl:rounded-[20px] p-6 xl:p-7 3xl:p-8">
+            <div className="relative bg-[#F4A3AF] rounded-[14px] md:rounded-2xl 3xl:rounded-[20px] p-6 2xl:p-7 3xl:p-8">
               <Image src={'/new-assets/images/about/elements/aeroplane-line-left.svg'} alt="element" width={900} height={500} className="aeroplane-element-line" />
-              <div className="text-white text-[50px] leading-[60px] xl:text-[60px] 3xl:text-[70px] font-medium mb-4 md:mb-6 xl:mb-8 3xl:mb-9">
+              <div className="text-white text-[50px] 2xl:leading-[60px] 2xl:text-[60px] 3xl:text-[70px] font-medium mb-4 md:mb-4 2xl:mb-8 3xl:mb-9">
                 01
               </div>
-              <h3 className="text-[18px] leading-[26px] xl:text-[24px] xl:leading-[28px] 3xl:text-[28px] 3xl:leading-[44px] font-medium mb-4 xl:mb-5 3xl:mb-6">
+              <h3 className="text-[18px] leading-[26px] xl:text-[20px] 2xl:text-[24px] 2xl:leading-[28px] 3xl:text-[28px] 3xl:leading-[44px] font-medium mb-4 2xl:mb-5 3xl:mb-6">
                 Empowering Women, Creating Opportunities
               </h3>
-              <p className="text-[#4D4D4F] text-sm xl:text-base 3xl:text-lg">
+              <p className="text-[#4D4D4F] text-sm xl:text-[13px] 2xl:text-base 3xl:text-lg">
               Imagine a world where every woman has the power to shape her future, where talent is nurtured, and opportunities are limitless. This vision is what drives <span className="text-black font-medium">Kaabilprogram.org</span>—a pioneering initiative dedicated to empowering women across India.
               </p>
             </div>
             {/* Card 02 */}
-            <div className="relative bg-[#BAE8D3] rounded-[14px] md:rounded-2xl 3xl:rounded-[20px] p-6 xl:p-7 3xl:p-8">
-              <div className="text-white text-[50px] leading-[60px] xl:text-[60px] 3xl:text-[70px] font-medium mb-4 md:mb-6 xl:mb-8 3xl:mb-9">
+            <div className="relative bg-[#BAE8D3] rounded-[14px] md:rounded-2xl 3xl:rounded-[20px] p-6 2xl:p-7 3xl:p-8">
+              <div className="text-white text-[50px] 2xl:leading-[60px] 2xl:text-[60px] 3xl:text-[70px] font-medium mb-4 md:mb-4 2xl:mb-8 3xl:mb-9">
                 02
               </div>
-              <h3 className="text-[18px] leading-[26px] xl:text-[24px] xl:leading-[28px] 3xl:text-[28px] 3xl:leading-[44px] font-medium mb-4 xl:mb-5 3xl:mb-6">
+              <h3 className="text-[18px] leading-[26px] xl:text-[20px] 2xl:text-[24px] 2xl:leading-[28px] 3xl:text-[28px] 3xl:leading-[44px] font-medium mb-4 xl:mb-5 3xl:mb-6">
                 Bridging the Gap Between Talent and Opportunity
               </h3>
-              <p className="text-[#4D4D4F] text-sm xl:text-base 3xl:text-lg">
+              <p className="text-[#4D4D4F] text-sm xl:text-[13px] 2xl:text-base 3xl:text-lg">
               Through comprehensive skilling, career development, and job placement programs, we provide <span className="text-black font-medium">industry-relevant training and career guidance</span> tailored to women's unique aspirations.
               </p>
             </div>
             {/* Card 03 */}
             <div className="relative bg-[#FDEAC9] rounded-[14px] md:rounded-2xl 3xl:rounded-[20px] p-6 xl:p-7 3xl:p-8">
               <Image src={'/new-assets/images/about/elements/aeroplane-right.svg'} alt="element" width={900} height={500} className="aeroplane-element" />
-              <div className="text-white text-[50px] leading-[60px] xl:text-[60px] 3xl:text-[70px] font-medium mb-4 md:mb-6 xl:mb-8 3xl:mb-9">
+              <div className="text-white text-[50px] 2xl:leading-[60px] 2xl:text-[60px] 3xl:text-[70px] font-medium mb-4 md:mb-4 2xl:mb-8 3xl:mb-9">
                 03
               </div>
-              <h3 className="text-[18px] leading-[26px] xl:text-[24px] xl:leading-[28px] 3xl:text-[28px] 3xl:leading-[44px] font-medium mb-4 xl:mb-5 3xl:mb-6">
+              <h3 className="text-[18px] leading-[26px] xl:text-[20px] 2xl:text-[24px] 2xl:leading-[28px] 3xl:text-[28px] 3xl:leading-[44px] font-medium mb-4 2xl:mb-5 3xl:mb-6">
                 Driving Impact, Shaping the Future
               </h3>
-              <p className="text-[#4D4D4F] text-sm xl:text-base 3xl:text-lg">
+              <p className="text-[#4D4D4F] text-sm xl:text-[13px] 2xl:text-base 3xl:text-lg">
               At Kaabil, we believe that when women rise, communities thrive. Our mission is to ensure that every woman has access to meaningful  <span className="text-black font-medium">employment</span>, unlocking her full potential and building a better tomorrow.
               </p>
             </div>
@@ -187,9 +187,8 @@ export default function AboutUs() {
       <section className="bg-[#f6f7f7] py-8 md:py-10 xl:py-12 2xl:py-14 3xl:py-[72px]">
         <div className="container">
         <h2 className='text-black text-center text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[36px] mb-2 font-medium'>Why choose <span className="font-kalam font-bold text-red"> Kaabil?</span></h2>
-        <p className="text-center text-sm md:text-base 3xl:text-lg space-x-2 3xl:max-w-[950px] m-auto mb-16 2xl:mb-16 3xl:mb-[82px]">
-            Women registered on our platform gain access to a wide range of services to help them find the right
-            resources and guidance to transform their lives and livelihoods.
+        <p className="text-center text-sm md:text-base 3xl:text-lg space-x-2 xl:max-w-[770px] 3xl:max-w-[950px] m-auto mb-16 2xl:mb-16 3xl:mb-[82px]">
+          Women represent an untapped force in India’s workforce. Many of them lack access to the right resources or platforms to showcase their potential. Kaabil exists to change that. We provide:
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-14 md:gap-12 xl:gap-4 3xl:gap-[22px]">
             {/* Card 1 */}
@@ -254,7 +253,7 @@ export default function AboutUs() {
         <div className="container py-8 md:py-10 xl:py-12 2xl:py-14 3xl:py-16">
           <div className="grid md:grid-cols-2 gap-8 md:gap-12">
             <div className="flex flex-col items-start justify-center">
-              <h2 className='text-black text-center text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[36px] mb-4 md:mb-6 xl:mb-7 3xl:mb-8 font-medium'>How It <span className="font-kalam font-bold text-red"> Works</span></h2>
+              <h2 className='text-black text-center text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[36px] mb-4 md:mb-6 xl:mb-7 3xl:mb-8 font-medium'>How It <span className="font-kalam font-bold text-red"> works</span></h2>
               <div className="md:hidden mb-6">
                 <Image
                   src="/new-assets/images/about/how-it-works.svg"
@@ -301,22 +300,22 @@ export default function AboutUs() {
                   className="hidden lg:block rounded-lg z-[1] xl:w-[100%] absolute top-0 left-0  w-full"
                 />
             <div className="flex flex-col items-start justify-center relative z-[2] mt-[calc(35vw)] lg:mt-0">
-              <h2 className='text-white text-center text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[36px] mb-4 md:mb-6 xl:mb-7 3xl:mb-8 font-medium'>Our <span className="font-kalam font-bold"> reach</span></h2>
-              <p className="text-white font-normal text-sm md:text-base 3xl:text-lg 3xl:leading-[30px] lg:max-w-[518px] mb-4 md:mb-6 xl:mb-14 3xl:mb-[72px]">
+              <h2 className='text-white text-center text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[36px] mb-4 md:mb-5 xl:mb-4 2xl:mb-7 3xl:mb-8 font-medium'>Our <span className="font-kalam font-bold"> reach</span></h2>
+              <p className="text-white font-normal text-sm md:text-base xl:text-sm 3xl:text-lg 3xl:leading-[30px] lg:max-w-[518px] mb-4 md:mb-6 xl:mb-14 3xl:mb-[72px]">
               Kaabil is enabling women across India to build brighter futures by connecting them with skill development and job opportunities. From cities to rural communities, we empower them to rise with confidence and economic independence.
               </p>
-              <div className="flex gap-5 flex-col md:flex-row items-center justify-between w-full md:gap-6 xl:gap-10 3xl:gap-12">
-                <div className="flex flex-col items-center">
-                  <strong className="text-white text-[36px] md:text-[40px] xl:text-[54px] 3xl:text-[62px] leading-[140%]">437</strong>
-                  <p className="text-white text-sm md:text-base xl:text-lg 3xl:text-xl tracking-[0%]">Districts covered</p>
+              <div className="flex gap-5 flex-col md:flex-row items-start justify-between w-full md:gap-6 xl:gap-10 3xl:gap-12">
+                <div className="flex flex-col items-center justify-start">
+                  <strong className="text-white text-[36px] md:text-[40px] 2xl:text-[54px] 3xl:text-[62px] leading-[140%]">437</strong>
+                  <p className="text-white text-sm md:text-base xl:text-xs 2xl:text-lg 3xl:text-xl tracking-[0%]">Districts covered</p>
                 </div>
-                <div className="flex flex-col items-center">
-                  <strong className="text-white text-[36px] md:text-[40px] xl:text-[54px] 3xl:text-[62px] leading-[140%]">10</strong>
-                  <p className="text-white text-sm md:text-base xl:text-lg 3xl:text-xl tracking-[0%]">States covered</p>
+                <div className="flex flex-col items-center justify-start">
+                  <strong className="text-white text-[36px] md:text-[40px] 2xl:text-[54px] 3xl:text-[62px] leading-[140%]">10</strong>
+                  <p className="text-white text-sm md:text-base xl:text-xs 2xl:text-lg 3xl:text-xl tracking-[0%]">States covered</p>
                 </div>
-                <div className="flex flex-col items-center">
-                  <strong className="text-white text-[36px] md:text-[40px] xl:text-[54px] 3xl:text-[62px] leading-[140%]">2000+</strong>
-                  <p className="text-white text-center md:max-w-[255px] text-sm md:text-base xl:text-lg 3xl:text-xl tracking-[0%]">Partnered with educational institutions</p>
+                <div className="flex flex-col items-center justify-start">
+                  <strong className="text-white text-[36px] md:text-[40px] 2xl:text-[54px] 3xl:text-[62px] leading-[140%]">2000+</strong>
+                  <p className="text-white text-center md:max-w-[255px] xl:max-w-[150px] 3xl:max-w-[255px] text-sm md:text-base xl:text-xs 2xl:text-lg 3xl:text-xl tracking-[0%]">Partnered with educational institutions</p>
                 </div>
               </div>
             </div>
@@ -329,7 +328,7 @@ export default function AboutUs() {
           <div className="grid md:grid-cols-2 gap-8 md:gap-12">
             <div className="flex flex-col items-start justify-center">
               <h2 className='text-black text-center text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[36px] mb-4 md:mb-6 xl:mb-7 3xl:mb-8 font-medium'>Powered by <span className="font-kalam font-bold text-red"> collaboration</span></h2>
-              <p className="text-sm md:text-base 3xl:text-lg 3xl:leading-[30px] max-w-[682px]">
+              <p className="text-sm md:text-base xl:text-sm 3xl:text-lg 3xl:leading-[30px] max-w-[682px]">
               Kaabilprogram.org thrives on collaboration and shared purpose. With Mahindra & Mahindra’s strong foundation, we are creating a sustainable impact. We also work closely with various NGOs, community organizations, and corporate partners to expand the reach and effectiveness of our programs. <br />
               We believe that empowering women is not just about employment—it’s about building a better future for families, communities, and the nation. Kaabilprogram.org is a step toward that brighter, more inclusive future.
               </p>

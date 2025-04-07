@@ -962,14 +962,24 @@ label {
 .impact-testimonial{
   box-shadow: 0px 0px 20px 0px #0000001A;
 }
+.impact-section .swiper-button-prev .swiper-btn svg,
+.impact-section .swiper-button-next .swiper-btn svg{
+  color: #a7a5a6 !important;
+}
+.impact-section .swiper-button-prev:hover .swiper-btn svg,
+.impact-section .swiper-button-next:hover .swiper-btn svg{
+  color: #fff !important;
+}
 @media (min-width: 1280px) {
   .impact-section .swiper-button-prev.out-arrow{
     left: 55px !important;
+    scale: 1.2;
     transform: translateY(65px);
   }
-  .impact-section .swiper-button-next{
+  .impact-section .swiper-button-next.out-arrow{
     right: unset !important;
-    left: 100px !important;
+    left: 103px !important;
+    scale: 1.2;
     transform: translateY(65px);
   }
   .impact-section .slider-wrapper{
@@ -979,15 +989,15 @@ label {
     display: block;
     position: absolute;
     top: -68px;
-    left: -30px;
+    left: -20px;
     min-width: 463px;
     height: auto;
   }
   .aeroplane-element-line{
     display: block;
     position: absolute;
-    bottom: -55px;
-    right: -34px;
+    bottom: -45px;
+    right: -39px;
     min-width: 550px;
     height: auto;
   }

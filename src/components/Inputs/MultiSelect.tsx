@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { default as ReactSelect, components } from "react-select";
 import { FaMagnifyingGlass, FaChevronDown, FaChevronUp } from "react-icons/fa6";
-import styles from "../Auth/SignIn/signIn.module.css"
+import styles from "../Auth/SignIn/signIn.module.css";
 
 export interface OptionType {
   value: string;
@@ -44,7 +44,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
         updatedSelections.push(selectedOption);
       }
     }
-    if(maxSelections && maxSelections !== updatedSelections.length ){
+    if (maxSelections && maxSelections !== updatedSelections.length) {
       // setTimeout(() => setMenuOpen(true), 0.01); // Keep menu open
     }
     onChange(updatedSelections);
@@ -93,9 +93,11 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
             readOnly
           />
           <label
-            className={`text-[12px] sm:text-[14px] lg:text-[10px] 2xl:text-[13px] 3xl:text-sm !mb-0 !p-0 ${isSelected ? "text-[#E31837]" : ""} ${
-              isDisabled ? "text-[#231F20]" : ""
-            } ${isDisabled ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+            className={`text-[12px] sm:text-[14px] lg:text-[10px] 2xl:text-[13px] 3xl:text-sm !mb-0 !p-0 ${
+              isSelected ? "text-[#E31837]" : ""
+            } ${isDisabled ? "text-[#231F20]" : ""} ${
+              isDisabled ? "cursor-not-allowed" : "cursor-pointer"
+            }`}
           >
             {data.label}
           </label>
@@ -126,19 +128,21 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
         value={null} // Ensure the input does not display selected values
         onChange={() => {}} // Do nothing, since we handle selection manually
         className="react-select2"
-        // menuIsOpen={menuOpen}
         onMenuOpen={() => setMenuOpen(true)}
         onMenuClose={() => setMenuOpen(false)}
         menuPlacement="auto"
         menuPortalTarget={document.body}
-        // menuIsOpen={true}
+        menuIsOpen={menuOpen}
         styles={{
+          menu: (base) => ({
+            ...base,
+            maxHeight: "200px",
+            overflowY: "auto",
+            zIndex: 9999,
+          }),
           menuPortal: (base) => ({ ...base, zIndex: 9999 }),
           option: (base, { isFocused, isSelected }) => ({
             ...base,
-            // backgroundColor: isFocused
-            //   ? "#f0f0f0" // Highlight background on hover
-            //   : "",
             border: isFocused ? "1px solid red" : "",
             borderRadius: "5px",
             color: isSelected ? "#E31837" : "#231F20",

@@ -169,7 +169,7 @@ const ResumeModal = ({ size }: any) => {
                       <div className="flex-grow text-md text-[#4D4D4F] px-3">
                         {values?.user_portfolio_name
                           ? `Selected File: ${values.user_portfolio_name}`
-                          : "Upload Portfolio File"}
+                          : "Resume"}
                       </div>
                       <img
                         src="/new-assets/icons/attach_file.svg"

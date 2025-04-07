@@ -1,5 +1,9 @@
 import { useAppSelector } from "@/redux/hooks";
-import { fetchProfile, setExperienceModal } from "@/redux/profileSlice";
+import {
+  fetchProfile,
+  setAddMoreExperience,
+  setExperienceModal,
+} from "@/redux/profileSlice";
 import {
   Dialog,
   DialogBody,
@@ -73,13 +77,17 @@ const ExperienceModal = ({ size }: any) => {
     job_end_date: Yup.string().when("is_fresher", {
       is: (isFresher: any) => isFresher === 1,
       then: (schema) =>
-        schema.test("job-end-date", "Invalid end date", function (value) {
+        schema.test("job-end-date", "Invalid Date", function (value) {
           const { is_current_company, job_start_date } = this.parent;
-          if (!is_current_company && value) {
+          // Skip check if user is still at the company
+          if (is_current_company === "1") return true;
+          if (value && job_start_date) {
             const endDate = new Date(value);
-            return endDate >= new Date(job_start_date) && endDate <= new Date();
+            const startDate = new Date(job_start_date);
+            const now = new Date();
+            return endDate >= startDate && endDate <= now;
           }
-          return true;
+          return true; // Allow empty end date for other cases
         }),
       otherwise: (schema) => schema.nullable(),
     }),
@@ -205,10 +213,10 @@ const ExperienceModal = ({ size }: any) => {
             : "0",
           job_start_date: profileData?.user_experiences?.length
             ? profileData.user_experiences[0].job_start_date
-            : formatDateExperience(new Date()),
+            : "",
           job_end_date: profileData?.user_experiences?.length
             ? profileData.user_experiences[0].job_end_date
-            : formatDateExperience(new Date()),
+            : "",
           additional_info: profileData?.user_experiences?.length
             ? profileData.user_experiences[0].additional_info
             : "",
@@ -218,7 +226,6 @@ const ExperienceModal = ({ size }: any) => {
         }}
         validationSchema={validationSchema}
         onSubmit={async (values) => {
-          console.log(values, "Hitted");
           const { is_fresher, ...payload } = values;
           const formData = new FormData();
           if (is_fresher === 1) {
@@ -287,7 +294,9 @@ const ExperienceModal = ({ size }: any) => {
                         ? "border-[#E31837] bg-[#FDF1F3] text-[#E31837]"
                         : "border-[#C8C9CB1A]"
                     } ${size === "xxl" ? "py-3" : "py-4"} ${
-                      values?.is_fresher == 1 ? "!pointer-events-none opacity-50" : ""
+                      values?.is_fresher == 1
+                        ? "!pointer-events-none opacity-50"
+                        : ""
                     }`}
                   >
                     <Field
@@ -470,7 +479,7 @@ const ExperienceModal = ({ size }: any) => {
                             setFieldValue("in_hand_salary", e.target.value)
                           }
                           value={values.in_hand_salary}
-                          placeholder="Monthly in_hand_salary eg: 15000"
+                          placeholder="Monthly Salary"
                           className={`w-full border bg-[#C8C9CB3B] rounded-lg ${
                             size === "xxl" ? "p-2" : "p-3"
                           }`}
@@ -568,7 +577,7 @@ const ExperienceModal = ({ size }: any) => {
                             <ErrorMessage
                               name="job_start_date"
                               component="div"
-                              className="text-red text-md mt-1"
+                              className="text-red text-md"
                             />
                           </div>
                         </div>
@@ -604,7 +613,7 @@ const ExperienceModal = ({ size }: any) => {
                               <ErrorMessage
                                 name="job_end_date"
                                 component="div"
-                                className="text-red text-md mt-1"
+                                className="text-red text-md"
                               />
                             </div>
                           </div>
@@ -614,7 +623,7 @@ const ExperienceModal = ({ size }: any) => {
                   </div>
                 )}
                 {/* <button
-                  // onClick={() => dispatch(setAddmoreExperience(true))}
+                  onClick={() => dispatch(setAddMoreExperience(true))}
                   className="flex text-red !bg-neutral-50 !lowercase  font-semibold mt-6 cursor-pointer text-lg"
                 >
                   + add more experience

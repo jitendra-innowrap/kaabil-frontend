@@ -2030,7 +2030,7 @@ label {
 .custom-dialog .job-role-select .css-t3ipsp-control {
   border: none !important;
   background-color: #f2f3f3 !important;
-  padding-left: 5px !important;
+  padding-left: 36px !important;
   border-radius: 8px !important;
   height: 53px !important;
   box-shadow: none !important;
@@ -2134,4 +2134,9 @@ label {
     width: 100%;
     background: transparent;
   }
+}
+
+.custom-date-input::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  display: none;
 }

@@ -22,12 +22,15 @@ import toast from "react-hot-toast";
 import Image from "next/image";
 import { GoDotFill } from "react-icons/go";
 
-const AddMoreExperienceModal = () => {
+const AddMoreExperienceModal = ({ size }: any) => {
   const { experienceModal, profileData } = useAppSelector(
     (state) => state.profile
   );
 
+  console.log(profileData, "Can We Check Profile Data");
+
   const [editField, setEditField] = useState(false);
+  const [addMore, setAddMore] = useState(false);
 
   const { token } = useAppSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -177,63 +180,77 @@ const AddMoreExperienceModal = () => {
         </div>
       </DialogHeader>
       {/* @ts-ignore  */}
-
       <Formik
+        // @ts-ignore
+        key={editField}
         initialValues={{
-          is_fresher: Number(profileData?.is_fresher) || 2,
-          designation_name: editField
-            ? profileData?.user_experiences[0]?.designation
-            : "",
-          designation_master_id: editField
-            ? profileData.user_experiences[0].designation_master_id
-            : "",
-          company_master_id: editField
-            ? profileData.user_experiences[0].company_master_id
-            : "",
-          company_name: editField
-            ? profileData.user_experiences[0].company_name
-            : "",
-          in_hand_salary: editField
-            ? profileData.user_experiences[0].in_hand_salary
-            : "",
-          job_type_id: editField
-            ? profileData.user_experiences[0].job_type_id
-            : "",
-          is_current_company: editField
-            ? profileData.user_experiences[0].is_current_company
-            : "0",
-          job_start_date: editField
-            ? profileData.user_experiences[0].job_start_date
-            : formatDateExperience(new Date()),
-          job_end_date: editField
-            ? profileData.user_experiences[0].job_end_date
-            : formatDateExperience(new Date()),
-          additional_info: editField
-            ? profileData.user_experiences[0].additional_info
-            : "",
-          company_logo: editField
-            ? profileData.user_experiences[0].company_logo
-            : "",
-          editExperience: editField,
+          is_fresher: profileData?.is_fresher
+            ? Number(profileData?.is_fresher)
+            : 2,
+          designation_name:
+            editField && addMore
+              ? profileData?.user_experiences[0]?.designation
+              : "",
+          designation_master_id:
+            editField && addMore
+              ? profileData.user_experiences[0].designation_master_id
+              : "",
+          company_master_id:
+            editField && addMore
+              ? profileData.user_experiences[0].company_master_id
+              : "",
+          company_name:
+            editField && addMore
+              ? profileData.user_experiences[0].company_name
+              : "",
+          in_hand_salary:
+            editField && addMore
+              ? profileData.user_experiences[0].in_hand_salary
+              : "",
+          job_type_id:
+            editField && addMore
+              ? profileData.user_experiences[0].job_type_id
+              : "",
+          is_current_company:
+            editField && addMore
+              ? profileData.user_experiences[0].is_current_company
+              : "0",
+          job_start_date:
+            editField && addMore
+              ? profileData.user_experiences[0]?.job_start_date
+              : "",
+          job_end_date:
+            editField && addMore
+              ? profileData.user_experiences[0]?.job_end_date
+              : "",
+          additional_info:
+            editField && addMore
+              ? profileData.user_experiences[0].additional_info
+              : "",
+          company_logo:
+            editField && addMore
+              ? profileData.user_experiences[0].company_logo
+              : "",
+          editExperience: addMore,
         }}
         validationSchema={validationSchema}
         onSubmit={async (values) => {
           const { is_fresher, editExperience, ...payload } = values;
           const formData = new FormData();
-          if (is_fresher === 1) {
+          if (is_fresher == 1) {
             formData.append("is_fresher", is_fresher.toString());
             formData.append("user_experiences", JSON.stringify([payload]));
           } else {
             formData.append("is_fresher", is_fresher.toString());
           }
           try {
-            const response: any = await api.post(
-              "/Auth/editJobSeekerPrpfile",
-              formData,
-              {
-                headers: { "Content-Type": "multipart/form-data" },
-              }
-            );
+            const response: any = (await (!editField && addMore))
+              ? api.post("/Auth/addJobSeekerProfile", formData, {
+                  headers: { "Content-Type": "multipart/form-data" },
+                })
+              : api.post("/Auth/editJobSeekerPrpfile", formData, {
+                  headers: { "Content-Type": "multipart/form-data" },
+                });
             response.data.code === 1
               ? toast.success(response.data.msg, {
                   position: "bottom-right",
@@ -257,60 +274,86 @@ const AddMoreExperienceModal = () => {
           }
         }}
       >
-        {({ values, setFieldValue, isSubmitting }) => (
+        {({ values, setFieldValue, isSubmitting, resetForm }) => (
           <Form>
             {/* @ts-ignore */}
             <DialogBody className="p-0 mt-8  max-h-[50vh] sm:max-h-[60vh] md:max-h-[70vh] lg:max-h-[80vh] overflow-y-auto custom-scroll">
               <div className="px-12">
-                <label
-                  className="block font-semibold mb-1 !text-[#231F20] !text-lg"
-                  htmlFor="fileInput"
-                >
-                  your experience
-                </label>
-                <div className="my-4 p-4 rounded-lg shadow-default justify-between flex gap-4">
-                  <div className="">
-                    <h5 className="font-medium text-black mb-2">
-                      {profileData?.user_experiences?.length > 0
-                        ? profileData?.user_experiences[0]?.designation
-                        : ""}
-                    </h5>
-                    <h6 className="text-sm mb-2">
-                      {profileData?.user_experiences?.length > 0
-                        ? profileData.user_experiences[0].company_name
-                        : ""}
-                      <GoDotFill className="inline-block size-2" />
-                    </h6>
-                    <h6 className="text-sm mb-2">
-                      {formatMonthYear(values?.job_start_date)} -
-                      {profileData?.user_experiences[0]?.is_current_company ==
-                      "1"
-                        ? "Present"
-                        : formatMonthYear(values?.job_end_date)}
-                      <GoDotFill className="inline-block size-2" />
-                      {formatJobDuration(
-                        values?.job_start_date,
-                        values?.job_end_date
-                      )}
-                    </h6>
-                  </div>
-                  <div
-                    className="flex items-center h-fit cursor-pointer"
-                    // onClick={() => handleEditExperience(i)}
-                  >
-                    <Image
-                      src={"/new-assets/icons/pencil.png"}
-                      alt="edit-pencil"
-                      aria-label="edit icon"
-                      className="w-3 h-3 mr-1"
-                      width={90}
-                      height={90}
-                    />
-                    <span className="text-red text-sm font-semibold">Edit</span>
-                  </div>
-                </div>
+                {!editField && (
+                  <>
+                    <label
+                      className={` font-semibold mb-1 !text-[#231F20] ${
+                        size === "xxl" ? "!text-[16px]" : "!text-xl"
+                      }`}
+                      htmlFor="fileInput"
+                    >
+                      your experience
+                    </label>
+                    <div className="my-4 p-4 rounded-lg shadow-default justify-between flex gap-4">
+                      <div className="text-lg">
+                        <h5 className="font-medium text-black mb-2">
+                          {profileData?.user_experiences?.length > 0
+                            ? profileData?.user_experiences[0]?.designation
+                            : ""}
+                        </h5>
+                        <h6 className="text-lg mb-2">
+                          {profileData?.user_experiences?.length > 0
+                            ? profileData.user_experiences[0].company_name
+                            : ""}
+                          <GoDotFill className="inline-block size-2 mx-2" />
+                          {profileData?.user_experiences?.length > 0
+                            ? profileData.user_experiences[0].job_type
+                            : ""}
+                        </h6>
+                        {Array.isArray(profileData?.user_experiences) &&
+                          profileData.user_experiences[0] && (
+                            <h6 className="text-lg mb-2">
+                              {formatMonthYear(
+                                profileData.user_experiences[0]
+                                  ?.job_start_date || "0000-00-00"
+                              )}{" "}
+                              -{" "}
+                              {profileData.user_experiences[0]
+                                ?.is_current_company === "1"
+                                ? "Present"
+                                : formatMonthYear(
+                                    profileData.user_experiences[0]
+                                      ?.job_end_date || "0000-00-00"
+                                  )}
+                              <GoDotFill className="inline-block size-2 mx-2" />
+                              {formatJobDuration(
+                                profileData.user_experiences[0]
+                                  ?.job_start_date || "0000-00-00",
+                                profileData.user_experiences[0]?.job_end_date ||
+                                  "0000-00-00"
+                              )}
+                            </h6>
+                          )}
+                      </div>
+                      <div
+                        className="flex items-center h-fit cursor-pointer"
+                        onClick={() => {
+                          setEditField(true);
+                          setAddMore(true);
+                        }}
+                      >
+                        <Image
+                          src={"/new-assets/icons/pencil.png"}
+                          alt="edit-pencil"
+                          aria-label="edit icon"
+                          className="w-4 h-4 mr-1"
+                          width={90}
+                          height={90}
+                        />
+                        <span className="text-red text-[18px] font-semibold">
+                          Edit
+                        </span>
+                      </div>
+                    </div>
+                  </>
+                )}
                 {/* Fields */}
-                {values?.is_fresher === 1 && (
+                {(editField || addMore) && (
                   <div className="mt-8">
                     <label
                       className="block font-semibold mb-1 !text-[#231F20] !text-lg"
@@ -466,6 +509,7 @@ const AddMoreExperienceModal = () => {
                           </div>
                         ))}
                       </div>
+
                       <div className="h-1">
                         <ErrorMessage
                           name="job_type_id"
@@ -558,16 +602,12 @@ const AddMoreExperienceModal = () => {
                   </div>
                 )}
                 <div
-                  className="flex text-red font-semibold mt-7 text-lg cursor-pointer"
-                  // onClick={() => {
-                  //   if (!newExperience) {
-                  //     formikForm.resetForm();
-                  //     setNewExperience(true);
-                  //     setIsEditing(null); // Reset edit mode
-                  //   } else {
-                  //     formikForm.handleSubmit();
-                  //   }
-                  // }}
+                  className="flex text-red !bg-neutral-50 !lowercase  font-semibold mt-6 cursor-pointer text-lg"
+                  onClick={async () => {
+                    await setAddMore(true);
+                    await setEditField(false);
+                    resetForm();
+                  }}
                 >
                   + add more experience
                 </div>

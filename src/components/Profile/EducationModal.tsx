@@ -27,6 +27,8 @@ import { customStyles, yearOfPassingOptions } from "../utils";
 const EducationModal = ({ size }: any) => {
   const { educationModal, qualificationList, profileData, educationData } =
     useAppSelector((state) => state.profile);
+
+  console.log(educationData, "Please check Education Data");
   const [educationSearch, setEducationSearch] = useState(educationData);
   const [showEducation, setShowEducation] = useState(false);
   const { token } = useAppSelector((state) => state.auth);
@@ -126,12 +128,13 @@ const EducationModal = ({ size }: any) => {
             year_of_graduation:
               profileData?.educations?.length > 0
                 ? profileData?.educations[0]?.year_of_graduation
-                : "",
+                : null,
             institute_master_id:
               qualificationList?.find(
                 (item: any) => item?.name === profileData?.education_name
               )?.id || "",
             certification: profileData.user_certifications,
+            user_certification_title: [""],
           }}
           validationSchema={validationSchema}
           onSubmit={async (values: any) => {
@@ -152,6 +155,10 @@ const EducationModal = ({ size }: any) => {
             formData.append(
               "user_certification_title",
               JSON.stringify(certificationTitles)
+            );
+            formData.append(
+              "user_certification_title",
+              JSON.stringify(values.user_certification_title)
             );
             if (values?.user_certification !== null) {
               formData.append(
@@ -223,8 +230,7 @@ const EducationModal = ({ size }: any) => {
                       <div
                         key={education.id}
                         className={`${
-                          education.id === values.education_id &&
-                          education?.is_field_study_show !== "0"
+                          education.id === values.education_id
                             ? "border-2 border-red px-6"
                             : ""
                         }  ${size === "xxl" ? "py-1" : "py-2"} rounded-lg`}
@@ -232,21 +238,21 @@ const EducationModal = ({ size }: any) => {
                         <label
                           htmlFor={education.id}
                           onClick={() => {
+                            setFieldValue("year_of_graduation", null);
                             setFieldValue("education_id", education.id);
                             setFieldValue("institute_name", "");
-                            dispatch(
-                              fieldStudy({
-                                data: {
-                                  education_master_id: values?.education_id,
-                                },
-                              })
-                            );
+                            // dispatch(
+                            //   fieldStudy({
+                            //     data: {
+                            //       education_master_id: values?.education_id,
+                            //     },
+                            //   })
+                            // );
                             setShowEducation(false);
                             setEducationSearch([]);
                           }}
                           className={`form-group flex items-center gap-4 rounded-lg  py-3 cursor-pointer ${
-                            education.id === values.education_id &&
-                            education?.is_field_study_show !== "0"
+                            education.id === values.education_id
                               ? "px-0"
                               : "border shadow-sm px-5"
                           } `}
@@ -275,7 +281,7 @@ const EducationModal = ({ size }: any) => {
                               <div className="w-full mb-3 relative flex items-center">
                                 <input
                                   className="px-10 bg-[#C8C9CB3B] w-full py-3 rounded-lg placeholder-[#231F20] text-[#231F20]"
-                                  placeholder="BFA Applied Arts"
+                                  placeholder="Select Education"
                                   value={values?.institute_name}
                                   onChange={(e) => {
                                     const value = e.target.value;
@@ -297,7 +303,6 @@ const EducationModal = ({ size }: any) => {
                                   src="/new-assets/icons/search.svg"
                                   className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#231F20] mt-0.5"
                                 />
-
                                 {educationSearch?.length > 0 &&
                                   showEducation && (
                                     <>
@@ -326,33 +331,37 @@ const EducationModal = ({ size }: any) => {
                                     </>
                                   )}
                               </div>
-                              <div className="mt-1">
-                                <Select
-                                  placeholder="year of passing"
-                                  styles={customStyles}
-                                  options={yearOfPassingOptions}
-                                  onChange={(option) =>
-                                    setFieldValue(
-                                      "year_of_graduation",
-                                      option?.value
-                                    )
-                                  }
-                                  value={yearOfPassingOptions?.find(
-                                    (item) =>
-                                      item?.value ===
-                                      Number(values?.year_of_graduation)
-                                  )}
-                                />
-                                <div className="h-1 mb-4">
-                                  <ErrorMessage
-                                    name="year_of_graduation"
-                                    component="div"
-                                    className="text-red text-md mt-1"
-                                  />
-                                </div>
-                              </div>
                             </>
                           )}
+                        {education?.id === values?.education_id && (
+                          <div className="mt-1">
+                            <Select
+                              placeholder="year of passing"
+                              styles={customStyles}
+                              options={yearOfPassingOptions}
+                              onChange={(option) =>
+                                setFieldValue(
+                                  "year_of_graduation",
+                                  option?.value
+                                )
+                              }
+                              value={
+                                yearOfPassingOptions?.find(
+                                  (item) =>
+                                    item?.value ===
+                                    Number(values?.year_of_graduation)
+                                ) || null
+                              }
+                            />
+                            <div className="h-1 mb-4">
+                              <ErrorMessage
+                                name="year_of_graduation"
+                                component="div"
+                                className="text-red text-md mt-1"
+                              />
+                            </div>
+                          </div>
+                        )}
                       </div>
                     ))}
                   </div>
@@ -443,10 +452,14 @@ const EducationModal = ({ size }: any) => {
                           multiple
                           accept=".pdf,.doc,.docx,image/*,video/*"
                           onChange={(e: any) => {
-                            const files = Array.from(e.target.files);
+                            const files: any = Array.from(e.target.files);
                             if (files.length > 6) {
                               e.target.value = ""; // Reset the input if limit exceeded
                             } else {
+                              setFieldValue("user_certification_title", [
+                                files[0]?.name,
+                              ]);
+                              console.log(files, "File Name Was Present");
                               const newCertifications = files?.map(
                                 (file: any, index: any) => ({
                                   id: `new-${index}-${file.name}`, // Generate a temporary ID
@@ -461,6 +474,7 @@ const EducationModal = ({ size }: any) => {
                                 ...(values.certification || []),
                                 ...newCertifications,
                               ]);
+                              // setFieldValue("");
                               setFieldValue("user_certification", files);
                               console.log("Selected files:", files);
                               // Handle valid files here

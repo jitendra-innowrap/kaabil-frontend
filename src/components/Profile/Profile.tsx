@@ -12,6 +12,7 @@ import AddMoreExperienceModal from "./AddMoreExperienceModal";
 
 const Profile = () => {
   const { token } = useAppSelector((state) => state.auth);
+  const { profileModal } = useAppSelector((state) => state.profile);
   const [dialogSize, setDialogSize] = useState<"md" | "xxl">("md");
   const dispatch = useAppDispatch();
 
@@ -20,6 +21,20 @@ const Profile = () => {
       fetchProfile({ token: token, data: { latitude: 0, longitude: 0 } })
     );
   }, [token]);
+
+  useEffect(() => {
+    // Add or remove 'no-scroll' class to body when popup is open or closed
+    if (profileModal) {
+      document.body.classList.add("no-scroll");
+    } else if (profileModal) {
+      document.body.classList.add("no-scroll");
+    } else {
+      document.body.classList.remove("no-scroll");
+    }
+    return () => {
+      document.body.classList.remove("no-scroll");
+    };
+  }, [profileModal]);
 
   useEffect(() => {
     const updateSize = () => {
@@ -36,8 +51,8 @@ const Profile = () => {
 
   return (
     <div className="container mobile-container-zero-padding">
-      <AddMoreExperienceModal />
       <ProfileList />
+      <AddMoreExperienceModal size={dialogSize} />
       <ExperienceModal size={dialogSize} />
       <ProfileModal size={dialogSize} />
       <EducationModal size={dialogSize} />

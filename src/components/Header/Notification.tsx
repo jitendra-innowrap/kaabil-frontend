@@ -1,44 +1,107 @@
 import Image from 'next/image';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { IoClose } from 'react-icons/io5';
 import { PiBellBold } from 'react-icons/pi'
 import Popup from 'reactjs-popup';
-
+import { getSessionData } from '../utils/deviceId';
+import api from '@/Services/Apiservice';
+const dnotifications =[
+    {
+        id:'1',
+    },
+    {
+        id:'2',
+    },
+    {
+        id:'3',
+    },
+    {
+        id:'4',
+    },
+    {
+        id:'5',
+    },
+    {
+        id:'6',
+    },
+    {
+        id:'7',
+    },
+]
 export default function Notification() {
     const [open, setOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const [notifications, setNotifications] = useState<null|[]>(null);
+    const [unreadNotification, setUnreadNotification] = useState(0);
     const handleOpen =() => {
         setOpen(true);
+        getNotifications();
     }
     const handleClose =() => {
         setOpen(false)
     }
-    const notifications =[
-        {
-            id:'1',
-        },
-        {
-            id:'2',
-        },
-        {
-            id:'3',
-        },
-        {
-            id:'4',
-        },
-        {
-            id:'5',
-        },
-        {
-            id:'6',
-        },
-        {
-            id:'7',
-        },
-    ]
+
+    useEffect(() => {
+      
+    }, [])
+    
+    const getNotifications = async ()=>{
+        const { deviceId, secret, salt } = getSessionData();
+        const payload = {
+            page:'1'
+        }
+        // Ensure session data is available
+        if (!deviceId || !secret || !salt) {
+        console.log("Session data not available, retrying...");
+        setTimeout(getNotifications, 1000); // Retry after 1 second
+        return;
+        }
+
+        try {
+        const formData = new FormData();
+        // ✅ Automatically append all fields from the object
+        Object.entries(payload).forEach(([key, value]) => {
+            formData.append(key, value as string); // Convert all values to strings
+        });
+        setIsLoading(true)
+        const response = await api.post(
+            `/Chat/getNotification`,
+            payload,
+            {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+            }
+        );
+        if(response?.data?.code==1){
+            setNotifications(response?.data?.notification)
+            setUnreadNotification(response?.data?.unReadNotiCount)
+        }else{
+            setNotifications(null);
+        }
+        setIsLoading(false);
+        } catch (error) {
+        console.error("Error fetching jobs:", error);
+        }
+    }
+    
+    const readNotification =()=>{
+
+    }
+    
+    const readAllNotifications =()=>{
+
+    }
+    
+    const deleteNotification =()=>{
+
+    }
+    
+    
   return (
     <>
         <div className="relative cursor-pointer" tabIndex={0} onClick={handleOpen}>
-            <span className="size-2 xl:size-[14px] 3xl:size-[16px] bg-success text-white rounded-full absolute text-[10px] grid place-items-center leading-none -top-[4px] -right-[4px] border-[1.5px] border-white">
+            <span className="size-3 xl:size-[14px] 3xl:size-[16px] bg-success text-white rounded-full absolute text-[8px] md:text-[10px] grid place-items-center leading-none -top-[4px] -right-[4px] border-[1.5px] border-white">
               5
             </span>
             <PiBellBold className="size-4 3xl:size-5" />
@@ -59,7 +122,7 @@ export default function Notification() {
                     <div className="flex justify-between items-center">
                         <div className='font-medium 2xl:text-lg 3xl:text-2xl leading-5 flex gap-1 items-center'>
                             Notification
-                            <span className="size-2 xl:size-[16px] 3xl:size-5 bg-success text-white rounded-full text-[10px] grid place-items-center leading-none -top-[4px] -right-[4px] border-[1.5px] border-white">
+                            <span className="size-[14px] xl:size-[16px] 3xl:size-5 bg-success text-white rounded-full text-[10px] grid place-items-center leading-none -top-[4px] -right-[4px] border-[1.5px] border-white">
                             5
                             </span>
                         </div>
@@ -69,19 +132,25 @@ export default function Notification() {
                         />
                     </div>
                     
-                    <div className="flex mt-2 2xl:mt-3 mb-2 2xl:mb-[9px] justify-end">
+                    {notifications && notifications?.length>0 && <div className="flex mt-2 2xl:mt-3 mb-2 2xl:mb-[9px] justify-end">
                         <p className='font-medium text-end text-[11px] leading-[100%]'>MARK ALL READ</p>
-                    </div>
+                    </div>}
                     <div className="flex flex-col gap-[6px] 3xl:gap-2 h-[323px] xl:h-[389px] 2xl:h-[423px] 3xl:h-[614px]  overflow-auto notification-list">
+                        { notifications && notifications?.length>0?<></>:<div className="flex flex-col justify-center items-center h-full">
+                            <Image className='w-14 3xl:w-[85px] h-auto' src={'/new-assets/icons/no-notifications-yet.svg'} width={160} height={170} alt='profile photo' />
+                            <h3 className='font-medium text-base 2xl:text-xl mt-4 mb-3 3xl:mb-4 3xl:mt-12 3xl:text-2xl 3xl:leading-[27px]'>No Notification yet</h3>
+                            <p className='text-sm 3xl:text-base max-w-[200px] 3xl:max-w-[343px] text-center'>You have no notification right now.
+                            come back later</p>
+                        </div>}
                         {
-                            notifications.map((noti)=>(
-                                <div key={noti.id} className="notification-card border rounded-lg flex p-2 3xl:p-3 gap-3 bg-[#F9D1D754]">
+                            notifications?.map((noti:any)=>(
+                                <div key={noti?.id} className={`notification-card border rounded-lg flex p-2 3xl:p-3 gap-3 ${noti?.read_status=="0"?"bg-[#F9D1D754]":"bg-white"}`}>
                             <Image className='size-14 3xl:size-[70px]' src={'/new-assets/icons/notification-profile-placeholder.svg'} width={140} height={140} alt='profile photo' />
                             <div className="3xl:pt-3">
                                 <div className="flex gap-5">
-                                    <p className='text-[10px] 3xl:text-xs text-[#4D4D4F]  line-clamp-2'>Hi Anuradha Jain, thank you for reaching...</p>
+                                    <p className='text-[10px] 3xl:text-xs text-[#4D4D4F]  line-clamp-2'>{noti?.text}</p>
                                     <IoClose
-                                        className="size-3 cursor-pointer 3xl:-translate-y-3"
+                                        className="size-3 flex-shrink-0 cursor-pointer 3xl:-translate-y-3"
                                     />
                                 </div>
                                 <p className='text-[#4D4D4FB2] text-end mt-4 text-[10px] leading-[100%]'>11:03 am</p>

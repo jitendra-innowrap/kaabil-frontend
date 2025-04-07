@@ -327,7 +327,7 @@ export default function JobsNearYou() {
     }, [showAutoCompleteOptions]);
 
   return (
-    <div className="relative jobs-near-me">
+    <div className="relative jobs-near-me flex">
         <div className='container no-mobile-container'>
             <div className="lg:w-1/2">
                 <div className="hidden lg:block pt-5 3xl:pt-6 mb-7 3xl:mb-8">
@@ -478,7 +478,7 @@ export default function JobsNearYou() {
                         </>
                     )}
                 </div>
-                <div className="w-full hidden lg:block absolute top-[0] right-0 max-w-[calc(50vw_-_50px)] max-h-[80vh] h-[100%]">
+                <div className="w-full hidden lg:block fixed md:top-[0] xl:top-[56.6px] 2xl:top-[58px] 3xl:top-[90px] right-0 max-w-[calc(50vw_-_50px)] max-h-[80vh] h-[500px]">
                 <CustomGoogleMap
                     lat={selectedLocation?.lat || currentLocation?.city_latitude || ""} 
                     lng={selectedLocation?.lng || currentLocation?.city_longitude || ""}

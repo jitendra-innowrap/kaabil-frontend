@@ -971,6 +971,18 @@ label {
   color: #fff !important;
 }
 @media (min-width: 1280px) {
+  .popup-content.notification-content {
+    width: 340px;
+    height: fit-content;
+    position: fixed !important;
+    top: 65px;
+    padding: 0;
+    right: 37px;
+    padding-right: 0 !important;
+  }
+  .popup-content.notification-content .notification-list{
+    overflow-y: auto;
+  }
   .impact-section .swiper-button-prev.out-arrow{
     left: 55px !important;
     transform: translateY(65px);
@@ -1338,6 +1350,13 @@ label {
 }
 
 @media (min-width: 1700px) {
+  .popup-content.notification-content {
+    width: 460px;
+    height: 735px;
+    position: fixed !important;
+    top: 95px;
+    right: 47px;
+  }
   .impact-section .swiper-button-prev.out-arrow{
     left: 50px !important;
     transform: translateY(85px);

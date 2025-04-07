@@ -391,7 +391,13 @@ export default function JobsNearYou() {
                     </div>
                 </div>
                 <div className={`w-screen block lg:hidden ${isMapopen?"h-[350px]":"h-0"} transition-all duration-200`}>
-                    <JobsNearYouMap lat={selectedLocation?.lat || currentLocation?.city_latitude || ""} lng={selectedLocation?.lng || currentLocation?.city_longitude || ""} />
+                    <CustomGoogleMap
+                        lat={selectedLocation?.lat || currentLocation?.city_latitude || ""} 
+                        lng={selectedLocation?.lng || currentLocation?.city_longitude || ""}
+                        jobLocations={jobLocations || []}
+                        onMarkerClick={handleMarkerClick}
+                        selectedJobId={selectedJobId}
+                    />
                 </div>
                 {!isMapopen && <div className='mobile-container'>
                     <p className='lg:hidden text-sm mb-[10px]'>Radius (in Kms)</p>

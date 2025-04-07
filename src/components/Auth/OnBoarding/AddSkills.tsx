@@ -202,7 +202,7 @@ export default function AddSkills({ size, closePopup, handleBack }: any) {
               >
                 (You can search and add all your relevant skills)
               </p>
-              <div className="my-4 multi-select">
+              <div className={`my-4 multi-select ${styles.multi_select}`}>
                 <MultiSelect
                   options={skillsList}
                   placeholder="Select Skills"

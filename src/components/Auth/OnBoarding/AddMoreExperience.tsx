@@ -227,10 +227,10 @@ export default function AddMoreExperience({
                                         formik={formikForm}
                                     />
                                     {isEditing == i && (
-                                        <div className="flex justify-end -translate-y-4">
+                                        <div className="flex justify-end translate-y-4  sm:-translate-y-20">
                                             <button
                                                 type="button"
-                                                className=""
+                                                className={`${styles.onboarding_dialog_btn} w-20 mr-3 sm:mr-6 sm:text-[12px] text-[14px]`}
                                                 onClick={() => {
                                                     formikForm.handleSubmit();
                                                 }}

@@ -173,6 +173,15 @@ export default function JobsNearYou() {
     }, [inputValue, autocompleteService]);
 
     const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setCurrentPage(1);
+        // Create a new URLSearchParams object from the current search parameters
+        const params = new URLSearchParams(searchParams.toString());
+
+        // Update the 'page' parameter
+        params.set("page", '1');
+
+        // Push the updated query parameters to the URL
+        router.replace(`?${params.toString()}`, { scroll: true });
         setInputValue(e.target.value);
         setShowAutoCompleteOptions(true);
     };
@@ -203,16 +212,18 @@ export default function JobsNearYou() {
           };
           fetchRadius();
     }, [])
-    
-    const handleSearch = (e: any) => {
-        e.preventDefault();
-        const params = new URLSearchParams();
-        if (search) params.set('search', search);
-        router.replace(`/nearest-jobs?${params.toString()}`);
-    };
 
     const handleRadius=(radius:radius)=>{
-        setselectedradius(radius)
+        setselectedradius(radius);
+        setCurrentPage(1);
+        // Create a new URLSearchParams object from the current search parameters
+        const params = new URLSearchParams(searchParams.toString());
+
+        // Update the 'page' parameter
+        params.set("page", '1');
+
+        // Push the updated query parameters to the URL
+        router.replace(`?${params.toString()}`, { scroll: true });
     }
       // Handle pagination button click
     const handleActive = (page: number) => {
@@ -362,7 +373,7 @@ export default function JobsNearYou() {
                         />
                         <button
                             type='submit'
-                            className="h-full w-[74px] hidden lg:grid !p-0 place-items-center absolute top-0 right-0 mr-1 rounded-e-xl 2xl:rounded-e-2xl rounded-s-none"
+                            className="h-full w-[74px] hidden lg:grid !p-0 place-items-center absolute top-0 right-0 rounded-e-xl 2xl:rounded-e-2xl rounded-s-none"
                         >
                             <Image className="lg:w-4 2xl:w-6" src="/new-assets/icons/search-icon.svg" width="24" height="24" alt="Search" />
                         </button>

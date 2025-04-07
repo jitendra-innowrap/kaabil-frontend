@@ -164,21 +164,21 @@
     .impact-section .swiper-button-prev.out-arrow{
         display: block !important;
         left: 25px !important;
-        transform: translateY(-130px);
-        scale: 1.5;
+        transform: translateY(-115px);
+        scale: 1.6;
       }
       .impact-section .swiper-button-next.out-arrow{
         display: block !important;
         right: unset !important;
-        left: 85px !important;
-        transform: translateY(-130px);
-        scale: 1.5;
+        left: 89px !important;
+        transform: translateY(-115px);
+        scale: 1.6;
       }
       .impact-desc{
         overflow: hidden;
         display: -webkit-box;
         -webkit-box-orient: vertical;
-        -webkit-line-clamp: 9;
+        -webkit-line-clamp: 11;
       }
       .impact-section .slider-wrapper{
         padding-inline: 0 !important;
@@ -205,4 +205,16 @@
     .about-usp-card{
         padding-bottom: 37px;
     }
+}
+@media (max-width: 340px){
+    .about-usp-card{
+        padding-bottom: 37px;
+    }
+    
+    .impact-section .swiper-button-prev.out-arrow{
+        transform: translateY(-125px);
+      }
+      .impact-section .swiper-button-next.out-arrow{
+        transform: translateY(-125px);
+      }
 }

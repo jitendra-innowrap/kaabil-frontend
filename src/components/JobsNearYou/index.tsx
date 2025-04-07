@@ -4,7 +4,7 @@ import Breadcrumb from '../Breadcrumb'
 import Image from 'next/image'
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAppSelector } from '@/redux/hooks';
-import JobsNearYouMap from '../Map/JobsNearYouMap';
+import JobsNearYouMap, { MapJobLocation } from '../Map/JobsNearYouMap';
 import { useDispatch } from 'react-redux';
 import { getSessionData } from '../utils/deviceId';
 import api from '@/Services/Apiservice';
@@ -12,6 +12,8 @@ import Pagination from '../Pagination';
 import NearestjobCard from '../Cards/NearestJobCard';
 import { setCurrentLocation } from '@/redux/userSlice';
 import { fetchUserLocation } from '../utils';
+import CustomGoogleMap from '../Map/JobsNearYouMap';
+
 interface radius {
     created_by: string,
     created_date: string,
@@ -39,10 +41,6 @@ export default function JobsNearYou() {
     const [currentPage, setCurrentPage] = useState(parseInt(page, 10));
     const [totalJobs, setTotalJobs] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
-    const maxPagesToShow = 5; // Maximum pages to display
-    const user = useAppSelector((state) => state.user);
-    const { isLoggedIn, showSoftSkills, showUploadCV, showUpdateEducation, showProfilePhoto, showUpdateProfile, showHelpVideo } = useAppSelector((state) => state.user);
-    const { token } = useAppSelector((state) => state.auth);
     const dispatch = useDispatch();
     const [jobs, setJobs] = useState<object[]>([]);
     const [isJobsLoading, setIsJobsLoading] = useState(true);
@@ -55,11 +53,22 @@ export default function JobsNearYou() {
     const [autocompleteService, setAutocompleteService] = useState<any>(null);
     const [geocoder, setGeocoder] = useState<any>(null);
     const [showAutoCompleteOptions, setShowAutoCompleteOptions] = useState(false);
+    const [jobLocations, setJobLocations] = useState<MapJobLocation[] | null>(null);
     const [selectedLocation, setSelectedLocation] = useState<{
         lat: string;
         lng: string;
         address: string;
     } | null>(null);
+    const [selectedJobId, setSelectedJobId] = useState<string >();
+
+    const handleMarkerClick = (jobId: string) => {
+    setSelectedJobId(jobId);
+    // Scroll to the job card
+    const element = document.getElementById(`job-${jobId}`);
+    if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    };
 
     // Load Google Maps API script
     useEffect(() => {
@@ -164,6 +173,15 @@ export default function JobsNearYou() {
     }, [inputValue, autocompleteService]);
 
     const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setCurrentPage(1);
+        // Create a new URLSearchParams object from the current search parameters
+        const params = new URLSearchParams(searchParams.toString());
+
+        // Update the 'page' parameter
+        params.set("page", '1');
+
+        // Push the updated query parameters to the URL
+        router.replace(`?${params.toString()}`, { scroll: true });
         setInputValue(e.target.value);
         setShowAutoCompleteOptions(true);
     };
@@ -194,16 +212,18 @@ export default function JobsNearYou() {
           };
           fetchRadius();
     }, [])
-    
-    const handleSearch = (e: any) => {
-        e.preventDefault();
-        const params = new URLSearchParams();
-        if (search) params.set('search', search);
-        router.replace(`/nearest-jobs?${params.toString()}`);
-    };
 
     const handleRadius=(radius:radius)=>{
-        setselectedradius(radius)
+        setselectedradius(radius);
+        setCurrentPage(1);
+        // Create a new URLSearchParams object from the current search parameters
+        const params = new URLSearchParams(searchParams.toString());
+
+        // Update the 'page' parameter
+        params.set("page", '1');
+
+        // Push the updated query parameters to the URL
+        router.replace(`?${params.toString()}`, { scroll: true });
     }
       // Handle pagination button click
     const handleActive = (page: number) => {
@@ -269,6 +289,7 @@ export default function JobsNearYou() {
             }
         );
         if(response?.data?.code==1){
+            setJobLocations(response?.data?.job_location as MapJobLocation[])
             setJobs(response.data?.nearest_jobs as object[]);
             // Calculate total pages based on total jobs and jobs per page
             const totalJobs = response.data?.total_nearest_jobs;
@@ -280,6 +301,7 @@ export default function JobsNearYou() {
             setTotalJobs(0)
             setTotalPages(0)
             setJobs([]);
+            setJobLocations(null)
         }
         setIsJobsLoading(false);
         } catch (error) {
@@ -305,7 +327,7 @@ export default function JobsNearYou() {
     }, [showAutoCompleteOptions]);
 
   return (
-    <div className="relative jobs-near-me">
+    <div className="relative jobs-near-me flex">
         <div className='container no-mobile-container'>
             <div className="lg:w-1/2">
                 <div className="hidden lg:block pt-5 3xl:pt-6 mb-7 3xl:mb-8">
@@ -326,10 +348,7 @@ export default function JobsNearYou() {
                                 <div className="flex justify-center items-center h-full">
                             <div className="flex animate-spin h-7 w-7 rounded-full border-l-0 border-b-0 border-red border-[3px]"></div>
                         </div>
-                                </div>}
-                            
-                            {error && <div className="text-red-500 text-sm mt-1">{error}</div>}
-                            
+                                </div>}                            
                             {searchOptions.length > 0 && (
                             <ul className="absolute z-10 w-full mt-1 bg-white border shadow-default rounded-xl 2xl:rounded-[16px] max-h-60 overflow-auto">
                                 {searchOptions?.map((option) => (
@@ -354,7 +373,7 @@ export default function JobsNearYou() {
                         />
                         <button
                             type='submit'
-                            className="h-full w-[74px] hidden lg:grid !p-0 place-items-center absolute top-0 right-0 mr-1 rounded-e-xl 2xl:rounded-e-2xl rounded-s-none"
+                            className="h-full w-[74px] hidden lg:grid !p-0 place-items-center absolute top-0 right-0 rounded-e-xl 2xl:rounded-e-2xl rounded-s-none"
                         >
                             <Image className="lg:w-4 2xl:w-6" src="/new-assets/icons/search-icon.svg" width="24" height="24" alt="Search" />
                         </button>
@@ -372,11 +391,18 @@ export default function JobsNearYou() {
                     </div>
                 </div>
                 <div className={`w-screen block lg:hidden ${isMapopen?"h-[350px]":"h-0"} transition-all duration-200`}>
-                    <JobsNearYouMap lat={selectedLocation?.lat || currentLocation?.city_latitude || ""} lng={selectedLocation?.lng || currentLocation?.city_longitude || ""} />
+                    <CustomGoogleMap
+                        lat={selectedLocation?.lat || currentLocation?.city_latitude || ""} 
+                        lng={selectedLocation?.lng || currentLocation?.city_longitude || ""}
+                        jobLocations={jobLocations || []}
+                        onMarkerClick={handleMarkerClick}
+                        selectedJobId={selectedJobId}
+                    />
                 </div>
                 {!isMapopen && <div className='mobile-container'>
                     <p className='lg:hidden text-sm mb-[10px]'>Radius (in Kms)</p>
                 <div className="flex w-full overflow-auto distance-radius-list gap-2 lg:gap-3 3xl:gap-[14px]">
+                    {radiusList?.length>0 ? <></> : <div className={`distance-label invisible cursor-pointer w-[50px] lg:w-[100px] flex-shrink-0 text-[11px] leading-[100%] h-[30px] lg:h-[34px] border rounded-md grid place-items-center selected bg-[#231F20] border-black text-white`}>loading...</div>}
                     {
                         radiusList?.map((radius:radius)=>(
                             <div onClick={()=>handleRadius(radius)} className={`distance-label cursor-pointer w-[50px] lg:w-[100px] flex-shrink-0 text-[11px] leading-[100%] h-[30px] lg:h-[34px] border rounded-md grid place-items-center ${selectedradius?.id==radius.id?"selected bg-[#231F20] border-black text-white":"bg-white text-black hover:border-gray-400"}`}>{radius.name}</div>
@@ -399,7 +425,7 @@ export default function JobsNearYou() {
                                     </h3>
                                     <div className="flex flex-col gap-4 lg:gap-3 3xl:gap-4">
                                         {jobs.map((job: any) => (
-                                            <div className="flex w-[100%]" key={`job-${job?.id}`}>
+                                            <div className="flex w-[100%]" key={`job-${job?.id}`} id={`job-${job.id}`}>
                                                 <NearestjobCard {...job} />
                                             </div>
                                         ))}
@@ -458,8 +484,14 @@ export default function JobsNearYou() {
                         </>
                     )}
                 </div>
-                <div className="w-full hidden lg:block absolute top-[0] right-0 max-w-[calc(50vw_-_50px)] max-h-[80vh] h-[100%]">
-                    <JobsNearYouMap lat={selectedLocation?.lat || currentLocation?.city_latitude || ""} lng={selectedLocation?.lng || currentLocation?.city_longitude || ""} />
+                <div className="w-full hidden lg:block fixed md:top-[0] xl:top-[56.6px] 2xl:top-[58px] 3xl:top-[90px] right-0 max-w-[calc(50vw_-_50px)] max-h-[80vh] h-[500px]">
+                <CustomGoogleMap
+                    lat={selectedLocation?.lat || currentLocation?.city_latitude || ""} 
+                    lng={selectedLocation?.lng || currentLocation?.city_longitude || ""}
+                    jobLocations={jobLocations || []}
+                    onMarkerClick={handleMarkerClick}
+                    selectedJobId={selectedJobId}
+                />
                 </div>
             </div>
         </div>

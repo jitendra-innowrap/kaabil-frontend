@@ -973,13 +973,11 @@ label {
 @media (min-width: 1280px) {
   .impact-section .swiper-button-prev.out-arrow{
     left: 55px !important;
-    scale: 1.2;
     transform: translateY(65px);
   }
   .impact-section .swiper-button-next.out-arrow{
     right: unset !important;
     left: 103px !important;
-    scale: 1.2;
     transform: translateY(65px);
   }
   .impact-section .slider-wrapper{

@@ -304,7 +304,7 @@ export default function AboutUs() {
               <p className="text-white font-normal text-sm md:text-base xl:text-sm 3xl:text-lg 3xl:leading-[30px] lg:max-w-[518px] mb-4 md:mb-6 xl:mb-14 3xl:mb-[72px]">
               Kaabil is enabling women across India to build brighter futures by connecting them with skill development and job opportunities. From cities to rural communities, we empower them to rise with confidence and economic independence.
               </p>
-              <div className="flex gap-5 flex-col md:flex-row items-start justify-between w-full md:gap-6 xl:gap-10 3xl:gap-12">
+              <div className="flex gap-5 flex-col md:flex-row items-center md:items-start justify-between w-full md:gap-6 xl:gap-10 3xl:gap-12">
                 <div className="flex flex-col items-center justify-start">
                   <strong className="text-white text-[36px] md:text-[40px] 2xl:text-[54px] 3xl:text-[62px] leading-[140%]">437</strong>
                   <p className="text-white text-sm md:text-base xl:text-xs 2xl:text-lg 3xl:text-xl tracking-[0%]">Districts covered</p>
@@ -315,7 +315,7 @@ export default function AboutUs() {
                 </div>
                 <div className="flex flex-col items-center justify-start">
                   <strong className="text-white text-[36px] md:text-[40px] 2xl:text-[54px] 3xl:text-[62px] leading-[140%]">2000+</strong>
-                  <p className="text-white text-center md:max-w-[255px] xl:max-w-[150px] 3xl:max-w-[255px] text-sm md:text-base xl:text-xs 2xl:text-lg 3xl:text-xl tracking-[0%]">Partnered with educational institutions</p>
+                  <p className="text-white text-center max-w-[200px] md:max-w-[255px] xl:max-w-[150px] 3xl:max-w-[255px] text-sm md:text-base xl:text-xs 2xl:text-lg 3xl:text-xl tracking-[0%]">Partnered with educational institutions</p>
                 </div>
               </div>
             </div>
@@ -328,13 +328,22 @@ export default function AboutUs() {
           <div className="grid md:grid-cols-2 gap-8 md:gap-12">
             <div className="flex flex-col items-start justify-center">
               <h2 className='text-black text-center text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[36px] mb-4 md:mb-6 xl:mb-7 3xl:mb-8 font-medium'>Powered by <span className="font-kalam font-bold text-red"> collaboration</span></h2>
-              <p className="text-sm md:text-base xl:text-sm 3xl:text-lg 3xl:leading-[30px] max-w-[682px]">
+              <div className="md:hidden mb-4">
+                <Image
+                  src="/new-assets/images/about/collaboration.svg"
+                  alt="Women in training"
+                  width={1200}
+                  height={1200}
+                  className="rounded-lg max-w-[624px] w-full"
+                />
+              </div>
+              <p className="text-sm md:text-base xl:text-sm 3xl:text-lg 3xl:leading-[30px] max-w-[682px] mb-5 md:mb-0">
               Kaabilprogram.org thrives on collaboration and shared purpose. With Mahindra & Mahindra’s strong foundation, we are creating a sustainable impact. We also work closely with various NGOs, community organizations, and corporate partners to expand the reach and effectiveness of our programs. <br />
               We believe that empowering women is not just about employment—it’s about building a better future for families, communities, and the nation. Kaabilprogram.org is a step toward that brighter, more inclusive future.
               </p>
             </div>
 
-            <div className="">
+            <div className="hidden md:blocks">
                 <Image
                   src="/new-assets/images/about/collaboration.svg"
                   alt="Women in training"
@@ -369,7 +378,7 @@ export default function AboutUs() {
           </div>
 
           {/* Right Section: Testimonials */}
-          <div className="w-[calc(100%_+_200px)] impact-slides-container">
+          <div className="w-[calc(100%_+_200px)] impact-slides-container pl-2 md:pl-0">
             {/* User Details */}
             <GallerySlider
                     slides={testimonials}
@@ -384,7 +393,7 @@ export default function AboutUs() {
                     slidesPerView={2}
                     breakpoints={{
                         320: {
-                            slidesPerView: 2,
+                            slidesPerView: 1.8,
                         },
                         1280: {
                             slidesPerView: 3.2,

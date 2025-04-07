@@ -1,9 +1,17 @@
 .onboarding_dialog{
-    /*position: absolute;*/
-    /*left: 50%;*/
-    /*top: 50%;*/
-    /*scale: 1;*/
-    /*transform: translate(-50%, -50%) !important;*/
+    max-width: 41.25rem !important;
+    width: 41.25rem;
+    min-width: 41.25rem !important;
+}
+@media (max-width: 1440px) {
+    .onboarding_dialog{
+       scale: .8;
+    }
+}
+@media (max-width: 1368px) {
+    .onboarding_dialog{
+        scale: .7;
+    }
 }
 .onboarding_drawer{
     height: 100vh;
@@ -46,19 +54,19 @@
     background: #F5F5F5;
 }
 
-.onboarding_dialog_otp_dash::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    right: -25px;
-    width: 8px;
-    height: 2px;
-    background: #98A2B3;
-    transform: translateY(-50%);
-}
-.onboarding_dialog_otp_dash:nth-child(4)::before {
-    display: none;
-}
+/*.onboarding_dialog_otp_dash::before {*/
+/*    content: '';*/
+/*    position: absolute;*/
+/*    top: 50%;*/
+/*    right: -25px;*/
+/*    width: 8px;*/
+/*    height: 2px;*/
+/*    background: #98A2B3;*/
+/*    transform: translateY(-50%);*/
+/*}*/
+/*.onboarding_dialog_otp_dash:nth-child(4)::before {*/
+/*    display: none;*/
+/*}*/
 .formscrollitemlg{
     height: calc(100vh - 500px);
     overflow-y: scroll;
@@ -74,6 +82,8 @@
     border-radius: 8px;
     border: 1px solid rgba(200, 201, 203, 0.1);
     box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+    padding: 12px 10px;
+    min-height: 48px;
 }
 .page_show{
     position: absolute;
@@ -104,6 +114,13 @@
         width: 64px;
         height: 45px;
         border-radius: 8px;
+    }
+    /*.onboarding_dialog_otp_dash::before {*/
+    /*    right: -18px;*/
+    /*}*/
+    .multi_select{
+        padding-left: 5px;
+        padding-right: 5px;
     }
     .xl{
         width: 30%;

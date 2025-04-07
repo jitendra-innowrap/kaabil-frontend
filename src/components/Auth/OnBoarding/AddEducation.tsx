@@ -152,32 +152,34 @@ export default function AddEducation({size, closePopup, handleBack}: any) {
                                 onClick={() =>
                                     formik.setFieldValue("education_id", education.id)
                                 }
-                                className={`${styles.form_group} !flex !mb-0 gap-3 sm:gap-4 rounded-lg px-3 sm:px-5  border shadow-sm items-center ${
+                                className={`${styles.form_group}  !mb-0 rounded-lg px-3 sm:px-5  border shadow-sm items-center block ${
                                     education.id === formik.values.education_id
                                         ? "border-red bg-[#FDF1F3]"
                                         : "border-[#C8C9CB1A]"
                                 }`}
                             >
-                                <input
-                                    type="radio"
-                                    id={education.id}
-                                    checked={education.id === formik.values.education_id}
-                                    name="experience"
-                                    className={`cursor-pointer edu-checkbox inline-block !m-0 sm:!w-4 sm:!h-4 ${
-                                        education.id === formik.values.education_id
-                                            ? "selected"
-                                            : ""
-                                    }`}
-                                    value={education?.id}
-                                />
-                                <div
-                                    className={`!mb-0 gap-2 radio inline-block cursor-pointer text-[12px] sm:text-[14px] ${
-                                        education.id === formik.values.education_id
-                                            ? "selected"
-                                            : ""
-                                    }`}
-                                >
-                                    {education.name}
+                                <div className="flex items-center  gap-3 sm:gap-4">
+                                    <input
+                                        type="radio"
+                                        id={education.id}
+                                        checked={education.id === formik.values.education_id}
+                                        name="experience"
+                                        className={`cursor-pointer edu-checkbox inline-block !m-0 sm:!w-4 sm:!h-4 ${
+                                            education.id === formik.values.education_id
+                                                ? "selected"
+                                                : ""
+                                        }`}
+                                        value={education?.id}
+                                    />
+                                    <div
+                                        className={`!mb-0 gap-2 radio inline-block cursor-pointer text-[12px] sm:text-[14px] ${
+                                            education.id === formik.values.education_id
+                                                ? "selected"
+                                                : ""
+                                        }`}
+                                    >
+                                        {education.name}
+                                    </div>
                                 </div>
                             </label>
                         ))}

@@ -14,7 +14,7 @@ import {
 import toast from "react-hot-toast";
 import api from "@/Services/Apiservice";
 
-const ResumeModal = () => {
+const ResumeModal = ({ size }: any) => {
   const { token } = useAppSelector((state) => state.auth);
   const { resumeModal } = useAppSelector((state) => state.profile);
   const dispatch = useAppDispatch();
@@ -38,8 +38,12 @@ const ResumeModal = () => {
     <Dialog
       open={resumeModal}
       handler={closePopup}
-      size="md"
-      className="fixed top-10 -translate-x-1/2 custom-dialog"
+      size={size}
+      className={`${
+        size === "xxl"
+          ? "top-14 mx-auto fixed bottom-0 rounded-2xl sm-dailog"
+          : "fixed top-10 -translate-x-1/2 custom-dialog"
+      }`}
     >
       <div>
         {/* @ts-ignore */}
@@ -47,11 +51,17 @@ const ResumeModal = () => {
           <div className="relative w-full">
             <IoClose
               className="absolute top-0 right-0 cursor-pointer"
-              size={38}
+              size={size === "md" ? 36 : 28}
               onClick={closePopup}
             />
-            <div className="flex justify-center items-center mt-6">
-              <h2 className="text-center text-[#231F20] text-3xl font-semibold">
+            <div
+              className={`flex items-center mt-6 ${
+                size === "xxl"
+                  ? "justify-start text-md"
+                  : "justify-center text-3xl"
+              }`}
+            >
+              <h2 className="text-center text-[#231F20] font-semibold">
                 Attach your <span className="text-red">resume</span>
               </h2>
             </div>
@@ -106,17 +116,26 @@ const ResumeModal = () => {
           {({ setFieldValue, isSubmitting, values, dirty }) => (
             <Form>
               {/* @ts-ignore */}
-
-              <DialogBody className="p-0 mt-8 max-h-[50vh] sm:max-h-[60vh] md:max-h-[70vh] lg:max-h-[80vh] overflow-y-auto custom-scroll">
-                <div className="px-12">
+              <DialogBody
+                className={`p-0  max-h-[50vh] sm:max-h-[60vh] md:max-h-[70vh] lg:max-h-[80vh] overflow-y-auto custom-scroll ${
+                  size === "xxl" ? "mt-4" : "mt-8"
+                }`}
+              >
+                <div className={`${size === "xxl" ? "px-4" : "px-12"}`}>
                   <div>
                     <label
-                      className="block font-semibold mb-1 text-[#231F20] text-xl"
+                      className={`block font-semibold mb-1 text-[#231F20]  ${
+                        size === "xxl" ? "text-sm" : "text-xl"
+                      }`}
                       htmlFor="fileInput"
                     >
                       Resume
                     </label>
-                    <div className="relative flex items-center w-full py-2 border-resume bg-white rounded-lg">
+                    <div
+                      className={`relative flex items-center w-full border-resume bg-white rounded-lg ${
+                        size === "xxl" ? "py-1" : "py-2"
+                      }`}
+                    >
                       <input
                         type="file"
                         id="fileInput"
@@ -169,14 +188,18 @@ const ResumeModal = () => {
                 </div>
               </DialogBody>
               {/* @ts-ignore */}
-              <DialogFooter className="flex justify-end p-0 pb-3 px-12 mt-4">
+              <DialogFooter
+                className={`flex justify-end p-0 pb-3  mt-4 ${
+                  size === "xxl" ? "px-4 mt-2" : "px-12 mt-4"
+                }`}
+              >
                 <button
                   type="submit"
-                  className={`px-28 py-4 bg-[#E31837] text-white rounded-xl ${
+                  className={`px-28 bg-[#E31837] text-white rounded-xl ${
                     isSubmitting || !dirty
                       ? "opacity-50 cursor-not-allowed"
                       : ""
-                  }`}
+                  } ${size === "xxl" ? "py-3" : "py-4"} `}
                   disabled={isSubmitting || !dirty}
                 >
                   Save

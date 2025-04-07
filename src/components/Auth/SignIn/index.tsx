@@ -34,7 +34,7 @@ const RenderModelDrawer = ({size, children}: {
                 onClose={() => {
                 } }
                 className={styles.onboarding_drawer} placeholder={""} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}            >
-                <div className={`p-[20px] min-h-[100vh]`}>
+                <div className={`p-[15px] min-h-[100vh]`}>
                     {children}
                 </div>
             </Drawer>;
@@ -45,7 +45,7 @@ const RenderModelDrawer = ({size, children}: {
                 } }
                 className={styles.onboarding_dialog}
                 size={size as "xs" | "sm" | "md" | "lg" | "xl" | "xxl"}
-                style={{ maxWidth: "660px", minWidth: "660px" }} placeholder={""} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}            >
+                placeholder={""} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}            >
                 {children}
             </Dialog>;
     }

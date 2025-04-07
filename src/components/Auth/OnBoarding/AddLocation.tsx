@@ -182,7 +182,7 @@ export default function AddLocation({size, closePopup, handleBack}: any) {
                     <h4 className="text-[14px] sm:text-lg font-medium text-[#231F20]">
                         Select job location
                     </h4>
-                    <div className="my-2 multi-select">
+                    <div className={`my-2 multi-select ${styles.multi_select}`}>
                         <MultiSelect
                             options={locationList}
                             placeholder="Job location"

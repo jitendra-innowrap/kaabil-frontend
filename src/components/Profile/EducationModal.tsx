@@ -24,13 +24,15 @@ import { FaSearch } from "react-icons/fa";
 import Select from "react-select";
 import { customStyles, yearOfPassingOptions } from "../utils";
 
-const EducationModal = () => {
+const EducationModal = ({ size }: any) => {
   const { educationModal, qualificationList, profileData, educationData } =
     useAppSelector((state) => state.profile);
   const [educationSearch, setEducationSearch] = useState(educationData);
   const [showEducation, setShowEducation] = useState(false);
   const { token } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
+
+  console.log(profileData, "Check ProfileData More And More");
 
   const validationSchema = Yup.object().shape({
     education_id: Yup.string().required("Required"),
@@ -81,8 +83,12 @@ const EducationModal = () => {
     <Dialog
       open={educationModal}
       handler={closeModal}
-      size="md"
-      className="fixed -top-20 -translate-x-1/2 custom-dialog"
+      size={size}
+      className={`${
+        size === "xxl"
+          ? "top-14 mx-auto fixed bottom-0 rounded-2xl sm-dailog"
+          : "fixed -top-20 -translate-x-1/2 custom-dialog"
+      }`}
     >
       <div>
         {/* @ts-ignore */}
@@ -90,11 +96,17 @@ const EducationModal = () => {
           <div className="relative w-full">
             <IoClose
               className="absolute top-0 right-0 cursor-pointer"
-              size={38}
+              size={size === "md" ? 36 : 28}
               onClick={closeModal}
             />
-            <div className="flex justify-center items-center mt-6">
-              <h2 className="text-center text-[#231F20] text-3xl font-semibold">
+            <div
+              className={`flex items-center mt-6 ${
+                size === "xxl"
+                  ? "justify-start text-md"
+                  : "justify-center text-3xl"
+              }`}
+            >
+              <h2 className="text-center text-[#231F20] font-semibold">
                 Edit your <span className="text-red">education</span>
               </h2>
             </div>
@@ -108,13 +120,18 @@ const EducationModal = () => {
               )?.id || "",
             institute_name:
               profileData?.educations?.length > 0
-                ? profileData?.educations[0]?.institute_name
+                ? profileData?.educations[0]?.field_of_study
                 : "",
             user_certification: null,
             year_of_graduation:
               profileData?.educations?.length > 0
                 ? profileData?.educations[0]?.year_of_graduation
                 : "",
+            institute_master_id:
+              qualificationList?.find(
+                (item: any) => item?.name === profileData?.education_name
+              )?.id || "",
+            certification: profileData.user_certifications,
           }}
           validationSchema={validationSchema}
           onSubmit={async (values: any) => {
@@ -125,7 +142,7 @@ const EducationModal = () => {
                 id: values.education_id,
                 institute_name: values?.institute_name,
                 institute_master_id: "",
-                field_of_study_master_id: "",
+                field_of_study_master_id: values?.institute_master_id,
                 year_of_graduation: values?.year_of_graduation,
               },
             ];
@@ -172,31 +189,45 @@ const EducationModal = () => {
                   data: { latitude: 0, longitude: 0 },
                 })
               );
-              closeModal();
+              await closeModal();
             }
           }}
         >
           {({ setFieldValue, isSubmitting, values, dirty, errors }) => (
             <Form>
               {/* @ts-ignore */}
-              <DialogBody className="p-0 mt-8 max-h-[50vh] sm:max-h-[60vh] md:max-h-[70vh] lg:max-h-[80vh] overflow-y-auto custom-scroll">
-                <div className="px-12">
+              <DialogBody
+                className={`p-0 max-h-[60vh] sm:max-h-[68vh] md:max-h-[70vh] lg:max-h-[80vh] overflow-y-auto custom-scroll ${
+                  size === "xxl" ? "mt-4" : "mt-8"
+                }`}
+              >
+                <div
+                  className={`${
+                    size === "xxl" ? "px-4" : "px-12"
+                  } space-y-2 pb-8`}
+                >
                   <label
-                    className="block font-semibold mb-1 !text-[#231F20] !text-xl"
+                    className={`block font-semibold mb-1 !text-[#231F20] ${
+                      size === "xxl" ? "!text-[16px]" : "!text-xl"
+                    }`}
                     htmlFor="fileInput"
                   >
                     What is your highest level of education?
                   </label>
-                  <div className="relative flex flex-col gap-2 w-full py-2 bg-white rounded-lg">
+                  <div
+                    className={`relative flex flex-col gap-2 w-full bg-white rounded-lg ${
+                      size === "xxl" ? "py-1" : "py-2"
+                    }`}
+                  >
                     {qualificationList?.map((education: any) => (
                       <div
                         key={education.id}
                         className={`${
                           education.id === values.education_id &&
                           education?.is_field_study_show !== "0"
-                            ? "border-2 border-red"
+                            ? "border-2 border-red px-6"
                             : ""
-                        } py-2 rounded-lg px-4`}
+                        }  ${size === "xxl" ? "py-1" : "py-2"} rounded-lg`}
                       >
                         <label
                           htmlFor={education.id}
@@ -213,7 +244,12 @@ const EducationModal = () => {
                             setShowEducation(false);
                             setEducationSearch([]);
                           }}
-                          className={`form-group flex items-center gap-4 rounded-lg px-5 py-3 border shadow-sm cursor-pointer`}
+                          className={`form-group flex items-center gap-4 rounded-lg  py-3 cursor-pointer ${
+                            education.id === values.education_id &&
+                            education?.is_field_study_show !== "0"
+                              ? "px-0"
+                              : "border shadow-sm px-5"
+                          } `}
                         >
                           <div className="flex items-center gap-4">
                             <input
@@ -224,7 +260,11 @@ const EducationModal = () => {
                               className="cursor-pointer !m-0 !w-4 !h-4"
                               value={education.id}
                             />
-                            <span className="text-[#231F20] text-xl">
+                            <span
+                              className={`text-[#231F20] ${
+                                size === "xxl" ? "text-[16px]" : "text-xl"
+                              }`}
+                            >
                               {education.name}
                             </span>
                           </div>
@@ -232,7 +272,7 @@ const EducationModal = () => {
                         {education.id === values.education_id &&
                           education?.is_field_study_show !== "0" && (
                             <>
-                              <div className="w-full py-3 relative flex items-center mt-2">
+                              <div className="w-full mb-3 relative flex items-center">
                                 <input
                                   className="px-10 bg-[#C8C9CB3B] w-full py-3 rounded-lg placeholder-[#231F20] text-[#231F20]"
                                   placeholder="BFA Applied Arts"
@@ -270,6 +310,10 @@ const EducationModal = () => {
                                               setFieldValue(
                                                 "institute_name",
                                                 item.name
+                                              );
+                                              setFieldValue(
+                                                "institute_master_id",
+                                                item?.id
                                               );
                                               setShowEducation(false);
                                               setEducationSearch([]);
@@ -321,14 +365,16 @@ const EducationModal = () => {
                   </div>
                   <div className="mt-3">
                     <label
-                      className="block font-semibold mb-1 !text-[#231F20] !text-xl"
+                      className={`block font-semibold mb-1 !text-[#231F20] ${
+                        size === "xxl" ? "!text-[16px]" : "!text-xl"
+                      }`}
                       htmlFor="fileInput"
                     >
                       Certification
                     </label>
-                    <div className="col-span-12 mt-2 flex gap-3 sm:flex-wrap overflow-auto">
-                      {profileData?.user_certifications?.length > 0 ? (
-                        profileData.user_certifications.map(
+                    <div className="col-span-12 mt-2 flex gap-3 flex-wrap">
+                      {values?.certification?.length > 0 ? (
+                        values?.certification.map(
                           (
                             cert: {
                               id: string;
@@ -351,7 +397,9 @@ const EducationModal = () => {
                                 >
                                   <img
                                     src="/new-assets/icons/pdf_logo (1).png"
-                                    className="h-24 w-24 object-cover rounded-md light-shadow"
+                                    className={`${
+                                      size === "xxl" ? "h-20 w-20" : "h-24 w-24"
+                                    } object-cover rounded-md light-shadow`}
                                     alt={
                                       cert.user_certification_title ||
                                       "Certificate"
@@ -370,7 +418,9 @@ const EducationModal = () => {
                                       cert.user_certification_title ||
                                       "Certificate"
                                     }
-                                    className="h-24 w-24 object-cover rounded-md"
+                                    className={`${
+                                      size === "xxl" ? "h-20 w-20" : "h-24 w-24"
+                                    } object-cover rounded-md`}
                                   />
                                   <h1 className="text-xs mt-2 text-[#231F20]">
                                     {cert.user_certification_title ||
@@ -397,6 +447,20 @@ const EducationModal = () => {
                             if (files.length > 6) {
                               e.target.value = ""; // Reset the input if limit exceeded
                             } else {
+                              const newCertifications = files?.map(
+                                (file: any, index: any) => ({
+                                  id: `new-${index}-${file.name}`, // Generate a temporary ID
+                                  media_url: URL.createObjectURL(file), // Create a preview URL
+                                  user_certification_title: file.name,
+                                  attachment_type: file.type.includes("pdf")
+                                    ? "2"
+                                    : "1", // PDF = "2", else image = "1"
+                                })
+                              );
+                              setFieldValue("certification", [
+                                ...(values.certification || []),
+                                ...newCertifications,
+                              ]);
                               setFieldValue("user_certification", files);
                               console.log("Selected files:", files);
                               // Handle valid files here
@@ -420,12 +484,16 @@ const EducationModal = () => {
                 </div>
               </DialogBody>
               {/* @ts-ignore */}
-              <DialogFooter className="flex justify-end p-0 pb-3 mt-3 px-12">
+              <DialogFooter
+                className={`flex justify-end p-0 pb-3 ${
+                  size === "xxl" ? "px-4 mt-2" : "px-12 mt-4"
+                }`}
+              >
                 <button
                   type="submit"
-                  className={`px-28 py-4  bg-[#E31837] text-white rounded-xl ${
+                  className={`px-28   bg-[#E31837] text-white rounded-xl ${
                     isSubmitting ? "opacity-50 cursor-not-allowed" : ""
-                  }`}
+                  } ${size === "xxl" ? "py-3" : "py-4"}`}
                   disabled={isSubmitting}
                 >
                   Save

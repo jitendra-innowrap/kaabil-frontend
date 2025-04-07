@@ -28,7 +28,7 @@ import SelectedChips from "../Inputs/SelectedChips";
 import toast from "react-hot-toast";
 import { RefreshProfileData } from "@/redux/userSlice";
 
-const ProfileModal = () => {
+const ProfileModal = ({ size }: any) => {
   const {
     profileModal,
     rolesList,
@@ -43,10 +43,13 @@ const ProfileModal = () => {
   } = useAppSelector((state) => state.profile);
   const { token } = useAppSelector((state) => state.auth);
 
-  console.log(profileData, "Please Verify Profile Data Over here");
-  const dispatch = useAppDispatch();
+  console.log(
+    profileData?.user_willing_to_relocate,
+    locationList,
+    "Verify Location List"
+  );
 
-  console.log(rolesList, "Check Role List");
+  const dispatch = useAppDispatch();
 
   const validationSchema = Yup.object().shape({
     photo_url: Yup.mixed(),
@@ -89,13 +92,19 @@ const ProfileModal = () => {
     // dispatch
   }, [profileData]);
 
+  console.log(profileData?.skills, "Just Verify Skill");
+
   return (
     // @ts-ignore
     <Dialog
       open={profileModal}
       handler={closePopup}
-      size="md"
-      className="fixed -top-10 -translate-x-1/2 custom-dialog"
+      size={size}
+      className={`${
+        size === "xxl"
+          ? "top-14 mx-auto fixed bottom-0 rounded-2xl sm-dailog"
+          : "fixed -top-10 -translate-x-1/2 custom-dialog"
+      }`}
     >
       <div>
         {/* @ts-ignore */}
@@ -103,11 +112,17 @@ const ProfileModal = () => {
           <div className="relative w-full">
             <IoClose
               className="absolute top-0 right-0 cursor-pointer"
-              size={38}
+              size={size === "md" ? 36 : 28}
               onClick={closePopup}
             />
-            <div className="flex justify-center items-center mt-6">
-              <h2 className="text-center text-[#231F20] text-3xl font-semibold">
+            <div
+              className={`flex items-center mt-6 ${
+                size === "xxl"
+                  ? "justify-start text-md"
+                  : "justify-center text-3xl"
+              }`}
+            >
+              <h2 className="text-center text-[#231F20]  font-semibold">
                 Edit your <span className="text-red">profile</span>
               </h2>
             </div>
@@ -141,7 +156,13 @@ const ProfileModal = () => {
             user_soft_skill: profileData?.soft_skills || [],
             //  Skills
             skills: profileData?.skills?.map((item: any) => item?.id) || [],
-            user_skill: profileData?.skills || [],
+            user_skill:
+              profileData?.skills?.map(
+                ({ skill_level_type, ...skill }: any) => ({
+                  ...skill,
+                  skill_level_type_id: "0", 
+                })
+              ) || [],
           }}
           validationSchema={validationSchema}
           onSubmit={async (values) => {
@@ -206,13 +227,19 @@ const ProfileModal = () => {
           {({ setFieldValue, isSubmitting, values }) => (
             <Form>
               {/* @ts-ignore */}
-              <DialogBody className="p-0 max-h-[70vh] overflow-y-auto custom-scroll">
-                <div className="px-12 space-y-2 pb-8">
+              <DialogBody className="p-0 max-h-[69vh] overflow-y-auto custom-scroll">
+                <div
+                  className={`${
+                    size === "xxl" ? "px-4" : "px-12"
+                  } space-y-2 pb-8`}
+                >
                   {/* Field One */}
                   <div>
                     <div className="flex gap-4 items-center">
                       <Image
-                        className="cursor-pointer rounded-full w-28 h-28"
+                        className={`cursor-pointer rounded-full object-cover ${
+                          size === "xxl" ? "w-20 h-20" : "w-28 h-28"
+                        }`}
                         src={values?.photo_img}
                         width={60}
                         height={60}
@@ -221,11 +248,15 @@ const ProfileModal = () => {
                       <div className="flex gap-3">
                         <button
                           type="button"
-                          className="bg-[#231F20] text-white text-lg px-4 py-[13px] rounded-md hover:bg-[#231F20]"
+                          className={`bg-[#231F20] text-white px-4 rounded-md hover:bg-[#231F20] ${
+                            size === "xxl" ? "py-[7px]" : "py-[13px]"
+                          }`}
                         >
                           <label
                             htmlFor="photoInput"
-                            className="cursor-pointer text-lg"
+                            className={`cursor-pointer ${
+                              size === "xxl" ? "text-sm" : "text-xl"
+                            }`}
                           >
                             Change Picture
                           </label>
@@ -268,7 +299,9 @@ const ProfileModal = () => {
                     <Field
                       type="text"
                       name="first_name"
-                      className="w-full border pl-4 py-3 rounded-lg bg-[#F2F3F3]"
+                      className={`w-full border pl-4 rounded-lg bg-[#F2F3F3] ${
+                        size === "xxl" ? "py-2" : "py-3"
+                      }`}
                       placeholder="Enter your full name"
                     />
                     <div className="h-3">
@@ -293,7 +326,9 @@ const ProfileModal = () => {
                         setFieldValue("date_of_birth", e.target.value);
                       }}
                       placeholder="Start Date"
-                      className="mb-2 w-full px-3 py-3 border rounded-lg !bg-white shadow-md"
+                      className={`mb-2 w-full px-3 border rounded-lg !bg-white shadow-md ${
+                        size === "xxl" ? "py-2" : "py-3"
+                      }`}
                       max={(() => {
                         const today = new Date();
                         return today.toISOString().split("T")[0];
@@ -309,13 +344,13 @@ const ProfileModal = () => {
                   </div>
 
                   {/* Field 4 */}
-                  <div className="">
+                  <div className="role-preference">
                     <label className="block text-lg font-semibold text-[#231F20] mb-2">
                       Job role preference
                     </label>
                     <MultiSelect
                       options={rolesList}
-                      placeholder="Select Job Role"
+                      placeholder="Select job role"
                       isMulti
                       onChange={(
                         selectedRoles: { value: string; label: string }[]
@@ -359,11 +394,11 @@ const ProfileModal = () => {
                     <label className="block text-lg font-semibold text-[#231F20] mb-2">
                       Job type
                     </label>
-                    <div className="grid sm:grid-cols-3 gap-3 3xl:gap-4 ">
+                    <div className="flex flex-wrap gap-3 3xl:gap-4">
                       {jobTypes?.map((jobType: any) => (
                         <div
                           key={jobType.id}
-                          className={`col-span-1 label-option cursor-pointer ${
+                          className={`label-option cursor-pointer px-4 flex-grow py-2 rounded-md ${
                             values.job_type_master_id == jobType.id
                               ? "bg-red text-white"
                               : ""
@@ -392,7 +427,7 @@ const ProfileModal = () => {
                     </label>
                     <MultiSelect
                       options={locationList}
-                      placeholder="Select Job Role"
+                      placeholder="Select job location"
                       isMulti
                       onChange={async (
                         selectedLocation: { value: string; label: string }[]
@@ -425,8 +460,9 @@ const ProfileModal = () => {
                         }
                       }}
                       selectedValues={locationList?.filter((role: any) =>
-                        // @ts-ignore
-                        values.selectedLocation?.includes(role.value)
+                        values.user_willing_to_relocate?.some(
+                          (location: any) => location.location === role.label // Matching "Mumbai" with "Mumbai"
+                        )
                       )}
                     />
                     <div
@@ -436,8 +472,9 @@ const ProfileModal = () => {
                     >
                       <SelectedChips
                         selectedValues={locationList?.filter((role: any) =>
-                          // @ts-ignore
-                          values.selectedLocation?.includes(role.value)
+                          values.user_willing_to_relocate?.some(
+                            (location: any) => location.location === role.label // Matching "Mumbai" with "Mumbai"
+                          )
                         )}
                         onRemove={async (value: string) => {
                           const updatedSelectedLocations =
@@ -526,6 +563,7 @@ const ProfileModal = () => {
                         const skillsData = skillList?.filter((item: any) =>
                           selectedSkillValues?.includes(item?.id)
                         );
+                        console.log(skillsData, "Verify Skilss Data");
                         setFieldValue(
                           "user_skill",
                           skillsData?.length > 0 ? skillsData : []
@@ -535,7 +573,7 @@ const ProfileModal = () => {
                         values.skills.includes(role.value)
                       )}
                       icon={
-                        <FaMagnifyingGlass className="absolute left-[15px] top-[20px] size-4 text-[#808080]" />
+                        <FaMagnifyingGlass className="absolute left-[15px] top-[14px] size-4 text-[#808080]" />
                       }
                     />
                     <div className={values.skills.length > 0 ? "mt-4" : ""}>
@@ -555,6 +593,7 @@ const ProfileModal = () => {
                           );
                           setFieldValue("user_skill", filteredSoftSkills);
                         }}
+                        size={size}
                       />
                     </div>
                     <div className="h-4">
@@ -599,7 +638,7 @@ const ProfileModal = () => {
                         values.soft_skill.includes(role.value)
                       )}
                       icon={
-                        <FaMagnifyingGlass className="absolute left-[15px] top-[20px] size-4 text-[#808080]" />
+                        <FaMagnifyingGlass className="absolute left-[15px] top-[14px] size-4 text-[#808080]" />
                       }
                     />
                     <div className={values.soft_skill.length > 0 ? "mt-4" : ""}>
@@ -610,7 +649,9 @@ const ProfileModal = () => {
                         )}
                         onRemove={(value: string) => {
                           const updatedSelectedSoftSkills =
-                            values.soft_skill?.filter((id: any) => id !== value);
+                            values.soft_skill?.filter(
+                              (id: any) => id !== value
+                            );
                           setFieldValue(
                             "soft_skill",
                             updatedSelectedSoftSkills
@@ -622,6 +663,7 @@ const ProfileModal = () => {
                           );
                           setFieldValue("user_soft_skill", filteredSoftSkills);
                         }}
+                        size={size}
                       />
                     </div>
                     <div className="h-4">
@@ -635,12 +677,16 @@ const ProfileModal = () => {
                 </div>
               </DialogBody>
               {/* @ts-ignore */}
-              <DialogFooter className="flex justify-end p-0 pb-3 px-12 mt-3">
+              <DialogFooter
+                className={`flex justify-end p-0 pb-3 ${
+                  size === "xxl" ? "px-4 mt-2" : "px-12 mt-4"
+                }`}
+              >
                 <button
                   type="submit"
-                  className={`px-28 py-4 bg-[#E31837] text-white rounded-xl ${
+                  className={`px-28  bg-[#E31837] text-white rounded-xl ${
                     isSubmitting ? "opacity-50 cursor-not-allowed" : ""
-                  }`}
+                  } ${size === "xxl" ? "py-2" : "py-4"}`}
                   disabled={isSubmitting}
                 >
                   Save

@@ -13,7 +13,7 @@ import { IoClose } from "react-icons/io5";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { fetchProfile, setAboutMeModal } from "@/redux/profileSlice";
 
-export const AboutModal = () => {
+export const AboutModal = ({ size }: any) => {
   const { token } = useAppSelector((state) => state.auth);
   const { aboutMeModal, profileData } = useAppSelector(
     (state) => state.profile
@@ -33,8 +33,12 @@ export const AboutModal = () => {
     <Dialog
       open={aboutMeModal}
       handler={closePopup}
-      size="md"
-      className="fixed -top-10 -translate-x-1/2 custom-dialog"
+      size={size}
+      className={`${
+        size === "md"
+          ? "fixed -top-10 -translate-x-1/2 custom-dialog"
+          : "top-14 mx-auto fixed bottom-0 rounded-2xl"
+      }`}
     >
       <div>
         {/* @ts-ignore */}
@@ -42,11 +46,17 @@ export const AboutModal = () => {
           <div className="relative w-full">
             <IoClose
               className="absolute top-0 right-0 cursor-pointer"
-              size={38}
+              size={size === "md" ? 36 : 28}
               onClick={closePopup}
             />
-            <div className="flex justify-center items-center mt-6">
-              <h2 className="text-center text-[#231F20] text-3xl font-semibold">
+            <div
+              className={`flex items-center mt-6 ${
+                size === "xxl"
+                  ? "justify-start text-md"
+                  : "justify-center text-3xl"
+              }`}
+            >
+              <h2 className="text-center text-[#231F20] font-semibold">
                 Edit <span className="text-red">about me</span>
               </h2>
             </div>
@@ -91,11 +101,17 @@ export const AboutModal = () => {
           {({ isSubmitting, dirty }) => (
             <Form>
               {/* @ts-ignore */}
-              <DialogBody className="p-0 max-h-[55vh] sm:max-h-[65vh] md:max-h-[75vh] lg:max-h-[85vh] overflow-y-auto custom-scroll">
-                <div className="px-8">
-                  <div className="mt-4">
+              <DialogBody
+                className={`p-0  max-h-[50vh] sm:max-h-[60vh] md:max-h-[70vh] lg:max-h-[80vh] overflow-y-auto custom-scroll ${
+                  size === "xxl" ? "mt-4" : "mt-8"
+                }`}
+              >
+                <div className={`${size === "xxl" ? "px-4" : "px-12"}`}>
+                  <div className={`${size === "xxl" ? "mt-0" : "mt-4"}`}>
                     <label
-                      className="block font-semibold mb-1 !text-xl"
+                      className={`block font-semibold mb-1  ${
+                        size === "xxl" ? "text-sm" : "text-xl"
+                      }`}
                       htmlFor="bio_text"
                     >
                       About Me
@@ -106,7 +122,7 @@ export const AboutModal = () => {
                       id="bio_text"
                       placeholder="Enter about me"
                       rows={8}
-                      className="w-full pl-6 pt-4 text-lg bg-[#F2F3F3] focus:outline-none rounded-lg "
+                      className="w-full pl-6 pt-4 text-lg bg-[#F2F3F3] focus:outline-none rounded-lg"
                     />
                     <div className="h-1">
                       <ErrorMessage
@@ -119,14 +135,18 @@ export const AboutModal = () => {
                 </div>
               </DialogBody>
               {/* @ts-ignore */}
-              <DialogFooter className="flex justify-end p-0 pb-3 px-8 mt-4">
+              <DialogFooter
+                className={`flex justify-end p-0 pb-3  ${
+                  size === "xxl" ? "px-5 mt-2" : "px-12 mt-4"
+                }`}
+              >
                 <button
                   type="submit"
-                  className={`px-20 py-4 bg-[#E31837] text-white rounded-xl ${
+                  className={`px-20  bg-[#E31837] text-white rounded-xl ${
                     isSubmitting || !dirty
                       ? "opacity-50 cursor-not-allowed"
                       : ""
-                  }`}
+                  } ${size === "xxl" ? "py-3" : "py-4"}`}
                   disabled={isSubmitting || !dirty}
                 >
                   Save

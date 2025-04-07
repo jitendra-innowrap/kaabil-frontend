@@ -32,6 +32,19 @@ const CustomGoogleMap: React.FC<CustomGoogleMapProps> = ({
   const currentLocationMarker = useRef<google.maps.Marker | null>(null);
   const hasInitialFit = useRef(false);
 
+  // Function to add class to marker element
+  const addMarkerClass = (marker: google.maps.Marker, className: string) => {
+    setTimeout(() => {
+      const markerElement = marker.getIcon() instanceof Object 
+        ? document.querySelector(`img[src="${(marker.getIcon() as google.maps.Icon).url}"]`)?.parentElement
+        : document.querySelector(`img[src="${marker.getIcon()}"]`)?.parentElement;
+      
+      if (markerElement) {
+        markerElement.classList.add(className);
+      }
+    }, 100);
+  };
+
   useEffect(() => {
     if (!window.google || !window.google.maps || !mapRef.current) return;
 
@@ -74,8 +87,13 @@ const CustomGoogleMap: React.FC<CustomGoogleMapProps> = ({
             scaledSize: new window.google.maps.Size(40, 40)
           },
           title: 'Your current location',
-          zIndex: 1000
+          zIndex: 1000,
         });
+
+        // Add CSS class to current location marker
+        if (currentLocationMarker.current) {
+          addMarkerClass(currentLocationMarker.current, 'current-location-marker');
+        }
       }
     }
 
@@ -100,11 +118,9 @@ const CustomGoogleMap: React.FC<CustomGoogleMapProps> = ({
 
       marker.addListener('click', () => {
         console.log(`job-${job.id}`)
-        // Zoom and pan to this marker
         if (mapInstance.current) {
           mapInstance.current.panTo(marker.getPosition()!);
-          mapInstance.current.setZoom(15); // Set a comfortable zoom level
-          // Scroll to the corresponding job card
+          mapInstance.current.setZoom(15);
           const jobElement = document.getElementById(`job-${job.id}`);
           if (jobElement) {
             jobElement.scrollIntoView({
@@ -161,7 +177,17 @@ const CustomGoogleMap: React.FC<CustomGoogleMapProps> = ({
 
   return (
     <>
-    <div ref={mapRef} style={{ width: '100%', height: '100%' }} />
+      <div ref={mapRef} style={{ width: '100%', height: '100%' }} />
+      {/* Add global styles for the current location marker */}
+      <style jsx global>{`
+        .current-location-marker {
+          /* Add your custom styles here */
+          transition: transform 0.2s ease;
+        }
+        .current-location-marker:hover {
+          transform: scale(1.1);
+        }
+      `}</style>
     </>
   );
 };

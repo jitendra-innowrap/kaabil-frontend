@@ -385,6 +385,7 @@ export default function JobsNearYou() {
                 {!isMapopen && <div className='mobile-container'>
                     <p className='lg:hidden text-sm mb-[10px]'>Radius (in Kms)</p>
                 <div className="flex w-full overflow-auto distance-radius-list gap-2 lg:gap-3 3xl:gap-[14px]">
+                    {radiusList?.length>0 ? <></> : <div className={`distance-label invisible cursor-pointer w-[50px] lg:w-[100px] flex-shrink-0 text-[11px] leading-[100%] h-[30px] lg:h-[34px] border rounded-md grid place-items-center selected bg-[#231F20] border-black text-white`}>loading...</div>}
                     {
                         radiusList?.map((radius:radius)=>(
                             <div onClick={()=>handleRadius(radius)} className={`distance-label cursor-pointer w-[50px] lg:w-[100px] flex-shrink-0 text-[11px] leading-[100%] h-[30px] lg:h-[34px] border rounded-md grid place-items-center ${selectedradius?.id==radius.id?"selected bg-[#231F20] border-black text-white":"bg-white text-black hover:border-gray-400"}`}>{radius.name}</div>

@@ -19,6 +19,10 @@ interface LoginPopupState {
   softSkillsOption: any;
   skillList: any;
   skillsOption: any;
+  addMoreExperience: boolean;
+  appliedJobs: number;
+  shortListedJobs: number;
+  savedJobs: number;
 }
 
 const initialState: LoginPopupState = {
@@ -40,6 +44,10 @@ const initialState: LoginPopupState = {
   // Skills
   skillList: [],
   skillsOption: [],
+  addMoreExperience: false,
+  appliedJobs: 0,
+  shortListedJobs: 0,
+  savedJobs: 0,
 };
 
 export const fetchProfile = createAsyncThunk(
@@ -62,21 +70,40 @@ export const fetchProfile = createAsyncThunk(
 export const fetchSkills = createAsyncThunk(
   "auth/fetchSkills",
   async (
-    { data, search }: { data: any; search?: string },
+    {
+      department_id,
+      search = "",
+      page = 1,
+    }: {
+      department_id: { department_id: number; profession_id: string }[];
+      search?: string;
+      page?: number;
+    },
     { rejectWithValue }
   ) => {
     try {
-      const requestData = { ...data, search };
-      const response = await api.post("/MasterData/getUserSkill", requestData, {
-        headers: { "Content-Type": "application/json" },
+      const payload = new FormData();
+
+      payload.append("field_study_id", ""); // empty string as per backend requirement
+      payload.append("department_id", JSON.stringify(department_id)); // exact format
+      payload.append("page", page.toString()); // ensure it's string
+      payload.append("search", search); // even if empty
+
+      const response = await api.post("/MasterData/getUserSkill", payload, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
-      console.log(response.data, "Verify Data Please");
+
+      console.log(response.data, "✅ Fetched Skills");
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response?.data || "An error occurred");
     }
   }
 );
+
+
 
 export const fetchRoles = createAsyncThunk(
   "auth/fetchRoles",
@@ -127,7 +154,7 @@ export const fetchSoftSkills = createAsyncThunk(
 );
 
 export const editResume = createAsyncThunk(
-  "auth/fetchProfile",
+  "auth/editResume",
   async ({ data }: any, { rejectWithValue }) => {
     try {
       const response = await api.post("/Auth/editJobSeekerPrpfile", data, {
@@ -195,6 +222,9 @@ const profileSlice = createSlice({
     setAboutMeModal: (state, action) => {
       state.aboutMeModal = action.payload;
     },
+    setAddMoreExperience: (state, action) => {
+      state.addMoreExperience = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -203,7 +233,11 @@ const profileSlice = createSlice({
       })
       .addCase(fetchProfile.fulfilled, (state, action) => {
         state.loading = false;
+        console.log(action.payload, "Please Verify Jobs");
         state.profileData = action.payload?.result[0];
+        state.appliedJobs = action.payload?.total_applied_jobs;
+        state.shortListedJobs = action.payload?.total_shortlisted_jobs;
+        state.savedJobs = action.payload?.total_save_job;
       })
       .addCase(fetchProfile.rejected, (state, action) => {
         state.loading = false;
@@ -269,6 +303,7 @@ export const {
   setProfileModal,
   setEducationData,
   setAboutMeModal,
+  setAddMoreExperience,
 } = profileSlice.actions;
 
 export default profileSlice.reducer;

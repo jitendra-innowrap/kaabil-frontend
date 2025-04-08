@@ -964,14 +964,34 @@ label {
 .impact-testimonial{
   box-shadow: 0px 0px 20px 0px #0000001A;
 }
+.impact-section .swiper-button-prev .swiper-btn svg,
+.impact-section .swiper-button-next .swiper-btn svg{
+  color: #a7a5a6 !important;
+}
+.impact-section .swiper-button-prev:hover .swiper-btn svg,
+.impact-section .swiper-button-next:hover .swiper-btn svg{
+  color: #fff !important;
+}
 @media (min-width: 1280px) {
+  .popup-content.notification-content {
+    width: 340px;
+    height: fit-content;
+    position: fixed !important;
+    top: 65px;
+    padding: 0;
+    right: 37px;
+    padding-right: 0 !important;
+  }
+  .popup-content.notification-content .notification-list{
+    overflow-y: auto;
+  }
   .impact-section .swiper-button-prev.out-arrow{
     left: 55px !important;
     transform: translateY(65px);
   }
-  .impact-section .swiper-button-next{
+  .impact-section .swiper-button-next.out-arrow{
     right: unset !important;
-    left: 100px !important;
+    left: 103px !important;
     transform: translateY(65px);
   }
   .impact-section .slider-wrapper{
@@ -981,15 +1001,15 @@ label {
     display: block;
     position: absolute;
     top: -68px;
-    left: -30px;
+    left: -20px;
     min-width: 463px;
     height: auto;
   }
   .aeroplane-element-line{
     display: block;
     position: absolute;
-    bottom: -55px;
-    right: -34px;
+    bottom: -45px;
+    right: -39px;
     min-width: 550px;
     height: auto;
   }
@@ -1332,6 +1352,13 @@ label {
 }
 
 @media (min-width: 1700px) {
+  .popup-content.notification-content {
+    width: 460px;
+    height: 735px;
+    position: fixed !important;
+    top: 95px;
+    right: 47px;
+  }
   .impact-section .swiper-button-prev.out-arrow{
     left: 50px !important;
     transform: translateY(85px);
@@ -2140,3 +2167,31 @@ label {
   opacity: 0;
   display: none;
 }
+
+.current-location-marker {
+  position: relative;
+  overflow: visible !important;
+}
+.current-location-marker::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translate(-19px, -55px);
+  width: 300px;
+  height: 40px;
+  z-index: 1001;
+  background-image: url('/new-assets/icons/jobs-near-you/current-location-tag.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.current-location-marker::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translate(-1px, -40px);
+  width: 2px;
+  height: 55px;
+  z-index: 1001;
+  background-color: #e31836;
+}
+

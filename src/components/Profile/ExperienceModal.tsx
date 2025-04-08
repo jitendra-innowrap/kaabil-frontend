@@ -223,16 +223,19 @@ const ExperienceModal = ({ size }: any) => {
           company_logo: profileData?.user_experiences?.length
             ? profileData.user_experiences[0].company_logo
             : "",
+          isAddMore: false,
         }}
         validationSchema={validationSchema}
         onSubmit={async (values) => {
-          const { is_fresher, ...payload } = values;
+          const { is_fresher, isAddMore, ...payload } = values;
           const formData = new FormData();
           if (is_fresher === 1) {
+            await closeModal();
             formData.append("is_fresher", is_fresher.toString());
             formData.append("user_experiences", JSON.stringify([payload]));
           } else {
             formData.append("is_fresher", is_fresher.toString());
+            formData.append("user_experiences", JSON.stringify([]));
           }
           try {
             const response: any = await api.post(
@@ -249,23 +252,26 @@ const ExperienceModal = ({ size }: any) => {
               : toast.error(response.data.msg || "Failed To Update Profile", {
                   position: "bottom-right",
                 });
+            await closeModal();
           } catch (error: any) {
             toast.error(error?.message || "Something went wrong!", {
               position: "bottom-right",
             });
           } finally {
-            dispatch(
+            await dispatch(
               // @ts-ignore
               fetchProfile({
                 token: token,
                 data: { latitude: 0, longitude: 0 },
               })
             );
-            closeModal();
+            if (isAddMore) {
+              dispatch(setAddMoreExperience(true));
+            }
           }
         }}
       >
-        {({ values, setFieldValue, isSubmitting }) => (
+        {({ values, setFieldValue, isSubmitting, handleSubmit }) => (
           <Form>
             {/* @ts-ignore */}
             <DialogBody
@@ -303,7 +309,9 @@ const ExperienceModal = ({ size }: any) => {
                       type="radio"
                       id="fresher"
                       name="is_fresher"
-                      className="cursor-pointer inline-block !m-0 !w-5 !h-5"
+                      className={`cursor-pointer inline-block !m-0 ${
+                        size === "xxl" ? "!w-4 !h-4" : "!w-5 !h-5"
+                      }`}
                       value={2}
                       onChange={(e: any) => {
                         const value = parseInt(e.target.value);
@@ -314,7 +322,7 @@ const ExperienceModal = ({ size }: any) => {
                     />
                     <div
                       className={`!mb-0 gap-2 inline-block cursor-pointer ${
-                        size === "xxl" ? "text-xs" : "text-lg"
+                        size === "xxl" ? "text-[10px]" : "text-lg"
                       }`}
                     >
                       I'm a Fresher
@@ -333,7 +341,9 @@ const ExperienceModal = ({ size }: any) => {
                       type="radio"
                       id="experienced"
                       name="is_fresher"
-                      className="cursor-pointer inline-block !m-0 !w-5 !h-5"
+                      className={`cursor-pointer inline-block !m-0 ${
+                        size === "xxl" ? "!w-4 !h-4" : "!w-5 !h-5"
+                      }`}
                       value={1}
                       onChange={(e: any) => {
                         const value = parseInt(e.target.value);
@@ -343,7 +353,7 @@ const ExperienceModal = ({ size }: any) => {
                     />
                     <div
                       className={`!mb-0 gap-2 inline-block cursor-pointer ${
-                        size === "xxl" ? "text-xs" : "text-lg"
+                        size === "xxl" ? "text-[10px]" : "text-lg"
                       }`}
                     >
                       I'm Experienced
@@ -622,12 +632,18 @@ const ExperienceModal = ({ size }: any) => {
                     </div>
                   </div>
                 )}
-                {/* <button
-                  onClick={() => dispatch(setAddMoreExperience(true))}
-                  className="flex text-red !bg-neutral-50 !lowercase  font-semibold mt-6 cursor-pointer text-lg"
+                <div
+                  onClick={async () => {
+                    await dispatch(setAddMoreExperience(true));
+                    await setFieldValue("isAdMore", true);
+                    await handleSubmit();
+                  }}
+                  className={`flex text-red !bg-neutral-50 !lowercase font-semibold mt-6 cursor-pointer ${
+                    size === "xxl" ? "text-sm" : "text-lg"
+                  }`}
                 >
                   + add more experience
-                </button> */}
+                </div>
               </div>
             </DialogBody>
             {/* @ts-ignore */}

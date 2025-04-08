@@ -480,7 +480,11 @@ const ProfileModal = ({ size }: any) => {
                         )
                       )}
                       icon={
-                        <RiMapPin2Line className="absolute left-[15px] top-[14px] size-5 text-[#808080]" />
+                        <RiMapPin2Line
+                          className={`absolute left-[15px] ${
+                            size === "xxl" ? "top-[14px]" : "top-[18px]"
+                          } size-4 text-[#808080]`}
+                        />
                       }
                     />
                     <div
@@ -592,31 +596,36 @@ const ProfileModal = ({ size }: any) => {
                           "skills",
                           skills?.map((skill) => skill.value)
                         );
-
                         const selectedSkillValues = skills?.map(
                           (item) => item.value
                         );
                         const skillsData = skillList?.filter((item: any) =>
                           selectedSkillValues?.includes(item?.id)
                         );
-                        console.log(skillsData, "Verify Skilss Data");
                         setFieldValue(
                           "user_skill",
                           skillsData?.length > 0 ? skillsData : []
                         );
                       }}
-                      selectedValues={skillsOption?.filter((role: any) =>
-                        values.skills.includes(role.value)
-                      )}
+                      selectedValues={values?.user_skill?.map((item: any) => ({
+                        value: item.id,
+                        label: item.name,
+                      }))}
                       icon={
-                        <FaMagnifyingGlass className="absolute left-[15px] top-[18px] size-4 text-[#808080]" />
+                        <FaMagnifyingGlass
+                          className={`absolute left-[15px] ${
+                            size === "xxl" ? "top-[14px]" : "top-[18px]"
+                          } size-4 text-[#808080]`}
+                        />
                       }
                     />
                     <div className={values.skills.length > 0 ? "mt-4" : ""}>
                       <SelectedChips
-                        selectedValues={skillsOption?.filter((role: any) =>
-                          // @ts-ignore
-                          values.skills.includes(role.value)
+                        selectedValues={values?.user_skill?.map(
+                          (item: any) => ({
+                            value: item.id,
+                            label: item.name,
+                          })
                         )}
                         onRemove={(value: string) => {
                           const updatedSelectedSoftSkills =
@@ -674,7 +683,11 @@ const ProfileModal = ({ size }: any) => {
                         values.soft_skill.includes(role.value)
                       )}
                       icon={
-                        <FaMagnifyingGlass className="absolute left-[15px] top-[18px] size-4 text-[#808080]" />
+                        <FaMagnifyingGlass
+                          className={`absolute left-[15px] ${
+                            size === "xxl" ? "top-[14px]" : "top-[18px]"
+                          } size-4 text-[#808080]`}
+                        />
                       }
                     />
                     <div className={values.soft_skill.length > 0 ? "mt-4" : ""}>

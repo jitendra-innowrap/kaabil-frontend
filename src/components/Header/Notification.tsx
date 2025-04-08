@@ -8,7 +8,7 @@ import { clearSessionData, getSessionData } from '../utils/deviceId';
 import api from '@/Services/Apiservice';
 import { showToast } from '../utils';
 import { useDispatch, useSelector } from 'react-redux';
-import { signOut, updateUnreadNotiCount } from '@/redux/userSlice';
+import { RefreshProfileData, signOut, updateUnreadNotiCount } from '@/redux/userSlice';
 import { setProgress } from '@/redux/progressSlice';
 import { initializeApp } from 'firebase/app';
 import { getMessaging, getToken, onMessage } from 'firebase/messaging';
@@ -101,7 +101,7 @@ export default function Notification() {
   const router = useRouter();
   const currentPageRef = useRef(1);
   const notificationListRef = useRef<HTMLDivElement>(null);
-  const {unreadNotifications} = useSelector((state: RootState) => state.user);
+  const {unreadNotifications, isProfileUpdate} = useSelector((state: RootState) => state.user);
   const [unreadNotification, setUnreadNotification] = useState(unreadNotifications);
   const [notifications, setNotifications] = useState<Notification[] | null>(null);
 
@@ -145,20 +145,9 @@ useEffect(() => {
   
   // New notification handler
   const handleNewNotification = () => {
-    const message = JSON.stringify(`open=${open}`);
-    // alert(message);
-    if (open) {
-      // If popup is open, refresh the list immediately
-      refreshNotifications();
-    } else {
-      // If popup is closed, increment the counter
-      const newCount = unreadNotifications + 1;
-      setUnreadNotification(newCount);
-      dispatch(updateUnreadNotiCount(newCount));
-      
-      // Optional: Show a toast notification
-      showToast('New notification received');
-    }
+    refreshNotifications();    
+    dispatch(RefreshProfileData());
+    showToast('New notification received');
   }
 
   const updateFCMToken = async (token: string) => {

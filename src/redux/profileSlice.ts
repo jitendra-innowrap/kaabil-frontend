@@ -83,27 +83,21 @@ export const fetchSkills = createAsyncThunk(
   ) => {
     try {
       const payload = new FormData();
-
       payload.append("field_study_id", ""); // empty string as per backend requirement
       payload.append("department_id", JSON.stringify(department_id)); // exact format
       payload.append("page", page.toString()); // ensure it's string
       payload.append("search", search); // even if empty
-
       const response = await api.post("/MasterData/getUserSkill", payload, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-
-      console.log(response.data, "✅ Fetched Skills");
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response?.data || "An error occurred");
     }
   }
 );
-
-
 
 export const fetchRoles = createAsyncThunk(
   "auth/fetchRoles",
@@ -283,14 +277,24 @@ const profileSlice = createSlice({
         }));
       })
       .addCase(fetchSkills.fulfilled, (state, action) => {
-        state.skillList = action.payload.result.map((item: any) => ({
+        // Transform the new results into the desired format
+        const newSkills = action.payload.result.map((item: any) => ({
           id: item?.id,
           name: item?.name,
           skill_level_type_id: "0",
         }));
-        state.skillsOption = action.payload.result.map((item: any) => ({
-          value: item?.id,
-          label: item?.name,
+        // Append new skills without duplicates to skillList
+        const updatedSkillList = Array.from(
+          new Map(
+            [...state.skillList, ...newSkills].map((item) => [item.id, item])
+          ).values()
+        );
+        // Update the state
+        state.skillList = updatedSkillList;
+        // Map the deduplicated list to options
+        state.skillsOption = updatedSkillList.map((item) => ({
+          value: item.id,
+          label: item.name,
         }));
       });
   },

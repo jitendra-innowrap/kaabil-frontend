@@ -63,7 +63,7 @@ const NotificationCard = ({
       onClick={handleRead}
     >
       <Image 
-        className='size-14 3xl:size-[70px]' 
+        className={`size-14 3xl:size-[70px] rounded-full ${(notification.photo_url || notification.company_logo)?" border-2":""}`} 
         src={notification.photo_url || notification.company_logo || '/new-assets/icons/notification-profile-placeholder.svg'} 
         width={140} 
         height={140} 
@@ -106,43 +106,60 @@ export default function Notification() {
   const [notifications, setNotifications] = useState<Notification[] | null>(null);
 
 
-  // Initialize Firebase and get FCM token
-  useEffect(() => {
-    // Update your Firebase initialization code to handle the Notification permission properly
+ // Update the Firebase initialization and message handling
+useEffect(() => {
+    let unsubscribe: () => void;
+  
     const initializeFirebase = async () => {
-        try {
+      try {
         if (typeof window !== 'undefined' && 'serviceWorker' in navigator && messaging) {
-            // Use the proper Notification.permission API
-            const permission = await window.Notification.requestPermission();
-            if (permission === 'granted') {
+          const permission = await window.Notification.requestPermission();
+          if (permission === 'granted') {
             const token = await getToken(messaging, {
-                vapidKey: firebaseConfig.vapidKey,
+              vapidKey: firebaseConfig.vapidKey,
             });
             
             if (token) {
-                await updateFCMToken(token);
-                console.clear();
-                console.log('FCM token: 💕💕💕💕', token);
-                
-                onMessage(messaging, (payload) => {
-                console.log('Message received:', payload);
-                if (open) {
-                    refreshNotifications();
-                } else {
-                    setUnreadNotification(prev => prev + 1);
-                    dispatch(updateUnreadNotiCount(unreadNotifications + 1))
-                }
-                });
+              await updateFCMToken(token);
+              console.log('FCM token registered🍃🍃🍃', token);
+  
+              // Set up message listener
+              unsubscribe = onMessage(messaging, (payload) => {
+                console.log('New message received:', payload);
+                handleNewNotification();
+              });
             }
-            }
+          }
         }
-        } catch (error) {
+      } catch (error) {
         console.error('Error initializing Firebase:', error);
-        }
+      }
     };
-
+  
     initializeFirebase();
+  
+    return () => {
+      if (unsubscribe) unsubscribe();
+    };
   }, []);
+  
+  // New notification handler
+  const handleNewNotification = () => {
+    const message = JSON.stringify(`open=${open}`);
+    // alert(message);
+    if (open) {
+      // If popup is open, refresh the list immediately
+      refreshNotifications();
+    } else {
+      // If popup is closed, increment the counter
+      const newCount = unreadNotifications + 1;
+      setUnreadNotification(newCount);
+      dispatch(updateUnreadNotiCount(newCount));
+      
+      // Optional: Show a toast notification
+      showToast('New notification received');
+    }
+  }
 
   const updateFCMToken = async (token: string) => {
     try {
@@ -333,8 +350,9 @@ useEffect(() => {
         setUnreadNotification(prev => 
           prev > 0 ? prev - 1 : 0
         );
-        if(status=="2"){
-            dispatch(updateUnreadNotiCount(unreadNotifications > 0 ? unreadNotifications - 1 : 0))
+        alert(status)
+        if(status=="0"){
+            dispatch(updateUnreadNotiCount(Math.max(0, unreadNotifications - 1)))
         }
       } else if (response.data?.message === "Invalid Hash Request") {
         handleSessionExpired();

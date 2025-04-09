@@ -87,7 +87,7 @@ const NotificationCard = ({
           />
         </div>
         <p className='text-[#4D4D4FB2] text-end mt-4 text-[10px] leading-[100%]'>
-          {formatNotificationDate(notification?.created_date)}
+          {notification?.notification_created_date}
         </p>
       </div>
     </div>
@@ -108,6 +108,14 @@ export default function Notification() {
   const [unreadNotification, setUnreadNotification] = useState(unreadNotifications);
   const [notifications, setNotifications] = useState<Notification[] | null>(null);
 
+  const handleOpen = () => {
+    setOpen(true);
+    refreshNotifications();
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
  // Update the Firebase initialization and message handling
 useEffect(() => {
@@ -145,6 +153,39 @@ useEffect(() => {
       if (unsubscribe) unsubscribe();
     };
   }, []);
+
+  useEffect(() => {
+    // Define the handler function separately so we can reference it
+    const handleServiceWorkerMessage = (event: MessageEvent) => {
+      if (event.data && event.data.type === 'NEW_NOTIFICATION') {
+        dispatch(RefreshProfileData());
+      }
+    };
+  
+    // Add event listener
+    navigator.serviceWorker.addEventListener('message', handleServiceWorkerMessage);
+  
+    // Cleanup - must pass the same function reference
+    return () => {
+      navigator.serviceWorker.removeEventListener('message', handleServiceWorkerMessage);
+    };
+  }, [dispatch]);
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') {
+        // Tab lost focus - close your notification popup
+        handleClose();
+      }
+    };
+  
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+  
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [handleClose]);
+
   
   // New notification handler
   const handleNewNotification = () => {
@@ -167,14 +208,6 @@ useEffect(() => {
     }
   };
 
-  const handleOpen = () => {
-    setOpen(true);
-    refreshNotifications();
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   const refreshNotifications = () => {
     setCurrentPage(1);
@@ -366,15 +399,18 @@ useEffect(() => {
     }
   }, [open]);
 
+  
+
   return (
     <>
       <div className="relative cursor-pointer" tabIndex={0} onClick={handleOpen}>
         {unreadNotifications > 0 && (
-          <span className="size-3 xl:size-[14px] 3xl:size-[16px] bg-success text-white rounded-full absolute text-[8px] md:text-[10px] grid place-items-center leading-none -top-[4px] -right-[4px] border-[1.5px] border-white">
-            {unreadNotifications}
-          </span>
+          <div className="size-3 xl:size-[14px] 3xl:size-[18px] bg-success text-white rounded-full absolute flex items-center justify-center -top-[4px] -right-[4px] border-[1.5px] border-white">
+            <span className='text-[8px] xl:text-[9px] 3xl:text-[11px] leading-none xl:translate-y-[1px]'>{unreadNotifications}</span>
+          </div>
         )}
-        <PiBellBold className="size-4 3xl:size-5" />
+        {/* <PiBellBold className="size-4 xl:size-5 2xl:size-7" /> */}
+        <Image className="size-4 xl:size-[18px] 2xl:size-5 3xl:size-7" src={'/new-assets/icons/bell-icon.svg'} alt='bell icon' width={28} height={28} />
       </div>
 
       <Popup

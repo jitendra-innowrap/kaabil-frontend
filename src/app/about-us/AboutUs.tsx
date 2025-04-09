@@ -5,6 +5,11 @@ import Image from "next/image"
 import { useState } from "react"
 
 export default function AboutUs() {
+  const testimonialContent =[
+    {
+      
+    }
+  ]
   const testimonials = [
     <div
       className="bg-white impact-testimonial rounded-2xl xl:rounde-[20px] 3xl:rounded-3xl p-4 md:p-5 xl:p-7 3xl:p-10"
@@ -343,7 +348,7 @@ export default function AboutUs() {
               </p>
             </div>
 
-            <div className="hidden md:blocks">
+            <div className="hidden md:block">
                 <Image
                   src="/new-assets/images/about/collaboration.svg"
                   alt="Women in training"

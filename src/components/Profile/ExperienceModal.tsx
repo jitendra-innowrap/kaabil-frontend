@@ -1,5 +1,9 @@
 import { useAppSelector } from "@/redux/hooks";
-import { fetchProfile, setExperienceModal } from "@/redux/profileSlice";
+import {
+  fetchProfile,
+  setAddMoreExperience,
+  setExperienceModal,
+} from "@/redux/profileSlice";
 import {
   Dialog,
   DialogBody,
@@ -73,13 +77,17 @@ const ExperienceModal = ({ size }: any) => {
     job_end_date: Yup.string().when("is_fresher", {
       is: (isFresher: any) => isFresher === 1,
       then: (schema) =>
-        schema.test("job-end-date", "Invalid end date", function (value) {
+        schema.test("job-end-date", "Invalid Date", function (value) {
           const { is_current_company, job_start_date } = this.parent;
-          if (!is_current_company && value) {
+          // Skip check if user is still at the company
+          if (is_current_company === "1") return true;
+          if (value && job_start_date) {
             const endDate = new Date(value);
-            return endDate >= new Date(job_start_date) && endDate <= new Date();
+            const startDate = new Date(job_start_date);
+            const now = new Date();
+            return endDate >= startDate && endDate <= now;
           }
-          return true;
+          return true; // Allow empty end date for other cases
         }),
       otherwise: (schema) => schema.nullable(),
     }),
@@ -205,27 +213,29 @@ const ExperienceModal = ({ size }: any) => {
             : "0",
           job_start_date: profileData?.user_experiences?.length
             ? profileData.user_experiences[0].job_start_date
-            : formatDateExperience(new Date()),
+            : "",
           job_end_date: profileData?.user_experiences?.length
             ? profileData.user_experiences[0].job_end_date
-            : formatDateExperience(new Date()),
+            : "",
           additional_info: profileData?.user_experiences?.length
             ? profileData.user_experiences[0].additional_info
             : "",
           company_logo: profileData?.user_experiences?.length
             ? profileData.user_experiences[0].company_logo
             : "",
+          isAddMore: false,
         }}
         validationSchema={validationSchema}
         onSubmit={async (values) => {
-          console.log(values, "Hitted");
-          const { is_fresher, ...payload } = values;
+          const { is_fresher, isAddMore, ...payload } = values;
           const formData = new FormData();
           if (is_fresher === 1) {
+            await closeModal();
             formData.append("is_fresher", is_fresher.toString());
             formData.append("user_experiences", JSON.stringify([payload]));
           } else {
             formData.append("is_fresher", is_fresher.toString());
+            formData.append("user_experiences", JSON.stringify([]));
           }
           try {
             const response: any = await api.post(
@@ -242,23 +252,26 @@ const ExperienceModal = ({ size }: any) => {
               : toast.error(response.data.msg || "Failed To Update Profile", {
                   position: "bottom-right",
                 });
+            await closeModal();
           } catch (error: any) {
             toast.error(error?.message || "Something went wrong!", {
               position: "bottom-right",
             });
           } finally {
-            dispatch(
+            await dispatch(
               // @ts-ignore
               fetchProfile({
                 token: token,
                 data: { latitude: 0, longitude: 0 },
               })
             );
-            closeModal();
+            if (isAddMore) {
+              dispatch(setAddMoreExperience(true));
+            }
           }
         }}
       >
-        {({ values, setFieldValue, isSubmitting }) => (
+        {({ values, setFieldValue, isSubmitting, handleSubmit }) => (
           <Form>
             {/* @ts-ignore */}
             <DialogBody
@@ -287,14 +300,18 @@ const ExperienceModal = ({ size }: any) => {
                         ? "border-[#E31837] bg-[#FDF1F3] text-[#E31837]"
                         : "border-[#C8C9CB1A]"
                     } ${size === "xxl" ? "py-3" : "py-4"} ${
-                      values?.is_fresher == 1 ? "!pointer-events-none opacity-50" : ""
+                      values?.is_fresher == 1
+                        ? "!pointer-events-none opacity-50"
+                        : ""
                     }`}
                   >
                     <Field
                       type="radio"
                       id="fresher"
                       name="is_fresher"
-                      className="cursor-pointer inline-block !m-0 !w-5 !h-5"
+                      className={`cursor-pointer inline-block !m-0 ${
+                        size === "xxl" ? "!w-4 !h-4" : "!w-5 !h-5"
+                      }`}
                       value={2}
                       onChange={(e: any) => {
                         const value = parseInt(e.target.value);
@@ -305,7 +322,7 @@ const ExperienceModal = ({ size }: any) => {
                     />
                     <div
                       className={`!mb-0 gap-2 inline-block cursor-pointer ${
-                        size === "xxl" ? "text-xs" : "text-lg"
+                        size === "xxl" ? "text-[10px]" : "text-lg"
                       }`}
                     >
                       I'm a Fresher
@@ -324,7 +341,9 @@ const ExperienceModal = ({ size }: any) => {
                       type="radio"
                       id="experienced"
                       name="is_fresher"
-                      className="cursor-pointer inline-block !m-0 !w-5 !h-5"
+                      className={`cursor-pointer inline-block !m-0 ${
+                        size === "xxl" ? "!w-4 !h-4" : "!w-5 !h-5"
+                      }`}
                       value={1}
                       onChange={(e: any) => {
                         const value = parseInt(e.target.value);
@@ -334,7 +353,7 @@ const ExperienceModal = ({ size }: any) => {
                     />
                     <div
                       className={`!mb-0 gap-2 inline-block cursor-pointer ${
-                        size === "xxl" ? "text-xs" : "text-lg"
+                        size === "xxl" ? "text-[10px]" : "text-lg"
                       }`}
                     >
                       I'm Experienced
@@ -470,7 +489,7 @@ const ExperienceModal = ({ size }: any) => {
                             setFieldValue("in_hand_salary", e.target.value)
                           }
                           value={values.in_hand_salary}
-                          placeholder="Monthly in_hand_salary eg: 15000"
+                          placeholder="Monthly Salary"
                           className={`w-full border bg-[#C8C9CB3B] rounded-lg ${
                             size === "xxl" ? "p-2" : "p-3"
                           }`}
@@ -568,7 +587,7 @@ const ExperienceModal = ({ size }: any) => {
                             <ErrorMessage
                               name="job_start_date"
                               component="div"
-                              className="text-red text-md mt-1"
+                              className="text-red text-md"
                             />
                           </div>
                         </div>
@@ -604,7 +623,7 @@ const ExperienceModal = ({ size }: any) => {
                               <ErrorMessage
                                 name="job_end_date"
                                 component="div"
-                                className="text-red text-md mt-1"
+                                className="text-red text-md"
                               />
                             </div>
                           </div>
@@ -613,12 +632,18 @@ const ExperienceModal = ({ size }: any) => {
                     </div>
                   </div>
                 )}
-                {/* <button
-                  // onClick={() => dispatch(setAddmoreExperience(true))}
-                  className="flex text-red !bg-neutral-50 !lowercase  font-semibold mt-6 cursor-pointer text-lg"
+                <div
+                  onClick={async () => {
+                    await dispatch(setAddMoreExperience(true));
+                    await setFieldValue("isAdMore", true);
+                    await handleSubmit();
+                  }}
+                  className={`flex text-red !bg-neutral-50 !lowercase font-semibold mt-6 cursor-pointer ${
+                    size === "xxl" ? "text-sm" : "text-lg"
+                  }`}
                 >
                   + add more experience
-                </button> */}
+                </div>
               </div>
             </DialogBody>
             {/* @ts-ignore */}

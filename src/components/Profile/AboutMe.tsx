@@ -22,7 +22,7 @@ const AboutMe = () => {
           >
             <img
               src="/new-assets/icons/ink_marker.svg"
-              className="h-3 mt-1"
+              className="h-3"
               alt=""
             />
             <span className="text-[13px] sm:text-sm font-bold text-red">

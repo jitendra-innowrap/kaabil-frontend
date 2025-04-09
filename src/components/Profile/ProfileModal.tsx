@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { IoClose } from "react-icons/io5";
@@ -27,6 +27,8 @@ import { FaMagnifyingGlass } from "react-icons/fa6";
 import SelectedChips from "../Inputs/SelectedChips";
 import toast from "react-hot-toast";
 import { RefreshProfileData } from "@/redux/userSlice";
+import { RiMapPin2Line } from "react-icons/ri";
+import { FaRegCalendarAlt } from "react-icons/fa";
 
 const ProfileModal = ({ size }: any) => {
   const {
@@ -42,12 +44,9 @@ const ProfileModal = ({ size }: any) => {
     profileData,
   } = useAppSelector((state) => state.profile);
   const { token } = useAppSelector((state) => state.auth);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  console.log(
-    profileData?.user_willing_to_relocate,
-    locationList,
-    "Verify Location List"
-  );
+  console.log(profileData?.user_job_roles, "Now Can We Check");
 
   const dispatch = useAppDispatch();
 
@@ -80,19 +79,24 @@ const ProfileModal = ({ size }: any) => {
     dispatch(fetchJobTypes());
     dispatch(fetchLocation());
     dispatch(fetchSoftSkills());
-    dispatch(
-      fetchSkills({
-        data: profileData?.user_job_roles?.map((item: any) => ({
-          department_id: "0",
-          profession_id: item?.id,
-        })),
-        search: "",
-      })
-    );
-    // dispatch
-  }, [profileData]);
 
-  console.log(profileData?.skills, "Just Verify Skill");
+    if (profileData?.user_job_roles?.length > 0) {
+      const departmentData = profileData.user_job_roles.map((item: any) => ({
+        department_id: 0, // ✅ number format
+        profession_id: item?.id,
+      }));
+
+      dispatch(
+        fetchSkills({
+          department_id: departmentData,
+          search: "",
+          page: 1,
+        })
+      );
+    }
+  }, [dispatch, profileData]);
+
+  console.log();
 
   return (
     // @ts-ignore
@@ -160,7 +164,7 @@ const ProfileModal = ({ size }: any) => {
               profileData?.skills?.map(
                 ({ skill_level_type, ...skill }: any) => ({
                   ...skill,
-                  skill_level_type_id: "0", 
+                  skill_level_type_id: "0",
                 })
               ) || [],
           }}
@@ -308,7 +312,7 @@ const ProfileModal = ({ size }: any) => {
                       <ErrorMessage
                         name="first_name"
                         component="div"
-                        className="text-red-500 text-lg"
+                        className="text-red text-lg"
                       />
                     </div>
                   </div>
@@ -317,28 +321,39 @@ const ProfileModal = ({ size }: any) => {
                     <label className="block text-lg font-semibold text-[#231F20] mb-2">
                       Date of Birth
                     </label>
-                    <input
-                      type="date"
-                      id="date_of_birth"
-                      name="date_of_birth"
-                      value={values.date_of_birth}
-                      onChange={(e) => {
-                        setFieldValue("date_of_birth", e.target.value);
-                      }}
-                      placeholder="Start Date"
-                      className={`mb-2 w-full px-3 border rounded-lg !bg-white shadow-md ${
-                        size === "xxl" ? "py-2" : "py-3"
-                      }`}
-                      max={(() => {
-                        const today = new Date();
-                        return today.toISOString().split("T")[0];
-                      })()}
-                    />
+                    <div
+                      className="relative w-full cursor-pointer"
+                      onClick={() => inputRef.current?.showPicker()}
+                    >
+                      <input
+                        ref={inputRef}
+                        type="date"
+                        id="date_of_birth"
+                        name="date_of_birth"
+                        value={values.date_of_birth}
+                        onChange={(e) =>
+                          setFieldValue("date_of_birth", e.target.value)
+                        }
+                        placeholder="Start Date"
+                        className={`custom-date-input mb-2 w-full pr-10 pl-3 cursor-pointer border rounded-lg !bg-white shadow-md appearance-none ${
+                          size === "xxl" ? "py-2" : "py-3"
+                        }`}
+                        max={(() => {
+                          const today = new Date();
+                          return today.toISOString().split("T")[0];
+                        })()}
+                      />
+                      <img
+                        src="/new-assets/images/calendar2.svg"
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 pointer-events-none"
+                      />
+                      {/* <FaRegCalendarAlt  /> */}
+                    </div>
                     <div className="h-3">
                       <ErrorMessage
                         name="date_of_birth"
                         component="div"
-                        className="text-red-500 text-lg"
+                        className="text-red text-lg"
                       />
                     </div>
                   </div>
@@ -384,7 +399,7 @@ const ProfileModal = ({ size }: any) => {
                       <ErrorMessage
                         name="role_id"
                         component="div"
-                        className="text-red-500 text-lg"
+                        className="text-red text-lg"
                       />
                     </div>
                   </div>
@@ -415,7 +430,7 @@ const ProfileModal = ({ size }: any) => {
                       <ErrorMessage
                         name="job_type_master_id"
                         component="div"
-                        className="text-red-500 text-lg"
+                        className="text-red text-lg"
                       />
                     </div>
                   </div>
@@ -437,7 +452,7 @@ const ProfileModal = ({ size }: any) => {
                           selectedLocation?.map((role) => role.value)
                         );
                         const selectedLocationValues = selectedLocation?.map(
-                          (role) => role.value
+                          (item) => item.value
                         );
                         const cityData = cityList?.filter((item: any) =>
                           selectedLocationValues?.includes(item?.id)
@@ -461,9 +476,16 @@ const ProfileModal = ({ size }: any) => {
                       }}
                       selectedValues={locationList?.filter((role: any) =>
                         values.user_willing_to_relocate?.some(
-                          (location: any) => location.location === role.label // Matching "Mumbai" with "Mumbai"
+                          (location: any) => location.location === role.label
                         )
                       )}
+                      icon={
+                        <RiMapPin2Line
+                          className={`absolute left-[15px] ${
+                            size === "xxl" ? "top-[14px]" : "top-[18px]"
+                          } size-4 text-[#808080]`}
+                        />
+                      }
                     />
                     <div
                       className={
@@ -477,6 +499,18 @@ const ProfileModal = ({ size }: any) => {
                           )
                         )}
                         onRemove={async (value: string) => {
+                          // Step 1: Find the corresponding object in locationList
+                          const locationToRemove = locationList?.find(
+                            (loc: any) => loc.value === value
+                          );
+                          if (!locationToRemove) return;
+                          const labelToRemove = locationToRemove.label;
+                          // Step 2: Remove it from user_willing_to_relocate (based on label match)
+                          const updatedUserWillingToRelocate =
+                            values.user_willing_to_relocate?.filter(
+                              (loc: any) => loc.location !== labelToRemove
+                            );
+                          // Step 3: Remove value from selectedLocation
                           const updatedSelectedLocations =
                             values.selectedLocation?.filter(
                               (id: any) => id !== value
@@ -485,33 +519,35 @@ const ProfileModal = ({ size }: any) => {
                             "selectedLocation",
                             updatedSelectedLocations
                           );
-                          const filteredCities = cityList?.filter((city: any) =>
-                            // @ts-ignore
-                            updatedSelectedLocations?.includes(city.id)
+                          await setFieldValue(
+                            "user_willing_to_relocate",
+                            updatedUserWillingToRelocate
                           );
-                          if (filteredCities.length > 0) {
-                            await setFieldValue(
-                              "city",
-                              filteredCities[0].location
+                          // Step 4: Update city fields based on new list
+                          if (updatedUserWillingToRelocate.length > 0) {
+                            const primaryCity = updatedUserWillingToRelocate[0];
+                            console.log(
+                              updatedUserWillingToRelocate,
+                              "Verify It Please"
                             );
+                            await setFieldValue("city", primaryCity.location);
                             await setFieldValue(
                               "user_city",
-                              filteredCities[0]?.location
+                              primaryCity.location
                             );
                             await setFieldValue(
                               "city_latitude",
-                              filteredCities[0]?.latitude
+                              primaryCity.latitude
                             );
                             await setFieldValue(
                               "city_longitude",
-                              filteredCities[0]?.longitude
+                              primaryCity.longitude
                             );
                             await setFieldValue(
                               "user_willing_to_relocate",
-                              filteredCities
+                              updatedUserWillingToRelocate
                             );
                           } else {
-                            // Clear the city-related fields if no cities remain
                             await setFieldValue("city", "");
                             await setFieldValue("user_city", "");
                             await setFieldValue("city_latitude", "");
@@ -525,7 +561,7 @@ const ProfileModal = ({ size }: any) => {
                       <ErrorMessage
                         name="user_willing_to_relocate"
                         component="div"
-                        className="text-red-500 text-lg"
+                        className="text-red text-lg"
                       />
                     </div>
                   </div>
@@ -539,14 +575,18 @@ const ProfileModal = ({ size }: any) => {
                       placeholder="Search your skills"
                       isMulti
                       onInputChange={async (value: string) => {
-                        if (value) {
+                        if (value && values?.role_id?.length > 0) {
+                          const departmentData = values.role_id.map(
+                            (item: any) => ({
+                              department_id: 0,
+                              profession_id: item,
+                            })
+                          );
                           await dispatch(
                             fetchSkills({
-                              data: values?.role_id?.map((item: any) => ({
-                                department_id: "0",
-                                profession_id: item,
-                              })),
-                              search: value, // API search query
+                              department_id: departmentData,
+                              search: value,
+                              page: 1,
                             })
                           );
                         }
@@ -556,31 +596,36 @@ const ProfileModal = ({ size }: any) => {
                           "skills",
                           skills?.map((skill) => skill.value)
                         );
-
                         const selectedSkillValues = skills?.map(
                           (item) => item.value
                         );
                         const skillsData = skillList?.filter((item: any) =>
                           selectedSkillValues?.includes(item?.id)
                         );
-                        console.log(skillsData, "Verify Skilss Data");
                         setFieldValue(
                           "user_skill",
                           skillsData?.length > 0 ? skillsData : []
                         );
                       }}
-                      selectedValues={skillsOption?.filter((role: any) =>
-                        values.skills.includes(role.value)
-                      )}
+                      selectedValues={values?.user_skill?.map((item: any) => ({
+                        value: item.id,
+                        label: item.name,
+                      }))}
                       icon={
-                        <FaMagnifyingGlass className="absolute left-[15px] top-[14px] size-4 text-[#808080]" />
+                        <FaMagnifyingGlass
+                          className={`absolute left-[15px] ${
+                            size === "xxl" ? "top-[14px]" : "top-[18px]"
+                          } size-4 text-[#808080]`}
+                        />
                       }
                     />
                     <div className={values.skills.length > 0 ? "mt-4" : ""}>
                       <SelectedChips
-                        selectedValues={skillsOption?.filter((role: any) =>
-                          // @ts-ignore
-                          values.skills.includes(role.value)
+                        selectedValues={values?.user_skill?.map(
+                          (item: any) => ({
+                            value: item.id,
+                            label: item.name,
+                          })
                         )}
                         onRemove={(value: string) => {
                           const updatedSelectedSoftSkills =
@@ -600,7 +645,7 @@ const ProfileModal = ({ size }: any) => {
                       <ErrorMessage
                         name="user_skill"
                         component="div"
-                        className="text-red-500 text-lg"
+                        className="text-red text-lg"
                       />
                     </div>
                   </div>
@@ -638,7 +683,11 @@ const ProfileModal = ({ size }: any) => {
                         values.soft_skill.includes(role.value)
                       )}
                       icon={
-                        <FaMagnifyingGlass className="absolute left-[15px] top-[14px] size-4 text-[#808080]" />
+                        <FaMagnifyingGlass
+                          className={`absolute left-[15px] ${
+                            size === "xxl" ? "top-[14px]" : "top-[18px]"
+                          } size-4 text-[#808080]`}
+                        />
                       }
                     />
                     <div className={values.soft_skill.length > 0 ? "mt-4" : ""}>
@@ -670,7 +719,7 @@ const ProfileModal = ({ size }: any) => {
                       <ErrorMessage
                         name="user_soft_skill"
                         component="div"
-                        className="text-red-500 text-lg"
+                        className="text-red text-lg"
                       />
                     </div>
                   </div>

@@ -31,7 +31,7 @@ const Experience = () => {
           >
             <img
               src="/new-assets/icons/ink_marker.svg"
-              className="h-3 mt-1"
+              className="h-3"
               alt=""
             />
             <span className="text-[13px] sm:text-sm font-bold text-red">
@@ -80,10 +80,7 @@ const Experience = () => {
             </div>
           ))
         ) : (
-          <div className="col-span-12 text-[#4D4D4F] text-sm font-medium">
-            Help recruiters find you – Update your work experience details
-            today!
-          </div>
+          <div className="col-span-12 text-[#4D4D4F] text-sm font-medium"></div>
         )}
       </div>
     </div>

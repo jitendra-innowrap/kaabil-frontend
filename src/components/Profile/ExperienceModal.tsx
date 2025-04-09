@@ -151,7 +151,6 @@ const ExperienceModal = ({ size }: any) => {
 
     fetchJobTypes();
   }, []);
-  console.log(profileData?.is_fresher, "Verify isFresher");
 
   return (
     // @ts-ignore
@@ -628,18 +627,20 @@ const ExperienceModal = ({ size }: any) => {
                     </div>
                   </div>
                 )}
-                <div
-                  onClick={async () => {
-                    await closeModal();
-                    await dispatch(setAddMoreExperience(true));
-                    await setFieldValue("isAdMore", true);
-                  }}
-                  className={`flex text-red !bg-neutral-50 !lowercase font-semibold mt-6 cursor-pointer ${
-                    size === "xxl" ? "text-sm" : "text-lg"
-                  }`}
-                >
-                  + add more experience
-                </div>
+                {values?.is_fresher == 1 && (
+                  <div
+                    onClick={async () => {
+                      await closeModal();
+                      await dispatch(setAddMoreExperience(true));
+                      await setFieldValue("isAdMore", true);
+                    }}
+                    className={`flex text-red !bg-neutral-50 !lowercase font-semibold mt-6 cursor-pointer ${
+                      size === "xxl" ? "text-sm" : "text-lg"
+                    }`}
+                  >
+                    + add more experience
+                  </div>
+                )}
               </div>
             </DialogBody>
             {/* @ts-ignore */}

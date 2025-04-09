@@ -5,7 +5,7 @@ import { setAutocompleteService, setScriptLoaded } from '@/redux/searchSlice';
 import { getSessionData } from '../utils/deviceId';
 import api from '@/Services/Apiservice';
 import { useAppSelector } from '@/redux/hooks';
-import { setHelpVideoData, setNudgesVisibility, setUserDesignation, setUserName, setUserPhotoUrl, setUserProfilePercentage, setUserSkills, setUserWillingToRelocate } from '@/redux/userSlice';
+import { setHelpVideoData, setNudgesVisibility, setUserDesignation, setUserName, setUserPhotoUrl, setUserProfilePercentage, setUserSkills, setUserWillingToRelocate, updateUnreadNotiCount } from '@/redux/userSlice';
 
 export default function LoadGoogleMapsScript() {
   const dispatch = useDispatch();
@@ -47,6 +47,7 @@ export default function LoadGoogleMapsScript() {
           const response = await api.get("/Company/getDynamicJobseekerRow");
           console.log(response,"👍👍👍👍👍👍");
           let skills = response.data?.user_profile?.[0]?.skills
+          dispatch(updateUnreadNotiCount(response?.data?.unReadNotiCount))
           dispatch(setUserSkills(skills))
           dispatch(setUserName(response.data?.user_profile?.[0]?.name))
           dispatch(setUserSkills(response.data?.user_profile?.[0]?.skills))

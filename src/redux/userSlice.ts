@@ -33,6 +33,7 @@ interface AuthState extends User {
   helpVideoData: any,
   user_willing_to_relocate: string[],
   isProfileUpdate?: boolean,
+  unreadNotifications: number,
 }
 const { deviceId, secret } = getSessionData();
 const user = getAuthUser() as User;
@@ -41,6 +42,7 @@ const initialState: AuthState = {
   deviceId,
   secret,
   token,
+  unreadNotifications: 0,
   showUploadCV: false,
   showUpdateEducation: false,
   showProfilePhoto: false,
@@ -81,9 +83,12 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     // Clear the user state
-      
+        
       signOut: (state) => {
         state = initialState // Clear user_location on sign out
+      },
+      updateUnreadNotiCount: (state, action: PayloadAction<number>) => {
+        state.unreadNotifications = action.payload // Clear user_location on sign out
       },
       setUserId: (state, action: PayloadAction<string>) => {
         state.id = action.payload;
@@ -192,6 +197,7 @@ export const {
   setUserSkills,
   setCurrentLocation,
   setSaveMobileNumber,
+  updateUnreadNotiCount
 } = userSlice.actions;
 
 // Export the reducer

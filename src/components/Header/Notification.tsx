@@ -339,7 +339,6 @@ useEffect(() => {
         setUnreadNotification(prev => 
           prev > 0 ? prev - 1 : 0
         );
-        alert(status)
         if(status=="0"){
             dispatch(updateUnreadNotiCount(Math.max(0, unreadNotifications - 1)))
         }

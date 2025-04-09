@@ -430,7 +430,7 @@ const AddMoreExperienceModal = ({ size }: any) => {
                         }`}
                       />
                       {designationSuggestions?.length > 0 && (
-                        <div className="absolute z-10 w-full max-h-[250px] min-h-[50px] overflow-auto p-0 bg-white border rounded-xl shadow-lg mt-1">
+                        <div className="absolute z-10 w-full max-h-[250px] min-h-[40px] overflow-auto p-0 bg-white border rounded-xl shadow-lg mt-1">
                           {designationSuggestions?.map((suggestion) => (
                             <div
                               key={suggestion.id}
@@ -483,7 +483,7 @@ const AddMoreExperienceModal = ({ size }: any) => {
                         }`}
                       />
                       {companySuggestions?.length > 0 && (
-                        <div className="absolute z-10 w-full max-h-[250px] min-h-[50px] overflow-auto p-0 bg-white border rounded-xl shadow-lg mt-1">
+                        <div className="absolute z-10 w-full max-h-[250px] min-h-[40px] overflow-auto p-0 bg-white border rounded-xl shadow-lg mt-1">
                           {companySuggestions?.map((suggestion) => (
                             <div
                               key={suggestion.id}
@@ -629,7 +629,7 @@ const AddMoreExperienceModal = ({ size }: any) => {
                               size === "xxl" ? "!text-[16px]" : "!text-xl"
                             }`}
                           >
-                            Working Till
+                            Worked Till
                           </label>
                           <input
                             type="date"
@@ -661,7 +661,7 @@ const AddMoreExperienceModal = ({ size }: any) => {
                   </div>
                 )}
                 <div
-                  className={`flex text-red cursor-pointer ${
+                  className={`inline-flex text-red cursor-pointer ${
                     size === "xxl" ? "text-sm" : "text-lg"
                   } mt-4 font-semibold`}
                   onClick={() =>

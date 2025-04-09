@@ -223,11 +223,10 @@ const ExperienceModal = ({ size }: any) => {
           company_logo: profileData?.user_experiences?.length
             ? profileData.user_experiences[0].company_logo
             : "",
-          isAddMore: false,
         }}
         validationSchema={validationSchema}
         onSubmit={async (values) => {
-          const { is_fresher, isAddMore, ...payload } = values;
+          const { is_fresher, ...payload } = values;
           const formData = new FormData();
           if (is_fresher === 1) {
             await closeModal();
@@ -265,9 +264,6 @@ const ExperienceModal = ({ size }: any) => {
                 data: { latitude: 0, longitude: 0 },
               })
             );
-            if (isAddMore) {
-              dispatch(setAddMoreExperience(true));
-            }
           }
         }}
       >
@@ -396,7 +392,7 @@ const ExperienceModal = ({ size }: any) => {
                           }`}
                         />
                         {designationSuggestions?.length > 0 && (
-                          <div className="absolute z-10 w-full max-h-[250px] min-h-[50px] overflow-auto p-0 bg-white border rounded-xl shadow-lg mt-1">
+                          <div className="absolute z-10 w-full max-h-[250px] min-h-[40px] overflow-auto p-0 bg-white border rounded-xl shadow-lg mt-1">
                             {designationSuggestions?.map((suggestion) => (
                               <div
                                 key={suggestion.id}
@@ -449,7 +445,7 @@ const ExperienceModal = ({ size }: any) => {
                           }`}
                         />
                         {companySuggestions?.length > 0 && (
-                          <div className="absolute z-10 w-full max-h-[250px] min-h-[50px] overflow-auto p-0 bg-white border rounded-xl shadow-lg mt-1">
+                          <div className="absolute z-10 w-full max-h-[250px] min-h-[40px] overflow-auto p-0 bg-white border rounded-xl shadow-lg mt-1">
                             {companySuggestions?.map((suggestion) => (
                               <div
                                 key={suggestion.id}
@@ -600,7 +596,7 @@ const ExperienceModal = ({ size }: any) => {
                                 size === "xxl" ? "!text-[16px]" : "!text-xl"
                               }`}
                             >
-                              Working Till
+                              Worked Till
                             </label>
                             <input
                               type="date"
@@ -634,9 +630,9 @@ const ExperienceModal = ({ size }: any) => {
                 )}
                 <div
                   onClick={async () => {
+                    await closeModal();
                     await dispatch(setAddMoreExperience(true));
                     await setFieldValue("isAdMore", true);
-                    await handleSubmit();
                   }}
                   className={`flex text-red !bg-neutral-50 !lowercase font-semibold mt-6 cursor-pointer ${
                     size === "xxl" ? "text-sm" : "text-lg"

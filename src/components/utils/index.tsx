@@ -455,7 +455,13 @@ export const getCompanyInitials = (name?: string): string => {
   return words[0][0].toUpperCase();
 };
 
-export const ProfileTabs = ["About", "Education", "Experience", "Resume"];
+export const ProfileTabs = [
+  "About",
+  "Education",
+  "Experience",
+  "Resume",
+  // "About Me", // Added About Me
+];
 
 // Experience Constant
 export const experiences = [

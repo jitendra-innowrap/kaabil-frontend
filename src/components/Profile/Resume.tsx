@@ -5,12 +5,8 @@ import React, { useState } from "react";
 const Resume = () => {
   const dispatch = useAppDispatch();
   const { profileData } = useAppSelector((state) => state.profile);
-  const [fileName, setFileName] = useState("");
 
-  const handleFileClick = () => {
-    // Simulate file selection and update the file name
-    setFileName("sample_resume.pdf");
-  };
+  console.log(profileData?.user_portfolio, "Check User PortFolio");
 
   return (
     <div className="profile-card bg-white rounded-lg mt-3 p-[16px] sm:p-[20px] lg:px-12 py-6">
@@ -48,7 +44,9 @@ const Resume = () => {
                 >
                   {/* File Name Display */}
                   <div className="flex-grow text-[12px] sm:text-sm text-gray-700 px-3 truncate max-w-[70%]">
-                    {item?.file_name || "No file chosen"}
+                    {item?.file_name
+                      ? decodeURIComponent(item.file_name)
+                      : "No file chosen"}
                   </div>
 
                   {/* Icon */}

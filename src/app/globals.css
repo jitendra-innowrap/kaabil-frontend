@@ -433,8 +433,9 @@ a.btn.disabled:hover {
 .css-t3ipsp-control,
 .css-t3ipsp-control:hover {
   box-shadow: 0 0 0 1px var(--primary-red) !important;
-  border-color: var(--primary-red);
+  border-color: var(--primary-red) !important;
 }
+
 .search-section .css-13cymwt-control,
 .search-section .css-t3ipsp-control {
   padding-left: 1.9rem;
@@ -2088,6 +2089,13 @@ label {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
 }
 
+.sm-dailog .role-preference .css-hlgwow,
+.sm-dailog .role-preference .css-13cymwt-control,
+.sm-dailog .role-preference .css-t3ipsp-control {
+  background: white !important;
+  /* box-shadow: none; */
+}
+
 .sm-dailog .job-role-select .css-13cymwt-control,
 .sm-dailog .job-role-select .css-hlgwow {
   border: none !important;
@@ -2109,6 +2117,9 @@ label {
 .sm-dailog .css-t3ipsp-control {
   padding-left: 16px;
   background-color: #f2f3f3 !important;
+  border-color: red !important;
+  border-width: 1px !important;
+  outline: none !important;
 }
 
 .multi-select .react-select2 div:nth-child(1) {

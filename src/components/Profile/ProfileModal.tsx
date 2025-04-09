@@ -126,7 +126,7 @@ const ProfileModal = ({ size }: any) => {
                   : "justify-center text-3xl"
               }`}
             >
-              <h2 className="text-center text-[#231F20]  font-semibold">
+              <h2 className="text-center text-[#231F20] font-semibold">
                 Edit your <span className="text-red">profile</span>
               </h2>
             </div>
@@ -135,7 +135,7 @@ const ProfileModal = ({ size }: any) => {
         <Formik
           initialValues={{
             photo_img: profileData?.photo_url || "/new-assets/icons/avatar.svg", //Exclude this
-            photo_url: profileData?.photo_url || null,
+            photo_url: profileData?.photo_url || "",
             first_name: profileData?.first_name || "",
             date_of_birth: profileData?.date_of_birth || "",
             role_id:
@@ -231,7 +231,7 @@ const ProfileModal = ({ size }: any) => {
           {({ setFieldValue, isSubmitting, values }) => (
             <Form>
               {/* @ts-ignore */}
-              <DialogBody className="p-0 max-h-[69vh] overflow-y-auto custom-scroll">
+              <DialogBody className="p-0 max-h-[69vh] overflow-y-auto ">
                 <div
                   className={`${
                     size === "xxl" ? "px-4" : "px-12"
@@ -345,7 +345,7 @@ const ProfileModal = ({ size }: any) => {
                       />
                       <img
                         src="/new-assets/images/calendar2.svg"
-                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 pointer-events-none"
+                        className="absolute right-3 top-[45%] transform -translate-y-1/2 text-gray-500 pointer-events-none"
                       />
                       {/* <FaRegCalendarAlt  /> */}
                     </div>

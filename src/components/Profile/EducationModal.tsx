@@ -42,19 +42,9 @@ const EducationModal = ({ size }: any) => {
       .test(
         "fileCount",
         "You can only upload up to 6 files.",
-        (value: any) =>
-          profileData?.user_certifications?.length > 0 ||
-          !value ||
-          value.length <= 6
+        (value: any) => !value || value.length <= 6
       )
-      .nullable() // Allows null if existing certifications are present
-      .test(
-        "requiredIfNoExistingCerts",
-        "Required",
-        (value: any) =>
-          profileData?.user_certifications?.length > 0 ||
-          (value && value.length > 0)
-      ),
+      .nullable(),
     year_of_graduation: Yup.string().required("Required"),
   });
 
@@ -450,7 +440,7 @@ const EducationModal = ({ size }: any) => {
                           type="file"
                           className="hidden"
                           multiple
-                          accept=".pdf,.doc,.docx,image/*,video/*"
+                          accept="image/*,.pdf,.doc,.docx"
                           onChange={(e: any) => {
                             const files: any = Array.from(e.target.files);
                             if (files.length > 6) {

@@ -80,7 +80,9 @@ const Experience = () => {
             </div>
           ))
         ) : (
-          <div className="col-span-12 text-[#4D4D4F] text-sm font-medium"></div>
+          <div className="col-span-12 text-[#231F20] text-md font-medium">
+            {profileData?.is_fresher == 0 ? "" : "Fresher"}
+          </div>
         )}
       </div>
     </div>

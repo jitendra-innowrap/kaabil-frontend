@@ -18,6 +18,7 @@ import { closeLoginDialog, openLoginDialog } from "@/redux/loginDialogSlice";
 import { useRouter } from "next/navigation";
 import LogoutDialog from "../Auth/LogoutDialog";
 import Notification from "./Notification";
+import { RiArrowDropDownFill } from "react-icons/ri";
 
 interface prop {
   closeSideMenu?: () => void;
@@ -30,7 +31,7 @@ export default function SignInButton({ closeSideMenu }: prop) {
   const isOpen = useAppSelector((state) => state.loginDialog.isOpen);
   const progress = useAppSelector((state) => state.progress.value);
   const isUser = useAppSelector((state) => state.auth.token);
-  const { is_profile_verify } = useAppSelector((state) => state.user);
+  const { is_profile_verify, unreadNotifications } = useAppSelector((state) => state.user);
   const [open, setOpen] = useState(false);
   const [openLogoutDialog, setOpenLogoutDialog] = useState(false);
   const popupRef = useRef<any>(null);
@@ -141,7 +142,7 @@ export default function SignInButton({ closeSideMenu }: prop) {
           Sign In
         </button>
       ) : (
-        <div className="flex items-center gap-3 2xl:gap-7">
+        <div className="flex items-center gap-3 2xl:gap-6 3xl:gap-7">
           <Notification/>
           <div 
             ref={dropdownRef} 
@@ -154,6 +155,9 @@ export default function SignInButton({ closeSideMenu }: prop) {
               tabIndex={0}
               className="relative size-[30px] xl:size-[40px] 2xl:size-[50px]"
             >
+              {/* {unreadNotifications > 0 && <span className="size-3 xl:size-[14px] 3xl:size-[18px] bg-success text-white rounded-full absolute text-[8px] md:text-[9px] 3xl:text-[11px] grid place-items-center leading-none -top-[4px] -right-[4px] xl:top-[2px] xl:-right-[4px] 2xl:top-[2px] 2xl:-right-[1px] 3xl:-top-[0px] 3xl:-right-[4px] border-[1.5px] border-white">
+                {unreadNotifications}
+              </span>} */}
               <Image
                 height={100}
                 width={100}
@@ -162,7 +166,7 @@ export default function SignInButton({ closeSideMenu }: prop) {
                 alt="Profile picture"
               />
             </div>
-            <BiChevronDown className="font-medium text-xl 3xl:text-2xl text-black" />
+            <RiArrowDropDownFill className="font-medium text-xl 3xl:text-2xl text-black" />
             
             {/* Dropdown menu - now controlled by isOpen state */}
             <div className={`absolute z-30 ${isDropDownOpen ? 'block' : 'hidden'} top-0 lg:left-0 profile-options-menu`}>

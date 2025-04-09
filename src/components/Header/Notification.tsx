@@ -87,7 +87,7 @@ const NotificationCard = ({
           />
         </div>
         <p className='text-[#4D4D4FB2] text-end mt-4 text-[10px] leading-[100%]'>
-          {formatNotificationDate(notification?.created_date)}
+          {notification?.notification_created_date}
         </p>
       </div>
     </div>
@@ -370,11 +370,12 @@ useEffect(() => {
     <>
       <div className="relative cursor-pointer" tabIndex={0} onClick={handleOpen}>
         {unreadNotifications > 0 && (
-          <span className="size-3 xl:size-[14px] 3xl:size-[16px] bg-success text-white rounded-full absolute text-[8px] md:text-[10px] grid place-items-center leading-none -top-[4px] -right-[4px] border-[1.5px] border-white">
+          <span className="size-3 xl:size-[14px] 3xl:size-[18px] bg-success text-white rounded-full absolute text-[8px] md:text-[9px] 3xl:text-[11px] flex items-center justify-center leading-none -top-[4px] -right-[4px] border-[1.5px] border-white">
             {unreadNotifications}
           </span>
         )}
-        <PiBellBold className="size-4 3xl:size-5" />
+        {/* <PiBellBold className="size-4 xl:size-5 2xl:size-7" /> */}
+        <Image className="size-4 xl:size-[18px] 2xl:size-5 3xl:size-7" src={'/new-assets/icons/bell-icon.svg'} alt='bell icon' width={28} height={28} />
       </div>
 
       <Popup

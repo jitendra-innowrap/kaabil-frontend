@@ -108,6 +108,14 @@ export default function Notification() {
   const [unreadNotification, setUnreadNotification] = useState(unreadNotifications);
   const [notifications, setNotifications] = useState<Notification[] | null>(null);
 
+  const handleOpen = () => {
+    setOpen(true);
+    refreshNotifications();
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
  // Update the Firebase initialization and message handling
 useEffect(() => {
@@ -145,6 +153,39 @@ useEffect(() => {
       if (unsubscribe) unsubscribe();
     };
   }, []);
+
+  useEffect(() => {
+    // Define the handler function separately so we can reference it
+    const handleServiceWorkerMessage = (event: MessageEvent) => {
+      if (event.data && event.data.type === 'NEW_NOTIFICATION') {
+        dispatch(RefreshProfileData());
+      }
+    };
+  
+    // Add event listener
+    navigator.serviceWorker.addEventListener('message', handleServiceWorkerMessage);
+  
+    // Cleanup - must pass the same function reference
+    return () => {
+      navigator.serviceWorker.removeEventListener('message', handleServiceWorkerMessage);
+    };
+  }, [dispatch]);
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') {
+        // Tab lost focus - close your notification popup
+        handleClose();
+      }
+    };
+  
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+  
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [handleClose]);
+
   
   // New notification handler
   const handleNewNotification = () => {
@@ -167,14 +208,6 @@ useEffect(() => {
     }
   };
 
-  const handleOpen = () => {
-    setOpen(true);
-    refreshNotifications();
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   const refreshNotifications = () => {
     setCurrentPage(1);
@@ -365,6 +398,8 @@ useEffect(() => {
       refreshNotifications();
     }
   }, [open]);
+
+  
 
   return (
     <>

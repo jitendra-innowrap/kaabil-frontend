@@ -43,7 +43,18 @@ messaging.onBackgroundMessage((payload) => {
 
     console.log('Preparing notification:', notificationTitle, notificationOptions);
 
-    return self.registration.showNotification(notificationTitle, notificationOptions);
+    return self.registration.showNotification(notificationTitle, notificationOptions)
+    .then(() => {
+      // Broadcast to all clients (tabs)
+      self.clients.matchAll().then((clients) => {
+        clients.forEach((client) => {
+          client.postMessage({
+            type: 'NEW_NOTIFICATION',
+            payload: payload
+          });
+        });
+      });
+    });
   } catch (error) {
     console.error('Error in background message handler:', error);
   }

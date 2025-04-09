@@ -80,7 +80,7 @@ export default function Home() {
         
         // Ensure session data is available
         if (!deviceId || !secret || !salt) {
-          console.log("Session data not available, retrying...");
+          // console.log("Session data not available, retrying...");
           setTimeout(fetchJobDetails, 1000); // Retry after 1 second
           return;
         }
@@ -198,7 +198,7 @@ export default function Home() {
               dispatch(setProgress(1));
               clearSessionData();
             }
-            console.log(response);
+            // console.log(response);
           } catch (error) {
             console.error('Error fetching jobs:', error);
           }
@@ -236,7 +236,7 @@ export default function Home() {
             dispatch(setProgress(1));
             clearSessionData();
           }
-          console.log(response);
+          // console.log(response);
         } catch (error) {
           console.error('Error fetching jobs:', error);
         }

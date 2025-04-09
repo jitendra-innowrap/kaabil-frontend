@@ -51,7 +51,7 @@ export const fetchProfile = createAsyncThunk(
           token,
         },
       });
-      console.log(response.data, "Verify Data Please");
+      // console.log(response.data, "Verify Data Please");
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response?.data || "An error occurred");
@@ -70,7 +70,7 @@ export const fetchSkills = createAsyncThunk(
       const response = await api.post("/MasterData/getUserSkill", requestData, {
         headers: { "Content-Type": "application/json" },
       });
-      console.log(response.data, "Verify Data Please");
+      // console.log(response.data, "Verify Data Please");
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response?.data || "An error occurred");
@@ -135,7 +135,7 @@ export const editResume = createAsyncThunk(
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log(response.data, "Verify Data Please");
+      // console.log(response.data, "Verify Data Please");
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response?.data || "An error occurred");
@@ -148,7 +148,7 @@ export const fetchEducationDetail = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await api.get("/MasterData/getEducation");
-      console.log(response.data, "Verify Data Please");
+      // console.log(response.data, "Verify Data Please");
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response?.data || "An error occurred");
@@ -165,7 +165,7 @@ export const fieldStudy = createAsyncThunk(
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log(response.data, "Verify Data Please");
+      // console.log(response.data, "Verify Data Please");
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response?.data || "An error occurred");
@@ -216,7 +216,7 @@ const profileSlice = createSlice({
         state.educationData = action.payload.result;
       })
       .addCase(fetchRoles.fulfilled, (state, action) => {
-        console.log(action.payload, "Fetch Role List");
+        // console.log(action.payload, "Fetch Role List");
         state.rolesList = action.payload?.result?.map((item: any) => ({
           label: item.name,
           value: item.id,
@@ -226,7 +226,7 @@ const profileSlice = createSlice({
         state.jobTypes = action.payload.result;
       })
       .addCase(fetchLocation.fulfilled, (state, action) => {
-        console.log(action.payload, "From Location List");
+        // console.log(action.payload, "From Location List");
         state.cityList = action.payload.result.map((item: any) => ({
           id: item?.id,
           location: item?.name,

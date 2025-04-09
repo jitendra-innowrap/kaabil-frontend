@@ -34,18 +34,18 @@ export default function LoadGoogleMapsScript() {
   useEffect(() => {
     const fetchUserSkills = async () => {
       try {
-        console.log('user skills')
+        // console.log('user skills')
         const { deviceId, secret, salt } = getSessionData();
         // Ensure session data is available
         if (!deviceId || !secret || !salt) {
-          console.log("Session data not available, retrying...");
+      //  console.log("Session data not available, retrying...");
           setTimeout(fetchUserSkills, 1000); // Retry after 1 second
           return;
         }
 
         if(isLoggedIn){
           const response = await api.get("/Company/getDynamicJobseekerRow");
-          console.log(response,"👍👍👍👍👍👍");
+          // console.log(response,"👍👍👍👍👍👍");
           let skills = response.data?.user_profile?.[0]?.skills
           dispatch(updateUnreadNotiCount(response?.data?.unReadNotiCount))
           dispatch(setUserSkills(skills))

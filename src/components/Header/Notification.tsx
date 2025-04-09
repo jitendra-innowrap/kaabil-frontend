@@ -121,11 +121,11 @@ useEffect(() => {
             
             if (token) {
               await updateFCMToken(token);
-              console.log('FCM token registered🍃🍃🍃', token);
+              // console.log('FCM token registered🍃🍃🍃', token);
   
               // Set up message listener
               unsubscribe = onMessage(messaging, (payload) => {
-                console.log('New message received:', payload);
+                // console.log('New message received:', payload);
                 handleNewNotification();
               });
             }
@@ -185,7 +185,7 @@ useEffect(() => {
     const payload = { page: page.toString() };
 
     if (!deviceId || !secret || !salt) {
-      console.log("Session data not available, retrying...");
+      // console.log("Session data not available, retrying...");
       setTimeout(() => getNotifications(page, isRefresh), 1000);
       return;
     }
@@ -417,7 +417,7 @@ useEffect(() => {
 
           <div 
             ref={notificationListRef}
-            className="flex flex-col gap-[6px] 3xl:gap-2 h-[323px] xl:h-[393px] 2xl:h-[423px] 3xl:h-[614px] overflow-auto -mr-[6px] notification-list"
+            className="flex flex-col gap-[6px] 3xl:gap-2 h-[323px] xl:h-[393px] 2xl:h-[423px] 3xl:h-[614px] overflow-auto notification-list"
           >
             {isLoading ? (
               <div className="flex justify-center items-center h-full">

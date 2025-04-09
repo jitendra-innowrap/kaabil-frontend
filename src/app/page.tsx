@@ -48,13 +48,13 @@ export default function Home() {
 
             // Ensure session data is available
             if (!deviceId || !secret || !salt) {
-              console.log("Session data not available, retrying...");
+            //   console.log("Session data not available, retrying...");
               setTimeout(fetchHomedata, 1000); // Retry after 1 second
               return;
             }
 
             const response = await api.get("/Home/homeData");
-            console.log(response);
+            // console.log(response);
             setHomeData(response?.data?.result);
             setJobTypes(response?.data?.result?.job_types?.map((typ: any, i: number) => ({
               icon: typ?.id==1?

@@ -108,7 +108,7 @@ export default function MyJobs() {
         setJobs(response?.data?.result as JobResult[]);
         const totalJobs = response?.data?.total || response?.data?.total_save_job;
         const totalPages = Math.ceil(totalJobs / jobsPerPage);
-        console.log(totalJobs,"total")
+        // console.log(totalJobs,"total")
         setTotalJobs(totalJobs);
         setTotalPages(totalPages);
         setIsLoading(false);
@@ -143,8 +143,8 @@ export default function MyJobs() {
     const updatedPages = Math.ceil(updatedJobs / jobsPerPage);
     setTotalPages(updatedPages)
     console.clear()
-    console.log('old list', jobs)
-    console.log('updatedList', updatedList)
+    // console.log('old list', jobs)
+    // console.log('updatedList', updatedList)
   }
   const handleTab = (key: number) => {
     setJobs(null);

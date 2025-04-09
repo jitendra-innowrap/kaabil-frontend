@@ -86,7 +86,7 @@ export default function ShortListedJobCard(prop:any) {
               dispatch(setProgress(1));
               clearSessionData();
             }
-            console.log(response);
+            // console.log(response);
           } catch (error) {
             console.error('Error fetching jobs:', error);
           }
@@ -124,14 +124,14 @@ export default function ShortListedJobCard(prop:any) {
             dispatch(setProgress(1));
             clearSessionData();
           }
-          console.log(response);
+          // console.log(response);
         } catch (error) {
           console.error('Error fetching jobs:', error);
         }
   }
   return (
     <Link href={`/jobs/detail/${prop?.id}`} passHref legacyBehavior>
-      <div onClick={()=>{console.log(prop)}} className='job-card cursor-pointer h-full flex flex-col justify-between w-full border shadow-sm border-lightGrey rounded-2xl bg-white p-4 3xl:p-6'>
+      <div className='job-card cursor-pointer h-full flex flex-col justify-between w-full border shadow-sm border-lightGrey rounded-2xl bg-white p-4 3xl:p-6'>
         <div className="flex gap-3 3xl:gap-4 justify-between">
             <div className="flex gap-[10px] 3xl:gap-4">
               <CompanyLogo name={prop?.company_name} logo={prop?.logo} index={prop?.id || 0} />

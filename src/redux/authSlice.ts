@@ -71,7 +71,6 @@ export const getDeviceToken = createAsyncThunk<
   { rejectValue: string }
 >("device/fetchToken", async (_, { rejectWithValue }) => {
   try {
-    console.log("secret is " + secret);
 
     if (deviceId) {
       // If secret exists, return the existing deviceId and secret

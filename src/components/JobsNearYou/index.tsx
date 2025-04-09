@@ -193,7 +193,7 @@ export default function JobsNearYou() {
       
             // Ensure session data is available
             if (!deviceId || !secret || !salt) {
-              console.log("Session data not available, retrying...");
+            //   console.log("Session data not available, retrying...");
               setTimeout(fetchRadius, 1000); // Retry after 1 second
               return;
             }      
@@ -202,7 +202,7 @@ export default function JobsNearYou() {
               const response = await api.get(
                 `/MasterData/getRadius`
               );
-              console.log(response, "radius list 👍👍👍")
+            //   console.log(response, "radius list 👍👍👍")
               setRadiusList(response.data?.result as radius[]);
               setselectedradius(response?.data?.result?.[0])
               setIsJobsLoading(false);
@@ -267,7 +267,7 @@ export default function JobsNearYou() {
 
         // Ensure session data is available
         if (!deviceId || !secret || !salt) {
-        console.log("Session data not available, retrying...");
+        // console.log("Session data not available, retrying...");
         setTimeout(fetchJobs, 1000); // Retry after 1 second
         return;
         }

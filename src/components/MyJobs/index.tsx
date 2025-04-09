@@ -51,7 +51,7 @@ export default function MyJobs() {
   
   useEffect(() => {
     const updateSize = () => {
-      setIsMobile(window.innerWidth < 1024);
+      setIsMobile(window.innerWidth < 768);
     };
     
     // Initialize on mount
@@ -243,8 +243,8 @@ export default function MyJobs() {
         <Breadcrumb root='Home' category='My Jobs' />
       </div>
       <h1 className='hidden sm:block text-[#231F20] text-xl 3xl:text-2xl font-medium'>My jobs</h1>
-      <div className="pb-5 md:pb-8 xl:pb-14 2xl:pb-16 flex flex-col sm:flex-row justify-between gap-5 md:gap-7 lg:gap-8 2xl:gap-10 3xl:gap-12">
-        <div className="w-full order-1 sm:order-0">
+      <div className="pb-5 md:pb-8 xl:pb-14 2xl:pb-16 flex flex-col md:flex-row justify-between gap-5 md:gap-7 lg:gap-8 2xl:gap-10 3xl:gap-12">
+        <div className="w-full order-1 md:order-0">
           {/* Navigation Tabs */}
           <div className="bg-[#f9f9f9] mb-6 mt-4">
             <div className="mx-auto border-b border-[#D4D4D4]">
@@ -353,17 +353,17 @@ export default function MyJobs() {
           )}
         </div>
         
-        <div className="nudges-bar sm:mt-28 lg:mt-32 flex flex-shrink-0  md:gap-6 max-w-[400px] mx-auto lg:mx-0 sm:w-[300px] lg:w-[280px] 2xl:w-[341px] order-0 sm:order-1">
-          <div className={"sticky w-full top-[80px] hidden lg:flex flex-col gap-4"}>
-            <JobsNearYouNudge/>
+        <div className="nudges-bar mt-4 md:mt-28 lg:mt-32 flex flex-shrink-0  md:gap-6 max-w-[400px] mx-auto lg:mx-0 md:w-[300px] lg:w-[280px] 2xl:w-[341px] order-0 md:order-1">
+          <div className={"sticky w-full top-[80px] flex flex-col gap-4"}>
+            {!isMobile && <JobsNearYouNudge/>}
             {isLoggedIn && <ProfileCard/>}
             {isLoggedIn && <QuickAction/>}
-            {isLoggedIn && showSoftSkills && <ShareStrength/>}
-            {isLoggedIn && showUploadCV && <UpdloadCvNudge/>}
-            {isLoggedIn && showUpdateEducation && <EducationUpdateNudge/>}
-            {isLoggedIn && showProfilePhoto && <ProfileUploadNudge/>}
-            {isLoggedIn && showUpdateProfile && <EditProfileNudge/>}
-            {isLoggedIn && showHelpVideo && <WelcomeVideoNudge/>}
+            {isLoggedIn && !isMobile && showSoftSkills && <ShareStrength/>}
+            {isLoggedIn && !isMobile && showUploadCV && <UpdloadCvNudge/>}
+            {isLoggedIn && !isMobile && showUpdateEducation && <EducationUpdateNudge/>}
+            {isLoggedIn && !isMobile && showProfilePhoto && <ProfileUploadNudge/>}
+            {isLoggedIn && !isMobile && showUpdateProfile && <EditProfileNudge/>}
+            {isLoggedIn && !isMobile && showHelpVideo && <WelcomeVideoNudge/>}
           </div>
         </div>
       </div>

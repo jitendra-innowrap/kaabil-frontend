@@ -33,7 +33,7 @@ body {
 .no-scroll {
   overflow: hidden !important;
   /*height: 100vh !important;*/
-  scrollbar-width:none !important;
+  scrollbar-width: none !important;
   touch-action: none;
   -ms-touch-action: none;
   height: 100%;
@@ -955,21 +955,21 @@ label {
     max-width: 600px;
   }
 }
-.aeroplane-element{
+.aeroplane-element {
   display: none;
 }
-.aeroplane-element-line{
+.aeroplane-element-line {
   display: none;
 }
-.impact-testimonial{
-  box-shadow: 0px 0px 20px 0px #0000001A;
+.impact-testimonial {
+  box-shadow: 0px 0px 20px 0px #0000001a;
 }
 .impact-section .swiper-button-prev .swiper-btn svg,
-.impact-section .swiper-button-next .swiper-btn svg{
+.impact-section .swiper-button-next .swiper-btn svg {
   color: #a7a5a6 !important;
 }
 .impact-section .swiper-button-prev:hover .swiper-btn svg,
-.impact-section .swiper-button-next:hover .swiper-btn svg{
+.impact-section .swiper-button-next:hover .swiper-btn svg {
   color: #fff !important;
 }
 @media (min-width: 1280px) {
@@ -982,22 +982,22 @@ label {
     right: 37px;
     padding-right: 0 !important;
   }
-  .popup-content.notification-content .notification-list{
+  .popup-content.notification-content .notification-list {
     overflow-y: auto;
   }
-  .impact-section .swiper-button-prev.out-arrow{
+  .impact-section .swiper-button-prev.out-arrow {
     left: 55px !important;
     transform: translateY(65px);
   }
-  .impact-section .swiper-button-next.out-arrow{
+  .impact-section .swiper-button-next.out-arrow {
     right: unset !important;
     left: 103px !important;
     transform: translateY(65px);
   }
-  .impact-section .slider-wrapper{
+  .impact-section .slider-wrapper {
     padding-inline: 0 !important;
   }
-  .aeroplane-element{
+  .aeroplane-element {
     display: block;
     position: absolute;
     top: -68px;
@@ -1005,7 +1005,7 @@ label {
     min-width: 463px;
     height: auto;
   }
-  .aeroplane-element-line{
+  .aeroplane-element-line {
     display: block;
     position: absolute;
     bottom: -45px;
@@ -1155,19 +1155,19 @@ label {
   }
 }
 @media (min-width: 1400px) {
-  .impact-section .swiper-button-prev.out-arrow{
+  .impact-section .swiper-button-prev.out-arrow {
     left: 75px !important;
     transform: translateY(75px);
   }
-  .impact-section .swiper-button-next.out-arrow{
+  .impact-section .swiper-button-next.out-arrow {
     right: unset !important;
     left: 145px !important;
     transform: translateY(75px);
   }
-  .impact-testimonial{
-    box-shadow: 0px 0px 20px 0px #0000001A;
+  .impact-testimonial {
+    box-shadow: 0px 0px 20px 0px #0000001a;
   }
-  .aeroplane-element{
+  .aeroplane-element {
     display: block;
     position: absolute;
     top: -82px;
@@ -1175,7 +1175,7 @@ label {
     min-width: 513px;
     height: auto;
   }
-  .aeroplane-element-line{
+  .aeroplane-element-line {
     display: block;
     position: absolute;
     bottom: -115px;
@@ -1359,19 +1359,19 @@ label {
     top: 95px;
     right: 47px;
   }
-  .impact-section .swiper-button-prev.out-arrow{
+  .impact-section .swiper-button-prev.out-arrow {
     left: 50px !important;
     transform: translateY(85px);
   }
-  .impact-section .swiper-button-next.out-arrow{
+  .impact-section .swiper-button-next.out-arrow {
     right: unset !important;
     left: 120px !important;
     transform: translateY(85px);
   }
-  .impact-testimonial{
-    box-shadow: 0px 0px 20px 0px #0000001A;
+  .impact-testimonial {
+    box-shadow: 0px 0px 20px 0px #0000001a;
   }
-  .aeroplane-element{
+  .aeroplane-element {
     display: block;
     position: absolute;
     top: -115px;
@@ -1379,7 +1379,7 @@ label {
     min-width: 633px;
     height: 292px;
   }
-  .aeroplane-element-line{
+  .aeroplane-element-line {
     display: block;
     position: absolute;
     bottom: -115px;
@@ -1953,7 +1953,8 @@ label {
     padding: 9px 12px !important;
     font-size: 12px;
   }
-  .onboarding-dialog .css-13cymwt-control, .onboarding-dialog .css-t3ipsp-control{
+  .onboarding-dialog .css-13cymwt-control,
+  .onboarding-dialog .css-t3ipsp-control {
     height: 44px !important;
   }
   .onboarding-dialog .dialog-action-btn {
@@ -1962,7 +1963,7 @@ label {
     width: 159px;
     margin: 0 !important;
   }
-  .dailog-footer-fixed{
+  .dailog-footer-fixed {
     bottom: 0;
     left: 0;
     width: 100%;
@@ -2006,13 +2007,14 @@ label {
     padding: 6px 16px;
     border-radius: 6px;
   }
-  .onboarding-dialog .custom-form-label{
+  .onboarding-dialog .custom-form-label {
     font-size: 12px !important;
   }
-  .onboarding-dialog .otp-number,   .onboarding-dialog  .mobile-input{
+  .onboarding-dialog .otp-number,
+  .onboarding-dialog .mobile-input {
     height: 45px !important;
   }
-  .onboarding-dialog  .otp-input{
+  .onboarding-dialog .otp-input {
     height: 45px !important;
     width: 65px !important;
   }
@@ -2021,7 +2023,7 @@ label {
     height: 100%;
     width: 100%;
   }
-  .onboarding-dialog input.edu-checkbox{
+  .onboarding-dialog input.edu-checkbox {
     height: 16px !important;
     width: 16px !important;
   }
@@ -2057,7 +2059,7 @@ label {
 .custom-dialog .job-role-select .css-t3ipsp-control {
   border: none !important;
   background-color: #f2f3f3 !important;
-  padding-left: 5px !important;
+  padding-left: 36px !important;
   border-radius: 8px !important;
   height: 53px !important;
   box-shadow: none !important;
@@ -2072,7 +2074,7 @@ label {
   height: 53px !important;
   box-shadow: none !important;
 }
-.multi-select .react-select2{
+.multi-select .react-select2 {
   /*background: #C8C9CB3B;*/
 }
 /* .css-t3ipsp-control */
@@ -2090,7 +2092,7 @@ label {
 .sm-dailog .job-role-select .css-hlgwow {
   border: none !important;
   background-color: #f2f3f3 !important;
-  padding-left: 5px !important;
+  padding-left: 28px !important;
   border-radius: 8px !important;
   height: 43px !important;
 }
@@ -2118,26 +2120,26 @@ label {
   background: rgba(245, 245, 245, 1);
 }
 
-.multi-select .react-select2 div[data-value]{
+.multi-select .react-select2 div[data-value] {
   padding-left: 20px;
   background: transparent;
 }
 
-.multi-select .react-select2 div[data-value] input{
+.multi-select .react-select2 div[data-value] input {
   height: 40px !important;
   padding-left: 40px;
   width: 100%;
   background: transparent;
 }
 
-.multi-select  .css-13cymwt-control,
-.multi-select  .css-t3ipsp-control {
+.multi-select .css-13cymwt-control,
+.multi-select .css-t3ipsp-control {
   border: none;
   border-radius: 8px;
 }
 
 @media (max-width: 768px) {
-  .multi-select .react-select2{
+  .multi-select .react-select2 {
     /*background: #C8C9CB3B;*/
   }
   /* .css-t3ipsp-control */
@@ -2150,12 +2152,12 @@ label {
     background: rgba(245, 245, 245, 1);
   }
 
-  .multi-select .react-select2 div[data-value]{
+  .multi-select .react-select2 div[data-value] {
     padding-left: 20px;
     background: transparent;
   }
 
-  .multi-select .react-select2 div[data-value] input{
+  .multi-select .react-select2 div[data-value] input {
     height: 32px !important;
     padding-left: 40px;
     width: 100%;
@@ -2163,24 +2165,29 @@ label {
   }
 }
 
+.custom-date-input::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  display: none;
+}
+
 .current-location-marker {
   position: relative;
   overflow: visible !important;
 }
 .current-location-marker::after {
-  content: '';
+  content: "";
   position: absolute;
   left: 50%;
   transform: translate(-19px, -55px);
   width: 300px;
   height: 40px;
   z-index: 1001;
-  background-image: url('/new-assets/icons/jobs-near-you/current-location-tag.svg');
+  background-image: url("/new-assets/icons/jobs-near-you/current-location-tag.svg");
   background-size: contain;
   background-repeat: no-repeat;
 }
 .current-location-marker::before {
-  content: '';
+  content: "";
   position: absolute;
   left: 50%;
   transform: translate(-1px, -40px);
@@ -2189,4 +2196,3 @@ label {
   z-index: 1001;
   background-color: #e31836;
 }
-

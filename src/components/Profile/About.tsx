@@ -66,7 +66,10 @@ const About = () => {
             About {profileData?.first_name ?? ""}
           </h1>
         </div>
-        <div className="!hidden col-span-2 flex justify-end gap-2 cursor-pointer sm:mt-3">
+        <div
+          className="col-span-2 flex justify-end gap-2 cursor-pointer sm:mt-3"
+          onClick={() => dispatch(setProfileModal(true))}
+        >
           <img
             src="/new-assets/icons/ink_marker.svg"
             className="h-3 mt-1"

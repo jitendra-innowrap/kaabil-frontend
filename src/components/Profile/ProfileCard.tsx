@@ -7,7 +7,8 @@ import { setSelectedTab } from "@/redux/jobsFilterSlice";
 
 const ProfileCard = () => {
   const router = useRouter();
-  const { profileData } = useAppSelector((state) => state.profile);
+  const { profileData, appliedJobs, shortListedJobs, savedJobs } =
+    useAppSelector((state) => state.profile);
   const dispatch = useAppDispatch();
 
   console.log(profileData, "Verify Profile Data From jobStats");
@@ -16,15 +17,15 @@ const ProfileCard = () => {
   const jobStats = [
     {
       label: "Applied Jobs",
-      count: profileData?.total_applied_jobs,
+      count: appliedJobs,
       tabIndex: 1,
     },
     {
       label: "Shortlisted Jobs",
-      count: profileData?.total_shortlisted_jobs,
+      count: shortListedJobs,
       tabIndex: 2,
     },
-    { label: "Saved Jobs", count: profileData?.total_save_job, tabIndex: 3 },
+    { label: "Saved Jobs", count: savedJobs, tabIndex: 3 },
   ];
 
   return (
@@ -55,7 +56,7 @@ const ProfileCard = () => {
         </div>
         <div className="col-span-12 mt-2">
           <h1 className="text-sm text-center">
-            {profileData?.company_name}{" "}
+            {profileData?.company_name} - {" "}
             {profileData?.user_experiences?.[0]?.job_start_date &&
             profileData?.user_experiences?.[0]?.job_end_date
               ? formatJobDates(
@@ -95,9 +96,9 @@ const ProfileCard = () => {
             Complete!
           </h1>
         </div>
-        <div className="hidden col-span-12 flex justify-center px-6 mt-6">
+        <div className="col-span-12 flex justify-center px-6 mt-6">
           <div className="bg-[#F1F5FE] flex w-full justify-around px-4 rounded-2xl py-3">
-            {jobStats.map((job, index) => (
+            {jobStats?.map((job, index) => (
               <React.Fragment key={index}>
                 <div>
                   <h1 className="text-[#7B7B7D] text-[11px] sm:text-md text-center">

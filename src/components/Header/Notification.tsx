@@ -459,8 +459,8 @@ useEffect(() => {
                 <h3 className='font-medium text-base 2xl:text-xl mt-4 mb-3 3xl:mb-4 3xl:mt-12 3xl:text-2xl 3xl:leading-[27px]'>
                   No Notification yet
                 </h3>
-                <p className='text-sm 3xl:text-base max-w-[200px] 3xl:max-w-[343px] text-center'>
-                  You have no notification right now. Come back later
+                <p className='text-xs 2xl:text-sm 3xl:text-base text-center'>
+                  You have no notification right now. <br />come back later
                 </p>
               </div>
             )}

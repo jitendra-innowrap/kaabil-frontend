@@ -447,6 +447,7 @@ export default function JobsNearYou() {
                                         height={520} 
                                         src={'/new-assets/images/no-company.svg'} 
                                         alt="no-jobs-found"
+                                        priority={false}
                                     />
                                     {selectedLocation ? (
                                         // When user searched a specific location

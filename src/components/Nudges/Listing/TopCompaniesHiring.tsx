@@ -18,13 +18,13 @@ export default function TopCompaniesHiring() {
         
         // Ensure session data is available
         if (!deviceId || !secret || !salt) {
-          console.log("Session data not available, retrying...");
+      //  console.log("Session data not available, retrying...");
           setTimeout(fetchHomedata, 1000); // Retry after 1 second
           return;
         }
 
         const response = await api.get("/Home/homeData");
-        console.log(response);
+        // console.log(response);
         setTopCompanies(response?.data?.result?.top_companies?.map((comp: any, i: number) => ({
           icon: comp?.company_logo || "",
           title: comp?.company_name,

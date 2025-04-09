@@ -49,7 +49,7 @@ useEffect(() => {
 
       // Ensure session data is available
       if (!deviceId || !secret || !salt) {
-        console.log("Session data not available, retrying...");
+        // console.log("Session data not available, retrying...");
         setTimeout(fetchCompanyDetails, 1000); // Retry after 1 second
         return;
       }
@@ -111,7 +111,7 @@ const handleFollow = async () => {
       },
     });
 
-    console.log(response?.data?.status);
+    // console.log(response?.data?.status);
 
     if (response.data?.status == '2') {
       showToast(`You unfollowed ${CompanyDetails?.company_name}!`); // Success toast
@@ -128,7 +128,7 @@ const handleFollow = async () => {
       clearSessionData();
     }
 
-    console.log(response);
+    // console.log(response);
   } catch (error) {
     console.error('Error fetching jobs:', error);
     showToast('An error occurred. Please try again.', true); // Error toast

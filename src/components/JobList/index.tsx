@@ -240,7 +240,7 @@ const nudgesForLoggedInUser = [
 
       // Ensure session data is available
       if (!deviceId || !secret || !salt) {
-        console.log("Session data not available, retrying...");
+        // console.log("Session data not available, retrying...");
         setTimeout(fetchJobs, 1000); // Retry after 1 second
         return;
       }
@@ -266,7 +266,7 @@ const nudgesForLoggedInUser = [
         const totalPages = Math.ceil(totalJobs / jobsPerPage);
         setTotalPages(totalPages);
         setTotalJobs(totalJobs);
-        console.log(response.data?.data);
+        // console.log(response.data?.data);
         let filterMasters = {
           benefits_filter:
             response.data?.data?.filters?.benefits_filter?.buckets,

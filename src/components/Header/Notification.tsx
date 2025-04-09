@@ -6,7 +6,7 @@ import { PiBellBold } from 'react-icons/pi';
 import Popup from 'reactjs-popup';
 import { clearSessionData, getSessionData } from '../utils/deviceId';
 import api from '@/Services/Apiservice';
-import { showToast } from '../utils';
+import { formatNotificationDate, showToast } from '../utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { RefreshProfileData, signOut, updateUnreadNotiCount } from '@/redux/userSlice';
 import { setProgress } from '@/redux/progressSlice';
@@ -39,17 +39,20 @@ const messaging = typeof window !== 'undefined' ? getMessaging(firebaseApp) : nu
 const NotificationCard = ({ 
   notification,
   onRead,
-  onDelete
+  onDelete,
+  handleClose
 }: {
   notification: Notification;
   onRead: (id: string) => Promise<void>;
   onDelete: (id: string, status:string) => Promise<void>;
+  handleClose: () => void;
 }) => {
   const router = useRouter();
   
   const handleRead = async () => {
     if(notification?.read_status==="0") await onRead(notification.id, );
-    if (notification.routsId === "3" && notification?.job_id) {
+    if (notification?.routsId === "3" && notification?.job_id) {
+      handleClose();
       router.push(`/jobs/detail/${notification?.job_id}`);
     }
   };
@@ -71,7 +74,7 @@ const NotificationCard = ({
       />
       <div className="3xl:pt-3 flex-1">
         <div className="flex gap-5">
-          <p className='text-[10px] 3xl:text-xs text-[#4D4D4F] line-clamp-2 flex-1'>
+          <p className='text-[10px] 3xl:text-xs text-[#4D4D4F] flex-1'>
             {notification.text}
           </p>
           <IoClose
@@ -84,7 +87,7 @@ const NotificationCard = ({
           />
         </div>
         <p className='text-[#4D4D4FB2] text-end mt-4 text-[10px] leading-[100%]'>
-          {notification?.read_status},{new Date(notification.created_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+          {formatNotificationDate(notification?.created_date)}
         </p>
       </div>
     </div>
@@ -121,11 +124,11 @@ useEffect(() => {
             
             if (token) {
               await updateFCMToken(token);
-              console.log('FCM token registered🍃🍃🍃', token);
+              // console.log('FCM token registered🍃🍃🍃', token);
   
               // Set up message listener
               unsubscribe = onMessage(messaging, (payload) => {
-                console.log('New message received:', payload);
+                // console.log('New message received:', payload);
                 handleNewNotification();
               });
             }
@@ -185,7 +188,7 @@ useEffect(() => {
     const payload = { page: page.toString() };
 
     if (!deviceId || !secret || !salt) {
-      console.log("Session data not available, retrying...");
+      // console.log("Session data not available, retrying...");
       setTimeout(() => getNotifications(page, isRefresh), 1000);
       return;
     }
@@ -339,7 +342,6 @@ useEffect(() => {
         setUnreadNotification(prev => 
           prev > 0 ? prev - 1 : 0
         );
-        alert(status)
         if(status=="0"){
             dispatch(updateUnreadNotiCount(Math.max(0, unreadNotifications - 1)))
         }
@@ -418,7 +420,7 @@ useEffect(() => {
 
           <div 
             ref={notificationListRef}
-            className="flex flex-col gap-[6px] 3xl:gap-2 h-[323px] xl:h-[393px] 2xl:h-[423px] 3xl:h-[614px] overflow-auto -mr-[6px] notification-list"
+            className="flex flex-col gap-[6px] 3xl:gap-2 h-[323px] hidden-scrollbar xl:h-[393px] 2xl:h-[423px] 3xl:h-[614px] overflow-auto notification-list"
           >
             {isLoading ? (
               <div className="flex justify-center items-center h-full">
@@ -432,6 +434,7 @@ useEffect(() => {
                     notification={noti}
                     onRead={readNotification}
                     onDelete={deleteNotification}
+                    handleClose={handleClose}
                   />
                 ))}
                 {isLoadingMore && (
@@ -456,8 +459,8 @@ useEffect(() => {
                 <h3 className='font-medium text-base 2xl:text-xl mt-4 mb-3 3xl:mb-4 3xl:mt-12 3xl:text-2xl 3xl:leading-[27px]'>
                   No Notification yet
                 </h3>
-                <p className='text-sm 3xl:text-base max-w-[200px] 3xl:max-w-[343px] text-center'>
-                  You have no notification right now. Come back later
+                <p className='text-xs 2xl:text-sm 3xl:text-base text-center'>
+                  You have no notification right now. <br />come back later
                 </p>
               </div>
             )}

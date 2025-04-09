@@ -45,13 +45,13 @@ function SearchSection() {
       
       // Ensure session data is available
       if (!deviceId || !secret || !salt) {
-        console.log("Session data not available, retrying...");
+    //  console.log("Session data not available, retrying...");
         setTimeout(fetchIndustries, 1000); // Retry after 1 second
         return;
       }
 
       const response = await api.post("/MasterData/getIndustry");
-      console.log(response);
+      // console.log(response);
       setIndustryOptions(response.data?.result.map((ind:{id:string, name:string}) => ({ value: ind.id, label: ind.name })))
      
     } catch (error) {
@@ -64,13 +64,13 @@ function SearchSection() {
       
       // Ensure session data is available
       if (!deviceId || !secret || !salt) {
-        console.log("Session data not available, retrying...");
+    //  console.log("Session data not available, retrying...");
         setTimeout(fetchIndustries, 1000); // Retry after 1 second
         return;
       }
 
       const response = await api.get("/MasterData/getCity");
-      console.log(response);
+      // console.log(response);
       setLocationOptions(response?.data?.result?.map((ind:{id:string, name:string}) => ({ value: ind.id, label: ind.name })))
      
     } catch (error) {

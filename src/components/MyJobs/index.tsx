@@ -15,13 +15,22 @@ import ShortListedJobCard from './Cards/ShortlistedJobCard'
 import AppliedJobCard from './Cards/AppliedJobCard'
 import SaveJobCard from './Cards/SaveJobCard'
 import Pagination from '../Pagination'
+import JobsNearYouNudge from '../Nudges/Listing/JobNearYouNudge'
+import ShareStrength from '../Nudges/Listing/ShareStrength'
+import UpdloadCvNudge from '../Nudges/Listing/UpdloadCvNudge'
+import EducationUpdateNudge from '../Nudges/Listing/EducationUpdateNudge'
+import ProfileUploadNudge from '../Nudges/Listing/ProfileUploadNudge'
+import EditProfileNudge from '../Nudges/Listing/EditProfileNudge'
+import WelcomeVideoNudge from '../Nudges/Listing/welcomeNudge'
+import TopCompaniesHiring from '../Nudges/Listing/TopCompaniesHiring'
 
 export default function MyJobs() {
   const searchParams = useSearchParams();
   const tabParam = searchParams.get('tab');
   const pageParam = searchParams.get('page');
   const [jobs, setJobs] = useState<JobResult[] | null>(null);
-  const { isLoggedIn } = useAppSelector((state) => state.user);
+  const {isLoggedIn, showHelpVideo, showProfilePhoto, showSoftSkills, showUpdateEducation, showUpdateProfile, showUploadCV} = useAppSelector((state) => state.user);
+
   // Initialize state from URL params directly
   const [currentPage, setCurrentPage] = useState(() => {
     return pageParam && !isNaN(Number(pageParam)) ? Number(pageParam) : 1;
@@ -38,7 +47,22 @@ export default function MyJobs() {
   const jobsPerPage = 50;
 
   const router = useRouter();
-
+  const [isMobile, setIsMobile] = useState(false);
+  
+  useEffect(() => {
+    const updateSize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    // Initialize on mount
+    updateSize();
+    
+    // Add resize listener
+    window.addEventListener("resize", updateSize);
+    
+    // Cleanup
+    return () => window.removeEventListener("resize", updateSize);
+  }, []);
   // Initialize tab from URL params or default to 1
   useEffect(() => {
     
@@ -108,7 +132,7 @@ export default function MyJobs() {
         setJobs(response?.data?.result as JobResult[]);
         const totalJobs = response?.data?.total || response?.data?.total_save_job;
         const totalPages = Math.ceil(totalJobs / jobsPerPage);
-        console.log(totalJobs,"total")
+        // console.log(totalJobs,"total")
         setTotalJobs(totalJobs);
         setTotalPages(totalPages);
         setIsLoading(false);
@@ -143,8 +167,8 @@ export default function MyJobs() {
     const updatedPages = Math.ceil(updatedJobs / jobsPerPage);
     setTotalPages(updatedPages)
     console.clear()
-    console.log('old list', jobs)
-    console.log('updatedList', updatedList)
+    // console.log('old list', jobs)
+    // console.log('updatedList', updatedList)
   }
   const handleTab = (key: number) => {
     setJobs(null);
@@ -199,14 +223,28 @@ export default function MyJobs() {
     }
   };
 
+
+  
+  // Conditional nudges for logged-in users (mobile only)
+  const loggedInMobileNudges = isMobile ?[
+    <JobsNearYouNudge key="jobs-near-you" />,
+    ...(showSoftSkills ? [<ShareStrength key="share-strength" />] : []),
+    ...(showUploadCV ? [<UpdloadCvNudge key="upload-cv" />] : []),
+    ...(showUpdateEducation ? [<EducationUpdateNudge key="update-education" />] : []),
+    ...(showProfilePhoto ? [<ProfileUploadNudge key="profile-photo" />] : []),
+    ...(showUpdateProfile ? [<EditProfileNudge key="edit-profile" />] : []),
+    ...(showHelpVideo ? [<WelcomeVideoNudge key="welcome-video" />] : []),
+  ]:[];
+  
+
   return (
     <div className='container'>
       <div className="mt-5 3xl:mt-6 mb-7 3xl:mb-8">
         <Breadcrumb root='Home' category='My Jobs' />
       </div>
       <h1 className='hidden sm:block text-[#231F20] text-xl 3xl:text-2xl font-medium'>My jobs</h1>
-      <div className="pb-5 md:pb-8 xl:pb-14 2xl:pb-16 flex flex-col sm:flex-row justify-between gap-5 md:gap-7 lg:gap-8 2xl:gap-10 3xl:gap-12">
-        <div className="w-full order-1 sm:order-0">
+      <div className="pb-5 md:pb-8 xl:pb-14 2xl:pb-16 flex flex-col md:flex-row justify-between gap-5 md:gap-7 lg:gap-8 2xl:gap-10 3xl:gap-12">
+        <div className="w-full order-1 md:order-0">
           {/* Navigation Tabs */}
           <div className="bg-[#f9f9f9] mb-6 mt-4">
             <div className="mx-auto border-b border-[#D4D4D4]">
@@ -253,17 +291,32 @@ export default function MyJobs() {
               {jobs?.length > 0 ? (
                 <div className="flex flex-col w-full gap-3 3xl:gap-4">
                   <h3 className='text-sm 3xl:text-base text-[#787878]'>{getCountText()}</h3>
-                  {jobs.map((job) => (
-                    <div className="flex w-[100%]" key={`job-${job?.id}`}>
-                      {selectedTab === 3 ? (
-                        <SaveJobCard {...job} unsave={handUnsave} jobs={jobs} />
-                      ) : selectedTab === 2 ? (
-                        <ShortListedJobCard {...job} />
-                      ) : (
-                        <AppliedJobCard {...job} />
-                      )}
-                    </div>
-                  ))}
+                  {jobs.map((job: any, index) => {
+                    const items = [];
+          
+                    // Add the job listing
+                    items.push(
+                      <div className="flex w-[100%]" key={`job-${job?.id}`}>
+                        {selectedTab === 3 ? (
+                          <SaveJobCard {...job} unsave={handUnsave} jobs={jobs} />
+                        ) : selectedTab === 2 ? (
+                          <ShortListedJobCard {...job} />
+                        ) : (
+                          <AppliedJobCard {...job} />
+                        )}
+                      </div>
+                    );
+          
+                    // Add a nudge after every 2 job listings
+                    if ((index + 1) % 2 === 0) {
+                      const nudgeIndex = Math.floor((index + 1) / 2) - 1;
+                      if (nudgeIndex < loggedInMobileNudges.length) {
+                        items.push(loggedInMobileNudges[nudgeIndex]);
+                      }
+                    }
+          
+                    return items;
+                  })}
                 </div>
               ) : (
                 <div className="pt-10 xl:pt-20 3xl:pt-32 bg-[#f9f9f9] mx-auto w-full px-4 pb-12">
@@ -300,13 +353,17 @@ export default function MyJobs() {
           )}
         </div>
         
-        <div className="nudges-bar sm:mt-28 lg:mt-32 flex flex-shrink-0  md:gap-6 max-w-[400px] mx-auto lg:mx-0 sm:w-[300px] lg:w-[280px] 2xl:w-[341px] order-0 sm:order-1">
+        <div className="nudges-bar mt-4 md:mt-28 lg:mt-32 flex flex-shrink-0  md:gap-6 max-w-[400px] mx-auto lg:mx-0 md:w-[300px] lg:w-[280px] 2xl:w-[341px] order-0 md:order-1">
           <div className={"sticky w-full top-[80px] flex flex-col gap-4"}>
-            <ProfileCard/>
-            <div className="hidden">
-            <QuickAction/>
-            <BoostProfile/>
-            </div>
+            {!isMobile && <JobsNearYouNudge/>}
+            {isLoggedIn && <ProfileCard/>}
+            {isLoggedIn && <QuickAction/>}
+            {isLoggedIn && !isMobile && showSoftSkills && <ShareStrength/>}
+            {isLoggedIn && !isMobile && showUploadCV && <UpdloadCvNudge/>}
+            {isLoggedIn && !isMobile && showUpdateEducation && <EducationUpdateNudge/>}
+            {isLoggedIn && !isMobile && showProfilePhoto && <ProfileUploadNudge/>}
+            {isLoggedIn && !isMobile && showUpdateProfile && <EditProfileNudge/>}
+            {isLoggedIn && !isMobile && showHelpVideo && <WelcomeVideoNudge/>}
           </div>
         </div>
       </div>

@@ -163,18 +163,18 @@ export default function Companies() {
     const params = new URLSearchParams(searchParams.toString());
     params.delete("page");
     params.set("search", searchKey); // Update the sort parameter in the URL
-    console.log(key, params);
+    // console.log(key, params);
     router.replace(`?${params.toString()}`, { scroll: false }); // Update the URL without refreshing the page
   }
   const handleTab=(key?:any)=>{
     setCurrentPage(1);
     setCompaniesList(null)
-    console.log(key)
+    // console.log(key)
     setSelectedTab(key);
     const params = new URLSearchParams(searchParams.toString());
     params.delete("page");
     params.set("tab", key); // Update the sort parameter in the URL
-    console.log(key, params);
+    // console.log(key, params);
     router.replace(`/CompanyTrading?${params.toString()}`, { scroll: false }); // Update the URL without refreshing the page
   }
   const handleIndustry = (id: string)=>{

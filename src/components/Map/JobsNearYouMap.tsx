@@ -117,7 +117,7 @@ const CustomGoogleMap: React.FC<CustomGoogleMapProps> = ({
       });
 
       marker.addListener('click', () => {
-        console.log(`job-${job.id}`)
+        // console.log(`job-${job.id}`)
         if (mapInstance.current) {
           mapInstance.current.panTo(marker.getPosition()!);
           mapInstance.current.setZoom(15);

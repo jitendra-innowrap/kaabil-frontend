@@ -37,7 +37,7 @@ messaging.onBackgroundMessage((payload) => {
     
     const notificationOptions = {
       body: payload.notification?.body || payload.data?.title || '',
-      icon: payload.notification?.icon || payload.data?.company_logo || payload?.icon,
+      icon: payload.notification?.icon || payload.data?.company_logo || '/icons/default.png',
       data: payload.data || {} // Pass all data to the notification
     };
 

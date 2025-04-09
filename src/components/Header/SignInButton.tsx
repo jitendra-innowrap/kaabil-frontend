@@ -155,7 +155,7 @@ export default function SignInButton({ closeSideMenu }: prop) {
               tabIndex={0}
               className="relative size-[30px] xl:size-[40px] 2xl:size-[50px]"
             >
-              {/* {unreadNotifications > 0 && <span className="size-3 xl:size-[14px] 3xl:size-[18px] bg-success text-white rounded-full absolute text-[8px] md:text-[9px] 3xl:text-[11px] grid place-items-center leading-none -top-[4px] -right-[4px] xl:top-[2px] xl:-right-[4px] 2xl:top-[2px] 2xl:-right-[1px] 3xl:-top-[0px] 3xl:-right-[4px] border-[1.5px] border-white">
+              {/* {unreadNotifications > 0 && <span className="size-3 xl:size-[14px] 3xl:size-[18px] bg-success text-white rounded-full absolute text-[8px] xl:text-[9px] 3xl:text-[11px] grid place-items-center leading-none -top-[4px] -right-[4px] xl:top-[2px] xl:-right-[4px] 2xl:top-[2px] 2xl:-right-[1px] 3xl:-top-[0px] 3xl:-right-[4px] border-[1.5px] border-white">
                 {unreadNotifications}
               </span>} */}
               <Image

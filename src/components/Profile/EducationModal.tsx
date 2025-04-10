@@ -34,7 +34,11 @@ const EducationModal = ({ size }: any) => {
   const { token } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
-  console.log(profileData, "Check ProfileData More And More");
+  console.log(
+    profileData,
+    qualificationList,
+    "Check ProfileData More And More"
+  );
 
   const validationSchema = Yup.object().shape({
     education_id: Yup.string().required("Required"),
@@ -42,19 +46,9 @@ const EducationModal = ({ size }: any) => {
       .test(
         "fileCount",
         "You can only upload up to 6 files.",
-        (value: any) =>
-          profileData?.user_certifications?.length > 0 ||
-          !value ||
-          value.length <= 6
+        (value: any) => !value || value.length <= 6
       )
-      .nullable() // Allows null if existing certifications are present
-      .test(
-        "requiredIfNoExistingCerts",
-        "Required",
-        (value: any) =>
-          profileData?.user_certifications?.length > 0 ||
-          (value && value.length > 0)
-      ),
+      .nullable(),
     year_of_graduation: Yup.string().required("Required"),
   });
 
@@ -67,17 +61,12 @@ const EducationModal = ({ size }: any) => {
     dispatch(fetchEducationDetail());
   }, []);
 
-  useEffect(() => {
-    dispatch(
-      fieldStudy({
-        data: {
-          education_master_id: qualificationList?.find(
-            (item: any) => item?.name === profileData?.education_name
-          )?.id,
-        },
-      })
-    );
-  }, [qualificationList]);
+  const getFieldStudy = (education: any) => {
+    console.log(education, "Verify Education over here");
+    if (education?.is_field_study_show !== "0") {
+      dispatch(fieldStudy({ data: { education_master_id: education?.id } }));
+    }
+  };
 
   return (
     // Suppressing Dialog type error
@@ -250,6 +239,7 @@ const EducationModal = ({ size }: any) => {
                             // );
                             setShowEducation(false);
                             setEducationSearch([]);
+                            getFieldStudy(education);
                           }}
                           className={`form-group flex items-center gap-4 rounded-lg  py-3 cursor-pointer ${
                             education.id === values.education_id
@@ -306,7 +296,7 @@ const EducationModal = ({ size }: any) => {
                                 {educationSearch?.length > 0 &&
                                   showEducation && (
                                     <>
-                                      <div className="absolute top-16 z-50 w-full max-h-[250px] min-h-[50px] overflow-auto p-0 bg-white border rounded-xl shadow-lg mt-1">
+                                      <div className="absolute top-16 z-50 w-full max-h-[250px] min-h-[40px] overflow-auto p-0 bg-white border rounded-xl shadow-lg mt-1">
                                         {educationSearch?.map((item: any) => (
                                           <div
                                             key={item.id}
@@ -450,7 +440,7 @@ const EducationModal = ({ size }: any) => {
                           type="file"
                           className="hidden"
                           multiple
-                          accept=".pdf,.doc,.docx,image/*,video/*"
+                          accept="image/*,.pdf,.doc,.docx"
                           onChange={(e: any) => {
                             const files: any = Array.from(e.target.files);
                             if (files.length > 6) {

@@ -4,6 +4,7 @@ import React from "react";
 import { formatJobDates } from "../utils";
 import { useRouter } from "next/navigation";
 import { setSelectedTab } from "@/redux/jobsFilterSlice";
+import { setProfileModal } from "@/redux/profileSlice";
 
 const ProfileCard = () => {
   const router = useRouter();
@@ -11,9 +12,6 @@ const ProfileCard = () => {
     useAppSelector((state) => state.profile);
   const dispatch = useAppDispatch();
 
-  console.log(profileData, "Verify Profile Data From jobStats");
-
-  // Later we will change
   const jobStats = [
     {
       label: "Applied Jobs",
@@ -56,7 +54,7 @@ const ProfileCard = () => {
         </div>
         <div className="col-span-12 mt-2">
           <h1 className="text-sm text-center">
-            {profileData?.company_name} - {" "}
+            {profileData?.company_name} -{" "}
             {profileData?.user_experiences?.[0]?.job_start_date &&
             profileData?.user_experiences?.[0]?.job_end_date
               ? formatJobDates(
@@ -77,10 +75,15 @@ const ProfileCard = () => {
             </div>
           )}
         </div>
+
         <div className="col-span-12 flex justify-center items-center px-6 gap-2 mt-4">
           <div className="w-full h-[6px] 2xl:h-2 rounded-lg bg-[#CCCCCC]">
             <div
-              className="rounded-lg h-full bg-red"
+              className={`rounded-lg h-full ${
+                profileData?.user_profile_percentage == 100
+                  ? "bg-[#019e43]"
+                  : "bg-red"
+              }`}
               style={{
                 width: `${profileData?.user_profile_percentage ?? 0}%`,
               }}
@@ -90,12 +93,26 @@ const ProfileCard = () => {
             {profileData?.user_profile_percentage ?? 0}%
           </span>
         </div>
+
         <div className="col-span-12 mt-1">
           <h1 className="text-red text-center text-sm">
             Your Profile is {profileData?.user_profile_percentage ?? 0}%
             Complete!
           </h1>
         </div>
+
+        {profileData?.user_profile_percentage !== 100 && (
+          <div className="col-span-12 px-16">
+            <button
+              onClick={() => {
+                dispatch(setProfileModal(true));
+              }}
+              className="mt-3 w-full md:mt-4 !text-red btn-border !border-red !text-xs"
+            >
+              Complete Your Profile Now
+            </button>
+          </div>
+        )}
         <div className="col-span-12 flex justify-center px-6 mt-6">
           <div className="bg-[#F1F5FE] flex w-full justify-around px-4 rounded-2xl py-3">
             {jobStats?.map((job, index) => (

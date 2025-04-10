@@ -43,10 +43,10 @@ const ProfileModal = ({ size }: any) => {
     skillList,
     profileData,
   } = useAppSelector((state) => state.profile);
-  const { token } = useAppSelector((state) => state.auth);
-  const inputRef = useRef<HTMLInputElement>(null);
 
-  console.log(profileData?.user_job_roles, "Now Can We Check");
+  const { token } = useAppSelector((state) => state.auth);
+
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const dispatch = useAppDispatch();
 
@@ -96,8 +96,6 @@ const ProfileModal = ({ size }: any) => {
     }
   }, [dispatch, profileData]);
 
-  console.log();
-
   return (
     // @ts-ignore
     <Dialog
@@ -126,7 +124,7 @@ const ProfileModal = ({ size }: any) => {
                   : "justify-center text-3xl"
               }`}
             >
-              <h2 className="text-center text-[#231F20]  font-semibold">
+              <h2 className="text-center text-[#231F20] font-semibold">
                 Edit your <span className="text-red">profile</span>
               </h2>
             </div>
@@ -135,8 +133,9 @@ const ProfileModal = ({ size }: any) => {
         <Formik
           initialValues={{
             photo_img: profileData?.photo_url || "/new-assets/icons/avatar.svg", //Exclude this
-            photo_url: profileData?.photo_url || null,
-            first_name: profileData?.first_name || "",
+            photo_url: profileData?.photo_url || "",
+            first_name:
+              `${profileData?.first_name} ${profileData?.last_name}` || "",
             date_of_birth: profileData?.date_of_birth || "",
             role_id:
               profileData?.user_job_roles?.map((item: any) => item?.id) || [],
@@ -231,7 +230,7 @@ const ProfileModal = ({ size }: any) => {
           {({ setFieldValue, isSubmitting, values }) => (
             <Form>
               {/* @ts-ignore */}
-              <DialogBody className="p-0 max-h-[69vh] overflow-y-auto custom-scroll">
+              <DialogBody className="p-0 max-h-[50vh] sm:max-h-[60vh] md:max-h-[70vh] lg:max-h-[80vh] overflow-y-auto custom-scroll">
                 <div
                   className={`${
                     size === "xxl" ? "px-4" : "px-12"
@@ -345,7 +344,7 @@ const ProfileModal = ({ size }: any) => {
                       />
                       <img
                         src="/new-assets/images/calendar2.svg"
-                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 pointer-events-none"
+                        className="absolute right-3 top-[45%] transform -translate-y-1/2 text-gray-500 pointer-events-none"
                       />
                       {/* <FaRegCalendarAlt  /> */}
                     </div>

@@ -1,5 +1,6 @@
 import { UserLocation } from "@/Types/common";
 import toast from "react-hot-toast";
+import crypto from "crypto";
 
 export function handleCommaForQuery(string: string) {
   if (string) {
@@ -484,7 +485,13 @@ export const getCompanyInitials = (name?: string): string => {
   return words[0][0].toUpperCase();
 };
 
-export const ProfileTabs = ["About", "Education", "Experience", "Resume"];
+export const ProfileTabs = [
+  "About",
+  "Education",
+  "Experience",
+  "Resume",
+  // "About Me", // Added About Me
+];
 
 // Experience Constant
 export const experiences = [
@@ -649,32 +656,75 @@ export function convertToNumber(value: any) {
   return parseFloat(value) || 0; // Handle numeric values or invalid input
 }
 
+export const encryptJobId = (
+  data: string,
+  secret: string,
+  salt: string
+): string => {
+  const iv = Buffer.from(salt, "utf8"); // Ensure salt is hex and converts to a 16-byte buffer
+  // Check if IV is of the correct length (16 bytes for AES-128)
+  if (iv.length !== 16) {
+    throw new Error("Initialization vector must be 16 bytes long");
+  }
+  const key = Buffer.from(secret, "utf8"); // Secret key should be 16 bytes for AES-128
+  if (key.length !== 16) {
+    throw new Error("Secret key must be 16 bytes long");
+  }
+  const cipher = crypto.createCipheriv("aes-128-cbc", key, iv);
+  let encrypted = cipher.update(data, "utf8", "binary");
+  encrypted += cipher.final("binary");
+  // Convert the encrypted data to base64
+  const encryptedBase64 = Buffer.from(encrypted, "binary").toString("base64");
+  return encryptedBase64;
+};
+
 export const formatNotificationDate = (dateString: string): string => {
   const now = new Date();
   const notificationDate = new Date(dateString);
-  const timeDiffInHours = (now.getTime() - notificationDate.getTime()) / (1000 * 60 * 60);
+  const timeDiffInHours =
+    (now.getTime() - notificationDate.getTime()) / (1000 * 60 * 60);
   const timeDiffInDays = timeDiffInHours / 24;
 
   // Within the same day
   if (timeDiffInHours < 24 && now.getDate() === notificationDate.getDate()) {
-    return notificationDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    return notificationDate.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
   }
-  
+
   // Yesterday
   if (timeDiffInDays < 2 && now.getDate() - notificationDate.getDate() === 1) {
-    return 'Yesterday ' + notificationDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    return (
+      "Yesterday " +
+      notificationDate.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      })
+    );
   }
 
   // Within the same week
   if (timeDiffInDays < 7) {
-    return notificationDate.toLocaleDateString([], { weekday: 'short', hour: '2-digit', minute: '2-digit' });
+    return notificationDate.toLocaleDateString([], {
+      weekday: "short",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
   }
 
   // Within the same year
   if (now.getFullYear() === notificationDate.getFullYear()) {
-    return notificationDate.toLocaleDateString([], { month: 'short', day: 'numeric' });
+    return notificationDate.toLocaleDateString([], {
+      month: "short",
+      day: "numeric",
+    });
   }
 
   // Older than a year
-  return notificationDate.toLocaleDateString([], { day: '2-digit', month: 'short', year: 'numeric' });
+  return notificationDate.toLocaleDateString([], {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
 };

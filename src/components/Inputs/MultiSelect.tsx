@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { default as ReactSelect, components } from "react-select";
 import { FaMagnifyingGlass, FaChevronDown, FaChevronUp } from "react-icons/fa6";
-import styles from "../Auth/SignIn/signIn.module.css";
 
 export interface OptionType {
   value: string;
@@ -29,7 +28,33 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
   onInputChange,
 }) => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [menuPlacement, setMenuPlacement] = useState<"auto" | "top" | "bottom">(
+    "auto"
+  );
   const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const viewportHeight = window.innerHeight;
+      const elementBottom =
+        containerRef.current?.getBoundingClientRect().bottom || 0;
+
+      // Adjust menu placement based on available space and keyboard presence
+      if (viewportHeight - elementBottom < 200) {
+        setMenuPlacement("top");
+      } else {
+        setMenuPlacement("bottom");
+      }
+    };
+
+    // Listen to resize events for handling keyboard open/close
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const handleChange = (selectedOption: OptionType) => {
     let updatedSelections = [...selectedValues];
@@ -44,32 +69,12 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
         updatedSelections.push(selectedOption);
       }
     }
-    if (maxSelections && maxSelections !== updatedSelections.length) {
-      // setTimeout(() => setMenuOpen(true), 0.01); // Keep menu open
-    }
     onChange(updatedSelections);
   };
 
-  // Custom option with checkbox
   const Option = (props: any) => {
     const { data, innerRef, innerProps, isDisabled } = props;
     const isSelected = selectedValues.some((opt) => opt.value === data.value);
-
-    // Close the menu icon when outside click
-    useEffect(() => {
-      const handleOutsideClick = (event: MouseEvent) => {
-        if (
-          containerRef.current &&
-          !containerRef.current.contains(event.target as Node)
-        ) {
-          setMenuOpen(false);
-        }
-      };
-      document.addEventListener("mousedown", handleOutsideClick);
-      return () => {
-        document.removeEventListener("mousedown", handleOutsideClick);
-      };
-    }, []);
 
     return (
       <components.Option {...props}>
@@ -86,7 +91,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
         >
           <input
             type="checkbox"
-            className={` w-4 h-4 sm:!w-3 sm:!h-3 ${
+            className={`w-4 h-4 sm:!w-3 sm:!h-3 ${
               isDisabled ? "opacity-60 cursor-not-allowed" : "cursor-pointer"
             }`}
             checked={isSelected}
@@ -96,7 +101,9 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
             className={`text-[12px] sm:text-[14px] lg:text-[10px] 2xl:text-[13px] 3xl:text-sm !mb-0 !p-0 ${
               isSelected ? "text-[#E31837]" : ""
             } ${isDisabled ? "text-[#231F20]" : ""} ${
-              isDisabled ? "cursor-not-allowed text-[#BDBDBD]" : "cursor-pointer"
+              isDisabled
+                ? "cursor-not-allowed text-[#BDBDBD]"
+                : "cursor-pointer"
             }`}
           >
             {data.label}
@@ -106,7 +113,6 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
     );
   };
 
-  // Override DropdownIndicator to hide it
   const DropdownIndicator = () => null;
 
   const updatedOptions = options.map((opt) => ({
@@ -118,21 +124,20 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
   }));
 
   return (
-    <div className="relative w-full">
+    <div className="relative w-full" ref={containerRef}>
       <ReactSelect
         options={updatedOptions}
         components={{ Option, DropdownIndicator }}
         closeMenuOnSelect={true}
         hideSelectedOptions={false}
         placeholder={placeholder}
-        value={null} // Ensure the input does not display selected values
-        onChange={() => {}} // Do nothing, since we handle selection manually
+        value={null}
+        onChange={() => {}}
         className="react-select2"
         onMenuOpen={() => setMenuOpen(true)}
         onMenuClose={() => setMenuOpen(false)}
-        menuPlacement="auto"
+        menuPlacement={menuPlacement}
         menuPortalTarget={document.body}
-        menuIsOpen={menuOpen}
         styles={{
           menu: (base) => ({
             ...base,
@@ -152,7 +157,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
         }}
         onInputChange={(inputValue) => {
           if (onInputChange) {
-            onInputChange(inputValue); // Call the parent's handler
+            onInputChange(inputValue);
           }
         }}
       />

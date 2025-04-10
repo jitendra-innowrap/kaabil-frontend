@@ -18,11 +18,12 @@ const ProfileList = () => {
     Education: useRef<HTMLDivElement>(null),
     Experience: useRef<HTMLDivElement>(null),
     Resume: useRef<HTMLDivElement>(null),
+    "About Me": useRef<HTMLDivElement>(null), // Updated for "About Me"
   };
 
   const handleTabClick = (tab: string) => {
     setActiveTab(tab);
-    const offset = 100; // Adjust based on your header height
+    const offset = 100; // Adjust for any fixed headers
     const targetRef = sectionRefs[tab];
     if (targetRef && targetRef.current) {
       const top =
@@ -61,17 +62,17 @@ const ProfileList = () => {
       <div className="grid grid-cols-12 sm:gap-4 lg:gap-9 pt:4 sm:pt-0 sm:mt-6 mb-8">
         <div className="sm:hidden col-span-12 sm:col-span-8 flex flex-wrap gap-4 md:gap-12 bg-white pt-3 px-4 justify-between order-1 sticky top-[52px] z-10">
           {ProfileTabs?.map((tab) => (
-              <h2
-                  key={tab}
-                  className={`cursor-pointer pb-2 text-sm md:text-base ${
-                      activeTab === tab
-                          ? "border-b-4 border-red text-red font-bold"
-                          : "text-black font-medium"
-                  }`}
-                  onClick={() => handleTabClick(tab)}
-              >
-                {tab}
-              </h2>
+            <h2
+              key={tab}
+              className={`cursor-pointer pb-2 text-sm md:text-base ${
+                activeTab === tab
+                  ? "border-b-4 border-red text-red font-bold"
+                  : "text-black font-medium"
+              }`}
+              onClick={() => handleTabClick(tab)}
+            >
+              {tab}
+            </h2>
           ))}
         </div>
         <div className="col-span-12 xl:col-span-8 lg:col-span-7 md:col-span-7 order-2 sm:order-0 lg:order-0">
@@ -87,7 +88,7 @@ const ProfileList = () => {
           <div ref={sectionRefs.Resume} className="mt-4">
             <Resume />
           </div>
-          <div ref={sectionRefs.Resume} className="mt-4">
+          <div ref={sectionRefs["About Me"]} className="mt-4">
             <AboutMe />
           </div>
         </div>

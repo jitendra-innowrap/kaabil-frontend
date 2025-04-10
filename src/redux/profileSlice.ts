@@ -23,6 +23,8 @@ interface LoginPopupState {
   appliedJobs: number;
   shortListedJobs: number;
   savedJobs: number;
+  // This is For education Search
+  educationSearch: string;
 }
 
 const initialState: LoginPopupState = {
@@ -48,6 +50,8 @@ const initialState: LoginPopupState = {
   appliedJobs: 0,
   shortListedJobs: 0,
   savedJobs: 0,
+  // This is For education Search
+  educationSearch: "",
 };
 
 export const fetchProfile = createAsyncThunk(

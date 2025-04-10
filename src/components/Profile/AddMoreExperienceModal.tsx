@@ -31,16 +31,10 @@ const AddMoreExperienceModal = ({ size }: any) => {
     (state) => state.profile
   );
   const { token } = useAppSelector((state) => state.auth);
-
+  const [updateForm, setUpdateForm] = useState(false);
   const [addMore, setAddMore] = useState(false);
   const [experienceList, setExperienceList] = useState<any[]>([]);
   const [currentEditState, setCurrentEditState] = useState<any>(null);
-
-  console.log(
-    currentEditState?.experience,
-    profileData?.user_experiences,
-    "Check ProfileData"
-  );
 
   useEffect(() => {
     console.log(profileData, "Step 3");
@@ -81,10 +75,6 @@ const AddMoreExperienceModal = ({ size }: any) => {
   >([]);
   const [companySuggestions, setCompanySuggestions] = useState<any[]>([]);
   const [jobTypes, setJobTypes] = useState<any[]>([]);
-
-  const closeModal = () => {
-    dispatch(setAddMoreExperience(false));
-  };
 
   const getValidationSchema = (addMore: boolean) =>
     Yup.object().shape({
@@ -184,6 +174,12 @@ const AddMoreExperienceModal = ({ size }: any) => {
     fetchJobTypes();
   }, []);
 
+  const closeModal = () => {
+    dispatch(setAddMoreExperience(false));
+    setAddMore(false);
+    setCurrentEditState(null);
+  };
+
   const handleAddMore = (values: any, errors: any, currentEditState: any) => {
     if (addMore) {
       const requiredFields = Object.keys(values).filter(
@@ -195,7 +191,7 @@ const AddMoreExperienceModal = ({ size }: any) => {
       const hasEmptyFields = requiredFields.some((key) => values[key] === "");
       if (Object.keys(errors).length === 0) {
         if (currentEditState && currentEditState.index !== undefined) {
-          if (hasEmptyFields) return;
+          // if (hasEmptyFields) return;
           setExperienceList((prev) =>
             prev.map((item, idx) =>
               idx === currentEditState.index ? { ...values } : item
@@ -207,6 +203,7 @@ const AddMoreExperienceModal = ({ size }: any) => {
           if (hasEmptyFields) return;
           setExperienceList((prev) => [...prev, { ...values }]);
           setAddMore(false);
+          setCurrentEditState(null);
         }
       } else {
         console.log("Validation errors:", errors);
@@ -220,6 +217,11 @@ const AddMoreExperienceModal = ({ size }: any) => {
     await setCurrentEditState({ index, experience });
     await setAddMore(true);
   };
+
+  // This useEffect is just for the state update and with this we will rerender
+  useEffect(() => {
+    setUpdateForm(!updateForm);
+  }, [currentEditState, addMore]);
 
   return (
     // @ts-ignore
@@ -256,7 +258,8 @@ const AddMoreExperienceModal = ({ size }: any) => {
       </DialogHeader>
       {/* @ts-ignore  */}
       <Formik
-        key={currentEditState}
+      // @ts-ignore
+        key={updateForm}
         // @ts-ignore
         initialValues={{
           designation_name:
@@ -278,9 +281,23 @@ const AddMoreExperienceModal = ({ size }: any) => {
         }}
         validationSchema={getValidationSchema(addMore)}
         onSubmit={async (values) => {
+          let updatedExperienceList = [];
+          if (currentEditState) {
+            updatedExperienceList = experienceList.map((item, index) =>
+              index === currentEditState.index ? values : item
+            );
+          } else if (addMore) {
+            updatedExperienceList = [values, ...experienceList];
+          } else {
+            updatedExperienceList = [...experienceList];
+            console.log(updatedExperienceList, "Default Experience List");
+          }
           const formData = new FormData();
           formData.append("is_fresher", "1");
-          formData.append("user_experiences", JSON.stringify(experienceList));
+          formData.append(
+            "user_experiences",
+            JSON.stringify(updatedExperienceList)
+          );
           try {
             const response: any = await api.post(
               "/Auth/editJobSeekerPrpfile",
@@ -572,6 +589,9 @@ const AddMoreExperienceModal = ({ size }: any) => {
                         onChange={(e) => {
                           const isChecked = e.target.checked ? "1" : "0"; // Set "1" for true and "0" for false
                           setFieldValue("is_current_company", isChecked);
+                          if (isChecked == "0") {
+                            setFieldValue("job_end_date", "");
+                          }
                         }}
                         className={`!mb-0 inline-block cursor-pointer ${
                           size === "xxl" ? "!w-4 !h-4" : "!w-5 !h-5"
@@ -642,11 +662,13 @@ const AddMoreExperienceModal = ({ size }: any) => {
                             }}
                             placeholder="Start Date"
                             className="mb-2 w-full p-2 border rounded !bg-white shadow-md"
+                            min={values?.job_start_date || ""}
                             max={(() => {
                               const tomorrow = new Date();
                               tomorrow.setDate(tomorrow.getDate() + 1);
                               return tomorrow.toISOString().split("T")[0];
                             })()}
+                            disabled={!values?.job_start_date}
                           />
                           <div className="h-1">
                             <ErrorMessage
@@ -689,17 +711,6 @@ const AddMoreExperienceModal = ({ size }: any) => {
                 Save
               </button>
             </DialogFooter>
-            {/* <DialogFooter className="flex justify-end p-0 pb-3 mt-3 px-12">
-              <button
-                type="submit"
-                className={`px-24 py-4  bg-[#E31837] text-white rounded-xl ${
-                  isSubmitting ? "opacity-50 cursor-not-allowed" : ""
-                }`}
-                disabled={isSubmitting}
-              >
-                Save
-              </button>
-            </DialogFooter> */}
           </Form>
         )}
       </Formik>

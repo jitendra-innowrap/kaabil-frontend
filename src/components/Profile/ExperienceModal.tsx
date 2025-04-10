@@ -34,9 +34,11 @@ const ExperienceModal = ({ size }: any) => {
     any[]
   >([]);
   const [companySuggestions, setCompanySuggestions] = useState<any[]>([]);
+  const [experienceList, setExperienceList] = useState<any[]>([]);
   const [jobTypes, setJobTypes] = useState<any[]>([]);
-  const closeModal = () => {
-    dispatch(setExperienceModal(false));
+
+  const closeModal = async () => {
+    await dispatch(setExperienceModal(false));
   };
 
   const validationSchema = Yup.object().shape({
@@ -152,6 +154,34 @@ const ExperienceModal = ({ size }: any) => {
     fetchJobTypes();
   }, []);
 
+  useEffect(() => {
+    console.log(profileData, "Step 3");
+    if (profileData?.user_experiences) {
+      console.log(profileData?.user_experiences, "Verify Experience List");
+      const filteredExperiences = profileData.user_experiences.slice(1);
+      const transformedExperiences = filteredExperiences.map(
+        (experience: any) => ({
+          designation_name: experience.designation,
+          designation_master_id: experience.designation_master_id,
+          company_master_id: experience.company_master_id,
+          company_name: experience.company_name,
+          in_hand_salary: experience.in_hand_salary,
+          job_type_id: parseInt(experience.job_type_id, 10), // Ensuring it's a number
+          is_current_company: experience.is_current_company,
+          job_start_date: experience.job_start_date,
+          job_type: experience?.job_type,
+          job_end_date:
+            experience.is_current_company === "1"
+              ? ""
+              : experience.job_end_date, // Clearing end date for current company
+          additional_info: experience.additional_info || "", // Providing fallback for empty values
+          company_logo: experience.company_logo || "", // Providing fallback for empty values
+        })
+      );
+      setExperienceList(transformedExperiences);
+    }
+  }, [profileData]);
+
   return (
     // @ts-ignore
     <Dialog
@@ -226,30 +256,25 @@ const ExperienceModal = ({ size }: any) => {
         validationSchema={validationSchema}
         onSubmit={async (values) => {
           const { is_fresher, ...payload } = values;
+          const updatedExperienceList =
+            experienceList.length > 0
+              ? [payload, ...experienceList]
+              : [payload];
           const formData = new FormData();
           if (is_fresher === 1) {
-            await closeModal();
             formData.append("is_fresher", is_fresher.toString());
-            formData.append("user_experiences", JSON.stringify([payload]));
+            formData.append(
+              "user_experiences",
+              JSON.stringify(updatedExperienceList)
+            );
           } else {
             formData.append("is_fresher", is_fresher.toString());
             formData.append("user_experiences", JSON.stringify([]));
           }
           try {
-            const response: any = await api.post(
-              "/Auth/editJobSeekerPrpfile",
-              formData,
-              {
-                headers: { "Content-Type": "multipart/form-data" },
-              }
-            );
-            response.data.code === 1
-              ? toast.success(response.data.msg, {
-                  position: "bottom-right",
-                })
-              : toast.error(response.data.msg || "Failed To Update Profile", {
-                  position: "bottom-right",
-                });
+            await api.post("/Auth/editJobSeekerPrpfile", formData, {
+              headers: { "Content-Type": "multipart/form-data" },
+            });
             await closeModal();
           } catch (error: any) {
             toast.error(error?.message || "Something went wrong!", {
@@ -263,10 +288,11 @@ const ExperienceModal = ({ size }: any) => {
                 data: { latitude: 0, longitude: 0 },
               })
             );
+            await dispatch(setAddMoreExperience(true));
           }
         }}
       >
-        {({ values, setFieldValue, isSubmitting, handleSubmit }) => (
+        {({ values, setFieldValue, isSubmitting, handleSubmit, dirty }) => (
           <Form>
             {/* @ts-ignore */}
             <DialogBody
@@ -538,6 +564,9 @@ const ExperienceModal = ({ size }: any) => {
                           onChange={(e) => {
                             const isChecked = e.target.checked ? "1" : "0"; // Set "1" for true and "0" for false
                             setFieldValue("is_current_company", isChecked);
+                            if (isChecked == "0") {
+                              setFieldValue("job_end_date", "");
+                            }
                           }}
                           className={`!mb-0 inline-block cursor-pointer ${
                             size === "xxl" ? "!w-4 !h-4" : "!w-5 !h-5"
@@ -608,11 +637,13 @@ const ExperienceModal = ({ size }: any) => {
                               }}
                               placeholder="Start Date"
                               className="mb-2 w-full p-2 border rounded !bg-white shadow-md"
+                              min={values?.job_start_date || ""}
                               max={(() => {
                                 const tomorrow = new Date();
                                 tomorrow.setDate(tomorrow.getDate() + 1);
                                 return tomorrow.toISOString().split("T")[0];
                               })()}
+                              disabled={!values?.job_start_date}
                             />
                             <div className="h-1">
                               <ErrorMessage
@@ -625,20 +656,6 @@ const ExperienceModal = ({ size }: any) => {
                         )}
                       </div>
                     </div>
-                  </div>
-                )}
-                {values?.is_fresher == 1 && (
-                  <div
-                    onClick={async () => {
-                      await closeModal();
-                      await dispatch(setAddMoreExperience(true));
-                      await setFieldValue("isAdMore", true);
-                    }}
-                    className={`flex text-red !bg-neutral-50 !lowercase font-semibold mt-6 cursor-pointer ${
-                      size === "xxl" ? "text-sm" : "text-lg"
-                    }`}
-                  >
-                    + add more experience
                   </div>
                 )}
               </div>
@@ -656,7 +673,7 @@ const ExperienceModal = ({ size }: any) => {
                 } ${size === "xxl" ? "py-3" : "py-4"}`}
                 disabled={isSubmitting}
               >
-                Save
+                Next
               </button>
             </DialogFooter>
           </Form>

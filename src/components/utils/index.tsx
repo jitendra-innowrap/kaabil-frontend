@@ -1,5 +1,6 @@
 import { UserLocation } from "@/Types/common";
 import toast from "react-hot-toast";
+import crypto from "crypto";
 
 export function handleCommaForQuery(string: string) {
   if (string) {
@@ -625,3 +626,25 @@ export function convertToNumber(value: any) {
   }
   return parseFloat(value) || 0; // Handle numeric values or invalid input
 }
+
+export const encryptJobId = (
+  data: string,
+  secret: string,
+  salt: string
+): string => {
+  const iv = Buffer.from(salt, "utf8"); // Ensure salt is hex and converts to a 16-byte buffer
+  // Check if IV is of the correct length (16 bytes for AES-128)
+  if (iv.length !== 16) {
+    throw new Error("Initialization vector must be 16 bytes long");
+  }
+  const key = Buffer.from(secret, "utf8"); // Secret key should be 16 bytes for AES-128
+  if (key.length !== 16) {
+    throw new Error("Secret key must be 16 bytes long");
+  }
+  const cipher = crypto.createCipheriv("aes-128-cbc", key, iv);
+  let encrypted = cipher.update(data, "utf8", "binary");
+  encrypted += cipher.final("binary");
+  // Convert the encrypted data to base64
+  const encryptedBase64 = Buffer.from(encrypted, "binary").toString("base64");
+  return encryptedBase64;
+};

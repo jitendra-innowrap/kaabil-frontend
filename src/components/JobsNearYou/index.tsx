@@ -266,6 +266,7 @@ export default function JobsNearYou() {
         if(!inputValue) setInputValue(currentLocation?.city || "")
         fetchJobs();
     }, [page, selectedradius, selectedLocation, currentLocation?.city]);
+    const errorShownRef = useRef(false);
 
     const handleFetchLocation = async (): Promise<boolean> => {
         try {
@@ -276,13 +277,15 @@ export default function JobsNearYou() {
           console.error('Error fetching location:', error);
           
           setJobs([])
-          // Handle different error cases
-          if (error.message.includes('denied')) {
-            showToast('Location access is required for local job searches', true);
-            } else {
-            showToast('Could not determine your location', true);
+          // Only show error if not already shown
+            if (!errorShownRef.current) {
+                if (error.message.includes('denied')) {
+                    showToast('Please enable location access for local job searches', true);
+                } else {
+                    showToast('Could not determine your location', true);
+                }
+                errorShownRef.current = true;
             }
-          
           return false;
         }
       };

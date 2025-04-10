@@ -2,6 +2,7 @@
 import axios from "axios";
 import { encryptAndBase64 } from "./Encryption";
 import { getAuthToken, getSessionData } from "@/components/utils/deviceId";
+import { job_listing_base_uri } from "@/config/app.config";
 
 const api = axios.create({
   baseURL: "/api/endpoint/",
@@ -41,7 +42,7 @@ api.interceptors.request.use(async (config) => {
 });
 
 export const api2 = axios.create({
-  baseURL: "https://feed.meuat.kaam.com",
+  baseURL: job_listing_base_uri,
   headers: {
     "Content-Type": "application/json",
   },

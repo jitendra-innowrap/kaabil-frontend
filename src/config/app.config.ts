@@ -25,4 +25,8 @@ const appConfig: AppConfig = {
   isUATServer: process.env.NEXT_PUBLIC_UAT_SERVER === "True",
 };
 
+export const base_uri = process.env.NEXT_PUBLIC_API_BASE_URL
+export const job_listing_base_uri = process.env.NEXT_PUBLIC_JOBLISTING_BASE_URL
+export const google_map_api_key = process.env.NEXT_PUBLIC_GOOGLEMAP_API_KEY
+
 export default appConfig;

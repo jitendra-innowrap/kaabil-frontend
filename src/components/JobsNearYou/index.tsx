@@ -13,6 +13,7 @@ import NearestjobCard from '../Cards/NearestJobCard';
 import { setCurrentLocation } from '@/redux/userSlice';
 import { fetchUserLocation, showToast } from '../utils';
 import CustomGoogleMap from '../Map/JobsNearYouMap';
+import { google_map_api_key } from '@/config/app.config';
 
 interface radius {
     created_by: string,
@@ -97,7 +98,7 @@ export default function JobsNearYou() {
         const loadGoogleMapsScript = () => {
             if (typeof window !== 'undefined' && !window.google) {
                 const script = document.createElement('script');
-                script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyCp-H598wbMhBWMz9I_zbvdcknH-fiBVCo&libraries=places`;
+                script.src = `https://maps.googleapis.com/maps/api/js?key=${google_map_api_key}&libraries=places`;
                 script.async = true;
                 script.defer = true;
                 script.onload = () => {

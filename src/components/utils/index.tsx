@@ -261,51 +261,80 @@ export function formatDate(date: any) {
 }
 
 // Utility function to fetch user location and city name
-export const fetchUserLocation = () => {
+export const fetchUserLocation = async (): Promise<UserLocation> => {
+  // First check if permission was previously denied
+  const permissionStatus = await navigator.permissions?.query({ name: 'geolocation' });
+  
+  if (permissionStatus?.state === 'denied') {
+    throw new Error('Location permission was previously denied. Please enable it in browser settings.');
+  }
+
+  if (!navigator.geolocation) {
+    throw new Error("Geolocation is not supported by your browser.");
+  }
+
   return new Promise<UserLocation>((resolve, reject) => {
-    if (!navigator.geolocation) {
-      reject(new Error("Geolocation is not supported by your browser."));
-      return;
-    }
+    const handlePosition = async (position: GeolocationPosition) => {
+      const { latitude, longitude } = position.coords;
 
-    // Ask for location permission
-    navigator.geolocation.getCurrentPosition(
-      async (position) => {
-        const { latitude, longitude } = position.coords;
-
-        try {
-          // Use a reverse geocoding API to get the city name
-          const response = await fetch(
-            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
-          );
-          const data = await response.json();
-
-          const city =
-            data.address.city ||
-            data.address.town ||
-            data.address.village ||
-            data.address.county ||
-            data.address.state_district ||
-            data.address.state ||
-            data.address.country ||
-            "Unknown";
-
-          // Resolve with the user location object
-          resolve({
-            city,
-            user_city: city,
-            city_latitude: latitude,
-            city_longitude: longitude,
-          });
-        } catch (error) {
-          reject(new Error("Failed to fetch city name."));
-        }
-      },
-      (error) => {
-        reject(new Error("Unable to retrieve your location."));
+      try {
+        const response = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+        );
+        
+        if (!response.ok) throw new Error('Geocoding API error');
+        
+        const data = await response.json();
+        const city = getCityFromGeocode(data);
+        
+        resolve({
+          city,
+          user_city: city,
+          city_latitude: latitude,
+          city_longitude: longitude,
+        });
+      } catch (error) {
+        reject(new Error("Failed to fetch city name."));
       }
-    );
+    };
+
+    const handleError = (error: GeolocationPositionError) => {
+      switch (error.code) {
+        case error.PERMISSION_DENIED:
+          reject(new Error("Location permission denied. Please enable it to continue."));
+          break;
+        case error.POSITION_UNAVAILABLE:
+          reject(new Error("Location information unavailable."));
+          break;
+        case error.TIMEOUT:
+          reject(new Error("Location request timed out."));
+          break;
+        default:
+          reject(new Error("Unable to retrieve your location."));
+      }
+    };
+
+    navigator.geolocation.getCurrentPosition(handlePosition, handleError, {
+      enableHighAccuracy: true,
+      timeout: 10000, // 10 seconds
+      maximumAge: 0 // Force fresh location
+    });
   });
+};
+
+// Helper function to extract city from geocode response
+const getCityFromGeocode = (data: any): string => {
+  const address = data.address || {};
+  return (
+    address.city ||
+    address.town ||
+    address.village ||
+    address.county ||
+    address.state_district ||
+    address.state ||
+    address.country ||
+    "Unknown"
+  );
 };
 
 export function formatMonthYear(date: string | Date): string {

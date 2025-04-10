@@ -2196,3 +2196,8 @@ label {
   z-index: 1001;
   background-color: #e31836;
 }
+
+.custom-google-map .gm-style-cc,
+.custom-google-map .gmnoprint{
+  display: none !important;
+}

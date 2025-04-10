@@ -648,3 +648,54 @@ export const encryptJobId = (
   const encryptedBase64 = Buffer.from(encrypted, "binary").toString("base64");
   return encryptedBase64;
 };
+
+export const formatNotificationDate = (dateString: string): string => {
+  const now = new Date();
+  const notificationDate = new Date(dateString);
+  const timeDiffInHours =
+    (now.getTime() - notificationDate.getTime()) / (1000 * 60 * 60);
+  const timeDiffInDays = timeDiffInHours / 24;
+
+  // Within the same day
+  if (timeDiffInHours < 24 && now.getDate() === notificationDate.getDate()) {
+    return notificationDate.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  }
+
+  // Yesterday
+  if (timeDiffInDays < 2 && now.getDate() - notificationDate.getDate() === 1) {
+    return (
+      "Yesterday " +
+      notificationDate.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      })
+    );
+  }
+
+  // Within the same week
+  if (timeDiffInDays < 7) {
+    return notificationDate.toLocaleDateString([], {
+      weekday: "short",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  }
+
+  // Within the same year
+  if (now.getFullYear() === notificationDate.getFullYear()) {
+    return notificationDate.toLocaleDateString([], {
+      month: "short",
+      day: "numeric",
+    });
+  }
+
+  // Older than a year
+  return notificationDate.toLocaleDateString([], {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+};

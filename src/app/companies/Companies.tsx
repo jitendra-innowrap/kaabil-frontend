@@ -163,18 +163,18 @@ export default function Companies() {
     const params = new URLSearchParams(searchParams.toString());
     params.delete("page");
     params.set("search", searchKey); // Update the sort parameter in the URL
-    console.log(key, params);
+    // console.log(key, params);
     router.replace(`?${params.toString()}`, { scroll: false }); // Update the URL without refreshing the page
   }
   const handleTab=(key?:any)=>{
     setCurrentPage(1);
     setCompaniesList(null)
-    console.log(key)
+    // console.log(key)
     setSelectedTab(key);
     const params = new URLSearchParams(searchParams.toString());
     params.delete("page");
     params.set("tab", key); // Update the sort parameter in the URL
-    console.log(key, params);
+    // console.log(key, params);
     router.replace(`/CompanyTrading?${params.toString()}`, { scroll: false }); // Update the URL without refreshing the page
   }
   const handleIndustry = (id: string)=>{
@@ -443,7 +443,7 @@ export default function Companies() {
           </>
           :
           <div className="container pt-10 xl:pt-20 3xl:pt-32 bg-[#f9f9f9] mx-auto w-full px-4 pb-12">
-            <Image className="w-[280px] h-[190px] mx-auto 3xl:w-[323px] 3xl:h-[262px]" width={650} height={520} src={getEmptyStateMessage().image} alt="no-company-found"/>
+            <Image className="w-[280px] h-[190px] mx-auto 3xl:w-[323px] 3xl:h-[262px]" width={650} height={520} src={getEmptyStateMessage().image} priority={false} alt="no-company-found"/>
             <h3 className="text-xl 3xl:text-2xl font-medium text-center">{getEmptyStateMessage().title}</h3>
             <p className="text-sm 3xl:text-base font-normal text-center">{getEmptyStateMessage().description}</p>
           </div>

@@ -15,7 +15,7 @@ export default function CompanyCard({icon, title, companyId}:jobcardtype) {
             <ProfilePhoto  index={1} logo={icon} styles="size-[60px] lg:size-[60px] rounded-md 2xl:rounded-lg border 2xl:size-[90px] cursor-pointer mx-auto img"  name={title} />
             <h3 className="font-medium text-xs h-[32px] lg:h-[50px] lg:text-sm lg:h-[40px] 2xl:text-lg 3xl:text-xl 3xl:h-[59px] my-3 xl:my-4 line-clamp-2" title={title}>{title}</h3>
         </div>
-        <Link className="text-xs w-full 2xl:text-lg font-semibold justify-self-end" href={`/company/profile/${companyId}`}>
+        <Link className="text-xs w-full 2xl:text-lg font-semibold justify-self-end" href={`/jobs?company=${title}&cmp_id=${companyId}`}>
             View Jobs
         </Link>
     </div>

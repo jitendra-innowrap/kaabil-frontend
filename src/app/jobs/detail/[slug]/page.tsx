@@ -114,7 +114,7 @@ export default function Home() {
         const { deviceId, secret, salt } = getSessionData();
         // Ensure session data is available
         if (!deviceId || !secret || !salt) {
-          console.log("Session data not available, retrying...");
+          // console.log("Session data not available, retrying...");
           setTimeout(fetchJobDetails, 1000); // Retry after 1 second
           return;
         }

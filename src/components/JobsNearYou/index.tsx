@@ -60,6 +60,28 @@ export default function JobsNearYou() {
         address: string;
     } | null>(null);
     const [selectedJobId, setSelectedJobId] = useState<string >();
+    const scrollRef = useRef<HTMLDivElement | null>(null);
+    const [isDragging, setIsDragging] = useState(false);
+    const [startX, setStartX] = useState(0);
+    const [scrollLeft, setScrollLeft] = useState(0);
+
+    const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+        if (!scrollRef.current) return;
+        setIsDragging(true);
+        setStartX(e.pageX - scrollRef.current.offsetLeft);
+        setScrollLeft(scrollRef.current.scrollLeft);
+    };
+
+    const handleMouseLeave = () => setIsDragging(false);
+    const handleMouseUp = () => setIsDragging(false);
+
+    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+        if (!isDragging || !scrollRef.current) return;
+        e.preventDefault();
+        const x = e.pageX - scrollRef.current.offsetLeft;
+        const walk = (x - startX) * 1.5;
+        scrollRef.current.scrollLeft = scrollLeft - walk;
+    };
 
     const handleMarkerClick = (jobId: string) => {
     setSelectedJobId(jobId);
@@ -193,7 +215,7 @@ export default function JobsNearYou() {
       
             // Ensure session data is available
             if (!deviceId || !secret || !salt) {
-              console.log("Session data not available, retrying...");
+            //   console.log("Session data not available, retrying...");
               setTimeout(fetchRadius, 1000); // Retry after 1 second
               return;
             }      
@@ -202,7 +224,7 @@ export default function JobsNearYou() {
               const response = await api.get(
                 `/MasterData/getRadius`
               );
-              console.log(response, "radius list 👍👍👍")
+            //   console.log(response, "radius list 👍👍👍")
               setRadiusList(response.data?.result as radius[]);
               setselectedradius(response?.data?.result?.[0])
               setIsJobsLoading(false);
@@ -267,7 +289,7 @@ export default function JobsNearYou() {
 
         // Ensure session data is available
         if (!deviceId || !secret || !salt) {
-        console.log("Session data not available, retrying...");
+        // console.log("Session data not available, retrying...");
         setTimeout(fetchJobs, 1000); // Retry after 1 second
         return;
         }
@@ -401,7 +423,12 @@ export default function JobsNearYou() {
                 </div>
                 {!isMapopen && <div className='mobile-container'>
                     <p className='lg:hidden text-sm mb-[10px]'>Radius (in Kms)</p>
-                <div className="flex w-full overflow-auto distance-radius-list gap-2 lg:gap-3 3xl:gap-[14px]">
+                <div ref={scrollRef}
+                    onMouseDown={handleMouseDown}
+                    onMouseLeave={handleMouseLeave}
+                    onMouseUp={handleMouseUp}
+                    onMouseMove={handleMouseMove} 
+                    className="flex w-full select-none overflow-auto distance-radius-list gap-2 lg:gap-3 3xl:gap-[14px]">
                     {radiusList?.length>0 ? <></> : <div className={`distance-label invisible cursor-pointer w-[50px] lg:w-[100px] flex-shrink-0 text-[11px] leading-[100%] h-[30px] lg:h-[34px] border rounded-md grid place-items-center selected bg-[#231F20] border-black text-white`}>loading...</div>}
                     {
                         radiusList?.map((radius:radius)=>(
@@ -447,6 +474,7 @@ export default function JobsNearYou() {
                                         height={520} 
                                         src={'/new-assets/images/no-company.svg'} 
                                         alt="no-jobs-found"
+                                        priority={false}
                                     />
                                     {selectedLocation ? (
                                         // When user searched a specific location

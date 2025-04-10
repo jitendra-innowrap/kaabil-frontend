@@ -71,6 +71,21 @@
     height: calc(100vh - 500px);
     overflow-y: scroll;
 }
+@media (max-width: 1400px) {
+    .formscrollitemlg{
+        height: calc(100vh - 340px);
+    }
+}
+@media (max-width: 1300px) {
+    .formscrollitemlg{
+        height: calc(100vh - 320px);
+    }
+}
+@media (max-width: 1200px) {
+    .formscrollitemlg{
+        height: calc(100vh - 300px);
+    }
+}
 .selected_option_list{
     max-height: calc(100vh - 370px);
     overflow: auto;

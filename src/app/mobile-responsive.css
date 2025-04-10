@@ -44,7 +44,7 @@
         width: 100%;
         border-top: 1px solid #E3ECFB;
         padding-top: 16px;
-        margin-top: 15px;
+        margin-top: 15px !important;
     }
     .job-card .action-btns button, .job-card .action-btns a{
         flex: 1;

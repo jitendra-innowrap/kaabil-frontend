@@ -15,7 +15,7 @@ export default function LoadGoogleMapsScript() {
   // useEffect(() => {
   //   // Load Google Maps script
   //   const script = document.createElement('script');
-  //   script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyCp-H598wbMhBWMz9I_zbvdcknH-fiBVCo&libraries=places`;
+  //   script.src = `https://maps.googleapis.com/maps/api/js?key=${google_map_api_key}&libraries=places`;
   //   script.async = true;
   //   script.onload = () => {
   //     // Initialize the autocomplete service

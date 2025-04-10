@@ -12,24 +12,6 @@ import { useRouter } from 'next/navigation'
 export default function FilterSidebar() {
     const [open, setOpen] = useState(false);
     const filters = useAppSelector((state) => state.jobFiltersMaster);
-    // const [autocompleteService, setAutocompleteService] = useState<any>(null); // State for Google Places AutocompleteService
-
-    // Load Google Places API script and initialize AutocompleteService
-    // useEffect(() => {
-    //     const script = document.createElement('script');
-    //     script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyCp-H598wbMhBWMz9I_zbvdcknH-fiBVCo&libraries=places`;
-    //     script.async = true;
-    //     script.onload = () => {
-    //         if (window.google && window.google.maps && window.google.maps.places) {
-    //             setAutocompleteService(new window.google.maps.places.AutocompleteService());
-    //         }
-    //     };
-    //     document.body.appendChild(script);
-
-    //     return () => {
-    //         document.body.removeChild(script);
-    //     };
-    // }, []);
     
     const router = useRouter();
     const [removeOptionsSearch, SetremoveOptionsSearch] = useState(false);

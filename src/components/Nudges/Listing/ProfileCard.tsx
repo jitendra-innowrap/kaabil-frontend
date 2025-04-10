@@ -33,12 +33,12 @@ export default function ProfileCard() {
           {user?.designation}
         </p>
         <p className="mb-2 text-xs text-center 2xl:text-sm font-medium">
-          Complete your profile
+          {user?.profilePercentage==100?"Your profile is 100% complete!":"Complete your profile"}
         </p>
         <div className="flex items-center gap-2 w-full">
           <div className="w-full h-[6px] 2xl:h-2 rounded-lg bg-[#CCCCCC]">
             <div
-              className="rounded-lg h-full bg-red"
+              className={`rounded-lg h-full ${user?.profilePercentage==100?"bg-[#019e43]":" bg-red"}`}
               style={{ width: `${user?.profilePercentage || 0}%` }}
             ></div>
           </div>{" "}
@@ -50,7 +50,7 @@ export default function ProfileCard() {
           onClick={handleCompleteProfile}
           className="mt-3 md:mt-4 w-fit !text-red btn-border !border-red !text-xs"
         >
-          Complete Your Profile Now
+          {user?.profilePercentage==100?"Edit Profile":"Complete Your Profile Now"}
         </button>
       </div>
     </div>

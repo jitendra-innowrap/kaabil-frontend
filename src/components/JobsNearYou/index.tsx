@@ -11,8 +11,9 @@ import api from '@/Services/Apiservice';
 import Pagination from '../Pagination';
 import NearestjobCard from '../Cards/NearestJobCard';
 import { setCurrentLocation } from '@/redux/userSlice';
-import { fetchUserLocation } from '../utils';
+import { fetchUserLocation, showToast } from '../utils';
 import CustomGoogleMap from '../Map/JobsNearYouMap';
+import { google_map_api_key } from '@/config/app.config';
 
 interface radius {
     created_by: string,
@@ -42,7 +43,7 @@ export default function JobsNearYou() {
     const [totalJobs, setTotalJobs] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
     const dispatch = useDispatch();
-    const [jobs, setJobs] = useState<object[]>([]);
+    const [jobs, setJobs] = useState<object[] | null>(null);
     const [isJobsLoading, setIsJobsLoading] = useState(true);
     const [selectedradius, setselectedradius] = useState<null | radius>(null);
     const [radiusList, setRadiusList] = useState<radius[]>([]);
@@ -97,7 +98,7 @@ export default function JobsNearYou() {
         const loadGoogleMapsScript = () => {
             if (typeof window !== 'undefined' && !window.google) {
                 const script = document.createElement('script');
-                script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyCp-H598wbMhBWMz9I_zbvdcknH-fiBVCo&libraries=places`;
+                script.src = `https://maps.googleapis.com/maps/api/js?key=${google_map_api_key}&libraries=places`;
                 script.async = true;
                 script.defer = true;
                 script.onload = () => {
@@ -261,28 +262,41 @@ export default function JobsNearYou() {
         router.replace(`?${params.toString()}`, { scroll: true });
     };
 
-    const handleFetchLocation = async () => {
-        try {
-          const location = await fetchUserLocation();
-          dispatch(setCurrentLocation(location)); // Update the user location in the Redux store
-        } catch (error) {
-          console.error('Error fetching location:', error);
-        }
-      };
     // Fetch jobs based on the current page
     useEffect(() => {
         if(!inputValue) setInputValue(currentLocation?.city || "")
         fetchJobs();
-    }, [page, selectedradius, selectedLocation]);
+    }, [page, selectedradius, selectedLocation, currentLocation?.city]);
+    const errorShownRef = useRef(false);
 
-
+    const handleFetchLocation = async (): Promise<boolean> => {
+        try {
+          const location = await fetchUserLocation();
+          dispatch(setCurrentLocation(location));
+          return true;
+        } catch (error:any) {
+          console.error('Error fetching location:', error);
+          
+          setJobs([])
+          // Only show error if not already shown
+            if (!errorShownRef.current) {
+                if (error.message.includes('denied')) {
+                    showToast('Please enable location access for local job searches', true);
+                } else {
+                    showToast('Could not determine your location', true);
+                }
+                errorShownRef.current = true;
+            }
+          return false;
+        }
+      };
+      
     const fetchJobs = async () => {   
-        if(!currentLocation?.city && !selectedLocation && !selectedradius){
-            handleFetchLocation();
-            setJobs([]);
-            if(!inputValue) setInputValue(currentLocation?.city || "")
-            return
-        }     
+        // If no location is selected and no current location
+        if (!currentLocation?.city_latitude && !currentLocation?.city_longitude && !selectedLocation) {
+            await handleFetchLocation();
+            return;
+        } 
         const payload = getPayload();
 
         const { deviceId, secret, salt } = getSessionData();
@@ -300,7 +314,7 @@ export default function JobsNearYou() {
         Object.entries(payload).forEach(([key, value]) => {
             formData.append(key, value as string); // Convert all values to strings
         });
-        setIsJobsLoading(true)
+        setJobs(null)
         const response = await api.post(
             `/Company/getHiringNearMeJob`,
             payload,
@@ -328,9 +342,11 @@ export default function JobsNearYou() {
         setIsJobsLoading(false);
         } catch (error) {
         console.error("Error fetching jobs:", error);
+        setIsJobsLoading(false);
         }
     };
     const searchOptionRef = useRef<HTMLDivElement | null>(null);
+
     // Close dropdown when clicking outside
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -351,6 +367,15 @@ export default function JobsNearYou() {
   return (
     <div className="relative jobs-near-me flex">
         <div className='container no-mobile-container'>
+            {/* {showPermissionHelp && (
+            <div className="permission-help">
+                <p>Please enable location permissions in your browser settings.</p>
+                <button onClick={() => window.open('chrome://settings/content/location')}>
+                Open Settings
+                </button>
+            </div>
+            )} */}
+
             <div className="lg:w-1/2">
                 <div className="hidden lg:block pt-5 3xl:pt-6 mb-7 3xl:mb-8">
                     <Breadcrumb root='Home' category='Jobs near me' />
@@ -438,8 +463,8 @@ export default function JobsNearYou() {
                 </div>
                 </div>}
                 <div className={`mobile-container ${isMapopen ? "near-me-jobs-pannel border -translate-y-5 bg-[#F9F9F9]" : ""}`}>
-                    {isJobsLoading ? (
-                        <div className="flex justify-center items-center h-[200px]">
+                    {!jobs ? (
+                        <div className="flex justify-center items-center h-[305px]">
                             <div className="flex animate-spin h-7 w-7 rounded-full border-l-0 border-b-0 border-red border-[3px]"></div>
                         </div>
                     ) : (

@@ -17,7 +17,12 @@ interface CustomGoogleMapProps {
   onMarkerClick?: (jobId: string) => void;
   selectedJobId?: string;
 }
-
+interface ControlRefs {
+  container?: HTMLDivElement;
+  zoomIn?: HTMLButtonElement;
+  zoomOut?: HTMLButtonElement;
+  recenter?: HTMLButtonElement;
+}
 const CustomGoogleMap: React.FC<CustomGoogleMapProps> = ({
   lat,
   lng,
@@ -31,6 +36,22 @@ const CustomGoogleMap: React.FC<CustomGoogleMapProps> = ({
   const currentLocation = useAppSelector((state) => state.user.current_location);
   const currentLocationMarker = useRef<google.maps.Marker | null>(null);
   const hasInitialFit = useRef(false);
+  // Declare as mutable from beginning
+  const controlsRef: React.MutableRefObject<HTMLDivElement | null> = useRef(null);
+
+  // Function to create custom control button
+  const createControlButton = (icon: string, title: string, onClick: () => void) => {
+    const button = document.createElement('div');
+    button.innerHTML = icon;
+    button.title = title;
+    button.style.cssText = `
+      width: 30px;
+      height: 30px;
+    `;
+    button.addEventListener('click', onClick);
+    return button;
+  };
+
 
   // Function to add class to marker element
   const addMarkerClass = (marker: google.maps.Marker, className: string) => {
@@ -64,7 +85,62 @@ const CustomGoogleMap: React.FC<CustomGoogleMapProps> = ({
         ]
       });
     }
+    
+    // Create control container
+    const controlContainer = document.createElement('div');
+    controlContainer.style.cssText = `
+      position: absolute;
+      right: 10px;
+      bottom: 30px;
+      margin: 5px 0;
+      padding: 0;
+      border: none;
+      border-radius: 2px;
+      cursor: pointer;
+      display: flex;
+      gap: 6px;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-size: 20px;
+    `;
 
+    // Add zoom in button
+    const zoomInButton = createControlButton(
+      `<image src="/new-assets/icons/map/zoom-in.svg" class="zoom-in-map">`,
+      'Zoom in',
+      () => mapInstance.current?.setZoom(mapInstance.current.getZoom()! + 1)
+    );
+
+    // Add zoom out button
+    const zoomOutButton = createControlButton(
+      `<image src="/new-assets/icons/map/zoom-out.svg" class="zoom-out-map">`,
+      'Zoom out',
+      () => mapInstance.current?.setZoom(mapInstance.current.getZoom()! - 1)
+    );
+
+    // Add recenter button
+    const recenterButton = createControlButton(
+      `<image src="/new-assets/icons/map/recenter.svg" class="recenter-map">`,
+      'Recenter',
+      () => {
+        if (currentLocationMarker.current) {
+          mapInstance.current?.panTo(currentLocationMarker.current.getPosition()!);
+          mapInstance.current?.setZoom(18);
+        }
+      }
+    );
+
+    controlContainer.appendChild(zoomInButton);
+    controlContainer.appendChild(zoomOutButton);
+    controlContainer.appendChild(recenterButton);
+
+    // Add controls to the map
+    mapRef.current.appendChild(controlContainer);
+    
+    // Now you can assign directly
+    controlsRef.current = controlContainer;  
+    
     // Clear existing job markers (keep current location marker)
     markers.current.forEach(marker => marker.setMap(null));
     markers.current = [];
@@ -177,7 +253,7 @@ const CustomGoogleMap: React.FC<CustomGoogleMapProps> = ({
 
   return (
     <>
-      <div ref={mapRef} style={{ width: '100%', height: '100%' }} />
+      <div ref={mapRef} className='custom-google-map' style={{ width: '100%', height: '100%' }} />
       {/* Add global styles for the current location marker */}
       <style jsx global>{`
         .current-location-marker {

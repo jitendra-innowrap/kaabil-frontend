@@ -176,6 +176,8 @@ useEffect(() => {
       if (document.visibilityState === 'hidden') {
         // Tab lost focus - close your notification popup
         handleClose();
+      }else if (document.visibilityState === 'visible') {
+        refreshNotifications();
       }
     };
   

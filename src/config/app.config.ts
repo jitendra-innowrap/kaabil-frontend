@@ -4,9 +4,10 @@ export type AppConfig = {
   branchIOAndroidUrl: string;
   secretKey: string;
   isUATServer: boolean;
+  cleverTabAccountId: any;
+  cleverTabAccountToken: any;
+  celverTabAccountRegion: any;
 };
-
-console.log(process.env.NEXT_PUBLIC_UAT_SERVER, "Can we access .env");
 
 const appConfig: AppConfig = {
   branchKey:
@@ -23,6 +24,9 @@ const appConfig: AppConfig = {
       : process.env.NEXT_PUBLIC_PROD_BRANCH_IO_ANDROID_URL || "",
   secretKey: process.env.NEXT_PUBLIC_BRANCH_IO_SECRET_KEY || "",
   isUATServer: process.env.NEXT_PUBLIC_UAT_SERVER === "True",
+  cleverTabAccountId: process.env.NEXT_PUBLIC_CLEVERTAP_ACCOUNT_ID,
+  cleverTabAccountToken: process.env.NEXT_PUBLIC_CLEVERTAP_ACCOUNT_TOKEN,
+  celverTabAccountRegion: process.env.NEXT_PUBLIC_CLEVERTAP_REGION,
 };
 
 export const base_uri = process.env.NEXT_PUBLIC_API_BASE_URL

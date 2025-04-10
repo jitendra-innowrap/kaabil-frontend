@@ -19,6 +19,7 @@ import { useRouter } from "next/navigation";
 import LogoutDialog from "../Auth/LogoutDialog";
 import Notification from "./Notification";
 import { RiArrowDropDownFill } from "react-icons/ri";
+import useCleverTap from "@/hooks/useCleverTap";
 
 interface prop {
   closeSideMenu?: () => void;
@@ -26,12 +27,15 @@ interface prop {
 
 export default function SignInButton({ closeSideMenu }: prop) {
   const dispatch = useDispatch();
+  const { sendEvent, setUserProfile } = useCleverTap();
 
   const user = useAppSelector((state) => state.user);
   const isOpen = useAppSelector((state) => state.loginDialog.isOpen);
   const progress = useAppSelector((state) => state.progress.value);
   const isUser = useAppSelector((state) => state.auth.token);
-  const { is_profile_verify, unreadNotifications } = useAppSelector((state) => state.user);
+  const { is_profile_verify, unreadNotifications } = useAppSelector(
+    (state) => state.user
+  );
   const [open, setOpen] = useState(false);
   const [openLogoutDialog, setOpenLogoutDialog] = useState(false);
   const popupRef = useRef<any>(null);
@@ -76,14 +80,17 @@ export default function SignInButton({ closeSideMenu }: prop) {
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsDropDownOpen(false);
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
@@ -110,8 +117,6 @@ export default function SignInButton({ closeSideMenu }: prop) {
       document.body.classList.remove("no-scroll");
     };
   }, [open]);
-
-  
 
   return (
     <div className="flex">
@@ -143,9 +148,9 @@ export default function SignInButton({ closeSideMenu }: prop) {
         </button>
       ) : (
         <div className="flex items-center gap-3 2xl:gap-6 3xl:gap-7">
-          <Notification/>
-          <div 
-            ref={dropdownRef} 
+          <Notification />
+          <div
+            ref={dropdownRef}
             className="relative group/menu flex items-center cursor-pointer mobile-profile-option"
             onMouseEnter={() => setIsDropDownOpen(true)}
             onMouseLeave={() => setIsDropDownOpen(false)}
@@ -167,9 +172,13 @@ export default function SignInButton({ closeSideMenu }: prop) {
               />
             </div>
             <RiArrowDropDownFill className="font-medium text-xl 3xl:text-2xl text-black" />
-            
+
             {/* Dropdown menu - now controlled by isOpen state */}
-            <div className={`absolute z-30 ${isDropDownOpen ? 'block' : 'hidden'} top-0 lg:left-0 profile-options-menu`}>
+            <div
+              className={`absolute z-30 ${
+                isDropDownOpen ? "block" : "hidden"
+              } top-0 lg:left-0 profile-options-menu`}
+            >
               <div className="bg-white shadow-default mt-[45px] lg:mt-[52px] 2xl:mt-[76px] rounded-xl w-[140px] 2xl:w-[180px] border border-lightGrey divide-y divide-lightGrey">
                 <div
                   onClick={() => handleOptionClick(gotoMyProfile)}

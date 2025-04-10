@@ -11,8 +11,19 @@ const firebaseConfig = {
   measurementId: "G-ZWEFY9NVKP"
 };
 
+const firebaseTest ={
+  apiKey: "AIzaSyBZXmPayrr5GQp0GeI99wmd82w6fxl6BzY",
+  authDomain: "kaabil-87339.firebaseapp.com",
+  projectId: "kaabil-87339",
+  storageBucket: "kaabil-87339.firebasestorage.app",
+  messagingSenderId: "972940526001",
+  appId: "1:972940526001:web:6e626a2faa3122c382bd90",
+  vapidKey: "BBAAt4cFYf-wqtm786_CTLMIp3GBqPHByoIxDCIugCLy-6XCSW3JOEK6LeqNS8HvcyEo7P9M7p2LNSqgQG2yoTU" //test account
+};
+
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
+// firebase.initializeApp(firebaseTest); // test config
 const messaging = firebase.messaging();
 
 // Add a global error handler
@@ -22,7 +33,7 @@ self.addEventListener('error', (event) => {
 
 messaging.onBackgroundMessage((payload) => {
   try {
-    console.log('Full payload:', JSON.stringify(payload));
+    // console.log('Full payload:', JSON.stringify(payload));
     
     // Check if payload exists
     if (!payload) {
@@ -41,7 +52,7 @@ messaging.onBackgroundMessage((payload) => {
       data: payload.data || {} // Pass all data to the notification
     };
 
-    console.log('Preparing notification:', notificationTitle, notificationOptions);
+    // console.log('Preparing notification:', notificationTitle, notificationOptions);
 
     return self.registration.showNotification(notificationTitle, notificationOptions)
     .then(() => {
@@ -59,3 +70,5 @@ messaging.onBackgroundMessage((payload) => {
     console.error('Error in background message handler:', error);
   }
 });
+
+// new login fresh to test 6767576767

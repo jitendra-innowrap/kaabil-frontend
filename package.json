@@ -13,6 +13,7 @@
     "@reduxjs/toolkit": "^2.5.1",
     "autoprefixer": "^10.4.21",
     "axios": "^1.7.9",
+    "clevertap-web-sdk": "^1.14.1",
     "crypto": "^1.0.1",
     "crypto-js": "^4.2.0",
     "firebase": "^11.6.0",
@@ -39,6 +40,7 @@
     "yup": "^1.6.1"
   },
   "devDependencies": {
+    "@types/clevertap-web-sdk": "^1.1.12",
     "@types/crypto-js": "^4.2.2",
     "@types/firebase": "^2.4.32",
     "@types/google-map-react": "^2.1.10",

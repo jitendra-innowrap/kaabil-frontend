@@ -437,7 +437,7 @@ export default function Home() {
                   </div>
                   {skillMatchCount > 0 && (
                     <span className="label green flex font-medium 3xl:font-medium !lowercase items-center">
-                      {skillMatchCount} skills match{" "}
+                      {skillMatchCount} {skillMatchCount==1?"skill":"skills"} match{" "}
                       <FaCheck className="ml-1 3xl:ml-2 text-[8px] 3xl:text-xs font-light" />{" "}
                     </span>
                   )}

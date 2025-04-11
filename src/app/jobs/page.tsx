@@ -80,16 +80,16 @@ export default function Home() {
         </div>
       </section>
       <div className="block lg:hidden">
-      <Suspense fallback={<>... Loading</>}>
+      <Suspense fallback={<></>}>
         <FilterMobilePannel/>
       </Suspense>
       </div>
       <section className="container job-listings">
         <div className="mt-5 lg:mt-10 2xl:mt-14 pb-5 md:pb-8 xl:pb-14 2xl:pb-16 flex flex-col lg:flex-row  lg:gap-4 xl:gap-4 3xl:gap-7">
-            <Suspense fallback={<>... Loading</>}>
+            <Suspense fallback={<></>}>
                 <FilterSidebar/>
             </Suspense>
-            <Suspense fallback={<>... Loading</>}>
+            <Suspense fallback={<></>}>
               <JobList />
             </Suspense>
             <div className="lg: lg:-top-1 3xl:top-6 h-fit">

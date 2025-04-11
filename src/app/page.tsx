@@ -12,11 +12,12 @@ import SuccessCard from "@/components/Cards/SuccessCard";
 import ArticleCard from "@/components/Cards/ArticleCard";
 import Interviewlaptop from "@/components/Nudges/Home/Interviewlaptop";
 import ResumeBuilder from "@/components/Nudges/Home/ResumeBuilder";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import api from "@/Services/Apiservice";
 import { getSessionData } from "@/components/utils/deviceId";
 import { useRouter } from 'next/navigation';
 import Link from "next/link";
+import FilterMobilePannel from "@/components/Filter/FilterMobile";
 export default function Home() {
     const [homeData, setHomeData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -284,10 +285,17 @@ export default function Home() {
                     />
                 </Link>
                 <div className="bg-[#F5F5F5]">
-                    <div className="container search-section px-5 py-8 md:px-14 md:py-12 xl:px-24 xl:py-14 2xl:px-20">
+                    <div className="container search-section px-5 pt-8 md:px-14 md:pt-12 xl:px-24 xl:pt-14 2xl:px-20">
                         <h2 className='text-black text-center text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[64px] mb-5 xl:mb-8 font-medium'>Find your dream job with <span className="font-kalam font-bold text-red">Kaabil!</span></h2>
-                        <SearchSection />
+                        <div className="hidden lg:block">
+                            <SearchSection />
+                        </div>
                     </div>
+                        <div className="block lg:hidden pb-4 md:pb-8">
+                            <Suspense fallback={<></>}>
+                                <FilterMobilePannel/>
+                            </Suspense>
+                        </div>
                 </div>
             </section>
 

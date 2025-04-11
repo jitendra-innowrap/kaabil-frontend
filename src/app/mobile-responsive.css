@@ -44,7 +44,7 @@
         width: 100%;
         border-top: 1px solid #E3ECFB;
         padding-top: 16px;
-        margin-top: 15px;
+        margin-top: 15px !important;
     }
     .job-card .action-btns button, .job-card .action-btns a{
         flex: 1;
@@ -204,6 +204,13 @@
 @media (max-width: 540px){
     .about-usp-card{
         padding-bottom: 37px;
+    }
+    
+    .job-card .label, .job-card .label.lightgreen{
+        font-size: 8px;
+        line-height: 10px;
+        letter-spacing: 0%;
+        padding: 5.5px 8px !important;
     }
 }
 @media (max-width: 340px){

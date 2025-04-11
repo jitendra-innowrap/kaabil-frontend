@@ -257,7 +257,7 @@ export default function AddJobRole({ size, closePopup, handleBack }: any) {
               </h4>
 
               {/* ✅ Job Type Selection */}
-              <div className="flex flex-wrap gap-4 justify-between">
+              <div className="flex sm:flex-wrap sm:gap-4 justify-between">
                 {jobTypes.map((type) => (
                     <div
                         key={type.value}

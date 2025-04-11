@@ -25,7 +25,7 @@ const handleFetchLocation = async () => {
     handleFetchLocation();
   }, [dispatch]);
   return (
-    <footer className='relative z-[1003] border-t-4 text-[#E3E3E3] border-[#000000] bg-[#000000]'>
+    <footer className='relative lg:z-[2] border-t-4 text-[#E3E3E3] border-[#000000] bg-[#000000]'>
         <div className="container w-full hidden md:flex flex-col mt-5 md:mt-8 xl:mt-14  mx-auto">
             <div className="flex flex-wrap justify-between mb-5 lg:mb-8 3xl:mb-[20px]">
                 <div className="block">

@@ -1,6 +1,6 @@
 'use client';
 import React, { Suspense, useEffect, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Accordion, AccordionBody, AccordionHeader, AccordionItem } from 'react-headless-accordion';
 import { BiChevronDown, BiChevronUp } from 'react-icons/bi';
 import RangeSlider from 'react-range-slider-input';
@@ -9,6 +9,7 @@ import { useAppSelector } from '@/redux/hooks';
 
 function RangeAccordion() {
     const router = useRouter();
+    const pathname = usePathname();
     const searchParams = useSearchParams();
     const { min: reduxMin, max: reduxMax } = useAppSelector((state) => state.jobFiltersMaster.salary);
 
@@ -50,13 +51,15 @@ function RangeAccordion() {
             return updated;
         });
     };
-
+    // Common panel closing function
+    const closeFilterPanel = () => {
+        const button = document.getElementById('filter-pannel-overlay');
+        if (button) button.click();
+    };
+  
     // Handle Apply button click
     const handleApply = () => {
         if (!valuesChanged) {
-            // If values haven't changed, don't update URL params
-            const button = document.getElementById('filter-pannel-overlay');
-            if (button) button.click();
             return;
         }
 
@@ -74,10 +77,29 @@ function RangeAccordion() {
 
         // Use router to push new URL params without refreshing the page
         router.replace(`?${params.toString()}`, { scroll: false });
+        closeFilterPanel();
+    };
+    
+    // Handle Apply button click
+    const handleMobileApply = () => {
+        const params = new URLSearchParams(searchParams.toString());
         
-        // Close the filter panel
-        const button = document.getElementById('filter-pannel-overlay');
-        if (button) button.click();
+        // Only update params if values have changed
+        if (valuesChanged) {
+            params.set('minSalary', tempValue.min.toString());
+            params.set('maxSalary', tempValue.max.toString());
+        } else {
+            // Remove params if they exist but values haven't changed
+            params.delete('minSalary');
+            params.delete('maxSalary');
+        }
+        // Redirect to /jobs with params if not already there
+        if (pathname !== '/jobs') {
+            router.push(`/jobs?${params.toString()}`);
+        } else {
+            router.replace(`?${params.toString()}`, { scroll: false });
+        }
+        closeFilterPanel();
     };
 
     return (
@@ -141,7 +163,7 @@ function RangeAccordion() {
                                     <button
                                         type="button"
                                         className='w-full filter-range-btn !bg-black text-sm font-normal !text-white'
-                                        onClick={handleApply}
+                                        onClick={handleMobileApply}
                                     >
                                         Apply
                                     </button>
@@ -157,7 +179,7 @@ function RangeAccordion() {
 
 export default function Page() {
     return (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<div></div>}>
             <RangeAccordion />
         </Suspense>
     );

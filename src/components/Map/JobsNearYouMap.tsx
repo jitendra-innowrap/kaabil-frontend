@@ -163,7 +163,7 @@ const CustomGoogleMap: React.FC<CustomGoogleMapProps> = ({
             scaledSize: new window.google.maps.Size(40, 40)
           },
           title: 'Your current location',
-          zIndex: 1000,
+          zIndex: 1,
         });
 
         // Add CSS class to current location marker

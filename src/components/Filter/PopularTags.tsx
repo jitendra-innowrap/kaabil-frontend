@@ -93,7 +93,7 @@ function PopularTags() {
 // Wrap the component with Suspense in your page or parent component where it's used
 export default function Page() {
     return (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<div></div>}>
             <PopularTags />
         </Suspense>
     );

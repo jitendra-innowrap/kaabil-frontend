@@ -45,7 +45,6 @@ function LoadMoreAccordion({
   useEffect(() => {
     const urlFilters = searchParams.get(filterKey.toLowerCase());
     setSelected(urlFilters || ''); // Set to empty string if no filters are present
-    console.log('Filters updated:', urlFilters);
   }, [searchParams.toString(), filterKey]);
 
   useEffect(() => {

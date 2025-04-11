@@ -48,7 +48,7 @@ export default function JobListingCard(prop:any) {
   
     return (
       <div
-        className="flex items-center justify-center rounded-full border border-[#B9B9B9] size-9 3xl:size-11 text-white font-semibold text-sm"
+        className="flex items-center flex-shrink-0 justify-center rounded-full border border-[#B9B9B9] size-9 3xl:size-11 text-white font-semibold text-sm"
         style={{ backgroundColor: bgColor }}
       >
         {getCompanyInitials(name)}
@@ -152,7 +152,7 @@ export default function JobListingCard(prop:any) {
                 <h3 className='text-xs 3xl:text-sm text-[#070828]'>{prop?.company_name}</h3>
                 <p className='text-[8px] mt-1 3xl:text-xs text-[#B9B9B9]'>{timeAgo(prop?.job_posted_date)}</p>
               </div>
-            {prop?.profile_matched_percentage>50 &&<div className="job-profile-match label small lightgreen">
+            {prop?.profile_matched_percentage>0 &&<div className="job-profile-match whitespace-nowrap label small lightgreen">
             {prop?.profile_matched_percentage}% Profile Match
             </div>}
           </div>

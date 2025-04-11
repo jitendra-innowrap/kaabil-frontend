@@ -118,7 +118,7 @@ export default function SignInButton({ closeSideMenu }: prop) {
 
   return (
     <div className="flex">
-      {isOpen && <SignIn closePopup={closePopup} />}
+      {open && <SignIn closePopup={closePopup} />}
       <Popup
         ref={logoutdialogRef}
         open={openLogoutDialog}

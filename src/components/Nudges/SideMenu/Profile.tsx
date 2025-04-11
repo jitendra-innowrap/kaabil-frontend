@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 interface prop {
   closeSideMenu?: () => void;
 }
-export default function ProfileCard({closeSideMenu}:prop) {
+export default function ProfileCard({ closeSideMenu }: prop) {
   const user = useAppSelector((state) => state.user);
   const dispatch = useDispatch();
   const router = useRouter();
@@ -38,7 +38,9 @@ export default function ProfileCard({closeSideMenu}:prop) {
               {user?.designation}
             </p>
             <p className="mb-1 text-[10px] leading-[120%] 2xl:text-sm font-medium">
-              Complete your profile
+              {user?.profilePercentage == 100
+                ? "Your profile is 100% complete!"
+                : "Complete your profile"}
             </p>
             <div className="flex items-center gap-2 w-full">
               <div className="w-full h-[6px] 2xl:h-2 rounded-lg bg-[#CCCCCC]">
@@ -53,12 +55,14 @@ export default function ProfileCard({closeSideMenu}:prop) {
             </div>
           </div>
         </div>
-        <button
-          onClick={handleCompleteProfile}
-          className="mt-3 w-full md:mt-4 !text-red btn-border !border-red !text-xs"
-        >
-          Complete Your Profile Now
-        </button>
+        {user?.profilePercentage !== 100 && (
+          <button
+            onClick={handleCompleteProfile}
+            className="mt-3 w-full md:mt-4 !text-red btn-border !border-red !text-xs"
+          >
+            Complete Your Profile Now
+          </button>
+        )}
       </div>
     </div>
   );

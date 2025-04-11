@@ -164,7 +164,7 @@ export default function JobListingCardSmall({detail, isCompanyJob=false}:{detail
             }
                   
           </div>
-          <ul className='flex flex-wrap gap-2 mt-3'>
+          <ul className='flex flex-wrap gap-2 mt-3 mb-3'>
             {detail?.jobs_skills?.slice(0, 3)?.map((skill:any, index:number) => {
                 const isSkillIncluded = userSkills?.some((userSkill) => userSkill.id == skill.id);
               return <li

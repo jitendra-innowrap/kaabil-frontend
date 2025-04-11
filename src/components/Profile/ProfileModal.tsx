@@ -74,6 +74,8 @@ const ProfileModal = ({ size }: any) => {
     dispatch(setProfileModal(false));
   };
 
+  console.log(profileData?.user_job_roles, "Need To Check Skills and roles");
+
   useEffect(() => {
     dispatch(fetchRoles());
     dispatch(fetchJobTypes());

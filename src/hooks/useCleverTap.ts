@@ -14,7 +14,7 @@ const useCleverTap = () => {
         // Initialize the account with the account ID, token, and region
         clevertap.init(
           appConfig.cleverTabAccountId,
-          appConfig.celverTabAccountRegion,
+          appConfig.cleverTabAccountRegion,
           appConfig.cleverTabAccountToken
         );
 

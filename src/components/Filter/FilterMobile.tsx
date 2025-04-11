@@ -81,7 +81,7 @@ export default function FilterMobilePannel() {
         e.preventDefault();
         
         // Blur the active input to dismiss mobile keyboard
-        if (document.activeElement instanceof HTMLElement) {
+        if (document.activeElement instanceof HTMLFormElement) {
             document.activeElement.blur();
         }
         const params = new URLSearchParams();

@@ -19,7 +19,6 @@ import { useRouter } from "next/navigation";
 import LogoutDialog from "../Auth/LogoutDialog";
 import Notification from "./Notification";
 import { RiArrowDropDownFill } from "react-icons/ri";
-import useCleverTap from "@/hooks/useCleverTap";
 
 interface prop {
   closeSideMenu?: () => void;
@@ -27,7 +26,6 @@ interface prop {
 
 export default function SignInButton({ closeSideMenu }: prop) {
   const dispatch = useDispatch();
-  const { sendEvent, setUserProfile } = useCleverTap();
 
   const user = useAppSelector((state) => state.user);
   const isOpen = useAppSelector((state) => state.loginDialog.isOpen);
@@ -69,7 +67,7 @@ export default function SignInButton({ closeSideMenu }: prop) {
   };
 
   const handleOverlayClick = (e: MouseEvent) => {
-    const target = e.target as HTMLElement;
+    const target = e.target as HTMLFormElement;
     if (target.classList.contains("onboarding-overlay")) {
       closePopup();
     }

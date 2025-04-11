@@ -9,13 +9,19 @@ import { GrLocation } from 'react-icons/gr'
 import { useAppSelector } from '@/redux/hooks'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import Image from 'next/image'
+import { api2 } from '@/Services/Apiservice'
+import { getSessionData } from '../utils/deviceId'
+import path from 'path'
+import { setJobFiltersMaster } from '@/redux/jobsFilterSlice'
+import { useDispatch } from 'react-redux'
 
 export default function FilterMobilePannel() {
     const [open, setOpen] = useState(false);
     const searchParams = useSearchParams();
     const [search, setSearch] = useState(searchParams.get('search') || '');
     const filters = useAppSelector((state) => state.jobFiltersMaster);
-    
+    const {id, isLoggedIn} = useAppSelector((state) => state.user)
+    const dispatch = useDispatch();
     const router = useRouter();
     const [removeOptionsSearch, SetremoveOptionsSearch] = useState(false);
     // Handle Clear All button click
@@ -86,6 +92,144 @@ export default function FilterMobilePannel() {
             router.push(`/jobs?${params.toString()}`);
         }
     };
+
+     // Fetch jobs based on the current page
+      useEffect(() => {    
+        if(pathname=='/') fetchJobs();
+      }, [searchParams.toString()]);
+    
+      const fetchJobs = async () => { 
+        // Parse URL parameters
+      const jobTypesFilter =
+      searchParams.get("job_types_filter")?.split("|") || [];
+      const locationFilter =
+        searchParams.get("location_filter")?.split("|") || [];
+      const industriesFilter =
+        searchParams.get("industries_filter")?.split("|") || [];
+      const experienceFilter = searchParams.get("experience")?.split("|") || [];
+      const mappedExperienceFilter = experienceFilter.map((exp) => {
+        if (exp === "Fresher") {
+          return 1;
+        } else {
+          return 0;
+        }
+      });
+      const jobLocationTypesFilter =
+        searchParams.get("job_location_types_filter")?.split("|") || [];
+      const benefitsFilter =
+        searchParams.get("benefits_filter")?.split("|") || [];
+      const minSalary = searchParams.get("minSalary") || "";
+      const maxSalary = searchParams.get("maxSalary") || "";
+      const latitude = searchParams.get("latitude")?.split("|") || []; // Parse latitude as an array
+      const longitude = searchParams.get("longitude")?.split("|") || []; // Parse longitude as an array
+      const company_id = searchParams.get("cmp_id")?.split("|") || []; // Parse longitude as an array
+      const search = searchParams.get("search") || "";
+
+      // Check if any filters are applied
+      const hasFilters =
+        jobTypesFilter.length > 0 ||
+        locationFilter.length > 0 ||
+        industriesFilter.length > 0 ||
+        experienceFilter.length > 0 ||
+        jobLocationTypesFilter.length > 0 ||
+        benefitsFilter.length > 0 ||
+        minSalary ||
+        maxSalary ||
+        company_id.length > 0 ||
+        search;
+
+      // Format location_filter as an array of objects with latitude and longitude
+      const formattedLocationFilter = locationFilter.map((location, index) => {
+        const locationObj: {
+          location: string;
+          latitude?: number;
+          longitude?: number;
+        } = {
+          location: location,
+        };
+
+        // Add latitude only if it exists
+        if (latitude[index]) {
+          locationObj.latitude = parseFloat(latitude[index]);
+        }
+
+        // Add longitude only if it exists
+        if (longitude[index]) {
+          locationObj.longitude = parseFloat(longitude[index]);
+        }
+
+        return locationObj;
+      });
+
+      // Construct payload
+      let payload = {
+        recommendate: isLoggedIn ? !hasFilters : false, // Set recommendate to true if no filters are applied, else false
+        company_id_filter: company_id,
+        soft_skill_filter: [],
+        skill_filter: [],
+        job_location_types_filter: jobLocationTypesFilter,
+        industries_filter: industriesFilter,
+        location_filter: formattedLocationFilter, // Use formatted location filter
+        benefits_filter: benefitsFilter,
+        job_types_filter: jobTypesFilter,
+        experience_filter: mappedExperienceFilter,
+        min_salary: minSalary ? Number(minSalary) : null,
+        max_salary: maxSalary ? Number(maxSalary) : null,
+        search: search,
+        sort: isLoggedIn? 1: 3,
+    };
+  
+        const { deviceId, secret, salt } = getSessionData();
+  
+        // Ensure session data is available
+        if (!deviceId || !secret || !salt) {
+          // console.log("Session data not available, retrying...");
+          setTimeout(fetchJobs, 1000); // Retry after 1 second
+          return;
+        }
+  
+        try {
+          const response = await api2.post(
+            `/api/job/list?page=1&pageLength=10&userId=${
+              id || 0
+            }`,
+            payload,
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          console.clear();
+          let filterMasters = {
+            benefits_filter:
+              response.data?.data?.filters?.benefits_filter?.buckets,
+            job_location_types_filter:
+              response.data?.data?.filters?.job_location_types_filter?.buckets,
+            job_types_filter:
+              response.data?.data?.filters?.job_types_filter?.buckets,
+            experience: response.data?.data?.filters?.experience_filter?.buckets,
+            location_filter:
+              response.data?.data?.filters?.location_filter?.buckets,
+            industries_filter:
+              response.data?.data?.filters?.industries_filter?.buckets,
+            skill_filter: response.data?.data?.filters?.skill_filter?.buckets,
+            soft_skills_filter:
+              response.data?.data?.filters?.soft_skills_filter?.buckets,
+            salary: {
+              min: response.data?.data?.filters?.min_salary?.value,
+              max: response.data?.data?.filters?.max_salary?.value,
+            },
+          };
+          console.log('filter home data 🍃🍃🍃🍃', filterMasters)
+
+          // @ts-ignore
+          // if (!isfilterAvailable) 
+          dispatch(setJobFiltersMaster(filterMasters));
+        } catch (error) {
+          console.error("Error fetching jobs:", error);
+        }
+      };
   return (
       <>
       {/* <pre>{JSON.stringify(filters,null,2)}</pre> */}

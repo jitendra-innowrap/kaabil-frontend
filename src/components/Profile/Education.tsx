@@ -24,7 +24,7 @@ const Education = () => {
         slide.src === profileData?.user_certifications[clickedIndex]?.media_url
     );
     setSlides(imageSlides);
-    setCurrentIndex(actualIndex !== -1 ? actualIndex : 0); // Ensure valid index
+    setCurrentIndex(actualIndex !== -1 ? actualIndex : 0);
     setOpen(true);
   };
 
@@ -82,13 +82,15 @@ const Education = () => {
           </div>
         </div>
         <div className="grid grid-col-12 mt-4">
-          <div className="col-span-12">
-            <h1 className="text-[#231F20] text-[14px] sm:text-sm">
-              Certification
-            </h1>
-          </div>
+          {profileData?.user_certifications?.length > 0 && (
+            <div className="col-span-12">
+              <h1 className="text-[#231F20] text-[14px] sm:text-sm">
+                Certification
+              </h1>
+            </div>
+          )}
           <div className="col-span-12 mt-2 flex gap-3 sm:flex-wrap overflow-auto">
-            {profileData?.user_certifications?.length > 0 ? (
+            {profileData?.user_certifications?.length > 0 &&
               profileData?.user_certifications?.map(
                 (
                   cert: {
@@ -134,10 +136,7 @@ const Education = () => {
                     )}
                   </div>
                 )
-              )
-            ) : (
-              <div>-</div>
-            )}
+              )}
           </div>
         </div>
       </div>

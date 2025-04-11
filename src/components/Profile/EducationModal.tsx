@@ -31,6 +31,7 @@ const EducationModal = ({ size }: any) => {
   console.log(educationData, "Please check Education Data");
   const [educationSearch, setEducationSearch] = useState(educationData);
   const [showEducation, setShowEducation] = useState(false);
+
   const { token } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
@@ -50,6 +51,11 @@ const EducationModal = ({ size }: any) => {
       )
       .nullable(),
     year_of_graduation: Yup.string().required("Required"),
+    institute_name: Yup.string().when("isInstitute", {
+      is: true,
+      then: (schema) => schema.required("Required"),
+      otherwise: (schema) => schema.notRequired(),
+    }),
   });
 
   const closeModal = () => {
@@ -124,6 +130,12 @@ const EducationModal = ({ size }: any) => {
               )?.id || "",
             certification: profileData.user_certifications,
             user_certification_title: [""],
+            isInstitute:
+              qualificationList?.find(
+                (item: any) => item?.name === profileData?.education_name
+              )?.is_field_study_show === "0"
+                ? false
+                : true,
           }}
           validationSchema={validationSchema}
           onSubmit={async (values: any) => {
@@ -226,7 +238,11 @@ const EducationModal = ({ size }: any) => {
                       >
                         <label
                           htmlFor={education.id}
-                          onClick={() => {
+                          onClick={async () => {
+                            await setFieldValue(
+                              "isInstitute",
+                              education?.is_field_study_show !== "0"
+                            );
                             setFieldValue("year_of_graduation", null);
                             setFieldValue("education_id", education.id);
                             setFieldValue("institute_name", "");
@@ -240,6 +256,8 @@ const EducationModal = ({ size }: any) => {
                             setShowEducation(false);
                             setEducationSearch([]);
                             getFieldStudy(education);
+
+                            // setFieldValue("institute_name", "");
                           }}
                           className={`form-group flex items-center gap-4 rounded-lg  py-3 cursor-pointer ${
                             education.id === values.education_id
@@ -268,14 +286,21 @@ const EducationModal = ({ size }: any) => {
                         {education.id === values.education_id &&
                           education?.is_field_study_show !== "0" && (
                             <>
-                              <div className="w-full mb-3 relative flex items-center">
+                              <div className="w-full relative flex items-center">
                                 <input
                                   className="px-10 bg-[#C8C9CB3B] w-full py-3 rounded-lg placeholder-[#231F20] text-[#231F20]"
                                   placeholder="Select Education"
                                   value={values?.institute_name}
                                   onChange={(e) => {
                                     const value = e.target.value;
-                                    setFieldValue("institute_name", value);
+
+                                    // If input is empty, set institute_name to null; otherwise, set the value
+                                    setFieldValue(
+                                      "institute_name",
+                                      value.length === 0 ? null : value
+                                    );
+
+                                    // Filter suggestions based on the input
                                     const filteredSuggestions =
                                       educationData?.filter((item: any) =>
                                         item?.name
@@ -294,7 +319,8 @@ const EducationModal = ({ size }: any) => {
                                   className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#231F20] mt-0.5"
                                 />
                                 {educationSearch?.length > 0 &&
-                                  showEducation && (
+                                  showEducation &&
+                                  values?.institute_name && (
                                     <>
                                       <div className="absolute top-16 z-50 w-full max-h-[250px] min-h-[40px] overflow-auto p-0 bg-white border rounded-xl shadow-lg mt-1">
                                         {educationSearch?.map((item: any) => (
@@ -321,20 +347,27 @@ const EducationModal = ({ size }: any) => {
                                     </>
                                   )}
                               </div>
+                              <div className="h-3 mb-4">
+                                <ErrorMessage
+                                  name="institute_name"
+                                  component="div"
+                                  className="text-red text-md mt-1"
+                                />
+                              </div>
                             </>
                           )}
                         {education?.id === values?.education_id && (
-                          <div className="mt-1">
+                          <div>
                             <Select
                               placeholder="year of passing"
                               styles={customStyles}
                               options={yearOfPassingOptions}
-                              onChange={(option) =>
+                              onChange={(option) => {
                                 setFieldValue(
                                   "year_of_graduation",
                                   option?.value
-                                )
-                              }
+                                );
+                              }}
                               value={
                                 yearOfPassingOptions?.find(
                                   (item) =>

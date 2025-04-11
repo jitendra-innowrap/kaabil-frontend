@@ -6,7 +6,7 @@ export type AppConfig = {
   isUATServer: boolean;
   cleverTabAccountId: any;
   cleverTabAccountToken: any;
-  celverTabAccountRegion: any;
+  cleverTabAccountRegion: any;
 };
 
 const appConfig: AppConfig = {
@@ -26,11 +26,11 @@ const appConfig: AppConfig = {
   isUATServer: process.env.NEXT_PUBLIC_UAT_SERVER === "True",
   cleverTabAccountId: process.env.NEXT_PUBLIC_CLEVERTAP_ACCOUNT_ID,
   cleverTabAccountToken: process.env.NEXT_PUBLIC_CLEVERTAP_ACCOUNT_TOKEN,
-  celverTabAccountRegion: process.env.NEXT_PUBLIC_CLEVERTAP_REGION,
+  cleverTabAccountRegion: process.env.NEXT_PUBLIC_CLEVERTAP_REGION,
 };
 
-export const base_uri = process.env.NEXT_PUBLIC_API_BASE_URL
-export const job_listing_base_uri = process.env.NEXT_PUBLIC_JOBLISTING_BASE_URL
-export const google_map_api_key = process.env.NEXT_PUBLIC_GOOGLEMAP_API_KEY
+export const base_uri = process.env.NEXT_PUBLIC_API_BASE_URL;
+export const job_listing_base_uri = process.env.NEXT_PUBLIC_JOBLISTING_BASE_URL;
+export const google_map_api_key = process.env.NEXT_PUBLIC_GOOGLEMAP_API_KEY;
 
 export default appConfig;

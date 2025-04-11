@@ -138,6 +138,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
         onMenuClose={() => setMenuOpen(false)}
         menuPlacement={menuPlacement}
         menuPortalTarget={document.body}
+        menuIsOpen={menuOpen}
         styles={{
           menu: (base) => ({
             ...base,

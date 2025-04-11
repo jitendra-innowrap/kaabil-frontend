@@ -66,8 +66,8 @@ const NotificationCard = ({
       onClick={handleRead}
     >
       <Image 
-        className={`size-14 3xl:size-[70px] rounded-full ${(notification.photo_url || notification.company_logo)?" border-2":""}`} 
-        src={notification.photo_url || notification.company_logo || '/new-assets/icons/notification-profile-placeholder.svg'} 
+        className={`size-14 3xl:size-[70px] rounded-full ${(notification.photo_url || notification.company_logo)?" border-2":"border-2"}`} 
+        src={notification.photo_url || notification.company_logo || '/new-assets/logos/kaabil-logo.svg'} 
         width={140} 
         height={140} 
         alt='profile photo' 

@@ -150,7 +150,7 @@ export default function OnBoardingComplete({size, closePopup}: any) {
                             <Image
                                 src={photo_url || "/new-assets/icons/avatar.svg"}
                                 alt="profile-photo"
-                                className="w-[60px] h-[60px] sm:w-[100px] sm:h-[100px] rounded-full object-fit mx-auto block"
+                                className="w-[60px] h-[60px] sm:w-[100px] sm:h-[100px] rounded-full object-cover mx-auto block"
                                 width={150}
                                 height={150}
                             />

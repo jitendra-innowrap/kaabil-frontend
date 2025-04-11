@@ -10,7 +10,6 @@ const useCleverTap = () => {
       // Initialize CleverTap SDK using environment variables
       clevertap.privacy.push({ optOut: false }); // Set privacy options
       clevertap.privacy.push({ useIP: false }); // Set IP sharing preference
-
       // Initialize the account with the account ID, token, and region
       clevertap.init(
         appConfig.cleverTabAccountId,

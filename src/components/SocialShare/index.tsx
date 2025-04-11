@@ -75,6 +75,7 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ jobDetails }: any) => {
     // @ts-ignore
     <Dialog
       open={openShare}
+      // @ts-ignore
       size={size}
       handler={closePopup}
       className={`${

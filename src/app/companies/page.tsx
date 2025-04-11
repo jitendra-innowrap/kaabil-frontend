@@ -10,7 +10,7 @@ const Page = () => {
         <div className="w-full">
           <Image src='/assets/banners/trading.svg' quality={100} alt="" width={3840} height={1000} className="w-full xl:max-h-[225px] 3xl:max-h-[300px]"/>
         </div>
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<div></div>}>
           <Companies />
         </Suspense>        
       </div>

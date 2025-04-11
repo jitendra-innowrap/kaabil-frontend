@@ -243,6 +243,12 @@ export default function FilterMobilePannel() {
                 id="searchbar_input"
                 placeholder="Job Title or Company"
                 value={search}
+                onKeyDown={(e:any) => {
+                  if (e.key === "Enter") {
+                      e?.target?.blur(); // This removes focus and closes the keyboard
+                      // You might also want to trigger your search function here
+                  }
+              }}
                 onChange={(e) => setSearch(e.target.value)}
                 className="placeholder:truncate w-full text-sm leading-[100%] font-normal 2xl:text-base 3xl:text-lg md:col-span-4 placeholder:text-[#231F20] opacity-60 p-5 pl-[45px] rounded-xl lg:px-8 3xl:pl-[31px] lg:py-4"
             />

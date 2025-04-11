@@ -49,6 +49,7 @@ export default function SignInButton({ closeSideMenu }: prop) {
 
   const handleSignIn = () => {
     closeSideMenu?.();
+    // alert("sign in")
     dispatch(openLoginDialog());
     setOpen(true);
     // When User sigin start the process from first
@@ -118,7 +119,7 @@ export default function SignInButton({ closeSideMenu }: prop) {
 
   return (
     <div className="flex">
-      {open && <SignIn closePopup={closePopup} />}
+      {isOpen && <SignIn closePopup={closePopup} />}
       <Popup
         ref={logoutdialogRef}
         open={openLogoutDialog}

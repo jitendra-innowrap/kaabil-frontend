@@ -429,7 +429,7 @@ export default function Home() {
                       className="size-4 3xl:size-6"
                     />
                     <div className="text-[#231F20] flex items-center">
-                      <strong className="block text-xs 2xl:text-sm font-normal max-w-[150px] 3xl:max-w-[300px] line-clamp-1 truncate">
+                      <strong className="block text-xs 2xl:text-sm font-normal max-w-[250px] 3xl:max-w-[300px] line-clamp-1 truncate">
                         {jobDetails?.jobs_location?.[0]?.job_location ||
                           "Remote"}
                       </strong>
@@ -706,8 +706,8 @@ export default function Home() {
                 </h2>
               </div>
               <hr />
-              <div className="px-4 md:px-6 xl:px-8 2xl:px-10 my-3 flex sm:items-center justify-between flex-col sm:flex-row gap-5 xl:gap-7 2xl:gap-8">
-                <div className="flex flex-col sm:flex-row gap-2 xl:gap-3 2xl:gap-4">
+              <div className="px-4 md:px-6 xl:px-8 2xl:px-10 my-3 flex flex-row flex-wrap sm:items-center justify-between gap-3 xl:gap-7 2xl:gap-8">
+                <div className="flex flex-row gap-2 xl:gap-3 2xl:gap-4 items-start sm:items-center">
                   <CompanyLogo
                     index={1}
                     logo={jobDetails?.logo}
@@ -728,7 +728,7 @@ export default function Home() {
                   href={`/company/profile/${jobDetails?.company_master_id}`}
                   className="!bg-black !text-white h-fit whitespace-nowrap !text-[10px] 2xl:!text-sm 3xl:!text-base btn"
                 >
-                  Explore More{" "}
+                  Explore More
                 </Link>
               </div>
               <div className="px-4 md:px-6 xl:px-8 2xl:px-10  mt-4 md:mt-6 xl:mt-8">
@@ -769,40 +769,38 @@ export default function Home() {
       {jobsSlides?.length > 0 && (
         <section className="bg-[#f9f9f9]">
           <div className="w-full flex flex-col py-5 md:py-8 xl:py-14 2xl:py-16  mx-auto">
-            <div className="">
-              <div className="container section-heading">
-                <h2 className="text-black text-start text-2xl md:text-2xl 2xl:text-3xl 3xl:text-4xl 2xl:mb-3 font-medium">
-                  Similar jobs
-                </h2>
-              </div>
-              <div className="block container slider">
-                <GallerySlider
-                  slides={jobsSlides}
-                  spaceBetween={20}
-                  showNavigation
-                  loop={true}
-                  autoplay={false}
-                  autoplayDuration={3000}
-                  freeMode={false}
-                  slidesPerView={1}
-                  breakpoints={{
-                    768: {
-                      slidesPerView: 1.5,
-                    },
-                    1024: {
-                      slidesPerView: 4,
-                    },
-                    1280: {
-                      slidesPerView: 4,
-                      spaceBetween: 20,
-                    },
-                    1920: {
-                      slidesPerView: 4,
-                      spaceBetween: 24,
-                    },
-                  }}
-                />
-              </div>
+            <div className="container section-heading">
+              <h2 className="text-black text-start text-2xl md:text-2xl 2xl:text-3xl 3xl:text-4xl 2xl:mb-3 font-medium">
+                Similar jobs
+              </h2>
+            </div>
+            <div className="block container slider">
+              <GallerySlider
+                slides={jobsSlides}
+                spaceBetween={20}
+                showNavigation
+                loop={true}
+                autoplay={false}
+                autoplayDuration={3000}
+                freeMode={false}
+                slidesPerView={1}
+                breakpoints={{
+                  768: {
+                    slidesPerView: 1.5,
+                  },
+                  1024: {
+                    slidesPerView: 4,
+                  },
+                  1280: {
+                    slidesPerView: 4,
+                    spaceBetween: 20,
+                  },
+                  1920: {
+                    slidesPerView: 4,
+                    spaceBetween: 24,
+                  },
+                }}
+              />
             </div>
           </div>
         </section>

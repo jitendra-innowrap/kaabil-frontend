@@ -33,7 +33,7 @@ export default function ProfileCard() {
           {user?.designation}
         </p>
         <p className="mb-2 text-xs text-center 2xl:text-sm font-medium">
-          {user?.profilePercentage==100?"Your profile is 100% complete!":"Complete your profile"}
+          {user?.profilePercentage == 100? "Your profile is 100% complete!":"Complete your profile"}
         </p>
         <div className="flex items-center gap-2 w-full">
           <div className="w-full h-[6px] 2xl:h-2 rounded-lg bg-[#CCCCCC]">

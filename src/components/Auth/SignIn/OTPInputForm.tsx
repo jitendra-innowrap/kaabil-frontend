@@ -30,6 +30,7 @@ import {
 } from "@material-tailwind/react";
 import { IoClose } from "react-icons/io5";
 import { FaArrowLeft } from "react-icons/fa";
+import useCleverTap from "@/hooks/useCleverTap";
 
 interface prop {
   onClose: () => void;
@@ -45,7 +46,7 @@ export default function OTPInputForm({ size, closePopup, handleBack }: any) {
     if (progress === 2) {
       inputRefs.current[0]?.focus();
     }
-    if(progress=== 2) setTimer(60)
+    if (progress === 2) setTimer(60);
   }, [progress]);
 
   useEffect(() => {
@@ -196,41 +197,41 @@ export default function OTPInputForm({ size, closePopup, handleBack }: any) {
     // @ts-ignore
     <div>
       <div className="relative w-full mb-[28px] sm:mb-0">
-          <div onClick={handleBack}>
-            <FaArrowLeft className="sm:hidden absolute cursor-pointer top-2 z-30 left-2 size-6" />
-          </div>
-
-          <IoClose
-            className="absolute top-2 right-2 cursor-pointer"
-            size={size === "md" ? 32 : 28}
-            onClick={closePopup}
-          />
-          <div
-            className={`flex sm:justify-center items-center pt-[74px] sm:mt-5 sm:pt-0`}
-          >
-            <h2
-              className={`text-[#231F20] font-semibold text-[20px] sm:text-[28px]`}
-            >
-              OTP Verification
-            </h2>
-          </div>
-          <div className={`${size === "md" ? "text-center" : "text-left"}`}>
-            <p
-              className={`font-normal ${
-                size === "md" ? "mt-2" : "text-[14px] mt-1"
-              } text-[#000000] text-sm`}
-            >
-              We have sent the code verification to your number
-            </p>
-          </div>
-          <Image
-              src="/new-assets/icons/otp-icon.png"
-              alt="OTP verification form"
-              width={60}
-              height={60}
-              className="hidden sm:block mx-auto mt-2"
-            />
+        <div onClick={handleBack}>
+          <FaArrowLeft className="sm:hidden absolute cursor-pointer top-2 z-30 left-2 size-6" />
         </div>
+
+        <IoClose
+          className="absolute top-2 right-2 cursor-pointer"
+          size={size === "md" ? 32 : 28}
+          onClick={closePopup}
+        />
+        <div
+          className={`flex sm:justify-center items-center pt-[74px] sm:mt-5 sm:pt-0`}
+        >
+          <h2
+            className={`text-[#231F20] font-semibold text-[20px] sm:text-[28px]`}
+          >
+            OTP Verification
+          </h2>
+        </div>
+        <div className={`${size === "md" ? "text-center" : "text-left"}`}>
+          <p
+            className={`font-normal ${
+              size === "md" ? "mt-2" : "text-[14px] mt-1"
+            } text-[#000000] text-sm`}
+          >
+            We have sent the code verification to your number
+          </p>
+        </div>
+        <Image
+          src="/new-assets/icons/otp-icon.png"
+          alt="OTP verification form"
+          width={60}
+          height={60}
+          className="hidden sm:block mx-auto mt-2"
+        />
+      </div>
       <form
         className={`block ${size === "xxl" ? "mt-2" : "mt-10"}`}
         onSubmit={formik.handleSubmit}
@@ -252,7 +253,9 @@ export default function OTPInputForm({ size, closePopup, handleBack }: any) {
               placeholder="Enter your mobile number to receive OTP"
               readOnly
               required
-              className={`${styles.onboarding_dialog_input} border px-3 py-2 w-full rounded-[8px] sm:rounded-[12px] text-[#231F20] ${
+              className={`${
+                styles.onboarding_dialog_input
+              } border px-3 py-2 w-full rounded-[8px] sm:rounded-[12px] text-[#231F20] ${
                 user?.mobile ? "font-semibold" : "font-normal"
               }`}
             />
@@ -264,30 +267,24 @@ export default function OTPInputForm({ size, closePopup, handleBack }: any) {
               }`}
             >
               {formik.values.otp.map((digit, index) => (
-                 <>
-                   <div className={`relative`} key={index}>
-                     <input
-                         className={`${styles.onboarding_dialog_otp_input} border border-borderBlue text-center text-lg md:text-xl font-semibold`}
-                         name={`otp${index}`}
-                         type="tel"
-                         maxLength={1}
-                         autoComplete="off"
-                         value={digit}
-                         onChange={(e) => handleOtpChange(index, e.target.value)}
-                         onKeyDown={(e) => handleKeyDown(index, e)}
-                         ref={(ref) => {
-                           inputRefs.current[index] = ref;
-                         }}
-                     />
-                   </div>
-                   {index < 3 && (
-                       <span
-                           className={`text-[#98A2B3]`}
-                       >
-                      -
-                    </span>
-                   )}
-                 </>
+                <>
+                  <div className={`relative`} key={index}>
+                    <input
+                      className={`${styles.onboarding_dialog_otp_input} border border-borderBlue text-center text-lg md:text-xl font-semibold`}
+                      name={`otp${index}`}
+                      type="tel"
+                      maxLength={1}
+                      autoComplete="off"
+                      value={digit}
+                      onChange={(e) => handleOtpChange(index, e.target.value)}
+                      onKeyDown={(e) => handleKeyDown(index, e)}
+                      ref={(ref) => {
+                        inputRefs.current[index] = ref;
+                      }}
+                    />
+                  </div>
+                  {index < 3 && <span className={`text-[#98A2B3]`}>-</span>}
+                </>
               ))}
             </div>
             {formik.errors.otp && (

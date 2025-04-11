@@ -230,7 +230,7 @@ const ProfileModal = ({ size }: any) => {
           {({ setFieldValue, isSubmitting, values }) => (
             <Form>
               {/* @ts-ignore */}
-              <DialogBody className="p-0 max-h-[50vh] sm:max-h-[60vh] md:max-h-[70vh] lg:max-h-[80vh] overflow-y-auto custom-scroll">
+              <DialogBody className="p-0 max-h-[63vh] sm:max-h-[68vh] md:max-h-[70vh] lg:max-h-[80vh] overflow-y-auto custom-scroll">
                 <div
                   className={`${
                     size === "xxl" ? "px-4" : "px-12"
@@ -413,12 +413,18 @@ const ProfileModal = ({ size }: any) => {
                         <div
                           key={jobType.id}
                           className={`label-option cursor-pointer px-4 flex-grow py-2 rounded-md ${
-                            values.job_type_master_id == jobType.id
+                            values.job_type_master_id.includes(jobType.id)
                               ? "bg-red text-white"
                               : ""
                           }`}
                           onClick={() => {
-                            setFieldValue("job_type_master_id", [jobType.id]);
+                            const currentValues = values.job_type_master_id;
+                            const newValues = currentValues.includes(jobType.id)
+                              ? currentValues.filter(
+                                  (id: any) => id !== jobType.id
+                                )
+                              : [...currentValues, jobType.id];
+                            setFieldValue("job_type_master_id", newValues);
                           }}
                         >
                           {jobType.name}

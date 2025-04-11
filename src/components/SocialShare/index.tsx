@@ -41,7 +41,9 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ jobDetails }: any) => {
 
   // Build the share message dynamically
   const baseTitle = `${jobDetails?.company_name} is hiring for ${jobDetails?.job_title} on Kaabil app. Quickly apply for this and 1000's of other jobs on the Kaabil app.`;
-  const locationText = jobDetails?.job_location ? ` at ${jobDetails.job_location}` : "";
+  const locationText = jobDetails?.job_location
+    ? ` at ${jobDetails.job_location}`
+    : "";
   const title = `${baseTitle}${locationText}.`;
 
   const closePopup = () => {
@@ -73,9 +75,14 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ jobDetails }: any) => {
     // @ts-ignore
     <Dialog
       open={openShare}
-      size={"md"}
+      size={size}
       handler={closePopup}
-      className="fixed top-10 -translate-x-1/2 custom-dialog bg-white shadow-lg rounded-xl p-6"
+      className={`${
+        size === "xxl"
+          ? "mx-auto fixed   sm-dailog"
+          : "fixed top-10 -translate-x-1/2 custom-dialog"
+      }`}
+      // className="fixed top-10 -translate-x-1/2 custom-dialog bg-white shadow-lg rounded-xl p-6"
     >
       {/* @ts-ignore */}
       <DialogHeader>
@@ -86,10 +93,10 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ jobDetails }: any) => {
             onClick={closePopup}
           />
           <div
-            className={`flex items-center mt-6 ${
+            className={`flex items-center ${
               size === "xxl"
-                ? "justify-start text-md"
-                : "justify-center text-3xl"
+                ? "justify-start text-md mt-16"
+                : "justify-center text-3xl mt-6"
             }`}
           >
             <h2 className="text-center text-[#231F20] font-semibold">
@@ -102,7 +109,11 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ jobDetails }: any) => {
       <DialogBody>
         <div className="">
           {/* Social Media Buttons */}
-          <div className="flex gap-4 items-center justify-center mb-5">
+          <div
+            className={`flex gap-4 items-center ${
+              size === "xxl" ? "justify-start" : "justify-center"
+            } mb-5`}
+          >
             <FacebookShareButton
               url={fullUrl}
               title={title}
@@ -138,7 +149,11 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ jobDetails }: any) => {
           </div>
 
           {/* Copy URL Section */}
-          <div className="border flex items-center bg-[#494b4c] rounded-lg p-3">
+          <div
+            className={`border flex items-center bg-[#494b4c] rounded-lg ${
+              size === "xxl" ? "p-2" : "p-3"
+            }`}
+          >
             <p className="w-full text-white text-sm leading-normal overflow-auto truncate">
               {fullUrl}
             </p>

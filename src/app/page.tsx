@@ -284,10 +284,10 @@ export default function Home() {
                     className="inline-block sm:hidden !w-full !h-auto home-banner"
                     />
                 </Link>
-                <div className="bg-[#F5F5F5]">
-                    <div className="container search-section px-5 pt-8 md:px-14 md:pt-12 xl:px-24 xl:pt-14 2xl:px-20">
+                <div className="bg-[#f6f7f7]">
+                    <div className="container pb-5 xl:pb-6 search-section px-5 pt-8 md:px-14 md:pt-12 xl:px-24 xl:pt-14 2xl:px-20">
                         <h2 className='text-black text-center text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[64px] mb-5 xl:mb-8 font-medium'>Find your dream job with <span className="font-kalam font-bold text-red">Kaabil!</span></h2>
-                        <div className="hidden lg:block">
+                        <div className="hidden lg:block lg:mb4">
                             <SearchSection />
                         </div>
                     </div>
@@ -299,7 +299,7 @@ export default function Home() {
                 </div>
             </section>
 
-            <section className="bg-[#F6F7F7] py-5 xl:py-6">
+            <section className="bg-[#f6f7f7] pb-5 xl:pb-6">
                 <h2 className='text-black text-center text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[64px] mb-5 2xl:mb-4 font-medium'>Top companies <span className="font-kalam font-bold text-red">hiring</span> now</h2>
                 <div className="w-full flex flex-col items-center mb-5 md:mb-8 2xl:mb-12  mx-auto">
                     <div className="container no-pad">

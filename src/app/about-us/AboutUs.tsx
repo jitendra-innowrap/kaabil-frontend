@@ -5,134 +5,58 @@ import Image from "next/image"
 import { useState } from "react"
 
 export default function AboutUs() {
-  const testimonialContent =[
-    {
-      
-    }
-  ]
+  
+  const TextimonialCard=()=> {
+    return (
+      <div
+      className="bg-white impact-testimonial rounded-2xl xl:rounde-[20px] 3xl:rounded-3xl p-4 md:p-5 xl:p-7 3xl:p-10"
+    >
+      {/* User Details */}
+      <div className="flex flex-col md:flex-row md:items-center mb-3 md:mb-4 xl:mb-5 3xl:mb-6">
+        <div className="">
+          <Image
+            src="/new-assets/images/about/testimonial-profile.png"
+            alt="Shashikala Bandaru"
+            width={80}
+            height={80}
+            className="rounded-full object-cover size-20 xl:size-16 3xl:size-20"
+          />
+        </div>
+        <div className="md:ml-4 mt-[10px] md:mt-0">
+          <h3 className="font-semibold xl:text-lg 3xl:text-xl text-black truncate">Shashikala Bandaru</h3>
+          <p className="text-sm xl:text-base text-gray-600 truncate">Process Associate, TCS</p>
+        </div>
+      </div>
+
+      {/* Testimonial Content */}
+      <p className="impact-desc text-sm xl:text-base leading-relaxed text-gray-700 md:line-clamp-6">
+        Overcoming adversity, Shashikala rose above her challenges, transforming from a stone grinder to a
+        successful Software Tester at Tata Consultancy Services Ltd. With the support of the Pride School
+        Programme, she turned her dreams into reality, proving that resilience and determination can create
+        a brighter future.
+      </p>
+    </div>
+    )
+  }
+  
   const testimonials = [
-    <div
-      className="bg-white impact-testimonial rounded-2xl xl:rounde-[20px] 3xl:rounded-3xl p-4 md:p-5 xl:p-7 3xl:p-10"
-    >
-      {/* User Details */}
-      <div className="flex flex-col md:flex-row md:items-center mb-3 md:mb-4 xl:mb-5 3xl:mb-6">
-        <div className="">
-          <Image
-            src="/new-assets/images/about/testimonial-profile.svg"
-            alt="Shashikala Bandaru"
-            width={80}
-            height={80}
-            className="rounded-full object-cover size-20 xl:size-16 3xl:size-20"
-          />
-        </div>
-        <div className="md:ml-4 mt-[10px] md:mt-0">
-          <h3 className="font-semibold xl:text-lg 3xl:text-xl text-black truncate">Shashikala Bandaru</h3>
-          <p className="text-sm xl:text-base text-gray-600 truncate">Process Associate, TCS</p>
-        </div>
-      </div>
-
-      {/* Testimonial Content */}
-      <p className="impact-desc text-sm xl:text-base leading-relaxed text-gray-700 md:line-clamp-6">
-        Overcoming adversity, Shashikala rose above her challenges, transforming from a stone grinder to a
-        successful Software Tester at Tata Consultancy Services Ltd. With the support of the Pride School
-        Programme, she turned her dreams into reality, proving that resilience and determination can create
-        a brighter future.
-      </p>
-    </div>,
-    <div
-      className="bg-white impact-testimonial rounded-2xl xl:rounde-[20px] 3xl:rounded-3xl p-4 md:p-5 xl:p-7 3xl:p-10"
-    >
-      {/* User Details */}
-      <div className="flex flex-col md:flex-row md:items-center mb-3 md:mb-4 xl:mb-5 3xl:mb-6">
-        <div className="">
-          <Image
-            src="/new-assets/images/about/testimonial-profile.svg"
-            alt="Shashikala Bandaru"
-            width={80}
-            height={80}
-            className="rounded-full object-cover size-20 xl:size-16 3xl:size-20"
-          />
-        </div>
-        <div className="md:ml-4 mt-[10px] md:mt-0">
-          <h3 className="font-semibold xl:text-lg 3xl:text-xl text-black truncate">Shashikala Bandaru</h3>
-          <p className="text-sm xl:text-base text-gray-600 truncate">Process Associate, TCS</p>
-        </div>
-      </div>
-
-      {/* Testimonial Content */}
-      <p className="impact-desc text-sm xl:text-base leading-relaxed text-gray-700 md:line-clamp-6">
-        Overcoming adversity, Shashikala rose above her challenges, transforming from a stone grinder to a
-        successful Software Tester at Tata Consultancy Services Ltd. With the support of the Pride School
-        Programme, she turned her dreams into reality, proving that resilience and determination can create
-        a brighter future.
-      </p>
-    </div>,
-    <div
-      className="bg-white impact-testimonial rounded-2xl xl:rounde-[20px] 3xl:rounded-3xl p-4 md:p-5 xl:p-7 3xl:p-10"
-    >
-      {/* User Details */}
-      <div className="flex flex-col md:flex-row md:items-center mb-3 md:mb-4 xl:mb-5 3xl:mb-6">
-        <div className="">
-          <Image
-            src="/new-assets/images/about/testimonial-profile.svg"
-            alt="Shashikala Bandaru"
-            width={80}
-            height={80}
-            className="rounded-full object-cover size-20 xl:size-16 3xl:size-20"
-          />
-        </div>
-        <div className="md:ml-4 mt-[10px] md:mt-0">
-          <h3 className="font-semibold xl:text-lg 3xl:text-xl text-black truncate">Shashikala Bandaru</h3>
-          <p className="text-sm xl:text-base text-gray-600 truncate">Process Associate, TCS</p>
-        </div>
-      </div>
-
-      {/* Testimonial Content */}
-      <p className="impact-desc text-sm xl:text-base leading-relaxed text-gray-700 md:line-clamp-6">
-        Overcoming adversity, Shashikala rose above her challenges, transforming from a stone grinder to a
-        successful Software Tester at Tata Consultancy Services Ltd. With the support of the Pride School
-        Programme, she turned her dreams into reality, proving that resilience and determination can create
-        a brighter future.
-      </p>
-    </div>,
-    <div
-      className="bg-white impact-testimonial rounded-2xl xl:rounde-[20px] 3xl:rounded-3xl p-4 md:p-5 xl:p-7 3xl:p-10"
-    >
-      {/* User Details */}
-      <div className="flex flex-col md:flex-row md:items-center mb-3 md:mb-4 xl:mb-5 3xl:mb-6">
-        <div className="">
-          <Image
-            src="/new-assets/images/about/testimonial-profile.svg"
-            alt="Shashikala Bandaru"
-            width={80}
-            height={80}
-            className="rounded-full object-cover size-20 xl:size-16 3xl:size-20"
-          />
-        </div>
-        <div className="md:ml-4 mt-[10px] md:mt-0">
-          <h3 className="font-semibold xl:text-lg 3xl:text-xl text-black truncate">Shashikala Bandaru</h3>
-          <p className="text-sm xl:text-base text-gray-600 truncate">Process Associate, TCS</p>
-        </div>
-      </div>
-
-      {/* Testimonial Content */}
-      <p className="impact-desc text-sm xl:text-base leading-relaxed text-gray-700 md:line-clamp-6">
-        Overcoming adversity, Shashikala rose above her challenges, transforming from a stone grinder to a
-        successful Software Tester at Tata Consultancy Services Ltd. With the support of the Pride School
-        Programme, she turned her dreams into reality, proving that resilience and determination can create
-        a brighter future.
-      </p>
-    </div>,
-    
-  ]
+    <TextimonialCard/>,
+    <TextimonialCard/>,
+    <TextimonialCard/>,
+    <TextimonialCard/>,
+    <TextimonialCard/>,
+    <TextimonialCard/>,
+    <TextimonialCard/>,
+    <TextimonialCard/>,
+  ];
   return (
     <main>
       {/* Hero Section */}
       <section>
-          <Image src='/new-assets/images/about/hero-banner.svg' quality={100} alt="" width={3840} height={1000} draggable={false}
+          <Image src='/new-assets/images/about/hero-banner-update.webp' quality={80} alt="" width={3840} height={1000} draggable={false}
           className="hidden sm:inline-block w-full h-auto home-banner"
           />
-          <Image src='/new-assets/images/about/hero-banner-mobile.svg' quality={100} alt="" width={3840} height={1000} draggable={false}
+          <Image src='/new-assets/images/about/hero-banner-mobile-update.webp' quality={80} alt="" width={3840} height={1000} draggable={false}
           className="inline-block sm:hidden !w-full !h-auto home-banner"
           />
       </section>
@@ -259,9 +183,9 @@ export default function AboutUs() {
           <div className="grid md:grid-cols-2 gap-8 md:gap-12">
             <div className="flex flex-col items-start justify-center">
               <h2 className='text-black text-center text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[36px] mb-4 md:mb-6 xl:mb-7 3xl:mb-8 font-medium'>How It <span className="font-kalam font-bold text-red"> works</span></h2>
-              <div className="md:hidden mb-6">
+              <div className="md:hidden mb-6 w-full">
                 <Image
-                  src="/new-assets/images/about/how-it-works.svg"
+                  src="/new-assets/images/about/how-it-works.png"
                   alt="Women in training"
                   width={1200}
                   height={1200}
@@ -291,14 +215,14 @@ export default function AboutUs() {
       <div className="bg-[#051525] relative overflow-hidden">
         <div className="flex lg:justify-end gap-8 md:gap-12 container py-8 md:py-10 xl:py-12 2xl:py-14 3xl:py-[82px]">
                 <Image
-                  src="/new-assets/images/about/reach-map-mobile.svg"
+                  src="/new-assets/images/about/reach-map-mobile.webp"
                   alt="Women in training"
                   width={1200}
                   height={1200}
                   className=" lg:hidden rounded-lg z-[1] xl:w-[100%] absolute top-0 left-0  w-full"
                 />
                 <Image
-                  src="/new-assets/images/about/reach-map.svg"
+                  src="/new-assets/images/about/reach-map.webp"
                   alt="Women in training"
                   width={1200}
                   height={1200}
@@ -335,7 +259,7 @@ export default function AboutUs() {
               <h2 className='text-black text-center text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[36px] mb-4 md:mb-6 xl:mb-7 3xl:mb-8 font-medium'>Powered by <span className="font-kalam font-bold text-red"> collaboration</span></h2>
               <div className="md:hidden mb-4">
                 <Image
-                  src="/new-assets/images/about/collaboration.svg"
+                  src="/new-assets/images/about/collaboration.webp"
                   alt="Women in training"
                   width={1200}
                   height={1200}

@@ -12,12 +12,15 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { IoClose } from "react-icons/io5";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { fetchProfile, setAboutMeModal } from "@/redux/profileSlice";
+import { useState } from "react";
 
 export const AboutModal = ({ size }: any) => {
   const { token } = useAppSelector((state) => state.auth);
   const { aboutMeModal, profileData } = useAppSelector(
     (state) => state.profile
   );
+  const [charCount, setCharCount] = useState(profileData?.bio_text?.length || 0);
+
   const dispatch = useAppDispatch();
   const initialValues = {
     bio_text: profileData?.bio_text || "",
@@ -98,7 +101,7 @@ export const AboutModal = ({ size }: any) => {
             }
           }}
         >
-          {({ isSubmitting, dirty }) => (
+          {({ isSubmitting, dirty,  values, handleChange  }) => (
             <Form>
               {/* @ts-ignore */}
               <DialogBody
@@ -116,15 +119,25 @@ export const AboutModal = ({ size }: any) => {
                     >
                       About Me
                     </label>
-                    <Field
-                      as="textarea"
-                      name="bio_text"
-                      id="bio_text"
-                      placeholder="Enter about me"
-                      rows={8}
-                      className="w-full pl-6 pt-4 text-lg bg-[#F2F3F3] focus:outline-none rounded-lg"
-                    />
-                    <div className="h-1">
+                    <div className="relative">
+                      <Field
+                        as="textarea"
+                        name="bio_text"
+                        id="bio_text"
+                        placeholder="Enter about me"
+                        rows={8}
+                        maxLength={1000}
+                        className="w-full pl-6 pt-4 text-lg bg-[#F2F3F3] focus:outline-none rounded-lg"
+                        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
+                          handleChange(e);
+                          setCharCount(e.target.value.length);
+                        }}
+                      />
+                      <div className="absolute -bottom-4 right-2 text-sm text-gray-500">
+                        {1000 - charCount} character(s) left
+                      </div>
+                    </div>
+                    <div className="h-3">
                       <ErrorMessage
                         name="bio_text"
                         component="div"

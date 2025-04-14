@@ -24,7 +24,7 @@ export default function PlayStoreAppAd() {
           </div>
           <div className="absolute left-1/2 -translate-x-1/2 md:translate-x-0 md:top-[-65px] xl:translate-x-10 2xl:translate-x-0 3xl:translate-x-8 shrink-0 md:left-[8%] top-[200px] lg:top-[-50px] md:bottom-0 block h-[300px] md:h-[120%] w-[300px] md:w-[328px] flex-1 xl:w-[327.6px] 2xl:w-[460px] 2xl:top-[-90px]">
             <Image
-            src={"/new-assets/images/footer-mobile-update.svg"}
+            src={"/new-assets/images/footer-mobile-update3.png"}
             width={1716}
             height={1600}
             quality={100}

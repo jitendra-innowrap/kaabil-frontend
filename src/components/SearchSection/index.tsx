@@ -98,7 +98,7 @@ function SearchSection() {
   };
 
   return (
-    <form onSubmit={handleSearch} className="flex flex-col lg:flex-row gap-3 lg:gap-0 mx-auto rounded-xl 2xl:rounded-[20px] lg:shadow-default max-w-[800px] xl:max-w-[880px] 2xl:max-w-[1050px] 3xl:max-w-[1313px] lg:bg-white lg:h-[65px] 2xl:h-[90px] 3xl:h-[100px] items-center">
+    <form onSubmit={handleSearch} className="flex flex-col lg:flex-row gap-3 lg:gap-0 mx-auto rounded-xl 2xl:rounded-[20px] lg:shadow-sm 3xl:shadow-default max-w-[800px] xl:max-w-[880px] 2xl:max-w-[1050px] 3xl:max-w-[1313px] lg:bg-white lg:h-[65px] 2xl:h-[90px] 3xl:h-[100px] items-center">
       <input
         type="text"
         id="searchbar_input"

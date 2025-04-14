@@ -4,6 +4,8 @@ import Image from "next/image";
 import React from "react";
 import { IoClose } from "react-icons/io5";
 import styles from "./signIn.module.css";
+import Lottie from "lottie-react"; // Add Lottie
+import verifiedAnimation from "@/../public/new-assets/icons/lottie/otp_verified.json"; // Import your Lottie JSON file
 
 
 export default function NumberVerified({ size, closePopup }: any) {
@@ -36,13 +38,14 @@ export default function NumberVerified({ size, closePopup }: any) {
                 Number Verified
               </h2>
             </div>
-            <Image
-                src={"/new-assets/icons/number-verified.png"}
-                width={100}
-                height={100}
-                className="hidden sm:block w-16 h-16 lg:w-20 lg:h-20 mx-auto mt-2"
-                alt="number-verified"
+            <div className="hidden sm:flex justify-center">
+              <Lottie
+                animationData={verifiedAnimation}
+                className="w-16 h-16 lg:w-20 lg:h-20 mx-auto mt-2"
+                loop={true}
               />
+            </div>
+
           </div>
         </div>
         <form onSubmit={handleSubmit} className="block mt-6">
@@ -52,13 +55,13 @@ export default function NumberVerified({ size, closePopup }: any) {
               Mobile Number
             </label>
             <div className="form-group relative">
-              <Image
-                  src={"/new-assets/icons/number-verified.png"}
-                  width={100}
-                  height={100}
-                  className="w-8 h-8 absolute right-3 top-[7px] sm:top-3"
-                  alt="number-verified"
-              />
+              <div className="absolute right-3 top-[7px] sm:top-3 w-8 h-8">
+                <Lottie
+                  animationData={verifiedAnimation}
+                  className="w-full h-full"
+                  loop={true}
+                />
+              </div>
               <input
                   type="tel"
                   id="mobile"

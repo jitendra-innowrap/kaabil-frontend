@@ -196,7 +196,6 @@ export default function AddJobRole({ size, closePopup, handleBack }: any) {
                 </span>
             </h2>
           </div>
-            <pre>{JSON.stringify([user?.role_names])}</pre>
         </div>
         <form
             onSubmit={formik.handleSubmit}

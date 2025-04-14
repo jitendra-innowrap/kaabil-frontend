@@ -29,14 +29,14 @@ export default function LogoutDialog({ onClose }: prop) {
                     <button
                         onClick={()=>onClose()}
                         type="button"
-                        className={`no-margin cancel-logout px-6 py-2 text-red !border-red btn-border rounded`}
+                        className={`no-margin cancel-logout px-6 py-2 text-red !border-red btn-border !rounded`}
                     >
                         Not Now
                     </button>
                     <button
                         onClick={handleLogout}
                         type="button"
-                        className={`no-margin px-6 py-2 bg-red text-white rounded`}
+                        className={`no-margin px-6 py-2 bg-red text-white !rounded`}
                     >
                         Yes, Logout !
                     </button>

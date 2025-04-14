@@ -62,10 +62,18 @@ export default function AddJobRole({ size, closePopup, handleBack }: any) {
 
       // Set initial selected roles if user has existing roles
       if (user.role_id) {
-        const preselectedRoles = roles.filter((role: any) =>
+        const preselectedRoles = roles.filter((role: {value:string, label:string}) =>
           user?.role_id?.includes(role.value)
         );
+        const savePreselectedRoles = preselectedRoles.map((role: {value:string, label:string})=>{
+          return role.value
+        })
+        const savePreselectedRolesNames = preselectedRoles.map((role: {value:string, label:string})=>{
+          return role.label
+        })
         setSelectedRoles(preselectedRoles);
+        formik.setFieldValue('role_names', savePreselectedRolesNames)
+        dispatch(setUserRole({role_id:savePreselectedRoles, role_names:savePreselectedRolesNames, job_type_master_id:[]}));
         formik.setFieldValue(
           "role_id",
           preselectedRoles.map((role: any) => role.value)
@@ -118,6 +126,7 @@ export default function AddJobRole({ size, closePopup, handleBack }: any) {
   const formik = useFormik({
     initialValues: {
       role_id: [] as string[],
+      role_names: [] as string[],
       job_type_master_id: [] as string[],
     },
     validationSchema,
@@ -139,6 +148,7 @@ export default function AddJobRole({ size, closePopup, handleBack }: any) {
         if (response?.data?.code === 1) {
           dispatch(setProgress(6));
           dispatch(setUserRole(values));
+          dispatch(setUserRole({role_id: values.role_id, role_names:values.role_names, job_type_master_id: values.job_type_master_id}));
           toast.success("Job role submitted successfully!", {
             position: "bottom-right",
           });
@@ -186,6 +196,7 @@ export default function AddJobRole({ size, closePopup, handleBack }: any) {
                 </span>
             </h2>
           </div>
+            <pre>{JSON.stringify([user?.role_names])}</pre>
         </div>
         <form
             onSubmit={formik.handleSubmit}
@@ -216,11 +227,10 @@ export default function AddJobRole({ size, closePopup, handleBack }: any) {
                     isMulti
                     onChange={(
                         selectedRoles: { value: string; label: string }[]
-                    ) =>
-                        formik.setFieldValue(
-                            "role_id",
-                            selectedRoles.map((role) => role.value)
-                        )
+                    ) =>{
+                      formik.setFieldValue("role_id",selectedRoles.map((role) => role.value))
+                      formik.setFieldValue("role_names",selectedRoles.map((role) => role.label))
+                    }
                     }
                     selectedValues={rolesList?.filter((role) =>
                         formik.values.role_id.includes(role.value)

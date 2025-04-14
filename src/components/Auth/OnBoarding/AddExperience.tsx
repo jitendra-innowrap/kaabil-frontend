@@ -290,9 +290,9 @@ export default function AddExperience({ size, closePopup, handleBack }: any) {
               <div className="flex gap-2 sm:gap-4 items-end w-full justify-end footer-2btn">
                 <span
                   onClick={() => dispatch(setProgress(11))}
-                  className={`${styles.onboarding_dialog_btn} w-1/2 max-w-[130px] text-[#231F20] cursor-pointer border-[#9C9C9C] flex items-center justify-center btn-border !py-3.5 !px-9 !rounded-xl`}
+                  className={`${styles.onboarding_dialog_btn} w-1/2 max-w-[130px] text-[#231F20] cursor-pointer border-[#9C9C9C] flex items-center text-center justify-center btn-border !py-3.5 !px-9 !rounded-xl`}
                 >
-                  Skip
+                  <p className="w-full">Skip</p>
                 </span>
                 <button
                   className={`${styles.onboarding_dialog_btn} w-1/2 max-w-[100px] sm:max-w-[250px] flex-shrink-0 justify-start`}

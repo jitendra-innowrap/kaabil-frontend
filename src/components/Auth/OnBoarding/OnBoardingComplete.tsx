@@ -21,7 +21,7 @@ interface prop {
 
 export default function OnBoardingComplete({ size, closePopup }: any) {
   const progress = useAppSelector((state) => state.progress.value);
-  const { experience, name, role_id, skills, photo_url, is_whatsapp_show } =
+  const { experience, name, role_id, role_names, skills, photo_url, is_whatsapp_show } =
     useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -177,27 +177,42 @@ export default function OnBoardingComplete({ size, closePopup }: any) {
               <h5 className="text-[12px] sm:text-[16px] text-black mb-1 font-medium text-left">
                 {/* {role_id === 1 ? 'UI/UX Designer' : 'Other Role'} Replace with actual role mapping */}
               </h5>
-              {experience.length > 0 && (
-                <>
-                  <h6 className="text-[12px] sm:text-sm text-[#4D4D4F] mb-2">
-                    {experience[0].company_name}{" "}
-                    <GoDotFill className="inline-block size-3" />{" "}
-                    {experience[0].job_type_name}
-                  </h6>
-                  <h6 className="text-[12px] sm:text-sm text-[#4D4D4F]">
-                    Selected job roles:
-                  </h6>
-                  {experience.map((exp, i) => (
-                    <h6
-                      key={i}
-                      className="text-[12px] sm:text-sm font-medium mb-2 inline mr-2"
-                    >
-                      <GoDotFill className="inline-block size-3" />{" "}
-                      {exp.designation_name}
-                    </h6>
-                  ))}
-                </>
-              )}
+              {
+                experience.length > 0 && (
+                  <>
+                    {(() => {
+                      // Sort experiences by job_start_date (newest first) with proper type checking
+                      const sortedExperiences = [...experience].sort((a, b) => {
+                        const dateA = new Date(a.job_start_date).getTime();
+                        const dateB = new Date(b.job_start_date).getTime();
+                        return dateB - dateA; // Now using numeric timestamps
+                      });
+                      
+                      const latestExperience = sortedExperiences[0];
+                      
+                      return (
+                        <h6 className="text-[12px] sm:text-sm text-[#4D4D4F] mb-2">
+                          {latestExperience.company_name}{" "}
+                          <GoDotFill className="inline-block size-3" />{" "}
+                          {latestExperience.job_type_name}
+                        </h6>
+                      );
+                    })()}
+                  </>
+                )
+              }
+              <h6 className="text-[12px] sm:text-sm text-[#4D4D4F]">
+                Selected job roles:
+              </h6>
+              {role_names?.map((role, i) => (
+                <h6
+                  key={i}
+                  className="text-[12px] sm:text-sm font-medium mb-2 inline mr-2"
+                >
+                  <GoDotFill className="inline-block size-3" />{" "}
+                  {role}
+                </h6>
+              ))}
               <div className="flex gap-1 text-[#4D4D4F] text-[12px] sm:text-sm mt-2">
                 Skills{" "}
                 <span className="size-5 bg-[#F9D1D7] rounded-full text-center">

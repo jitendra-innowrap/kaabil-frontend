@@ -23,6 +23,7 @@ export interface User {
     available_job?: number;
     user_id?: string;
     role_id?: string[];
+    role_names?: string[];
     designation?: string;
     profilePercentage?: number;
     current_location?: UserLocation | null;
@@ -49,6 +50,7 @@ export interface Experience {
   } 
 export interface UserRole {
     role_id: string[];
+    role_names: string[];
     job_type_master_id: string[];
 }
 export interface Skill {

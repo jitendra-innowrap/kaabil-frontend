@@ -27,7 +27,7 @@ const ProfileCard = () => {
   ];
 
   return (
-    <div className="bg-white rounded-2xl py-3">
+    <div className="bg-white rounded-2xl py-3 sticky  mt-4 md:top-20 lg:top-16 3xl:top-[100px] md:mt-[84px]">
       <div className="grid grid-col-12">
         <div className="col-span-12">
           <Image

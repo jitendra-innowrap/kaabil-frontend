@@ -227,7 +227,7 @@ export default function MyJobs() {
   
   // Conditional nudges for logged-in users (mobile only)
   const loggedInMobileNudges = isMobile ?[
-    <JobsNearYouNudge key="jobs-near-you" />,
+    // <JobsNearYouNudge key="jobs-near-you" />,
     ...(showSoftSkills ? [<ShareStrength key="share-strength" />] : []),
     ...(showUploadCV ? [<UpdloadCvNudge key="upload-cv" />] : []),
     ...(showUpdateEducation ? [<EducationUpdateNudge key="update-education" />] : []),
@@ -246,7 +246,7 @@ export default function MyJobs() {
       <div className="pb-5 md:pb-8 xl:pb-14 2xl:pb-16 flex flex-col md:flex-row justify-between gap-5 md:gap-7 lg:gap-8 2xl:gap-10 3xl:gap-12">
         <div className="w-full order-1 md:order-0">
           {/* Navigation Tabs */}
-          <div className="bg-[#f9f9f9] mb-6 mt-4">
+          <div className="bg-[#f9f9f9] mb-6 mt-4 sticky top-[50px] md:top-[70px] lg:top-14 3xl:top-[90px]">
             <div className="mx-auto border-b border-[#D4D4D4]">
               <div className="flex gap-5 xl:gap-10 3xl-gap-12 justify-start text-start items-start">
                 <Link
@@ -353,9 +353,9 @@ export default function MyJobs() {
           )}
         </div>
         
-        <div className="nudges-bar mt-4 md:mt-28 lg:mt-32 flex flex-shrink-0  md:gap-6 max-w-[400px] mx-auto lg:mx-0 md:w-[300px] lg:w-[280px] 2xl:w-[341px] order-0 md:order-1">
+        <div className="nudges-bar mt-4 md:mt-28 lg:mt-[120px] 3xl:mt-32 flex flex-shrink-0  md:gap-6 max-w-[400px] mx-auto lg:mx-0 md:w-[300px] lg:w-[280px] 2xl:w-[341px] order-0 md:order-1">
           <div className={"sticky w-full top-[80px] flex flex-col gap-4"}>
-            {!isMobile && <JobsNearYouNudge/>}
+            {/* {!isMobile && <JobsNearYouNudge/>} */}
             {isLoggedIn && <ProfileCard/>}
             {isLoggedIn && <QuickAction/>}
             {isLoggedIn && !isMobile && showSoftSkills && <ShareStrength/>}

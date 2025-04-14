@@ -21,7 +21,7 @@
 }
 .onboarding_dialog_input{
     width: 100%;
-    height: 56px;
+    height: 48px;
     border-radius: 12px;
     background: #F5F5F5;
     -webkit-appearance: none;
@@ -68,8 +68,12 @@
 /*    display: none;*/
 /*}*/
 .formscrollitemlg{
-    height: calc(100vh - 500px);
+    height: calc(100vh - 410px);
     overflow-y: scroll;
+}
+.label_option{
+    font-size: 14px;
+    height: 42px;
 }
 @media (max-width: 1400px) {
     .formscrollitemlg{
@@ -87,7 +91,7 @@
     }
 }
 .selected_option_list{
-    max-height: calc(100vh - 370px);
+    max-height: calc(100vh - 280px);
     overflow: auto;
     padding: 10px 5px;
 }
@@ -157,7 +161,8 @@
         min-height: 40px;
     }
     .selected_option_list{
-        height: calc(100vh - 370px);
+        /* height: calc(100vh - 370px); */
+        height: auto;
         max-height: 328px;
     }
     .page_show{

@@ -242,9 +242,10 @@ a.btn.disabled:hover {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
   border-radius: 9999px;
   justify-content: center;
-  padding-top: 0.75rem;
-  padding-bottom: 0.75rem;
+  padding-top: 0.59rem;
+  padding-bottom: 0.59rem;
   text-align: center;
+  font-size: 14px;
 }
 .label-option.selected {
   border-color: var(--primary-red);

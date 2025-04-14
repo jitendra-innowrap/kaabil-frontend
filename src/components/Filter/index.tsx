@@ -12,7 +12,7 @@ import { useRouter } from 'next/navigation'
 export default function FilterSidebar() {
     const [open, setOpen] = useState(false);
     const filters = useAppSelector((state) => state.jobFiltersMaster);
-    
+
     const router = useRouter();
     const [removeOptionsSearch, SetremoveOptionsSearch] = useState(false);
     // Handle Clear All button click
@@ -21,7 +21,7 @@ export default function FilterSidebar() {
         SetremoveOptionsSearch(!removeOptionsSearch)
         router.replace('/jobs', { scroll: false }); // Replace '/jobs' with your base route
     };
-    
+
   return (
     <>
     {open && <div className="hidden lg:block bg-black z-10 opacity-20 w-screen h-screen fixed top-0 left-0" onClick={()=>setOpen(false)}></div>}
@@ -34,47 +34,47 @@ export default function FilterSidebar() {
         </div>
         <div className="flex lg:gap-7 xl:gap-10 2xl:gap-12">
             <div className={`absolute p-6 lg:p-0 rounded-3xl bg-white lg:relative z-[100] ${!open ? '-left-[120%] lg:left-0' : 'left-0'} transition-all top-[54px] md:top-16 lg:top-0 w-full flex flex-col gap-4 xl:gap-5 duration-300 h-max`}>
-                <LoadMoreAccordian 
+                <LoadMoreAccordian
                     showOptionsOnlyOnSearch
-                    header="Search by Location"  
-                    isSearchable={true} 
+                    header="Search by Location"
+                    isSearchable={true}
                     searchIcon={<GrLocation className='size-4 2xl:size-5 text-[#6C757D] font-bold' />}
-                    list={filters?.location_filter} 
+                    list={filters?.location_filter}
                     maxItems={10}
                     removeOptionsSearch={removeOptionsSearch}
                     filterKey='location_filter'
                     // fetchMoreItems={fetchLocationOptions}
                     searchPlaceholder='Choose city'
                     />
-                <LoadMoreAccordian 
+                <LoadMoreAccordian
                     header="Industry"
                     maxItems={5}
-                    list={filters?.industries_filter} 
+                    list={filters?.industries_filter}
                     filterKey='industries_filter'
                     />
-                <LoadMoreAccordian 
+                <LoadMoreAccordian
                     header="Job Type"
-                    list={filters?.job_types_filter} 
+                    list={filters?.job_types_filter}
                     filterKey='job_types_filter'
                     />
-                <LoadMoreAccordian 
-                    header="Experience level" 
+                <LoadMoreAccordian
+                    header="Experience level"
                     filterKey='experience'
-                    list={filters?.experience} 
+                    list={filters?.experience}
                     />
 
-                <LoadMoreAccordian 
+                <LoadMoreAccordian
                     header="Work Mode"
-                    filterKey='job_location_types_filter' 
-                    list={filters?.job_location_types_filter} 
+                    filterKey='job_location_types_filter'
+                    list={filters?.job_location_types_filter}
                     />
 
-                <LoadMoreAccordian 
+                <LoadMoreAccordian
                     maxItems={8}
                     filterKey='benefits_filter'
                     // isSearchable
-                    header="Benefits" 
-                    list={filters?.benefits_filter} 
+                    header="Benefits"
+                    list={filters?.benefits_filter}
                     />
 
                 <RangeAccordian/>

@@ -32,12 +32,12 @@ export default function Home() {
   const [topCompanies, setTopCompanies] = useState<jobcardtype[]>([]);
   const slides = topCompanies.map((job, index) => (
       <CompanyCard key={index} {...job} />
-  )); 
+  ));
   useEffect(() => {
     const fetchHomedata = async () => {
       try {
         const { deviceId, secret, salt } = getSessionData();
-        
+
         // Ensure session data is available
         if (!deviceId || !secret || !salt) {
           // console.log("Session data not available, retrying...");
@@ -115,7 +115,7 @@ export default function Home() {
       {!isLoggedIn && <section className="bg-white py-5 xl:py-6">
           <div className="w-full flex flex-col items-center my-5 md:my-8 xl:my-14 2xl:my-16  mx-auto">
           <h2 className='text-black text-center text-2xl md:text-3xl xl:text-4xl 2xl:text-[40px] 2xl:leading-[64px] mb-5 xl:mb-8 font-medium'>Top companies <span className="font-kalam text-red font-semibold">hiring</span> now</h2>
-              <div className="container no-pad mobile-p-r-0">                        
+              <div className="container no-pad mobile-p-r-0">
                   <div className="block">
                       <GallerySlider
                       slides={slides}

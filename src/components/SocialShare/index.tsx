@@ -40,7 +40,7 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ jobDetails }: any) => {
   const fullUrl = `${shareUrl?.url}`;
 
   // Build the share message dynamically
-  const baseTitle = `${jobDetails?.company_name} is hiring for ${jobDetails?.job_title} on Kaabil app. Quickly apply for this and 1000's of other jobs on the Kaabil app.`;
+  const baseTitle = `${jobDetails?.company_name} is hiring for ${jobDetails?.job_title} on Kaabil app. Quickly apply for this and 1000's of other jobs on the Kaabil app`;
   const locationText = jobDetails?.job_location
     ? ` at ${jobDetails.job_location}`
     : "";
@@ -116,24 +116,24 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ jobDetails }: any) => {
             } mb-5`}
           >
             <FacebookShareButton
-              url={fullUrl}
-              title={title}
+              url={`${title}\n${fullUrl}`}
+              title={``}
               className="hover:opacity-90 transition-transform transform hover:scale-105"
             >
               <FacebookIcon size={size === "md" ? 40 : 30} round />
             </FacebookShareButton>
 
             <TwitterShareButton
-              url={fullUrl}
-              title={title}
+              url={`${title}\n${fullUrl}`}
+              title={``}
               className="hover:opacity-90 transition-transform transform hover:scale-105"
             >
               <XIcon size={size === "md" ? 40 : 30} round />
             </TwitterShareButton>
 
             <WhatsappShareButton
-              url={fullUrl}
-              title={title}
+              url={`${title}\n${fullUrl}`}
+              title={``}
               separator=": "
               className="hover:opacity-90 transition-transform transform hover:scale-105"
             >
@@ -141,8 +141,8 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ jobDetails }: any) => {
             </WhatsappShareButton>
 
             <LinkedinShareButton
-              url={fullUrl}
-              title={title}
+              url={`${title}\n${fullUrl}`}
+              title={``}
               className="hover:opacity-90 transition-transform transform hover:scale-105"
             >
               <LinkedinIcon size={size === "md" ? 40 : 30} round />

@@ -101,21 +101,21 @@ export default function SignInButton({ closeSideMenu }: prop) {
 
   useEffect(() => {
     // Add or remove 'no-scroll' class to body when popup is open or closed
-    if (open) {
-      document.addEventListener("click", handleOverlayClick);
-      document.body.classList.add("no-scroll");
-    } else if (openLogoutDialog) {
-      document.addEventListener("click", handleOverlayClick);
-      document.body.classList.add("no-scroll");
-    } else {
-      document.removeEventListener("click", handleOverlayClick);
-      document.body.classList.remove("no-scroll");
-    }
+    // if (open) {
+    //   document.addEventListener("click", handleOverlayClick);
+    //   document.body.classList.add("no-scroll");
+    // } else if (openLogoutDialog) {
+    //   document.addEventListener("click", handleOverlayClick);
+    //   document.body.classList.add("no-scroll");
+    // } else {
+    //   document.removeEventListener("click", handleOverlayClick);
+    //   document.body.classList.remove("no-scroll");
+    // }
     return () => {
       document.removeEventListener("click", handleOverlayClick);
       document.body.classList.remove("no-scroll");
     };
-  }, [open]);
+  }, [open, openLoginDialog, openLogoutDialog]);
 
   return (
     <div className="flex">

@@ -4,8 +4,12 @@ import Image from "next/image";
 import React from "react";
 import { IoClose } from "react-icons/io5";
 import styles from "./signIn.module.css";
-import Lottie from "lottie-react"; // Add Lottie
 import verifiedAnimation from "@/../public/new-assets/icons/lottie/otp_verified.json"; // Import your Lottie JSON file
+import dynamic from 'next/dynamic';
+const Lottie = dynamic(() => import('lottie-react'), { 
+  ssr: false,
+  loading: () => <div className="w-16 h-16 bg-gray-200 rounded-full" />
+});
 
 
 export default function NumberVerified({ size, closePopup }: any) {

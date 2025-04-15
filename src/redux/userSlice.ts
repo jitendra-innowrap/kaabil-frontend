@@ -61,6 +61,7 @@ const initialState: AuthState = {
   mobile: user?.mobile,
   name: user?.name || "",
   role_id: user?.role_id || [],
+  role_names: user?.role_names || [],
   job_type_master_id: user?.job_type_master_id || [],
   skills: user?.skills || [],
   designation: user?.designation || "",
@@ -117,6 +118,8 @@ const userSlice = createSlice({
       },
       setUserRole: (state, action: PayloadAction<UserRole>) => {
         state.role_id = action.payload.role_id;
+        state.role_names = action.payload.role_names;
+        console.log('user role', action.payload)
         state.job_type_master_id = action.payload.job_type_master_id;
         storeAuthUser({ ...state, role_id: action.payload.role_id, job_type_master_id: action.payload.job_type_master_id });
       },

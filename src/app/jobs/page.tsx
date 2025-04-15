@@ -85,14 +85,17 @@ export default function Home() {
       </Suspense>
       </div>
       <section className="container job-listings">
-        <div className="mt-5 lg:mt-10 2xl:mt-14 pb-5 md:pb-8 xl:pb-14 2xl:pb-16 flex flex-col lg:flex-row  lg:gap-4 xl:gap-4 3xl:gap-7">
+        <div className="mt-5 lg:mt-10 2xl:mt-14 mb-5 md:mb-8 xl:mb-14 2xl:pb-16 flex flex-col lg:flex-row  lg:gap-4 xl:gap-4 3xl:gap-7" id="sidebar">
             <Suspense fallback={<></>}>
-                <FilterSidebar/>
+            <div className="filters-sidebar lg:min-w-[260px] 3xl:min-w-[320px] h-fit ">
+            <FilterSidebar/>
+            </div>
+
             </Suspense>
             <Suspense fallback={<></>}>
               <JobList />
             </Suspense>
-            <div className="lg: lg:-top-1 3xl:top-6 h-fit">
+            <div className="lg: lg:-top-1 3xl:top-6 h-fit sticky top-[75px]">
               <div className="nudges-bar hidden lg:flex flex-shrink-0 flex-col gap-4 md:gap-6 max-w-[400px] mx-auto lg:w-[280px] 2xl:w-[341px]">
                 {/* {!isLoggedIn && <FindCareer/>} */}
                 <JobsNearYouNudge/>

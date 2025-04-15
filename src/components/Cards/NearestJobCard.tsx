@@ -193,7 +193,6 @@ export default function NearestjobCard(prop:any) {
             }
           </div>
         </div>
-        {JSON.stringify(prop?.jobs_skills?.length)}
         <div className="flex flex-wrap flex-col xl:flex-row xl:flex-nowrap lg:gap-4 min-h-16 justify-between">
           <ul className='skills-wrapper flex flex-wrap gap-2 mt-3'>
             {prop?.jobs_skills?.slice(0, 3)?.map((skill:any, index:number) => {

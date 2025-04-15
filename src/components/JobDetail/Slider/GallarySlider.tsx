@@ -38,11 +38,12 @@ const GallerySlider: React.FC<GallerySliderProps> = ({
   freeMode = false,
   arrowFloat = false,
   speed,
+  
   spaceBetween = 25,
   slidesPerView = 'auto',
   reverse = false,
   arrowColor = '',
-  onHoverPause = false,
+  onHoverPause = true,
   arrowShadows = false,
   slideComponent: SlideComponent = null,
   ...restProps

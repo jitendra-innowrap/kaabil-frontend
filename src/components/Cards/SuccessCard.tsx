@@ -18,7 +18,7 @@ export default function SuccessCard({name, role, image, video}:{name: string, ro
                 <p className='!font-thin text-[#E6E7E8] text-[10px] 2xl:text-sm leading-none'> Commis Chef</p>
              </div>
             {video && <div className="absolute cursor-pointer bottom-2 right-2 size-9 2xl:size-11 bg-white rounded-full grid place-items-center">
-            <BiPlay/>
+            <BiPlay className='translate-x-[1px]'/>
           </div>}
         </div>
   )

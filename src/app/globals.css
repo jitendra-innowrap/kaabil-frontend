@@ -2214,3 +2214,6 @@ label {
 .custom-google-map .gmnoprint{
   display: none !important;
 }
+.find-career__option{
+  min-height: unset !important;
+}

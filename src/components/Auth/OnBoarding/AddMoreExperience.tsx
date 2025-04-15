@@ -153,9 +153,9 @@ export default function AddMoreExperience({
         validationSchema: validationSchemaForm,
         onSubmit: (values) => {
             const experience = {
-                company_master_id: "1578", // Replace with actual company ID from API
+                company_master_id: values.company_master_id, // Replace with actual company ID from API
                 company_name: values.companyName,
-                designation_master_id: "2698", // Replace with actual designation ID from API
+                designation_master_id: values.designation_master_id, // Replace with actual designation ID from API
                 designation_name: values.designation,
                 job_type_id: values.type,
                 job_type_name: values.type_name,
@@ -225,6 +225,7 @@ export default function AddMoreExperience({
                                     <AddExperienceForm
                                         ref={setFormikFormRef}
                                         formik={formikForm}
+                                        isEditing
                                     />
                                     {isEditing == i && (
                                         <div className="flex justify-end absolute bottom-11 right-0 translate-y-4 w-fit">

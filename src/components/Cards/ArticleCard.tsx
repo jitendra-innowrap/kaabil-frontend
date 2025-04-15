@@ -4,16 +4,18 @@ import React from 'react'
 
 export default function ArticleCard() {
   return (
-    <div className='!P-[5px] rounded-xl shadow-lg bg-white'>
+    <div className='!P-[5px] rounded-xl shadow-lg bg-white cursor-pointer group'>
         <div className="block p-[5px]">
-        <Image
-        src={'/new-assets/images/article1.png'}
-        width={447}
-        height={273}
-        className='mx-auto'
-        alt="company-icons"
-        quality={100}
-        />
+        <div className="overflow-hidden rounded-lg">
+          <Image
+          src={'/new-assets/images/article1.png'}
+          width={447}
+          height={273}
+          className='mx-auto group-hover:scale-110 transition-all duration-300'
+          alt="company-icons"
+          quality={100}
+          />
+        </div>
         </div>   
         <div className="block p-3 md:p-4 2xl:p-5">
             <h3 className='font-medium text-[16px] md:text-base 2xl:text-2xl mb-2 lg:mb-4 xl:mb-5 2xl:mb-6 line-clamp-3'>Mental health support- not a one-off area of focus</h3>

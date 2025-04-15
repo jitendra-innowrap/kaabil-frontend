@@ -365,17 +365,8 @@ export default function JobsNearYou() {
     }, [showAutoCompleteOptions]);
 
   return (
-    <div className="relative jobs-near-me flex">
-        <div className='container no-mobile-container'>
-            {/* {showPermissionHelp && (
-            <div className="permission-help">
-                <p>Please enable location permissions in your browser settings.</p>
-                <button onClick={() => window.open('chrome://settings/content/location')}>
-                Open Settings
-                </button>
-            </div>
-            )} */}
-
+    <div className="relative jobs-near-me flex max-w-screen">
+        <div className='flex container no-mobile-container lg:gap-10'>
             <div className="lg:w-1/2">
                 <div className="hidden lg:block pt-5 3xl:pt-6 mb-7 3xl:mb-8">
                     <Breadcrumb root='Home' category='Jobs near me' />
@@ -439,6 +430,7 @@ export default function JobsNearYou() {
                 </div>
                 <div className={`w-screen block lg:hidden ${isMapopen?"h-[350px]":"h-0"} transition-all duration-200`}>
                     <CustomGoogleMap
+                        radius={parseInt(selectedradius?.value || '20')}
                         lat={selectedLocation?.lat || currentLocation?.city_latitude || ""} 
                         lng={selectedLocation?.lng || currentLocation?.city_longitude || ""}
                         jobLocations={jobLocations || []}
@@ -537,8 +529,10 @@ export default function JobsNearYou() {
                         </>
                     )}
                 </div>
-                <div className="w-full hidden lg:block fixed md:top-[0] xl:top-[56.6px] 2xl:top-[58px] 3xl:top-[90px] right-0 max-w-[calc(50vw_-_50px)] h-[calc(100vh)] xl:h-[calc(100vh_-_56px)] 3xl:h-[calc(100vh_-_92px)]">
+            </div>
+            <div className="w-[calc(50vw_-_45px)] mr-[-325px] hidden lg:block sticky md:top-[0] xl:top-[56.6px] 2xl:top-[58px] 3xl:top-[90px] right-0 h-[calc(100vh)] xl:h-[calc(100vh_-_56px)] 3xl:h-[calc(100vh_-_92px)]">
                 <CustomGoogleMap
+                    radius={parseInt(selectedradius?.value || '20')}
                     lat={selectedLocation?.lat || currentLocation?.city_latitude || ""} 
                     lng={selectedLocation?.lng || currentLocation?.city_longitude || ""}
                     jobLocations={jobLocations || []}
@@ -546,7 +540,6 @@ export default function JobsNearYou() {
                     selectedJobId={selectedJobId}
                 />
                 </div>
-            </div>
         </div>
     </div>
   )

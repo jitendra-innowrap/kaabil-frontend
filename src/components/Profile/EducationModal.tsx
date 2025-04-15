@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import { SingleValue, ActionMeta } from 'react-select';
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { IoClose } from "react-icons/io5";
@@ -23,6 +24,7 @@ import api from "@/Services/Apiservice";
 import { FaSearch } from "react-icons/fa";
 import Select from "react-select";
 import { customStyles, yearOfPassingOptions } from "../utils";
+import { optionType } from "@/Types/common";
 
 const EducationModal = ({ size }: any) => {
   const { educationModal, qualificationList, profileData, educationData } =
@@ -286,6 +288,7 @@ const EducationModal = ({ size }: any) => {
                         {education.id === values.education_id &&
                           education?.is_field_study_show !== "0" && (
                             <>
+                            {/* <EducationSelect values={values?.institute_name} educationData={educationData} setFieldValue={setFieldValue}  /> */}
                               <div className="w-full relative flex items-center">
                                 <input
                                   className="px-10 bg-[#C8C9CB3B] w-full py-3 rounded-lg placeholder-[#231F20] text-[#231F20]"
@@ -319,8 +322,7 @@ const EducationModal = ({ size }: any) => {
                                   className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#231F20] mt-0.5"
                                 />
                                 {educationSearch?.length > 0 &&
-                                  showEducation &&
-                                  values?.institute_name && (
+                                  showEducation && (
                                     <>
                                       <div className="absolute top-16 z-50 w-full max-h-[250px] min-h-[40px] overflow-auto p-0 bg-white border rounded-xl shadow-lg mt-1">
                                         {educationSearch?.map((item: any) => (
@@ -544,4 +546,87 @@ const EducationModal = ({ size }: any) => {
   );
 };
 
+
+interface EducationOption {
+  value: string;
+  label: string;
+}
+
+interface FormValues {
+  institute_name: string | null;
+  institute_master_id: string | null;
+}
+
+interface EducationSelectProps {
+  values: FormValues;
+  setFieldValue: (field: string, value: any) => void;
+  educationData: Array<{
+    id: string;
+    name: string;
+  }>;
+}
+
+const EducationSelect: React.FC<EducationSelectProps> = ({ 
+  values, 
+  setFieldValue, 
+  educationData 
+}) => {
+  const options: EducationOption[] = educationData?.map((item) => ({
+    value: item.id,
+    label: item.name
+  }));
+
+  const handleChange = (
+    selected: SingleValue<EducationOption>,
+    actionMeta: ActionMeta<EducationOption>
+  ) => {
+    setFieldValue("institute_name", selected?.label || null);
+    setFieldValue("institute_master_id", selected?.value || null);
+  };
+
+  // / Find the initial value based on both name and ID for better reliability
+  const initialValue = options.find(opt => 
+    opt.value === values.institute_master_id || 
+    opt.label === values.institute_name
+  );
+  return (
+    <>
+    <Select<EducationOption>
+      options={options}
+      placeholder="Select Education"
+      value={initialValue}
+      onChange={handleChange}
+      styles={{
+        control: (base) => ({
+          ...base,
+          paddingLeft: '40px',
+          backgroundColor: '#C8C9CB3B',
+          border: 'none',
+          borderRadius: '0.5rem',
+          minHeight: '48px'
+        }),
+        placeholder: (base) => ({
+          ...base,
+          color: '#231F20'
+        }),
+        input: (base) => ({
+          ...base,
+          color: '#231F20'
+        })
+      }}
+      components={{
+        DropdownIndicator: () => (
+          <img 
+            src="/new-assets/icons/search.svg" 
+            className="absolute left-4 top-1/2 transform -translate-y-1/2"
+            alt="Search"
+          />
+        ),
+        IndicatorSeparator: () => null
+      }}
+    />
+    {JSON.stringify(values)}
+    </>
+  );
+};
 export default EducationModal;

@@ -1942,8 +1942,9 @@ label {
     object-fit: cover;
     object-position: left;
   }
-  .job-card .action-btns button {
-    height: 34px !important;
+  .job-card .action-btns button,
+  .job-card .action-btns a {
+    height: 40px !important;
   }
   .dialog-footer-paging {
     position: fixed !important;

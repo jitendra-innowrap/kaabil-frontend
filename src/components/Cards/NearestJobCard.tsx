@@ -7,7 +7,7 @@ import { IoIosHeart, IoIosHeartEmpty } from 'react-icons/io'
 import { LiaMapMarkerAltSolid } from 'react-icons/lia'
 import { MdOutlineLocationOn } from 'react-icons/md'
 import { TbBriefcase2 } from 'react-icons/tb'
-import { formatDate, getCompanyInitials, showExperience, showSalary, showToast, timeAgo } from '../utils'
+import { formatDate, getCompanyInitials, showExperience, showSalary, showSalarySimilarJob, showToast, timeAgo } from '../utils'
 import api from '@/Services/Apiservice'
 import toast from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
@@ -187,12 +187,13 @@ export default function NearestjobCard(prop:any) {
               (prop?.is_industry_standard=="1" || ((prop?.min_salary === null || prop?.min_salary === "" || prop?.min_salary === "0")) && ((prop?.max_salary === null || prop?.max_salary === "" || prop?.max_salary === "0")))?
               <span className='text-[10px] 2xl:text-sm'>As per Industry standards</span>:
               <>
-              <span className='text-[10px] 2xl:text-sm'>{`${showSalary(prop?.is_industry_standard || "0", prop?.salary_range_unit ||"0",prop?.min_salary ||"0",prop?.max_salary ||"0")} `} </span>
+              <span className='text-[10px] 2xl:text-sm'>{`${showSalarySimilarJob(prop?.is_industry_standard || "0", prop?.salary_range_unit ||"0",prop?.min_salary ||"0",prop?.max_salary ||"0")} `} </span>
               {prop?.is_industry_standard !=1 && <small className='text-[#B1B4B7]'> &nbsp; {` ${ prop?.salary_range_unit== "1"?` month`:` year`}`}</small>}
               </>
             }
           </div>
         </div>
+        {JSON.stringify(prop?.jobs_skills?.length)}
         <div className="flex flex-wrap flex-col xl:flex-row xl:flex-nowrap lg:gap-4 min-h-16 justify-between">
           <ul className='skills-wrapper flex flex-wrap gap-2 mt-3'>
             {prop?.jobs_skills?.slice(0, 3)?.map((skill:any, index:number) => {
@@ -209,7 +210,7 @@ export default function NearestjobCard(prop:any) {
             })}
             {
               prop?.jobs_skills?.length > 3 && (
-                <li className='label small cursor-default'>+{(prop?.skills?.length - 3).toString()} More</li>
+                <li className='label small cursor-default'>+{(prop?.jobs_skills?.length - 3).toString()} More</li>
               )
             }
           </ul>

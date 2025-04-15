@@ -152,7 +152,7 @@ export default function JobListingCard(prop:any) {
                 <h3 className='text-xs 3xl:text-sm text-[#070828]'>{prop?.company_name}</h3>
                 <p className='text-[8px] mt-1 3xl:text-xs text-[#B9B9B9]'>{timeAgo(prop?.job_posted_date)}</p>
               </div>
-            {prop?.profile_matched_percentage>0 &&<div className="job-profile-match whitespace-nowrap label small lightgreen">
+            {prop?.profile_matched_percentage>50 &&<div className="job-profile-match whitespace-nowrap label small lightgreen">
             {prop?.profile_matched_percentage}% Profile Match
             </div>}
           </div>

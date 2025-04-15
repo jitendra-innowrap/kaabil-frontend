@@ -316,7 +316,7 @@ export default function AddSkills({ size, closePopup, handleBack }: any) {
 
         {/* @ts-ignore */}
         <div
-          className={`py-2 sm:py-0 sm:pb-6 sm:!px-12 mt-5 flex justify-center fixed sm:relative w-full bottom-2 bg-white ${styles.formactionbtn}`}
+          className={`py-2 sm:py-0 sm:pb-6 mt-5 flex justify-center fixed sm:relative w-full bottom-2 bg-white ${styles.formactionbtn}`}
         >
           <div className="flex w-full justify-between items-end">
             <div className="whitespace-nowrap">
@@ -324,11 +324,13 @@ export default function AddSkills({ size, closePopup, handleBack }: any) {
             </div>
             <button
               type="submit"
-              className={`dialog-action-btn font-semibold max-w-[200px] w-[160px] sm:w-[250px] ${
-                formik.isValid
-                  ? "bg-red text-white"
-                  : "!opacity-50 !cursor-default"
-              }`}
+              className={`${styles.onboarding_dialog_btn} w-1/2 max-w-[200px] sm:max-w-[250px] ${
+                size === "md" ? "text-lg" : "text-md"
+            } mt-1 no-margin px-6 !bg-red hover:bg-red text-white ${
+                !formik.isValid || formik.isSubmitting
+                    ? "opacity-50 cursor-not-allowed"
+                    : ""
+            }`}
               disabled={formik.isSubmitting}
             >
               {/* {formik.isSubmitting ? "Submitting..." : "Next"} */}

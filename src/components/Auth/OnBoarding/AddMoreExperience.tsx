@@ -221,13 +221,13 @@ export default function AddMoreExperience({
                     {experiences.map((exp, i) => (
                         <>
                             {isEditing == i ? (
-                                <div className="mt-3">
+                                <div className="mt-3 relative">
                                     <AddExperienceForm
                                         ref={setFormikFormRef}
                                         formik={formikForm}
                                     />
                                     {isEditing == i && (
-                                        <div className="flex justify-end translate-y-4  sm:-translate-y-20">
+                                        <div className="flex justify-end absolute bottom-11 right-0 translate-y-4 w-fit">
                                             <button
                                                 type="button"
                                                 className={`${styles.onboarding_dialog_btn} w-20 mr-3 sm:mr-6 sm:text-[12px] text-[14px]`}
@@ -243,7 +243,7 @@ export default function AddMoreExperience({
                             ) : (
                                 <div
                                     key={i}
-                                    className="my-4 p-4 rounded-lg shadow-default justify-between flex gap-4"
+                                    className="my-4 p-4 rounded-lg shadow-sm 3xl:shadow-default justify-between flex gap-4"
                                 >
                                     <div className="">
                                         <h5 className="text-[16px] font-medium text-black mb-2">
@@ -288,7 +288,14 @@ export default function AddMoreExperience({
                     ))}
 
                     {newExperience && (
+                        <>
+                        <div
+                            className="flex font-semibold my-3 justify-between">
+                                <p>Please add experience</p> 
+                                <p className="text-red cursor-pointer" onClick={()=>setNewExperience(false)}>cancel</p>
+                            </div>
                         <AddExperienceForm ref={setFormikFormRef} formik={formikForm}/>
+                        </>
                     )}
                     {
                         <div

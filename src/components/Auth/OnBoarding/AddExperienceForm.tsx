@@ -102,7 +102,7 @@ const AddExperienceForm = forwardRef(
     }));
 
     return (
-      <div className="p-3 md:p-7 rounded-lg shadow-default">
+      <div className="p-3 md:p-7 rounded-lg shadow-sm 3xl:shadow-default">
         <form onSubmit={formik.handleSubmit}>
           <div className="relative mb-2">
             <input

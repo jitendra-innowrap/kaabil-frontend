@@ -327,8 +327,8 @@ export default function Home() {
       {/* Add to stick sm:sticky sm:top-[52px] lg:top-[56px] 3xl:top-[90px] z-10 */}
       <section className="bg-[#FDEAC9] py-6 xl:py-8">
         <div className="container relative z-[1]">
-          <div className="flex justify-between flex-wrap flex-col sm:flex-row sm:items-end gap-5 xl:gap-7 2xl:gap-8">
-            <div className="flex justify-between flex-row gap-3 2xl:gap-5 3xl:gap-8">
+          <div className="flex justify-between flex-wrap xl:flex-nowrap flex-col sm:flex-row sm:items-end gap-5 xl:gap-7 2xl:gap-8">
+            <div className="flex justify-between flex-row gap-3 2xl:gap-5 3xl:gap-8 lg:max-w-[calc(100%_-_300px)]">
               <CompanyLogo
                 index={1}
                 logo={jobDetails?.logo}
@@ -355,7 +355,7 @@ export default function Home() {
                       className="size-4 3xl:size-6"
                     />
                     <div className="text-[#231F20] flex items-center">
-                      <strong className="block text-xs 2xl:text-sm font-normal">
+                      <strong className="block text-xs 2xl:text-sm font-normal xl:whitespace-nowrap">
                         {showExperience(
                           jobDetails?.min_exp || "0",
                           jobDetails?.max_exp || "0",
@@ -375,7 +375,7 @@ export default function Home() {
                       className="size-4 3xl:size-6"
                     />
                     <div className="text-[#231F20] flex items-center">
-                      <strong className="block text-xs 2xl:text-sm font-normal">
+                      <strong className="block text-xs 2xl:text-sm font-normal xl:whitespace-nowrap">
                         {jobDetails?.job_type}
                       </strong>
                     </div>
@@ -398,11 +398,11 @@ export default function Home() {
                         (jobDetails?.max_salary === null ||
                           jobDetails?.max_salary === "" ||
                           jobDetails?.max_salary === "0")) ? (
-                        <strong className="block text-xs 2xl:text-sm font-normal">
+                        <strong className="block text-xs 2xl:text-sm font-normal xl:whitespace-nowrap">
                           As per Industry standards
                         </strong>
                       ) : (
-                        <strong className="block text-xs 2xl:text-sm font-normal">
+                        <strong className="block text-xs 2xl:text-sm font-normal xl:whitespace-nowrap">
                           {showSalaryJobDetails(
                             jobDetails?.is_industry_standard || "0",
                             jobDetails?.salary_range_unit || "0",
@@ -429,14 +429,14 @@ export default function Home() {
                       className="size-4 3xl:size-6"
                     />
                     <div className="text-[#231F20] flex items-center">
-                      <strong className="block text-xs 2xl:text-sm font-normal max-w-[250px] 3xl:max-w-[300px] line-clamp-1 truncate">
+                      <strong className="block text-xs 2xl:text-sm font-normal max-w-[300px] xl:max-w-[180px] 2xl:max-w-[200px] 3xl:max-w-[260px] line-clamp-1 xl:whitespace-nowrap truncate">
                         {jobDetails?.jobs_location?.[0]?.job_location ||
                           "Remote"}
                       </strong>
                     </div>
                   </div>
                   {skillMatchCount > 0 && (
-                    <span className="label green flex font-medium 3xl:font-medium !lowercase items-center">
+                    <span className="label green flex font-medium 3xl:font-medium !lowercase items-center xl:whitespace-nowrap">
                       {skillMatchCount} {skillMatchCount==1?"skill":"skills"} match{" "}
                       <FaCheck className="ml-1 3xl:ml-2 text-[8px] 3xl:text-xs font-light" />{" "}
                     </span>
@@ -505,7 +505,7 @@ export default function Home() {
       </section>
       <section className="container mt-5 md:mt-8 xl:mt-10 mb-6 md:mb-10 xl:mb-14 2xl:mb-16 bg-[#ffffff]">
         <div className="flex flex-col lg:flex-row gap-4 md:gap-6 2xl:gap-10">
-          <div className="h-fit order-2 job-detail-sidebar flex-shrink-0 p-3 md:p-4 lg:p-5 3xl:p-8 rounded-xl w-full shadow-default">
+          <div className="h-fit job-detail-sidebar flex-shrink-0 p-3 md:p-4 lg:p-5 3xl:p-8 rounded-xl w-full shadow-default">
             <h2 className="text-sm 2xl:text-lg 3xl:text-xl font-semibold mb-2 md:mb-4 3xl:mb-5">
               About this role
             </h2>
@@ -614,7 +614,7 @@ export default function Home() {
               ))}
             </div>
           </div>
-          <div className="lg:order-2 job-description">
+          <div className="job-description">
             <Tabs tabTitles={tabTitles} />
             <div
               id="job-description"
@@ -715,7 +715,7 @@ export default function Home() {
                     name={jobDetails?.company_name}
                   />
                   <div className="block">
-                    <h1 className="text-[#231F20] text-sm 2xl:text-base 3xl:text-lg xl:leading-8 font-medium">
+                    <h1 className="text-[#231F20] text-sm 2xl:text-base 3xl:text-lg leading-8 font-medium">
                       {jobDetails?.company_name}
                     </h1>
                     <p className="text-[#636363] text-[10px] 2xl:text-sm -mt-1 2xl:mt-1">

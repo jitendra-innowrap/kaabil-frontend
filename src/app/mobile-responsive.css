@@ -214,6 +214,9 @@
 }
 
 @media (max-width: 540px){
+    .enquiry-content{
+        scale: 0.9;
+    }
     .about-usp-card{
         padding-bottom: 37px;
     }

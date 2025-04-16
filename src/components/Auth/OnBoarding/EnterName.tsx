@@ -69,6 +69,7 @@ export default function EnterName({ size, closePopup }: any) {
                   return role?.id;
                 }
               ),
+              role_names:[]
             })
           );
           dispatch(setUserSkills(response?.data?.result?.[0]?.skills));

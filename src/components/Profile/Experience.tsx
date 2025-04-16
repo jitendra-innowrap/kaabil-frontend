@@ -49,7 +49,7 @@ const Experience = () => {
             >
               <div className="flex items-center gap-4">
                 {/* Image Section */}
-                <div className="w-14 h-14 rounded-md overflow-hidden flex items-center justify-center bg-gray-200 text-gray-700 font-bold text-lg">
+                <div className="w-14 h-14 rounded-md overflow-hidden flex items-center justify-center bg-red text-white font-bold text-lg">
                   {exp?.company_logo ? (
                     <img
                       src={exp.company_logo}

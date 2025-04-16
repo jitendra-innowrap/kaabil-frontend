@@ -365,17 +365,8 @@ export default function JobsNearYou() {
     }, [showAutoCompleteOptions]);
 
   return (
-    <div className="relative jobs-near-me flex">
-        <div className='container no-mobile-container'>
-            {/* {showPermissionHelp && (
-            <div className="permission-help">
-                <p>Please enable location permissions in your browser settings.</p>
-                <button onClick={() => window.open('chrome://settings/content/location')}>
-                Open Settings
-                </button>
-            </div>
-            )} */}
-
+    <div className="relative jobs-near-me flex max-w-screen">
+        <div className='flex container no-mobile-container lg:gap-10'>
             <div className="lg:w-1/2">
                 <div className="hidden lg:block pt-5 3xl:pt-6 mb-7 3xl:mb-8">
                     <Breadcrumb root='Home' category='Jobs near me' />
@@ -384,7 +375,7 @@ export default function JobsNearYou() {
                     Jobs near me
                 </h2>
                 <div className="mobile-container">
-                    <div className="flex relative near-me-search flex-row gap-3 lg:gap-0 mx-auto rounded-xl 2xl:rounded-[16px] lg:shadow-default bg-white h-[50px] lg:h-[55px] 3xl:h-[68px] items-center mb-1 xl:mb-6 3xl:mb-[26px]">
+                    <div className="flex relative near-me-search flex-row gap-3 lg:gap-0 mx-auto rounded-xl 3xl:rounded-[16px] lg:shadow-default bg-white h-[50px] lg:h-[55px] 3xl:h-[68px] items-center mb-1 xl:mb-6 3xl:mb-[26px]">
                         <svg className='lg:hidden absolute left-3 top-4' width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M8.25 14.25C11.5637 14.25 14.25 11.5637 14.25 8.25C14.25 4.93629 11.5637 2.25 8.25 2.25C4.93629 2.25 2.25 4.93629 2.25 8.25C2.25 11.5637 4.93629 14.25 8.25 14.25Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             <path d="M15.7503 15.7508L12.4878 12.4883" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -416,13 +407,13 @@ export default function JobsNearYou() {
                             value={inputValue}
                             onFocus={()=> setShowAutoCompleteOptions(true)}
                             onChange={onSearchChange}
-                            className="placeholder:truncate w-full h-full rounded-xl text-xs 2xl:text-base 3xl:text-lg lg:font-semibold placeholder:text-gray-400 pl-9 px-4 py-2 lg:px-6 3xl:pl-[31px] lg:py-4"
+                            className="placeholder:truncate w-full h-full rounded-xl text-sm 2xl:text-base 3xl:text-lg lg:font-semibold placeholder:text-gray-400 pl-9 px-4 py-2 lg:px-6 3xl:pl-[31px] lg:py-4"
                         />
                         <button
                             type='submit'
-                            className="h-full w-[74px] hidden lg:grid !p-0 place-items-center absolute top-0 right-0 rounded-e-xl 2xl:rounded-e-2xl rounded-s-none"
+                            className="h-full w-[65px] 2xl:w-[74px] hidden lg:grid !p-0 place-items-center absolute top-0 right-0 rounded-e-xl 3xl:rounded-e-2xl rounded-s-none"
                         >
-                            <Image className="lg:w-4 2xl:w-6" src="/new-assets/icons/search-icon.svg" width="24" height="24" alt="Search" />
+                            <Image className="lg:w-4 xl:w-5 2xl:w-6 -translate-x-1" src="/new-assets/icons/search-icon.svg" width="24" height="24" alt="Search" />
                         </button>
                         <div className="lg:hidden size-6 flex justify-center flex-shrink-0 items-center" onClick={()=>setIsMapopen(!isMapopen)}>
                             {isMapopen?<svg className='lg:hidden' width="15" height="14" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -439,6 +430,7 @@ export default function JobsNearYou() {
                 </div>
                 <div className={`w-screen block lg:hidden ${isMapopen?"h-[350px]":"h-0"} transition-all duration-200`}>
                     <CustomGoogleMap
+                        radius={parseInt(selectedradius?.value || '20')}
                         lat={selectedLocation?.lat || currentLocation?.city_latitude || ""} 
                         lng={selectedLocation?.lng || currentLocation?.city_longitude || ""}
                         jobLocations={jobLocations || []}
@@ -537,8 +529,10 @@ export default function JobsNearYou() {
                         </>
                     )}
                 </div>
-                <div className="w-full hidden lg:block fixed md:top-[0] xl:top-[56.6px] 2xl:top-[58px] 3xl:top-[90px] right-0 max-w-[calc(50vw_-_50px)] max-h-[80vh] h-[500px]">
+            </div>
+            <div className="w-[calc(50vw_-_45px)] mr-[-325px] hidden lg:block sticky md:top-[0] xl:top-[56.6px] 2xl:top-[58px] 3xl:top-[90px] right-0 h-[calc(100vh)] xl:h-[calc(100vh_-_56px)] 3xl:h-[calc(100vh_-_92px)]">
                 <CustomGoogleMap
+                    radius={parseInt(selectedradius?.value || '20')}
                     lat={selectedLocation?.lat || currentLocation?.city_latitude || ""} 
                     lng={selectedLocation?.lng || currentLocation?.city_longitude || ""}
                     jobLocations={jobLocations || []}
@@ -546,7 +540,6 @@ export default function JobsNearYou() {
                     selectedJobId={selectedJobId}
                 />
                 </div>
-            </div>
         </div>
     </div>
   )

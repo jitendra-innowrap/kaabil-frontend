@@ -44,17 +44,17 @@ export default function Home() {
             icon: "/new-assets/job-types/full-time.png",
             title: "Full Time Jobs",
             jobUrl: "/"
-        },
-        {
+           },
+           {
             icon: "/new-assets/job-types/part-time.png",
             title: "Part Time Jobs",
             jobUrl: "/"
-        },
-        {
+           },
+           {
             icon: "/new-assets/job-types/intership.png",
             title: "Internship 2",
             jobUrl: "/"
-        },
+           },
     ])
     const [topCompanies, setTopCompanies] = useState<jobcardtype[]>([]);
     const [topIndustries, setTopIndustries] = useState<industryCard[]>([]);
@@ -62,115 +62,115 @@ export default function Home() {
     // ✅ Fetch roles and job types from API
     useEffect(() => {
         const fetchHomedata = async () => {
-            try {
-                const { deviceId, secret, salt } = getSessionData();
+          try {
+            const { deviceId, secret, salt } = getSessionData();
 
-                // Ensure session data is available
-                if (!deviceId || !secret || !salt) {
-                    //   console.log("Session data not available, retrying...");
-                    setTimeout(fetchHomedata, 1000); // Retry after 1 second
-                    return;
-                }
-
-                const response = await api.get("/Home/homeData");
-                // console.log(response);
-                setHomeData(response?.data?.result);
-                setJobTypes(response?.data?.result?.job_types?.map((typ: any, i: number) => ({
-                    icon: typ?.id == 1 ?
-                        "/new-assets/job-types/full-time.png" :
-                        typ?.id == 2 ?
-                            "/new-assets/job-types/part-time.png" :
-                            "/new-assets/job-types/intership.png",
-                    title: typ?.name,
-                    jobUrl: '/'
-                })));
-                setTopCompanies(response?.data?.result?.top_companies?.map((comp: any, i: number) => ({
-                    icon: comp?.company_logo || "",
-                    title: comp?.company_name,
-                    companyId: `${comp?.id}`,
-                    jobUrl: `/`
-                })));
-                const colors = ["#FDEAC9", "#DDF4E9", "#F9D1D7", "#E6E7E8"]; // Define the colors array
-                setTopIndustries(response?.data?.result?.top_industries?.map((ind: any, i: number) => ({
-                    icon: ind?.industry_icon || "/new-assets/icons/company_icon_placeholder.png",
-                    title: ind?.name,
-                    companyId: '/',
-                    jobUrl: `/jobs?industries_filter=${ind?.name}`,
-                    color: colors[i % colors.length], // Assign color cyclically
-                })));
-            } catch (error) {
-                console.error("Error fetching job types:", error);
-            } finally {
-                setIsLoading(false);
+            // Ensure session data is available
+            if (!deviceId || !secret || !salt) {
+            //   console.log("Session data not available, retrying...");
+              setTimeout(fetchHomedata, 1000); // Retry after 1 second
+              return;
             }
+
+            const response = await api.get("/Home/homeData");
+            // console.log(response);
+            setHomeData(response?.data?.result);
+            setJobTypes(response?.data?.result?.job_types?.map((typ: any, i: number) => ({
+              icon: typ?.id==1?
+                    "/new-assets/job-types/full-time.png":
+                    typ?.id==2?
+                    "/new-assets/job-types/part-time.png":
+                    "/new-assets/job-types/intership.png",
+              title: typ?.name,
+              jobUrl: '/'
+            })));
+            setTopCompanies(response?.data?.result?.top_companies?.map((comp: any, i: number) => ({
+              icon: comp?.company_logo || "",
+              title: comp?.company_name,
+              companyId: `${comp?.id}`,
+              jobUrl: `/`
+            })));
+            const colors = ["#FDEAC9", "#DDF4E9", "#F9D1D7", "#E6E7E8"]; // Define the colors array
+            setTopIndustries(response?.data?.result?.top_industries?.map((ind: any, i: number) => ({
+              icon: ind?.industry_icon || "/new-assets/icons/company_icon_placeholder.png",
+              title: ind?.name,
+              companyId: '/',
+              jobUrl: `/jobs?industries_filter=${ind?.name}`,
+              color: colors[i % colors.length], // Assign color cyclically
+            })));
+          } catch (error) {
+            console.error("Error fetching job types:", error);
+          } finally {
+            setIsLoading(false);
+          }
         };
 
         fetchHomedata();
-    }, []);
+      }, []);
     const jobsList = [
         {
-            icon: "/new-assets/company-icons/image (1).png",
-            title: "Jio",
-            jobUrl: "/"
+         icon: "/new-assets/company-icons/image (1).png",
+         title: "Jio",
+         jobUrl: "/"
         },
         {
-            icon: "/new-assets/company-icons/image (2).png",
-            title: "Mahindra Holidays and Resorts India Ltd",
-            jobUrl: "/"
+         icon: "/new-assets/company-icons/image (2).png",
+         title: "Mahindra Holidays and Resorts India Ltd",
+         jobUrl: "/"
         },
         {
-            icon: "/new-assets/company-icons/image (3).png",
-            title: "Tata Consultancy Services",
-            jobUrl: "/"
+         icon: "/new-assets/company-icons/image (3).png",
+         title: "Tata Consultancy Services",
+         jobUrl: "/"
         },
         {
-            icon: "/new-assets/company-icons/image (4).png",
-            title: "Tech Mahindra Ltd",
-            jobUrl: "/"
+         icon: "/new-assets/company-icons/image (4).png",
+         title: "Tech Mahindra Ltd",
+         jobUrl: "/"
         },
         {
-            icon: "/new-assets/company-icons/image (1).png",
-            title: "Jio",
-            jobUrl: "/"
+         icon: "/new-assets/company-icons/image (1).png",
+         title: "Jio",
+         jobUrl: "/"
         },
         {
-            icon: "/new-assets/company-icons/image (2).png",
-            title: "Mahindra Holidays and Resorts India Ltd",
-            jobUrl: "/"
+         icon: "/new-assets/company-icons/image (2).png",
+         title: "Mahindra Holidays and Resorts India Ltd",
+         jobUrl: "/"
         },
         {
-            icon: "/new-assets/company-icons/image (3).png",
-            title: "Tata Consultancy Services",
-            jobUrl: "/"
+         icon: "/new-assets/company-icons/image (3).png",
+         title: "Tata Consultancy Services",
+         jobUrl: "/"
         },
         {
-            icon: "/new-assets/company-icons/image (4).png",
-            title: "Tech Mahindra Ltd",
-            jobUrl: "/"
+         icon: "/new-assets/company-icons/image (4).png",
+         title: "Tech Mahindra Ltd",
+         jobUrl: "/"
         },
     ]
     const successList = [
-        { name: "", role: "", image: "/new-assets/success-slider/slide1.png", video: "" },
-        { name: "", role: "", image: "/new-assets/success-slider/slide2.png", video: "true" },
-        { name: "", role: "", image: "/new-assets/success-slider/slide3.png", video: "true" },
-        { name: "", role: "", image: "/new-assets/success-slider/slide4.png", video: "" },
-        { name: "", role: "", image: "/new-assets/success-slider/slide5.png", video: "" },
-        { name: "", role: "", image: "/new-assets/success-slider/slide1.png", video: "" },
-        { name: "", role: "", image: "/new-assets/success-slider/slide2.png", video: "true" },
-        { name: "", role: "", image: "/new-assets/success-slider/slide3.png", video: "true" },
-        { name: "", role: "", image: "/new-assets/success-slider/slide4.png", video: "" },
-        { name: "", role: "", image: "/new-assets/success-slider/slide5.png", video: "" },
+        {name: "", role:"", image:"/new-assets/success-slider/slide1.png", video:""},
+        {name: "", role:"", image:"/new-assets/success-slider/slide2.png", video:"true"},
+        {name: "", role:"", image:"/new-assets/success-slider/slide3.png", video:"true"},
+        {name: "", role:"", image:"/new-assets/success-slider/slide4.png", video:""},
+        {name: "", role:"", image:"/new-assets/success-slider/slide5.png", video:""},
+        {name: "", role:"", image:"/new-assets/success-slider/slide1.png", video:""},
+        {name: "", role:"", image:"/new-assets/success-slider/slide2.png", video:"true"},
+        {name: "", role:"", image:"/new-assets/success-slider/slide3.png", video:"true"},
+        {name: "", role:"", image:"/new-assets/success-slider/slide4.png", video:""},
+        {name: "", role:"", image:"/new-assets/success-slider/slide5.png", video:""},
     ]
 
     const successSlides = successList.map((success, index) => (
         <div className={`success-story-card ${index % 2 === 0 ? 'even' : 'odd'}`}>
-            <SuccessCard key={index} {...success} />
+          <SuccessCard key={index} {...success} />
         </div>
-    ));
+      ));
 
     const nudges = [
-        <ResumeBuilder />,
-        <Interviewlaptop />,
+        <ResumeBuilder/>,
+        <Interviewlaptop/>,
     ]
 
     const loading = topCompanies.length === 0;
@@ -222,37 +222,37 @@ export default function Home() {
             jobUrl: "/",
             color: "#FDEAC9"
         },
-        {
-            icon: "/new-assets/industeries/icon-1a.png",
-            title: "Sales and marketing",
-            jobUrl: "/",
-            color: "#FDEAC9"
-        },
-        {
-            icon: "/new-assets/industeries/icon-2a.png",
-            title: "IT and technology",
-            jobUrl: "/",
-            color: "#DDF4E9"
-        },
-        {
-            icon: "/new-assets/industeries/icon-3a.png",
-            title: "Hospitality and travel",
-            jobUrl: "/",
-            color: "#F9D1D7"
-        },
-        {
-            icon: "/new-assets/industeries/icon-4a.png",
-            title: "Banking and finance",
-            jobUrl: "/",
-            color: "#E6E7E8"
-        },
-        {
-            icon: "/new-assets/industeries/icon-5a.png",
-            title: "Education and training",
-            jobUrl: "/",
-            color: "#FDEAC9"
-        },
-    ]
+    {
+        icon: "/new-assets/industeries/icon-1a.png",
+        title: "Sales and marketing",
+        jobUrl: "/",
+        color: "#FDEAC9"
+    },
+    {
+        icon: "/new-assets/industeries/icon-2a.png",
+        title: "IT and technology",
+        jobUrl: "/",
+        color: "#DDF4E9"
+    },
+    {
+        icon: "/new-assets/industeries/icon-3a.png",
+        title: "Hospitality and travel",
+        jobUrl: "/",
+        color: "#F9D1D7"
+    },
+    {
+        icon: "/new-assets/industeries/icon-4a.png",
+        title: "Banking and finance",
+        jobUrl: "/",
+        color: "#E6E7E8"
+    },
+    {
+        icon: "/new-assets/industeries/icon-5a.png",
+        title: "Education and training",
+        jobUrl: "/",
+        color: "#FDEAC9"
+    },
+]
 
     const inputSlides = topIndustries?.map((job, index) => (
         <IndustryCard key={index} {...job} />
@@ -297,7 +297,7 @@ export default function Home() {
         },
     ]
     const skillsSlides = skills.map((skill) => (
-        <CareerSkill key={skill.index} {...skill} />
+      <CareerSkill key={skill.index} {...skill} />
     ));
 
     const heading = "Find your dream job with"
@@ -307,10 +307,10 @@ export default function Home() {
             <section className=''>
                 <Link href={'/jobs'} className='block w-full'>
                     <Image src='/new-assets/home/banner.png' quality={100} alt="" width={3840} height={1000}
-                        className="hidden sm:inline-block w-full h-auto home-banner"
+                    className="hidden sm:inline-block w-full h-auto home-banner"
                     />
                     <Image src='/new-assets/banners/home-mobile-banner.svg' quality={100} alt="" width={3840} height={1000}
-                        className="inline-block sm:hidden !w-full !h-auto home-banner"
+                    className="inline-block sm:hidden !w-full !h-auto home-banner"
                     />
                 </Link>
                 <div className="bg-[#F5F5F5]">
@@ -327,11 +327,11 @@ export default function Home() {
                             <SearchSection />
                         </div>
                     </div>
-                    <div className="block lg:hidden pb-4 md:pb-8">
-                        <Suspense fallback={<></>}>
-                            <FilterMobilePannel />
-                        </Suspense>
-                    </div>
+                        <div className="block lg:hidden pb-4 md:pb-8">
+                            <Suspense fallback={<></>}>
+                                <FilterMobilePannel/>
+                            </Suspense>
+                        </div>
                 </div>
             </section>
 
@@ -341,34 +341,34 @@ export default function Home() {
                     <div className="container no-pad">
                         <div className="block">
                             <GallerySlider
-                                slides={slides}
-                                spaceBetween={25}
-                                showNavigation
-                                loop={true}
-                                autoplay={false}
-                                autoplayDuration={3000}
-                                freeMode={false}
-                                slidesPerView={3}
-                                breakpoints={{
-                                    320: {
-                                        slidesPerView: 2.5,
-                                        spaceBetween: 8,
-                                    },
-                                    480: {
-                                        slidesPerView: 3,
-                                    },
-                                    768: {
-                                        slidesPerView: 4,
-                                    },
-                                    1024: {
-                                        spaceBetween: 20,
-                                        slidesPerView: 5,
-                                    },
-                                    1500: {
-                                        spaceBetween: 35,
-                                        slidesPerView: 5,
-                                    },
-                                }}
+                            slides={slides}
+                            spaceBetween={25}
+                            showNavigation
+                            loop={true}
+                            autoplay={false}
+                            autoplayDuration={3000}
+                            freeMode={false}
+                            slidesPerView={3}
+                            breakpoints={{
+                                320: {
+                                    slidesPerView: 2.5,
+                                    spaceBetween: 8,
+                                },
+                                480:{
+                                    slidesPerView: 3,
+                                },
+                                768: {
+                                  slidesPerView: 4,
+                                },
+                                1024: {
+                                  spaceBetween:20,
+                                  slidesPerView: 5,
+                                },
+                                1500: {
+                                  spaceBetween:35,
+                                  slidesPerView: 5,
+                                },
+                              }}
                             />
                         </div>
                     </div>
@@ -383,46 +383,46 @@ export default function Home() {
 
             <section className="section-shadow">
                 <div className="w-full flex flex-col items-center py-5 md:py-8 xl:py-14 2xl:py-16 mx-auto">
-                    <h2 className='container text-black lg:text-center text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[64px] mb-5 xl:mb-6 font-medium'>What type of <span className="font-kalam text-red font-bold">job</span> are you looking for?</h2>
-                    <div className="container small grid grid-cols-2 lg:grid-cols-3 gap-4 2xl:gap-6 w-full mb-5 md:mb-8 xl:mb-[70px] 2xl:mb-[84px]">
-                        {JobTypes.map((job, index) => (
-                            <JobtypeCard key={index} {...job} />
-                        ))}
-                    </div>
-                    <h2 className='container text-black lg:text-center text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[64px] mb-5 xl:mb-6 font-medium'>Explore job opportunities across top  <span className="font-kalam text-red font-bold">industries</span> </h2>
+                <h2 className='container text-black lg:text-center text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[64px] mb-5 xl:mb-6 font-medium'>What type of <span className="font-kalam text-red font-bold">job</span> are you looking for?</h2>
+                <div className="container small grid grid-cols-2 lg:grid-cols-3 gap-4 2xl:gap-6 w-full mb-5 md:mb-8 xl:mb-[70px] 2xl:mb-[84px]">
+                    {JobTypes.map((job, index) => (
+                    <JobtypeCard key={index} {...job} />
+                    ))}
+                </div>
+                <h2 className='container text-black lg:text-center text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[64px] mb-5 xl:mb-6 font-medium'>Explore job opportunities across top  <span className="font-kalam text-red font-bold">industries</span> </h2>
 
                     <div className="container no-pad mb-4">
                         <div className="block">
                             <GallerySlider
-                                slides={inputSlides}
-                                spaceBetween={25}
-                                showNavigation
-                                loop={true}
-                                arrowShadows
-                                autoplay={true}
-                                autoplayDuration={3000}
-                                freeMode={false}
-                                slidesPerView={3}
-                                breakpoints={{
-                                    320: {
-                                        slidesPerView: 2.5,
-                                        spaceBetween: 8,
-                                    },
-                                    480: {
-                                        slidesPerView: 3,
-                                    },
-                                    768: {
-                                        slidesPerView: 4,
-                                    },
-                                    1280: {
-                                        spaceBetween: 20,
-                                        slidesPerView: 5,
-                                    },
-                                    1500: {
-                                        spaceBetween: 30,
-                                        slidesPerView: 5,
-                                    },
-                                }}
+                            slides={inputSlides}
+                            spaceBetween={25}
+                            showNavigation
+                            loop={true}
+                            arrowShadows
+                            autoplay={true}
+                            autoplayDuration={3000}
+                            freeMode={false}
+                            slidesPerView={3}
+                            breakpoints={{
+                                320: {
+                                    slidesPerView: 2.5,
+                                    spaceBetween: 8,
+                                },
+                                480:{
+                                    slidesPerView: 3,
+                                },
+                                768: {
+                                  slidesPerView: 4,
+                                },
+                                1280: {
+                                  spaceBetween:20,
+                                  slidesPerView: 5,
+                                },
+                                1500: {
+                                  spaceBetween:30,
+                                  slidesPerView: 5,
+                                },
+                              }}
                             />
                         </div>
                     </div>
@@ -497,8 +497,8 @@ export default function Home() {
                 </div>
             </section> */}
             <section className="" style={{
-                boxShadow: "inset 1px 9px 20px -15px #7F54541F"
-            }}>
+                        boxShadow: "inset 1px 9px 20px -15px #7F54541F"
+                    }}>
                 <div className="container gap-5 xl:gap-10 2xl:gap-14 flex flex-col md:flex-row-reverse items-center py-5 md:py-8 xl:py-14 2xl:py-16  mx-auto">
                     <div className="section-heading mb-5 xl:mb-8 flex-1">
                         <h2 className='text-black text-start text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[64px] font-medium mb-2'>Why choose <span className="font-kalam font-bold text-red">Kaabil?</span></h2>

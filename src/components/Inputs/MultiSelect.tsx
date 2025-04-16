@@ -77,7 +77,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
     const isSelected = selectedValues.some((opt) => opt.value === data.value);
 
     return (
-      <components.Option {...props}>
+      <components.Option {...props} className="option-wrapper !py-0">
         <div
           ref={innerRef}
           {...innerProps}
@@ -85,7 +85,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
             if (!isDisabled) handleChange(data);
             setMenuOpen(false);
           }}
-          className={`relative flex items-center gap-3 ${
+          className={`relative flex items-center py-2 gap-3 ${
             isDisabled ? "opacity-90 cursor-not-allowed" : "cursor-pointer"
           }`}
         >

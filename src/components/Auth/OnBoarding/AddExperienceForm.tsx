@@ -12,10 +12,11 @@ import styles from "../SignIn/signIn.module.css"
 
 interface AddExperienceFormProps {
   formik: any; // formik object
+  isEditing?: boolean;
 }
 
 const AddExperienceForm = forwardRef(
-  ({ formik }: AddExperienceFormProps, ref) => {
+  ({ formik, isEditing=false }: AddExperienceFormProps, ref) => {
     const [type, setType] = useState(1);
     const [isCurrentCompany, setIsCurrentCompany] = useState(false);
     const [designationSuggestions, setDesignationSuggestions] = useState<any[]>(
@@ -102,7 +103,7 @@ const AddExperienceForm = forwardRef(
     }));
 
     return (
-      <div className="p-3 md:p-7 rounded-lg shadow-default">
+      <div className="p-3 md:p-7 rounded-lg shadow-sm 3xl:shadow-default">
         <form onSubmit={formik.handleSubmit}>
           <div className="relative mb-2">
             <input
@@ -236,7 +237,7 @@ const AddExperienceForm = forwardRef(
             </label>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-3">
+          <div className={`flex flex-col sm:flex-row gap-3 ${isEditing?"max-w-[calc(100%_-_90px)]":""}`}>
             <div className="flex-1">
               <div>
                 <label className="custom-form-label  text-[12px] sm:text-[14px] mb-[8px] block">Working From</label>

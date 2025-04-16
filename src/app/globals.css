@@ -1943,8 +1943,9 @@ label {
     object-fit: cover;
     object-position: left;
   }
-  .job-card .action-btns button {
-    height: 34px !important;
+  .job-card .action-btns button,
+  .job-card .action-btns a {
+    height: 40px !important;
   }
   .dialog-footer-paging {
     position: fixed !important;
@@ -2212,4 +2213,7 @@ label {
 .custom-google-map .gm-style-cc,
 .custom-google-map .gmnoprint{
   display: none !important;
+}
+.find-career__option{
+  min-height: unset !important;
 }

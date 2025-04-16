@@ -66,10 +66,10 @@ export default function Home() {
     <main className="bg-[#f3f4f4] lg:bg-[#F9F9F9]">
       <section className=''>
         <div className=''>
-            <Image src='/new-assets/banners/listing-banner-update.svg' quality={100} alt="" width={1920} height={500}
+            <Image src='/new-assets/banners/listing-banner-update.webp' quality={100} alt="" width={1920} height={500}
             className="w-full h-auto hidden lg:inline"
             />
-            <Image src='/new-assets/banners/listing-banner-mobile.svg' quality={100} alt="" width={1080} height={420}
+            <Image src='/new-assets/banners/listing-banner-mobile.webp' quality={100} alt="" width={1080} height={420}
             className="w-full h-auto lg:hidden"
             />
         </div>

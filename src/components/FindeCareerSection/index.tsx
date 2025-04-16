@@ -40,7 +40,7 @@ export default function FindCareerSection() {
             <p className="font-semibold text-lg xl:text-base 3xl:text-xl mt-7 xl:mt-8 3xl:mt-10 mb-3 3xl:mb-4 3xl:max-w-[520px]">Answer a few simple questions and we’ll help you discover the right careers!</p>
             <div className="flex flex-col items-end">
                 <Select
-                className='w-full react-select text-xs 3xl:text-base shadow-sm'
+                className='w-full react-select rounded-md 3xl:rounded-lg text-xs 3xl:text-base shadow-sm'
                 options={[
                     { value: 'IT', label: 'IT' },
                     { value: 'Finance', label: 'Finance' },

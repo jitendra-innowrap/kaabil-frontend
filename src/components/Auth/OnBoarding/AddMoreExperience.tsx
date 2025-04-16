@@ -153,9 +153,9 @@ export default function AddMoreExperience({
         validationSchema: validationSchemaForm,
         onSubmit: (values) => {
             const experience = {
-                company_master_id: "1578", // Replace with actual company ID from API
+                company_master_id: values.company_master_id, // Replace with actual company ID from API
                 company_name: values.companyName,
-                designation_master_id: "2698", // Replace with actual designation ID from API
+                designation_master_id: values.designation_master_id, // Replace with actual designation ID from API
                 designation_name: values.designation,
                 job_type_id: values.type,
                 job_type_name: values.type_name,
@@ -221,13 +221,14 @@ export default function AddMoreExperience({
                     {experiences.map((exp, i) => (
                         <>
                             {isEditing == i ? (
-                                <div className="mt-3">
+                                <div className="mt-3 relative">
                                     <AddExperienceForm
                                         ref={setFormikFormRef}
                                         formik={formikForm}
+                                        isEditing
                                     />
                                     {isEditing == i && (
-                                        <div className="flex justify-end translate-y-4  sm:-translate-y-20">
+                                        <div className="flex justify-end absolute bottom-11 right-0 translate-y-4 w-fit">
                                             <button
                                                 type="button"
                                                 className={`${styles.onboarding_dialog_btn} w-20 mr-3 sm:mr-6 sm:text-[12px] text-[14px]`}
@@ -243,7 +244,7 @@ export default function AddMoreExperience({
                             ) : (
                                 <div
                                     key={i}
-                                    className="my-4 p-4 rounded-lg shadow-default justify-between flex gap-4"
+                                    className="my-4 p-4 rounded-lg shadow-sm 3xl:shadow-default justify-between flex gap-4"
                                 >
                                     <div className="">
                                         <h5 className="text-[16px] font-medium text-black mb-2">
@@ -288,7 +289,14 @@ export default function AddMoreExperience({
                     ))}
 
                     {newExperience && (
+                        <>
+                        <div
+                            className="flex font-semibold my-3 justify-between">
+                                <p>Please add experience</p> 
+                                <p className="text-red cursor-pointer" onClick={()=>setNewExperience(false)}>cancel</p>
+                            </div>
                         <AddExperienceForm ref={setFormikFormRef} formik={formikForm}/>
+                        </>
                     )}
                     {
                         <div
@@ -315,12 +323,12 @@ export default function AddMoreExperience({
                             <span className="text-red">{progress - 4}</span> - 6
                         </div>
                         <div className="flex gap-2 sm:gap-4 items-end w-full justify-end footer-2btn">
-                            <span
+                            <div
                                 onClick={() => dispatch(setProgress(11))}
-                                className={`${styles.onboarding_dialog_btn} w-1/2 max-w-[130px] text-[#231F20] cursor-pointer border-[#9C9C9C] flex items-center btn-border !py-3.5 !px-9 !rounded-xl`}
+                                className={`${styles.onboarding_dialog_btn} w-1/2 max-w-[130px] text-[#231F20] text-center cursor-pointer border-[#9C9C9C] flex items-center btn-border !py-3.5 !px-9 !rounded-xl`}
                             >
-                              Skip
-                            </span>
+                              <p className="w-full">Skip</p>
+                            </div>
                             <button
                                 className={`${styles.onboarding_dialog_btn} w-1/2 max-w-[100px] sm:max-w-[250px] flex-shrink-0 justify-start`}
                                 disabled={isSubmitting}

@@ -40,7 +40,7 @@ const Resume = () => {
                 <div
                   key={index}
                   className="relative flex items-center w-full p-2 bg-white border border-[#4D4D4F66] rounded-lg cursor-pointer"
-                  onClick={() => window.open(item.file, "_blank")}
+                  onClick={() => window.open(`https://docs.google.com/viewerng/viewer?url=${item.file}`, "_blank")}
                 >
                   {/* File Name Display */}
                   <div className="flex-grow text-[12px] sm:text-sm text-gray-700 px-3 truncate max-w-[70%]">

@@ -16,6 +16,7 @@ interface CustomGoogleMapProps {
   jobLocations?: MapJobLocation[];
   onMarkerClick?: (jobId: string) => void;
   selectedJobId?: string;
+  radius: number;
 }
 interface ControlRefs {
   container?: HTMLDivElement;
@@ -28,12 +29,12 @@ const CustomGoogleMap: React.FC<CustomGoogleMapProps> = ({
   lng,
   jobLocations = [],
   onMarkerClick,
-  selectedJobId
+  selectedJobId,
+  radius // in km's
 }) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstance = useRef<google.maps.Map | null>(null);
   const markers = useRef<google.maps.Marker[]>([]);
-  const currentLocation = useAppSelector((state) => state.user.current_location);
   const currentLocationMarker = useRef<google.maps.Marker | null>(null);
   const hasInitialFit = useRef(false);
   // Declare as mutable from beginning
@@ -105,7 +106,7 @@ const CustomGoogleMap: React.FC<CustomGoogleMapProps> = ({
       font-size: 20px;
     `;
 
-    // Add zoom in button
+    // Add zoom in button 
     const zoomInButton = createControlButton(
       `<image src="/new-assets/icons/map/zoom-in.svg" class="zoom-in-map">`,
       'Zoom in',
@@ -146,9 +147,9 @@ const CustomGoogleMap: React.FC<CustomGoogleMapProps> = ({
     markers.current = [];
 
     // Add current location marker if available
-    if (currentLocation?.city_latitude && currentLocation?.city_longitude) {
-      const currentLat = Number(currentLocation.city_latitude);
-      const currentLng = Number(currentLocation.city_longitude);
+    if (lat && lng) {
+      const currentLat = Number(lat);
+      const currentLng = Number(lng);
       
       if (!isNaN(currentLat) && !isNaN(currentLng)) {
         if (currentLocationMarker.current) {
@@ -234,7 +235,7 @@ const CustomGoogleMap: React.FC<CustomGoogleMapProps> = ({
       }
     }
 
-  }, [lat, lng, jobLocations, selectedJobId, currentLocation, onMarkerClick]);
+  }, [lat, lng, jobLocations, selectedJobId, onMarkerClick, radius]);
 
   // Handle selected job changes to pan/zoom to it
   useEffect(() => {

@@ -245,8 +245,8 @@ export default function FilterMobilePannel() {
                 value={search}
                 onKeyDown={(e:any) => {
                   if (e.key === "Enter") {
-                      e?.target?.blur(); // This removes focus and closes the keyboard
-                      // You might also want to trigger your search function here
+                      e?.target?.blur();
+                      handleSearch(e); 
                   }
               }}
                 onChange={(e) => setSearch(e.target.value)}

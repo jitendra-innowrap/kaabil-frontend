@@ -5,43 +5,55 @@ const firebaseConfig = {
   apiKey: "AIzaSyAIqXfvZeuOBKdgWLCxKZNAXUykd4lj6tA",
   authDomain: "missioneven-4eef9.firebaseapp.com",
   projectId: "missioneven-4eef9",
-  storageBucket: "missioneven-4eef9.appspot.com", // Fixed the storageBucket format
+  storageBucket: "missioneven-4eef9.appspot.com",
   messagingSenderId: "538215499239",
   appId: "1:538215499239:web:7374b5317555ef70a1e942",
   measurementId: "G-ZWEFY9NVKP"
 };
 
-const firebaseTest ={
-  apiKey: "AIzaSyBZXmPayrr5GQp0GeI99wmd82w6fxl6BzY",
-  authDomain: "kaabil-87339.firebaseapp.com",
-  projectId: "kaabil-87339",
-  storageBucket: "kaabil-87339.firebasestorage.app",
-  messagingSenderId: "972940526001",
-  appId: "1:972940526001:web:6e626a2faa3122c382bd90",
-  vapidKey: "BBAAt4cFYf-wqtm786_CTLMIp3GBqPHByoIxDCIugCLy-6XCSW3JOEK6LeqNS8HvcyEo7P9M7p2LNSqgQG2yoTU" //test account
-};
-
-// Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-// firebase.initializeApp(firebaseTest); // test config
 const messaging = firebase.messaging();
 
-// Add a global error handler
-self.addEventListener('error', (event) => {
-  console.error('Service Worker Error:', event.error);
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  
+  let url = '/'; // Default URL to open
+  
+  // Check if it's a job detail notification (type 3)
+  if (event.notification.data && event.notification.data.type === "3" && event.notification.data.job_id) {
+    url = `/jobs/detail/${event.notification.data.job_id}`;
+  }
+
+  event.waitUntil(
+    self.clients.matchAll({
+      type: 'window',
+      includeUncontrolled: true
+    }).then((clientList) => {
+      // Check if there's already a tab open with our domain
+      for (const client of clientList) {
+        if (client.url.includes(self.location.origin) && 'focus' in client) {
+          // If we found a matching tab, navigate it to the correct URL and focus
+          return client.navigate(url).then(focusedClient => {
+            if (focusedClient) {
+              return focusedClient.focus();
+            }
+          });
+        }
+      }
+      
+      // If no matching tab found, open a new one
+      return self.clients.openWindow(url);
+    })
+  );
 });
 
 messaging.onBackgroundMessage((payload) => {
   try {
-    // console.log('Full payload:', JSON.stringify(payload));
-    
-    // Check if payload exists
     if (!payload) {
       console.error('Payload is undefined');
       return;
     }
 
-    // Handle both notification and data payloads
     const notificationTitle = payload.notification?.title || 
                              payload.data?.company_name || 
                              'New Notification';
@@ -49,26 +61,21 @@ messaging.onBackgroundMessage((payload) => {
     const notificationOptions = {
       body: payload.notification?.body || payload.data?.title || '',
       icon: payload.notification?.icon || payload.data?.company_logo || '/icons/default-updated.png',
-      data: payload.data || {} // Pass all data to the notification
+      data: payload.data || {}
     };
 
-    // console.log('Preparing notification:', notificationTitle, notificationOptions);
-
     return self.registration.showNotification(notificationTitle, notificationOptions)
-    .then(() => {
-      // Broadcast to all clients (tabs)
-      self.clients.matchAll().then((clients) => {
-        clients.forEach((client) => {
-          client.postMessage({
-            type: 'NEW_NOTIFICATION',
-            payload: payload
+      .then(() => {
+        self.clients.matchAll().then((clients) => {
+          clients.forEach((client) => {
+            client.postMessage({
+              type: 'NEW_NOTIFICATION',
+              payload: payload
+            });
           });
         });
       });
-    });
   } catch (error) {
     console.error('Error in background message handler:', error);
   }
 });
-
-// new login fresh to test 6767576767

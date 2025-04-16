@@ -372,7 +372,7 @@ export default function Companies() {
               <div className="flex justify-between items-center mb-6">
               <div>
                 <h2 className="text-[16px] sm:text-xl font-semibold">{selectedTab === "Trending"?"Trending Companies":selectedTab === "Following"?"Following Companies":"Industries"}</h2>
-                <p className="text-[12px] sm:text-sm text-gray-500">{selectedTab === "Following"?`You follow ${totalCompnaies} companies`:`${totalCompnaies} Companies found!`}</p>
+                <p className={`text-[12px] sm:text-sm text-gray-500 ${totalCompnaies>0?"":"invisible"}`}>{selectedTab === "Following"?`You follow ${totalCompnaies} companies`:`${totalCompnaies} Companies found!`}</p>
               </div>
               {selectedTab!="Following" && 
               <div className="relative h-fit sort-by-container mt-1 3xl:mt-0" ref={dropdownRef}>

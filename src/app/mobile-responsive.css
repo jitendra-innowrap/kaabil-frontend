@@ -68,6 +68,9 @@
     .no-mobile-container{
         padding-inline: 0px;
     }
+    .no-mobile-container .mobile-container{
+        max-width: 100vw;
+    }
     .near-me-jobs-pannel{
         border-start-end-radius: 18px;
         border-start-start-radius: 18px;

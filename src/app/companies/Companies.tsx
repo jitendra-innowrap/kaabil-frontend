@@ -11,6 +11,7 @@ import { notFound, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { IoMdArrowDropdown } from "react-icons/io";
+import ContentLoader from 'react-content-loader';
 
 import { RxTriangleDown } from "react-icons/rx";
 
@@ -20,11 +21,11 @@ export default function Companies() {
   const currentLocation = useAppSelector((state) => state.user.current_location)
   const searchParams = useSearchParams();
   const sort = searchParams.get("sort") || "1"; // Default to '1' (Relevance)
-  const search = searchParams.get("search") || ""; 
+  const search = searchParams.get("search") || "";
   const [searchKey, setSearchKey] = useState(search || "");
-  const industry = searchParams.get("industry") || "0"; 
-  // const page = searchParams.get("page") || "1"; 
-  const tab = searchParams.get("tab") || "Trending"; 
+  const industry = searchParams.get("industry") || "0";
+  // const page = searchParams.get("page") || "1";
+  const tab = searchParams.get("tab") || "Trending";
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCompnaies, setTotalCompnaies] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
@@ -82,7 +83,7 @@ export default function Companies() {
         } else if (selectedTab === "Industry") {
           endpoint = "/Company/getIndustryWiseJob";
         }
-      
+
         setIsLoading(true);
         setTotalPages(1);
         setTotalCompnaies(0);
@@ -108,7 +109,7 @@ export default function Companies() {
         const totalPages = Math.ceil(totalCompany / companyPerPage);
         setTotalCompnaies(totalCompany || []);
         setTotalPages(totalPages);
-        
+
       }else{
         notFound();
       }
@@ -158,7 +159,7 @@ export default function Companies() {
     }
     setIsLoading(false)
   };
-  
+
   const handleSearch=(key?:any)=>{
     const params = new URLSearchParams(searchParams.toString());
     params.delete("page");
@@ -183,7 +184,7 @@ export default function Companies() {
     params.set("industry", id); // Update the sort parameter in the URL
     router.replace(`?${params.toString()}`, { scroll: false }); // Update the URL without refreshing the page
   }
-  
+
   // Handle pagination button click
   const handleActive = (page: number) => {
     setCurrentPage(page);
@@ -227,7 +228,7 @@ export default function Companies() {
         };
     }
   };
-  
+
   // Handle sort option selection
   const handleSortChange = (newSort: string) => {
     setCurrentPage(1);
@@ -237,7 +238,7 @@ export default function Companies() {
     router.replace(`?${params.toString()}`, { scroll: false }); // Update the URL without refreshing the page
   };
   const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null); 
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Handle sort option selection
   const handleOptionClick = (newSort: string) => {
@@ -253,16 +254,16 @@ export default function Companies() {
           setIsOpen(false);
         }
       };
-  
+
       if (isOpen) {
         document.addEventListener("mousedown", handleClickOutside);
       }
-      
+
       return () => {
         document.removeEventListener("mousedown", handleClickOutside);
       };
     }, [isOpen]);
-  
+
 
   return (
     <div>
@@ -361,8 +362,31 @@ export default function Companies() {
         </div>
 
         {companiesList === null ?
-        <div className="flex justify-center items-center h-[200px]">
-          <div className="flex animate-spin h-7 w-7 rounded-full border-l-0 border-b-0 border-red border-[3px]"></div>
+        <div className="container bg-[#f9f9f9] mx-auto w-full px-4 pb-12">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+
+          {/* <div className="flex animate-spin h-7 w-7 rounded-full border-l-0 border-b-0 border-red border-[3px]"></div> */}
+          {Array.from({ length: 10 }).map((index) => (
+            <div className="company-card shadow-sm rounded-2xl overflow-hidden" >
+            <ContentLoader
+                speed={2}
+                viewBox="0 0 200 200"
+                preserveAspectRatio="xMinYMin meet"
+                backgroundColor="#f3f3f3"
+                foregroundColor="#ecebeb"
+                className="w-full h-full"
+              >
+                {/* Image/banner */}
+                <rect x="50" y="20" rx="10" ry="10" width="100" height="100" />
+
+                {/* Job Title */}
+                <rect x="25" y="140" rx="6" ry="6" width="150" height="16" />
+
+                {/* Company Name */}
+                <rect x="60" y="170" rx="5" ry="5" width="80" height="14" />
+              </ContentLoader></div>
+          ))}
+        </div>
         </div>
         :
         <div className="container bg-[#f9f9f9] mx-auto w-full px-4 pb-12">
@@ -374,7 +398,7 @@ export default function Companies() {
                 <h2 className="text-[16px] sm:text-xl font-semibold">{selectedTab === "Trending"?"Trending Companies":selectedTab === "Following"?"Following Companies":"Industries"}</h2>
                 <p className="text-[12px] sm:text-sm text-gray-500">{selectedTab === "Following"?`You follow ${totalCompnaies} companies`:`${totalCompnaies} Companies found!`}</p>
               </div>
-              {selectedTab!="Following" && 
+              {selectedTab!="Following" &&
               <div className="relative h-fit sort-by-container mt-1 3xl:mt-0" ref={dropdownRef}>
                 {/* Dropdown Button */}
                 <button
@@ -388,7 +412,7 @@ export default function Companies() {
                   {sort === "1" ? "Recently posted" : sort === "2" ? "Most Jobs" : sort === "3" ? "Nearest" : "Farthest"}
                   <IoMdArrowDropdown className={`flex-shrink-0 ml-1 xl:ml-2 3xl:ml-5 text-[#000000] size-3 3xl:size-4 ${isOpen?"rotate-180":""}`} />
                 </button>
-      
+
                 {/* Dropdown Menu */}
                 {isOpen && (
                   <div
@@ -448,7 +472,7 @@ export default function Companies() {
             <p className="text-sm 3xl:text-base font-normal text-center">{getEmptyStateMessage().description}</p>
           </div>
           }
-          
+
 
           {/* Pagination */}
           <div className="mt-10 md:mt-14 2xl:mt-16">

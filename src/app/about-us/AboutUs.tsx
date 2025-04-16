@@ -3,6 +3,56 @@
 import GallerySlider from "@/components/JobDetail/Slider/GallarySlider"
 import Image from "next/image"
 import { useState } from "react"
+import { motion } from 'framer-motion';
+import AnimatedNumber from "@/components/utils/AnimationNumber";
+
+const slideVariants = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
+}
+
+const leftVariant = {
+  hidden: { opacity: 0, x: -50 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: 'easeOut' } },
+}
+
+const rightVariant = {
+  hidden: { opacity: 0, x: 50 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: 'easeOut' } },
+}
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: i * 0.3, // stagger based on index
+      duration: 1,
+      ease: 'easeOut',
+    },
+  }),
+}
+
+const cardVariantsTwo = {
+  hidden: (i: number) => ({
+    opacity: 0,
+    y: 50,
+    scale: 0.95,
+    rotate: i % 2 === 0 ? -4 : 4,
+  }),
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    rotate: 0,
+    transition: {
+      delay: i * 0.1,
+      duration: 0.5,
+      ease: 'easeOut',
+    },
+  }),
+}
 
 export default function AboutUs() {
   

@@ -4,6 +4,7 @@ import React, { Suspense, useEffect, useRef, useState } from "react";
 import { FiCamera } from "react-icons/fi";
 import { HiOutlineCurrencyRupee, HiOutlineFilter } from "react-icons/hi";
 import { MdAccessTime } from "react-icons/md";
+import ContentLoader from 'react-content-loader';
 import Pagination from "../Pagination";
 import Link from "next/link";
 import { IoMdArrowDropdown } from "react-icons/io";
@@ -42,60 +43,60 @@ function JobList() {
   const dispatch = useDispatch();
   const [jobs, setJobs] = useState<object[]>([]);
   const [isJobsLoading, setIsJobsLoading] = useState(true);
-  const sort = searchParams.get("sort") || (isLoggedIn?"1":"3"); // Default to '1' (Relevance);
+  const sort = searchParams.get("sort") || (isLoggedIn ? "1" : "3"); // Default to '1' (Relevance);
   const [isMobile, setIsMobile] = useState(false);
 
-useEffect(() => {
-  const updateSize = () => {
-    setIsMobile(window.innerWidth < 1024);
-  };
-  
-  // Initialize on mount
-  updateSize();
-  
-  // Add resize listener
-  window.addEventListener("resize", updateSize);
-  
-  // Cleanup
-  return () => window.removeEventListener("resize", updateSize);
-}, []);
+  useEffect(() => {
+    const updateSize = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
 
-// Nudges that appear on all screen sizes
-const commonNudges = [
-...(!isLoggedIn ? [<RegisterInMinutes key="register" />]: [])
-];
+    // Initialize on mount
+    updateSize();
 
-// Nudges that only appear on mobile (<1024px)
-const mobileOnlyNudges = isMobile ? [
-  <JobsNearYouNudge key="jobs-near-you" />,
-] : [];
+    // Add resize listener
+    window.addEventListener("resize", updateSize);
 
-// Conditional nudges for logged-in users (mobile only)
-const loggedInMobileNudges = isLoggedIn && isMobile ? [
-  ...(showSoftSkills ? [<ShareStrength key="share-strength" />] : []),
-  ...(showUploadCV ? [<UpdloadCvNudge key="upload-cv" />] : []),
-  ...(showUpdateEducation ? [<EducationUpdateNudge key="update-education" />] : []),
-  ...(showProfilePhoto ? [<ProfileUploadNudge key="profile-photo" />] : []),
-  ...(showUpdateProfile ? [<EditProfileNudge key="edit-profile" />] : []),
-  ...(showHelpVideo ? [<WelcomeVideoNudge key="welcome-video" />] : []),
-] : [];
+    // Cleanup
+    return () => window.removeEventListener("resize", updateSize);
+  }, []);
 
-// Nudges for non-logged-in users
-const nudges = [
-  ...mobileOnlyNudges,
-  ...commonNudges,
-];
+  // Nudges that appear on all screen sizes
+  const commonNudges = [
+    ...(!isLoggedIn ? [<RegisterInMinutes key="register" />] : [])
+  ];
 
-// Nudges for logged-in users
-const nudgesForLoggedInUser = [
-  ...mobileOnlyNudges,
-  ...(isLoggedIn ? [
-    // <ProfileCard key="profile-card" />,
-    // <QuickAction key="quick-action" />,
-    ...loggedInMobileNudges,
-    <TopCompaniesHiring key="top-companies" />,
-  ] : []),
-];
+  // Nudges that only appear on mobile (<1024px)
+  const mobileOnlyNudges = isMobile ? [
+    <JobsNearYouNudge key="jobs-near-you" />,
+  ] : [];
+
+  // Conditional nudges for logged-in users (mobile only)
+  const loggedInMobileNudges = isLoggedIn && isMobile ? [
+    ...(showSoftSkills ? [<ShareStrength key="share-strength" />] : []),
+    ...(showUploadCV ? [<UpdloadCvNudge key="upload-cv" />] : []),
+    ...(showUpdateEducation ? [<EducationUpdateNudge key="update-education" />] : []),
+    ...(showProfilePhoto ? [<ProfileUploadNudge key="profile-photo" />] : []),
+    ...(showUpdateProfile ? [<EditProfileNudge key="edit-profile" />] : []),
+    ...(showHelpVideo ? [<WelcomeVideoNudge key="welcome-video" />] : []),
+  ] : [];
+
+  // Nudges for non-logged-in users
+  const nudges = [
+    ...mobileOnlyNudges,
+    ...commonNudges,
+  ];
+
+  // Nudges for logged-in users
+  const nudgesForLoggedInUser = [
+    ...mobileOnlyNudges,
+    ...(isLoggedIn ? [
+      // <ProfileCard key="profile-card" />,
+      // <QuickAction key="quick-action" />,
+      ...loggedInMobileNudges,
+      <TopCompaniesHiring key="top-companies" />,
+    ] : []),
+  ];
 
   // Reset page to 1 when filters change
   useEffect(() => {
@@ -233,7 +234,7 @@ const nudgesForLoggedInUser = [
         min_salary: minSalary ? Number(minSalary) : null,
         max_salary: maxSalary ? Number(maxSalary) : null,
         search: search,
-        sort: sort == "3" ? 3 : sort == "1"? 1 : (isLoggedIn? 1: 3),
+        sort: sort == "3" ? 3 : sort == "1" ? 1 : (isLoggedIn ? 1 : 3),
       };
 
       const { deviceId, secret, salt } = getSessionData();
@@ -248,8 +249,7 @@ const nudgesForLoggedInUser = [
       try {
         setIsJobsLoading(true)
         const response = await api2.post(
-          `/api/job/list?page=${currentPage}&pageLength=10&userId=${
-            user?.id || 0
+          `/api/job/list?page=${currentPage}&pageLength=10&userId=${user?.id || 0
           }`,
           payload,
           {
@@ -288,7 +288,7 @@ const nudgesForLoggedInUser = [
           },
         };
         // @ts-ignore
-        // if (!isfilterAvailable) 
+        // if (!isfilterAvailable)
         dispatch(setJobFiltersMaster(filterMasters));
         setIsfilterAvailable(true);
       } catch (error) {
@@ -313,7 +313,7 @@ const nudgesForLoggedInUser = [
     router.replace(`?${params.toString()}`, { scroll: true });
   };
 
-  
+
   return (
     <div
       style={{ width: "-webkit-fill-available" }}
@@ -342,11 +342,10 @@ const nudgesForLoggedInUser = [
             aria-haspopup="true"
             onClick={toggleDropdown}
           >
-            {sort === "3" ? "Recently Posted" :sort === "1" ? "Best Matched" : (isLoggedIn? "Best Matched":"Recently Posted")}
+            {sort === "3" ? "Recently Posted" : sort === "1" ? "Best Matched" : (isLoggedIn ? "Best Matched" : "Recently Posted")}
             <IoMdArrowDropdown
-              className={`flex-shrink-0 ml-1 xl:ml-2 3xl:ml-5 text-[#000000] size-4 3xl:size-4 ${
-                isOpen ? "rotate-180" : ""
-              }`}
+              className={`flex-shrink-0 ml-1 xl:ml-2 3xl:ml-5 text-[#000000] size-4 3xl:size-4 ${isOpen ? "rotate-180" : ""
+                }`}
             />
           </button>
 
@@ -392,60 +391,65 @@ const nudgesForLoggedInUser = [
         </div>
       </div>
       {isJobsLoading ?
-      <div className="flex justify-center items-center h-[200px]">
-        <div className="flex animate-spin h-7 w-7 rounded-full border-l-0 border-b-0 border-red border-[3px]"></div>
-      </div>
-      :jobs.length>0?
-      <div className="mobile-container flex flex-col gap-4 lg:gap-3 3xl:gap-4">
-        {jobs.map((job: any, index) => {
-          const items = [];
+        <div className="mobile-container flex flex-col gap-4 lg:gap-3 3xl:gap-4">
+          {/* <div className="flex animate-spin h-7 w-7 rounded-full border-l-0 border-b-0 border-red border-[3px]"></div> */}
+          {Array.from({ length: 5 }).map((index) => (
+            <div className="w-full h-[120px] sm:h-[200px] rounded-xl overflow-hidden shadow p-2 sm:p-4">
+              <ContentLoader
+                speed={2}
+                viewBox="0 0 680 200"
+                preserveAspectRatio="xMinYMin meet"
+                backgroundColor="#f3f3f3"
+                foregroundColor="#ecebeb"
+                className="w-full h-full"
+              >
+                {/* Image/banner */}
+                <rect x="0" y="0" rx="10" ry="10" width="680" height="100" />
 
-          // Add the job listing
-          items.push(
-            <div className="flex w-[100%]" key={`job-${job?.id}`}>
-              <JobListingCard {...job} />
+                {/* Job Title */}
+                <rect x="0" y="110" rx="6" ry="6" width="500" height="16" />
+
+                {/* Company Name */}
+                <rect x="0" y="135" rx="5" ry="5" width="490" height="14" />
+
+                {/* Location & Tag */}
+                <rect x="0" y="160" rx="4" ry="4" width="260" height="12" />
+                <rect x="270" y="160" rx="4" ry="4" width="120" height="12" />
+              </ContentLoader>
             </div>
-          );
+          ))}
+        </div>
+        :
+        <div className="mobile-container flex flex-col gap-4 lg:gap-3 3xl:gap-4">
+          {jobs.map((job: any, index) => {
+            const items = [];
 
-          // Add a nudge after every 2 job listings
-          if ((index + 1) % 2 === 0) {
-            const nudgeIndex = Math.floor((index + 1) / 2) - 1;
+            // Add the job listing
+            items.push(
+              <div className="flex w-[100%]" key={`job-${job?.id}`}>
+                <JobListingCard {...job} />
+              </div>
+            );
 
-            // Check if the nudgeIndex is within the bounds of the nudges array
-            if (user?.isLoggedIn) {
-              if (nudgeIndex < nudgesForLoggedInUser.length) {
-                items.push(nudgesForLoggedInUser[nudgeIndex]);
-              }
-            } else {
-              if (nudgeIndex < nudges.length) {
-                items.push(nudges[nudgeIndex]);
+            // Add a nudge after every 2 job listings
+            if ((index + 1) % 2 === 0) {
+              const nudgeIndex = Math.floor((index + 1) / 2) - 1;
+
+              // Check if the nudgeIndex is within the bounds of the nudges array
+              if (user?.isLoggedIn) {
+                if (nudgeIndex < nudgesForLoggedInUser.length) {
+                  items.push(nudgesForLoggedInUser[nudgeIndex]);
+                }
+              } else {
+                if (nudgeIndex < nudges.length) {
+                  items.push(nudges[nudgeIndex]);
+                }
               }
             }
-          }
 
-          return items;
-        })}
-      </div>
-      :
-      <div className="mobile-container flex flex-col gap-4 lg:gap-3 3xl:gap-4 mt-20 2xl:mt-32">
-        <Image 
-            className="w-[120px] h-auto mx-auto 3xl:w-[200px]" 
-            width={650} 
-            height={520} 
-            src={'/new-assets/images/no-jobs.svg'} 
-            alt="no-jobs-found"
-            priority={false}
-        />
-            <>
-            <h3 className="text-lg 3xl:text-2xl font-medium text-center mt-5 3xl:mt-10">
-              No jobs found.
-            </h3>
-            <p className="text-xs 3xl:text-sm font-normal max-w-[250px] 3xl:max-w-[300px] mx-auto text-center">
-            Please check back later or try adjusting your search criteria.
-            </p>
-            </>
-      </div>
-      }
+            return items;
+          })}
+        </div>}
       {/* <div className="block lg:hidden mt-4">
         <FindCareer />
       </div> */}

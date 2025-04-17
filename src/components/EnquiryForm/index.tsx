@@ -49,9 +49,15 @@ export default function EnquiryForm() {
                 setIsSubmitting(true);
                 
                 const formData = new FormData();
-                Object.entries(values).forEach(([key, value]) => {
-                    formData.append(key, value.toString());
-                });
+                formData.append('name', values.name.toString());
+                formData.append('email', values.email.toString());
+                formData.append('phone', values.number.toString());
+                formData.append('company_name', values.company_name.toString());
+                formData.append('comment', values.feedback.toString());
+                formData.append('form_type', 'Contact Us');
+                formData.append('csrf_kaampe_token', 'b3821c0d386ffd4b4ce2efdeebdf856b');
+                formData.append('recaptcha_response', '');
+                formData.append('enquiry_type', values.type.toString());
 
                 const response = await axios.post("https://meuat.kaam.com/Web/store", formData, {
                     headers: {
@@ -298,14 +304,14 @@ export default function EnquiryForm() {
                             onChange={formikForm.handleChange}
                             onBlur={formikForm.handleBlur}
                             rows={4}
-                            className={`border p-2 w-full rounded-lg ${
+                            className={`border p-2 w-full rounded-lg outline-none ${
                                 formikForm.errors.feedback && formikForm.touched.feedback
                                     ? "border-red"
                                     : "border-[#C8C9CB1A]"
                             } ${formikForm.values.feedback ? "font-semibold" : "font-normal"}`}
                         />
                         {formikForm.errors.feedback && formikForm.touched.feedback && (
-                            <p className="text-red text-[11px] form-error sm:text-sm mt-1">
+                            <p className="text-red text-[11px] form-error sm:text-sm -mt-1">
                                 {formikForm.errors.feedback}
                             </p>
                         )}

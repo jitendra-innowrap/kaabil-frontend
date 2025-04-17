@@ -395,7 +395,7 @@ const nudgesForLoggedInUser = [
       <div className="flex justify-center items-center h-[200px]">
         <div className="flex animate-spin h-7 w-7 rounded-full border-l-0 border-b-0 border-red border-[3px]"></div>
       </div>
-      :
+      :jobs.length>0?
       <div className="mobile-container flex flex-col gap-4 lg:gap-3 3xl:gap-4">
         {jobs.map((job: any, index) => {
           const items = [];
@@ -425,7 +425,27 @@ const nudgesForLoggedInUser = [
 
           return items;
         })}
-      </div>}
+      </div>
+      :
+      <div className="mobile-container flex flex-col gap-4 lg:gap-3 3xl:gap-4 mt-20 2xl:mt-32">
+        <Image 
+            className="w-[120px] h-auto mx-auto 3xl:w-[200px]" 
+            width={650} 
+            height={520} 
+            src={'/new-assets/images/no-jobs.svg'} 
+            alt="no-jobs-found"
+            priority={false}
+        />
+            <>
+            <h3 className="text-lg 3xl:text-2xl font-medium text-center mt-5 3xl:mt-10">
+              No jobs found.
+            </h3>
+            <p className="text-xs 3xl:text-sm font-normal max-w-[250px] 3xl:max-w-[300px] mx-auto text-center">
+            Please check back later or try adjusting your search criteria.
+            </p>
+            </>
+      </div>
+      }
       {/* <div className="block lg:hidden mt-4">
         <FindCareer />
       </div> */}

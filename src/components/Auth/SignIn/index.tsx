@@ -80,6 +80,8 @@ const index = ({closePopup}: { closePopup: () => void }) => {
 
     return (
         <RenderModelDrawer size={dialogSize}>
+            {/* <button onClick={()=> dispatch(setProgress(progress + 1))}>next</button>
+            <button onClick={()=> dispatch(setProgress(progress - 1))}>prev</button> */}
             {progress == 1 && <MobileInputForm size={dialogSize} closePopup={closePopup}/>}
             {progress == 2 && <OTPInputForm
                 size={dialogSize}

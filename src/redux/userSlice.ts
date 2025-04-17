@@ -34,6 +34,7 @@ interface AuthState extends User {
   user_willing_to_relocate: string[],
   isProfileUpdate?: boolean,
   unreadNotifications: number,
+  isEnquiryOpen: boolean,
 }
 const { deviceId, secret } = getSessionData();
 const user = getAuthUser() as User;
@@ -76,6 +77,7 @@ const initialState: AuthState = {
   loading: false,
   error: null,
   savedMobileNumber: "",
+  isEnquiryOpen: false
 };
 
 // Create the user slice
@@ -84,7 +86,12 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     // Clear the user state
-        
+      openEnquiryForm: (state) => {
+        state.isEnquiryOpen = true;
+      },
+      closeEnquiryForm: (state) => {
+        state.isEnquiryOpen = false;
+      },
       signOut: (state) => {
         state = initialState // Clear user_location on sign out
       },
@@ -200,7 +207,9 @@ export const {
   setUserSkills,
   setCurrentLocation,
   setSaveMobileNumber,
-  updateUnreadNotiCount
+  updateUnreadNotiCount,
+  openEnquiryForm,
+  closeEnquiryForm,
 } = userSlice.actions;
 
 // Export the reducer

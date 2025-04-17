@@ -193,8 +193,16 @@ useEffect(() => {
   const handleNewNotification = () => {
     refreshNotifications();    
     dispatch(RefreshProfileData());
+    // Play notification sound
+    // playNotificationSound();
     showToast('New notification received');
   }
+  // Audio player utility
+  const playNotificationSound = () => {
+    const audio = new Audio('/assets/sounds/google-chat-notification-sound.mp3');
+    audio.volume = 0.3; // 30% volume
+    audio.play().catch(e => console.log('Audio play failed:', e));
+  };
 
   const updateFCMToken = async (token: string) => {
     try {

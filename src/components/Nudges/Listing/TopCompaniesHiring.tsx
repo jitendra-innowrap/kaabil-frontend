@@ -50,7 +50,7 @@ export default function TopCompaniesHiring() {
                       spaceBetween={10}
                       showNavigation
                       loop={true}
-                      autoplay={false}
+                      autoplay={true}
                       autoplayDuration={3000}
                       freeMode={false}
                       slidesPerView={2.4}

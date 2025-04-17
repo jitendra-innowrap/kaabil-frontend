@@ -272,7 +272,7 @@ if(isLoading){
                 loop={true}
                 arrowOut={false}
                 arrowColor="white"
-                autoplay={false}
+                autoplay={true}
                 autoplayDuration={3000}
                 freeMode={false}
                 slidesPerView={1}

@@ -316,7 +316,7 @@ export default function AboutUs() {
                     arrowColor="white"
                     loop={true}
                     arrowFloat
-                    autoplay={false}
+                    autoplay={true}
                     autoplayDuration={3000}
                     freeMode={false}
                     slidesPerView={2}

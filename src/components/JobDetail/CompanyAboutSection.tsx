@@ -93,6 +93,7 @@ export default function CompanyAboutSection() {
             <GallerySlider
             slides={slides}
             freeMode={false}
+            autoplay={true}
             autoplayDuration={2000}
             speed={2000}
             spaceBetween={25}

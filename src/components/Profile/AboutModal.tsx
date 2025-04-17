@@ -32,7 +32,9 @@ export const AboutModal = ({ size }: any) => {
     dispatch(setAboutMeModal(false));
   };
   return (
-    // @ts-ignore
+    <>
+     {aboutMeModal && <div className="overlay h-screen w-screen fixed z-[1000] bg-[#000000E5] opacity-70 inset-0"></div>}
+     {/* @ts-ignore */}
     <Dialog
       open={aboutMeModal}
       handler={closePopup}
@@ -42,6 +44,7 @@ export const AboutModal = ({ size }: any) => {
           ? "fixed -top-10 -translate-x-1/2 custom-dialog"
           : "top-14 mx-auto fixed bottom-0 rounded-2xl"
       }`}
+      
     >
       <div>
         {/* @ts-ignore */}
@@ -105,7 +108,7 @@ export const AboutModal = ({ size }: any) => {
             <Form>
               {/* @ts-ignore */}
               <DialogBody
-                className={`p-0  max-h-[50vh] sm:max-h-[60vh] md:max-h-[70vh] lg:max-h-[80vh] overflow-y-auto custom-scroll ${
+                className={`p-0  h-[calc(100vh_-_225px)] md:max-h-[70vh] lg:max-h-[80vh] overflow-y-auto custom-scroll ${
                   size === "xxl" ? "mt-4" : "mt-8"
                 }`}
               >
@@ -119,7 +122,7 @@ export const AboutModal = ({ size }: any) => {
                     >
                       About Me
                     </label>
-                    <div className="relative">
+                    <div className="relative pb-5">
                       <Field
                         as="textarea"
                         name="bio_text"
@@ -133,15 +136,13 @@ export const AboutModal = ({ size }: any) => {
                           setCharCount(e.target.value.length);
                         }}
                       />
-                      <div className="absolute -bottom-4 right-2 text-sm text-gray-500">
+                      <div className="absolute bottom-0 right-2 text-sm text-gray-500">
                         {1000 - charCount} character(s) left
                       </div>
-                    </div>
-                    <div className="h-3">
                       <ErrorMessage
                         name="bio_text"
                         component="div"
-                        className="text-red text-md mt-1"
+                        className="text-red text-md h-3 absolute bottom-4 left-2"
                       />
                     </div>
                   </div>
@@ -170,5 +171,6 @@ export const AboutModal = ({ size }: any) => {
         </Formik>
       </div>
     </Dialog>
+    </>
   );
 };

@@ -34,7 +34,9 @@ const ResumeModal = ({ size }: any) => {
   };
 
   return (
-    // @ts-ignore
+    <>
+    {resumeModal && size ==="xxl" && <div className="overlay h-screen w-screen fixed z-[1000] bg-[#000000E5] opacity-70 inset-0"></div>}
+     {/* @ts-ignore */}
     <Dialog
       open={resumeModal}
       handler={closePopup}
@@ -117,7 +119,7 @@ const ResumeModal = ({ size }: any) => {
             <Form>
               {/* @ts-ignore */}
               <DialogBody
-                className={`p-0  max-h-[50vh] sm:max-h-[60vh] md:max-h-[70vh] lg:max-h-[80vh] overflow-y-auto custom-scroll ${
+                className={`p-0  h-[calc(100vh_-_225px)] md:max-h-[70vh] lg:max-h-[80vh] overflow-y-auto custom-scroll ${
                   size === "xxl" ? "mt-4" : "mt-8"
                 }`}
               >
@@ -210,6 +212,7 @@ const ResumeModal = ({ size }: any) => {
         </Formik>
       </div>
     </Dialog>
+    </>
   );
 };
 

@@ -163,18 +163,18 @@ export default function AppliedJobCard(prop:any) {
           <img src={'/new-assets/icons/location-pin-dot.svg'} alt='Map pin' width={100} height={100} className='size-3 2xl:size-5' />
           <span className='ml-2 text-[11px] lg:text-[10px] 2xl:text-[12px] text-[#545581] line-clamp-1' title={prop?.jobs_location?.[0]?.job_location || "Remote"}>{prop?.jobs_location?.[0]?.job_location || "Remote"}</span>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-1 sm:gap-2">
           <div className="flex">
             {/* <TbBriefcase2 className='text-[#545581] size-3 2xl:size-5'/> */}
             <Image width={12} height={12} src={'/new-assets/icons/job-case.svg'} className='text-[#545581] size-3 2xl:size-5' alt='rupee icon' />
-            <span className='ml-2 text-[11px] lg:text-[10px] 2xl:text-[12px] text-[#545581]'>{showExperience(prop?.min_exp ||"0", prop?.max_exp || "0", "yrs experience")}</span>
+            <span className='ml-2 text-[11px] lg:text-[10px] 2xl:text-[12px] text-[#545581] truncate'>{showExperience(prop?.min_exp ||"0", prop?.max_exp || "0", "yrs experience")}</span>
           </div>
-          <div className='ml-5 text-[11px] lg:text-[10px] 2xl:text-[12px] text-[#545581] flex items-center'>
+          <div className='ml-5 text-[11px] lg:text-[10px] 2xl:text-[12px] text-[#545581] truncate flex items-center'>
             
               <Image width={15} height={15} src={'/new-assets/icons/rupee.svg'} className='mr-1 2xl:mr-2 size-[11px] 2xl:size-[15px]' alt='rupee icon' />
             {
               (prop?.is_industry_standard=="1" || ((prop?.min_salary === null || prop?.min_salary === "" || prop?.min_salary === "0")) && ((prop?.max_salary === null || prop?.max_salary === "" || prop?.max_salary === "0")))?
-              <span className='text-[11px] lg:text-[10px] 2xl:text-[12px]'>As per Industry standards</span>:
+              <span className='text-[11px] lg:text-[10px] 2xl:text-[12px] truncate'>As per Industry standards</span>:
               <>
               <span className='text-[11px] lg:text-[10px] 2xl:text-[12px]'>{`${showSalarySimilarJob(prop?.is_industry_standard || "0", prop?.salary_range_unit ||"0",prop?.min_salary ||"0",prop?.max_salary ||"0")} `} </span>
               {prop?.is_industry_standard !=1 && <small className='text-[#B1B4B7]'> &nbsp; {` ${ prop?.salary_range_unit== "1"?` month`:` year`}`}</small>}

@@ -35,16 +35,16 @@ const ProfileList = () => {
   return (
     <>
       {/* Breadcrumb Section */}
-      <div className="mt-5 3xl:mt-6 mb-7 3xl:mb-8">
+      <div className="pt-5 3xl:pt-6 px-5 sm:mb-7 sm:px-0 3xl:mb-8 bg-white sm:bg-transparent">
         <Breadcrumb root='Home' category='My Profile' />
       </div>
       <h1 className='hidden sm:block text-[#231F20] text-xl 3xl:text-2xl font-medium'>My jobs</h1>
       <div className="grid grid-cols-12 sm:gap-4 lg:gap-9 mb-8">
-        <div className="sm:hidden col-span-12 sm:col-span-8 flex flex-wrap gap-4 md:gap-12 bg-white pt-3 px-4 justify-between order-1 sticky top-[52px] z-10">
+        <div className="sm:hidden col-span-12 sm:col-span-8 flex flex-wrap gap-4 md:gap-12 bg-white pt-3 px-4 sm:justify-between order-1 sticky top-[52px] z-10">
           {ProfileTabs?.map((tab) => (
             <h2
               key={tab}
-              className={`cursor-pointer pb-2 text-sm md:text-base ${
+              className={`cursor-pointer pb-2 px-1 text-sm md:text-base ${
                 activeTab === tab
                   ? "border-b-4 border-red text-red font-bold"
                   : "text-black font-medium"
@@ -56,13 +56,13 @@ const ProfileList = () => {
           ))}
         </div>
         <div className="col-span-12 xl:col-span-8 lg:col-span-7 md:col-span-7 order-2 sm:order-0 lg:order-0">
-          <div className="hidden sm:flex sticky  mt-4 top-[50px] md:top-[70px] lg:top-14 3xl:top-[90px] col-span-12 sm:col-span-8 flex-wrap gap-4 md:gap-8 lg:gap-12 border-b-2 border-[#D4D4D4] bg-[#f9f9f9] pb:4 sm:pb-0 sm:mb-6">
+          <div className="hidden sm:flex sticky  mt-4 top-[50px] md:top-[70px] lg:top-14 3xl:top-[90px] col-span-12 sm:col-span-8 flex-wrap gap-4 md:gap-8 lg:gap-12 border-b-[1.5px] border-[#D4D4D4] bg-[#f9f9f9] pb:4 sm:pb-0 sm:mb-6">
             {ProfileTabs?.map((tab) => (
               <h2
                 key={tab}
-                className={`cursor-pointer py-2 text-sm md:text-base ${
+                className={`cursor-pointer px-1 py-2 text-sm md:text-base ${
                   activeTab === tab
-                    ? "border-b-4 border-red text-red font-bold"
+                    ? "relative text-red after:w-full after:h-[3px] after:bg-red after:absolute after:bottom-[-1px] 3xl:after:bottom-[-12px] after:left-0"
                     : "text-black font-medium"
                 }`}
                 onClick={() => handleTabClick(tab)}

@@ -306,7 +306,7 @@ export default function AboutUs() {
               whileInView="visible"
               viewport={{ once: true, amount: 0.4 }} className="hidden md:block">
                 <Image
-                  src="/new-assets/images/about/how-it-works.svg"
+                  src="/new-assets/images/about/how-it-works.png"
                   alt="Women in training"
                   width={1200}
                   height={1200}
@@ -394,8 +394,8 @@ export default function AboutUs() {
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.4 }} className="hidden md:block">
                 <Image
-                  src="/new-assets/images/about/collaboration.svg"
-                  alt="Women in training"
+                  src="/new-assets/images/about/collaboration.webp"
+                  alt="collaboration"
                   width={1200}
                   height={1200}
                   className="rounded-lg max-w-[624px] w-full"
@@ -436,7 +436,7 @@ export default function AboutUs() {
                     arrowColor="white"
                     loop={true}
                     arrowFloat
-                    autoplay={false}
+                    autoplay={true}
                     autoplayDuration={3000}
                     freeMode={false}
                     slidesPerView={2}

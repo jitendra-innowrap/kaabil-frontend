@@ -602,7 +602,7 @@ export default function Home() {
                 </div>
             </section> */}
             <section className="bg-[#F8F8F8]">
-                {/* <div className="w-full flex flex-col py-5 md:py-8 xl:py-14 2xl:py-[68px] mb-3 mx-auto">
+                <div className="w-full flex flex-col py-5 md:py-8 xl:py-14 2xl:py-[68px] mb-3 mx-auto">
                     <div className="container no-pad">
                         <div className="section-heading md:ml-[70px]">
                             <h2 className='text-black text-start text-2xl md:text-3xl 2xl:text-[48px] 2xl:leading-[54px]  font-normal mb-2'>Articles</h2>
@@ -638,8 +638,8 @@ export default function Home() {
                             />
                         </div>
                     </div>
-                    <button className="mx-auto mt-4 md:mt-8 text-xs 2xl:text-base 2xl:mt-8 lg:min-w-[150px] 2xl:min-w-[200px]">View All</button>
-                </div> */}
+                    <Link href={'/articles'} className="btn text-center mx-auto mt-4 md:mt-8 text-xs 2xl:text-base 2xl:mt-8 lg:min-w-[150px] 2xl:min-w-[200px]">View All</Link>
+                </div>
                 <PlayStoreAppAd />
             </section>
         </main>

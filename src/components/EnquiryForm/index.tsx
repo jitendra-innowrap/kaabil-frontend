@@ -49,11 +49,15 @@ export default function EnquiryForm() {
                 setIsSubmitting(true);
                 
                 const formData = new FormData();
-                Object.entries(values).forEach(([key, value]) => {
-                    formData.append(key, value.toString());
-                });
+                formData.append('name', values.name.toString());
+                formData.append('email', values.email.toString());
+                formData.append('phone', values.number.toString());
+                formData.append('company_name', values.company_name.toString());
+                formData.append('comment', values.feedback.toString());
+                formData.append('form_type', 'Contact Us');
+                formData.append('enquiry_type', values.type.toString());
 
-                const response = await axios.post("https://meuat.kaam.com/Web/store", formData, {
+                const response = await api.post("/Auth/submitEnquiryForm", formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     },
@@ -114,10 +118,10 @@ export default function EnquiryForm() {
                     >
                         Are you a
                     </label>
-                    <div className=" mt-2 mb-4 flex flex-row gap-4">
+                    <div className=" mt-2 mb-4 grid grid-cols-2 sm:flex flex-row gap-4 sm:gap-2 2xl:gap-4">
                         <label
                             htmlFor="jobseeker"
-                            className={`!flex flex-1 py-2 xl:py-0 3xl:py-4 !mb-0 gap-4 rounded-lg px-3 sm:px-5 border cursor-pointer shadow-sm items-center ${
+                            className={`col-span-1 !flex flex-1 py-2 xl:py-0 3xl:py-4 !mb-0 gap-1 3xl:gap-4 rounded-lg px-3 3xl:px-5 border cursor-pointer shadow-sm items-center ${
                                 formikForm.values.type == 0
                                     ? "border-red bg-[#FDF1F3] text-red"
                                     : "border-[#C8C9CB1A]"
@@ -127,7 +131,7 @@ export default function EnquiryForm() {
                                 type="radio"
                                 id="jobseeker"
                                 name="type"
-                                className="cursor-pointer inline-block !m-0 !w-4 !h-4"
+                                className="cursor-pointer inline-block !m-0 !w-3 !sm:w-4 !h-4"
                                 value={0}
                                 onChange={formikForm.handleChange}
                                 checked={formikForm.values.type == 0}
@@ -138,7 +142,7 @@ export default function EnquiryForm() {
                         </label>
                         <label
                             htmlFor="recruiter"
-                            className={`!flex flex-1 py-2 xl:py-0 3xl:py-4 !mb-0 gap-4 rounded-lg px-3 sm:px-5 border cursor-pointer shadow-sm items-center ${
+                            className={`col-span-1 !flex flex-1 py-2 xl:py-0 3xl:py-4 !mb-0 gap-1 3xl:gap-4 rounded-lg px-3 3xl:px-5 border cursor-pointer shadow-sm items-center ${
                                 formikForm.values.type == 1
                                     ? "border-red text-red bg-[#FDF1F3]"
                                     : "border-[#C8C9CB1A]"
@@ -148,13 +152,34 @@ export default function EnquiryForm() {
                                 type="radio"
                                 id="recruiter"
                                 name="type"
-                                className="cursor-pointer inline-block !m-0 !w-4 !h-4"
+                                className="cursor-pointer inline-block !m-0 !w-3 !sm:w-4 !h-4"
                                 value={1}
                                 onChange={formikForm.handleChange}
                                 checked={formikForm.values.type == 1}
                             />
                             <div className="!mb-0 radio-label gap-2 inline-block cursor-pointer text-[11px] sm:text-[14px]">
                                 Recruiter
+                            </div>
+                        </label>
+                        <label
+                            htmlFor="ngo"
+                            className={`col-span-1 !flex flex-1 py-2 xl:py-0 3xl:py-4 !mb-0 gap-1 3xl:gap-4 rounded-lg px-3 3xl:px-5 border cursor-pointer shadow-sm items-center ${
+                                formikForm.values.type == 2
+                                    ? "border-red text-red bg-[#FDF1F3]"
+                                    : "border-[#C8C9CB1A]"
+                            }`}
+                        >
+                            <input
+                                type="radio"
+                                id="ngo"
+                                name="type"
+                                className="cursor-pointer inline-block !m-0 !w-3 !sm:w-4 !h-4"
+                                value={2}
+                                onChange={formikForm.handleChange}
+                                checked={formikForm.values.type == 2}
+                            />
+                            <div className="!mb-0 radio-label gap-2 inline-block cursor-pointer text-[11px] sm:text-[14px]">
+                                NGO/Foundation
                             </div>
                         </label>
                     </div>
@@ -298,14 +323,14 @@ export default function EnquiryForm() {
                             onChange={formikForm.handleChange}
                             onBlur={formikForm.handleBlur}
                             rows={4}
-                            className={`border p-2 w-full rounded-lg ${
+                            className={`border p-2 w-full rounded-lg outline-none ${
                                 formikForm.errors.feedback && formikForm.touched.feedback
                                     ? "border-red"
                                     : "border-[#C8C9CB1A]"
                             } ${formikForm.values.feedback ? "font-semibold" : "font-normal"}`}
                         />
                         {formikForm.errors.feedback && formikForm.touched.feedback && (
-                            <p className="text-red text-[11px] form-error sm:text-sm mt-1">
+                            <p className="text-red text-[11px] form-error sm:text-sm -mt-1">
                                 {formikForm.errors.feedback}
                             </p>
                         )}

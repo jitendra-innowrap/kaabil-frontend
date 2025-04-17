@@ -138,18 +138,18 @@ export default function JobListingCardSmall({detail, isCompanyJob=false}:{detail
           <h3 className='text-sm 3xl:text-base 2xl:text-lg font-medium my-[6px] 3xl:my-3 truncate'>{detail?.job_title}</h3>
           <div className="flex mb-1 3xl:mb-2">
             <img src={'/new-assets/icons/location-pin-dot.svg'} alt='Map pin' width={100} height={100} className='size-[10px] 2xl:size-4' />
-            <span className='ml-1 3xl:ml-2 text-[9px] 3xl:text-xs text-[#545581] line-clamp-1' title={detail?.job_location || "Remote"}>{(isCompanyJob?detail?.jobs_location?.[0]?.job_location:detail?.job_location) || "Remote"}</span>
+            <span className='ml-1 3xl:ml-2 text-[9px] 3xl:text-xs text-[#545581] truncate' title={detail?.job_location || "Remote"}>{(isCompanyJob?detail?.jobs_location?.[0]?.job_location:detail?.job_location) || "Remote"}</span>
           </div>
-          <div className="flex justify-between 3xl:gap-2">
+          <div className="flex justify-between gap-1 3xl:gap-2">
             <div className="flex">
               <Image width={12} height={12} src={'/new-assets/icons/job-case.svg'} className='text-[#545581] size-[10px] 2xl:size-[13px]' alt='case icon' />
-              <span className='ml-1 3xl:ml-2 max-w-[96px] line-clamp-1 text-[9px] 3xl:text-xs text-[#545581]'>{showExperience(detail?.min_exp ||"0", detail?.max_exp || "0", "yrs experience")}</span>
+              <span className='ml-1 3xl:ml-2 max-w-[96px] truncate text-[9px] 3xl:text-xs text-[#545581]'>{showExperience(detail?.min_exp ||"0", detail?.max_exp || "0", "yrs experience")}</span>
             </div>
             {
               (detail?.is_industry_standard=="1" || ((detail?.min_salary === null || detail?.min_salary === "" || detail?.min_salary === "0")) && ((detail?.max_salary === null || detail?.max_salary === "" || detail?.max_salary === "0")))?
-              <p className='flex flex-nowrap line-clamp-1 w-[80px] 3xl:w-[110px] justify-end'>
+              <p className='flex flex-nowrap lg:w-[80px] 3xl:w-[110px] justify-end'>
                 <Image width={15} height={15} src={'/new-assets/icons/rupee.svg'} className='mr-1 2xl:mr-1 size-[10px] 2xl:size-[12px]' alt='rupee icon' />
-                <span className={`text-[9px] 3xl:text-xs text-[#545581] line-clamp-1  ${detail?.is_industry_standard !='1'?'whitespace-nowrap':''}`}>{`${showSalarySimilarJob(detail?.is_industry_standard || "0", detail?.salary_range_unit ||"0",detail?.min_salary ||"0",detail?.max_salary ||"0")} `} </span>
+                <span className={`text-[9px] 3xl:text-xs text-[#545581] truncate  ${detail?.is_industry_standard !='1'?'whitespace-nowrap':''}`}>{`${showSalarySimilarJob(detail?.is_industry_standard || "0", detail?.salary_range_unit ||"0",detail?.min_salary ||"0",detail?.max_salary ||"0")} `} </span>
               </p>
               :
               <div className='ml-2 3xl:ml-5 flex-1 flex-nowrap justify-center text-end text-[9px] 3xl:text-xs text-[#545581] flex items-center'>

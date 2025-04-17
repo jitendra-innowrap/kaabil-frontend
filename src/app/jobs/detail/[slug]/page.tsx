@@ -780,7 +780,7 @@ export default function Home() {
                 spaceBetween={20}
                 showNavigation
                 loop={true}
-                autoplay={false}
+                autoplay={true}
                 autoplayDuration={3000}
                 freeMode={false}
                 slidesPerView={1}

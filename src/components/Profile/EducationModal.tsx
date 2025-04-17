@@ -69,6 +69,11 @@ const EducationModal = ({ size }: any) => {
     dispatch(fetchEducationDetail());
   }, []);
 
+  useEffect(() => {
+    const education = qualificationList.find((education: any) => education?.name === profileData?.education_name)
+    getFieldStudy(education)
+  }, [qualificationList]);
+
   const getFieldStudy = (education: any) => {
     console.log(education, "Verify Education over here");
     if (education?.is_field_study_show !== "0") {
@@ -78,7 +83,10 @@ const EducationModal = ({ size }: any) => {
 
   return (
     // Suppressing Dialog type error
-    // @ts-ignore
+    <>
+        {educationModal && size ==="xxl" && <div className="overlay h-screen w-screen fixed z-[1000] bg-[#000000E5] opacity-70 inset-0"></div>}
+    
+     {/* @ts-ignore */}
     <Dialog
       open={educationModal}
       handler={closeModal}
@@ -207,7 +215,7 @@ const EducationModal = ({ size }: any) => {
             <Form>
               {/* @ts-ignore */}
               <DialogBody
-                className={`p-0 max-h-[60vh] sm:max-h-[68vh] md:max-h-[70vh] lg:max-h-[80vh] overflow-y-auto custom-scroll ${
+                className={`p-0 max-h-[calc(100vh_-_225px)] md:max-h-[70vh] lg:max-h-[80vh] overflow-y-auto custom-scroll ${
                   size === "xxl" ? "mt-4" : "mt-8"
                 }`}
               >
@@ -288,8 +296,9 @@ const EducationModal = ({ size }: any) => {
                         {education.id === values.education_id &&
                           education?.is_field_study_show !== "0" && (
                             <>
-                            {/* <EducationSelect values={values?.institute_name} educationData={educationData} setFieldValue={setFieldValue}  /> */}
-                              <div className="w-full relative flex items-center">
+                            {/* {JSON.stringify(educationData)} */}
+                            <EducationSelect selectedValue={{value:values.institute_master_id, label:values.institute_name}} educationData={educationData} setFieldValue={setFieldValue}  />
+                              {/* <div className="w-full relative flex items-center">
                                 <input
                                   className="px-10 bg-[#C8C9CB3B] w-full py-3 rounded-lg placeholder-[#231F20] text-[#231F20]"
                                   placeholder="Select Education"
@@ -348,7 +357,7 @@ const EducationModal = ({ size }: any) => {
                                       </div>
                                     </>
                                   )}
-                              </div>
+                              </div> */}
                               <div className="h-3 mb-4">
                                 <ErrorMessage
                                   name="institute_name"
@@ -543,6 +552,7 @@ const EducationModal = ({ size }: any) => {
         </Formik>
       </div>
     </Dialog>
+    </>
   );
 };
 
@@ -552,13 +562,13 @@ interface EducationOption {
   label: string;
 }
 
-interface FormValues {
-  institute_name: string | null;
-  institute_master_id: string | null;
+interface selectedValue {
+  value: string;
+  label: string;
 }
 
 interface EducationSelectProps {
-  values: FormValues;
+  selectedValue: selectedValue;
   setFieldValue: (field: string, value: any) => void;
   educationData: Array<{
     id: string;
@@ -567,7 +577,7 @@ interface EducationSelectProps {
 }
 
 const EducationSelect: React.FC<EducationSelectProps> = ({ 
-  values, 
+  selectedValue, 
   setFieldValue, 
   educationData 
 }) => {
@@ -575,7 +585,7 @@ const EducationSelect: React.FC<EducationSelectProps> = ({
     value: item.id,
     label: item.name
   }));
-
+  
   const handleChange = (
     selected: SingleValue<EducationOption>,
     actionMeta: ActionMeta<EducationOption>
@@ -584,17 +594,14 @@ const EducationSelect: React.FC<EducationSelectProps> = ({
     setFieldValue("institute_master_id", selected?.value || null);
   };
 
-  // / Find the initial value based on both name and ID for better reliability
-  const initialValue = options.find(opt => 
-    opt.value === values.institute_master_id || 
-    opt.label === values.institute_name
-  );
+  
   return (
     <>
+    {/* {JSON.stringify(educationData)} */}
     <Select<EducationOption>
       options={options}
       placeholder="Select Education"
-      value={initialValue}
+      value={selectedValue}
       onChange={handleChange}
       styles={{
         control: (base) => ({
@@ -625,7 +632,6 @@ const EducationSelect: React.FC<EducationSelectProps> = ({
         IndicatorSeparator: () => null
       }}
     />
-    {JSON.stringify(values)}
     </>
   );
 };

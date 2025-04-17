@@ -230,6 +230,9 @@ export default function FilterMobilePannel() {
           console.error("Error fetching jobs:", error);
         }
       };
+      const handleclose=()=>{
+        setOpen(false);
+      }
   return (
       <>
       {/* <pre>{JSON.stringify(filters,null,2)}</pre> */}
@@ -279,7 +282,10 @@ export default function FilterMobilePannel() {
             `}>
             <div className="flex lg:hidden justify-between items-center w-full mb-2 md:mb-4 xl:mb-6 2xl:mb-8">
                 <h2 className="text-lg  2xl:text-xl font-medium filter-head">All Filters</h2>
+                <div className="flex gap-4">
                 <button onClick={handleClearAll} className='btn-border clear-all text-black !border-black text-xs font-medium max-w-[72px] !px-2 whitespace-nowrap text-center' style={{textTransform:'unset'}}>Clear all</button>
+                <button onClick={handleclose} className='btn-border clear-all text-black !border-black text-xs font-medium max-w-[72px] !px-2 whitespace-nowrap text-center' style={{textTransform:'unset'}}>Close</button>
+                </div>
             </div>
             <div className="overflow-y-auto h-[calc(100%_-_110px)] !pr-0">
                 <LoadMoreAccordian 

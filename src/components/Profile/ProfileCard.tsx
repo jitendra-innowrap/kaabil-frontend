@@ -102,12 +102,12 @@ const ProfileCard = () => {
         </div>
 
         {profileData?.user_profile_percentage !== 100 && (
-          <div className="col-span-12 px-16">
+          <div className="col-span-12 2xl:px-16 justify-center flex">
             <button
               onClick={() => {
                 dispatch(setProfileModal(true));
               }}
-              className="mt-3 w-full md:mt-4 !text-red btn-border !border-red !text-xs"
+              className="mt-3 w-fit 2xl:w-full mx-auto md:mt-4 !text-red btn-border !border-red !text-xs"
             >
               Complete Your Profile Now
             </button>

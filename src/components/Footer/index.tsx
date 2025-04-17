@@ -7,8 +7,9 @@ import { FaArrowRight, FaFacebookF, FaInstagram, FaTwitter, FaYoutube } from 're
 import { MdOutlineArrowRightAlt } from 'react-icons/md'
 import { useDispatch } from 'react-redux'
 import { fetchUserLocation } from '../utils'
-import { setCurrentLocation } from '@/redux/userSlice'
+import { openEnquiryForm, setCurrentLocation } from '@/redux/userSlice'
 import Link from 'next/link'
+import EnquiryForm from '../EnquiryForm'
 
 export default function Footer() {
     const dispatch = useDispatch<AppDispatch>();
@@ -20,12 +21,16 @@ const handleFetchLocation = async () => {
       console.error('Error fetching location:', error);
     }
   };
+  const handleOpenEnquiry=()=>{
+    dispatch(openEnquiryForm())
+  }
   useEffect(() => {
     dispatch(getDeviceToken());
     handleFetchLocation();
   }, [dispatch]);
   return (
     <footer className='relative lg:z-[2] border-t-4 text-[#E3E3E3] border-[#000000] bg-[#000000]'>
+        <EnquiryForm/>
         <div className="container w-full hidden md:flex flex-col mt-5 md:mt-8 xl:mt-14  mx-auto">
             <div className="flex flex-wrap justify-between mb-5 lg:mb-8 3xl:mb-[20px]">
                 <div className="block">
@@ -53,7 +58,7 @@ const handleFetchLocation = async () => {
                     </div>
 
                 </div>
-                    <div className="block">
+                    <div className="block col">
                         <strong className='uppercase font-semibold text-xs 3xl:text-sm mb-4 3xl:mb-5 text-[#E3E3E3] block'>Quick links</strong>
                         <ul>
                             <Link href={'/'} className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Home</Link>
@@ -65,10 +70,10 @@ const handleFetchLocation = async () => {
                             <Link href={'/'} className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Blogs</Link> */}
                         </ul>
                     </div>
-                    <div className="block">
+                    <div className="block col">
                         <strong className='uppercase font-semibold text-xs 3xl:text-sm mb-4 3xl:mb-5 text-[#E3E3E3] block'>Legal</strong>
                         <ul>
-                            <Link href={'https://meuat.kaam.com/privacy_policy'} className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Privacy Policy</Link>
+                            <Link href={'/privacy-policy'} className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Privacy Policy</Link>
                             <Link href={'/'} className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Terms of Use</Link>
                             {/* <Link href={'/'} className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Cookie Policy</Link> */}
                         </ul>
@@ -80,15 +85,17 @@ const handleFetchLocation = async () => {
                             <Link href={'/'} className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>FAQs</Link>
                         </ul>
                     </div> */}
-                    <div className="block">
+                    <div className="block col">
                         <strong className='uppercase font-semibold text-xs 3xl:text-sm mb-4 3xl:mb-5 text-[#E3E3E3] block'>Contact US</strong>
                         <ul>
-                            <Link href={'/'} className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3] w-[190px]'>K. C. Mahindra Education Trust Cecil Court, Near Regal Cinema, Mahakavi Bhushan Marg, Mumbai 400001.</Link>
+                            <Link href={'/'} className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3] w-[150px]'>K. C. Mahindra Education Trust Cecil Court, Near Regal Cinema, Mahakavi Bhushan Marg, Mumbai 400001.</Link>
                         </ul>
+                        <button onClick={handleOpenEnquiry} className='!bg-white w-full !text-[#000000] text-[10px] 3xl:text-xs'>Enquire now</button>
+
                     </div>
                 {/* <div className="flex gap-[37px]">
                 </div> */}
-                <div className="block">
+                <div className="block col">
                     <img
                     src={"/new-assets/icons/black-mahindra.png"}
                     width={182}
@@ -141,7 +148,7 @@ const handleFetchLocation = async () => {
                         <div className="">
                             <strong className='uppercase font-semibold text-sm 3xl:text-sm mb-6 text-[#E3E3E3] block'>Legal</strong>
                             <ul className='flex flex-col gap-5'>
-                                <Link href={'https://meuat.kaam.com/privacy_policy'} className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Privacy Policy</Link>
+                                <Link href={'/privacy-policy'} className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Privacy Policy</Link>
                                 <Link href={'/'} className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Terms of Use</Link>
                                 {/* <Link href={'/'} className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Cookie Policy</Link> */}
                             </ul>
@@ -159,6 +166,7 @@ const handleFetchLocation = async () => {
                         <ul>
                             <li className='mb-4 3xl:mb-5 text-sm leading-[24px] cursor-pointer text-[#E3E3E3]'>K. C. Mahindra Education Trust Cecil Court, Near Regal Cinema, Mahakavi Bhushan Marg, Mumbai 400001.</li>
                         </ul>
+                        <button onClick={handleOpenEnquiry} className='!bg-white !text-[#000000] text-[10px] 3xl:text-xs'>Enquire now</button>
                     </div>
                 {/* <div className="flex gap-[37px]">
                 </div> */}

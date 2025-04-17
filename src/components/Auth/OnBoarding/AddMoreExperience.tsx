@@ -36,11 +36,16 @@ export default function AddMoreExperience({
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setIsSubmitting(true);
+        // If adding new experience, trigger Formik submission
         if (newExperience) {
-            formikForm.handleSubmit();
+            const formSubmissionSuccess = await formikForm.submitForm();
+            if (!formSubmissionSuccess) {
+            setIsSubmitting(false);
+            return;
+            }
         }
         try {
+            setIsSubmitting(true);
             if (is_fresher === 1) {
                 const payload = {
                     is_fresher: is_fresher,
@@ -99,6 +104,7 @@ export default function AddMoreExperience({
             position: "bottom-right",
         });
         formikForm.resetForm();
+        return true
     };
 
     const handleEditExperience = (index: number) => {
@@ -151,7 +157,15 @@ export default function AddMoreExperience({
             isCurrentCompany: false,
         },
         validationSchema: validationSchemaForm,
-        onSubmit: (values) => {
+        onSubmit: async (values, { setSubmitting, validateForm }) => {
+            // Manually trigger validation
+            const errors = await validateForm();
+            
+            // If errors exist, stop here (Formik will automatically show errors)
+            if (Object.keys(errors).length > 0) {
+            setSubmitting(false);
+            return false;
+            }
             const experience = {
                 company_master_id: values.company_master_id, // Replace with actual company ID from API
                 company_name: values.companyName,
@@ -165,7 +179,8 @@ export default function AddMoreExperience({
                 is_current_company: values.isCurrentCompany ? "1" : "0",
                 additional_info: "",
             };
-            handleAddExperience(experience);
+            const success = handleAddExperience(experience);
+            return success
         },
     });
 

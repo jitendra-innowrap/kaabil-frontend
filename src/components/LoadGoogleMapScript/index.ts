@@ -10,6 +10,7 @@ import { setHelpVideoData, setNudgesVisibility, setUserDesignation, setUserName,
 export default function LoadGoogleMapsScript() {
   const dispatch = useDispatch();
   const {token} = useAppSelector((state) => state.auth);
+  const {profileData} = useAppSelector((state) => state.profile);
   const {id, isLoggedIn, isProfileUpdate} = useAppSelector((state) => state.user);
 
   // useEffect(() => {
@@ -90,7 +91,7 @@ export default function LoadGoogleMapsScript() {
     };
     fetchUserSkills();
 
-    }, [dispatch, id, isLoggedIn, isProfileUpdate]);
+    }, [dispatch, id, isLoggedIn, isProfileUpdate, profileData]);
 
   return null; // This component doesn't render anything
 }

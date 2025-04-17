@@ -97,9 +97,11 @@ const ProfileModal = ({ size }: any) => {
       );
     }
   }, [dispatch, profileData]);
-
+  
   return (
-    // @ts-ignore
+    <>
+    {profileModal && size ==="xxl" && <div className="overlay h-screen w-screen fixed z-[1000] bg-[#000000E5] opacity-70 inset-0"></div>}
+    {/* @ts-ignore */}
     <Dialog
       open={profileModal}
       handler={closePopup}
@@ -110,7 +112,8 @@ const ProfileModal = ({ size }: any) => {
           : "fixed -top-10 -translate-x-1/2 custom-dialog"
       }`}
     >
-      <div>
+
+      <div className="profile-modal z-10">
         {/* @ts-ignore */}
         <DialogHeader>
           <div className="relative w-full">
@@ -232,7 +235,7 @@ const ProfileModal = ({ size }: any) => {
           {({ setFieldValue, isSubmitting, values }) => (
             <Form>
               {/* @ts-ignore */}
-              <DialogBody className="p-0 max-h-[63vh] sm:max-h-[68vh] md:max-h-[70vh] lg:max-h-[80vh] overflow-y-auto custom-scroll">
+              <DialogBody className="p-0 max-h-[calc(100vh_-_225px)] md:max-h-[70vh] lg:max-h-[80vh] overflow-y-auto custom-scroll">
                 <div
                   className={`${
                     size === "xxl" ? "px-4" : "px-12"
@@ -735,7 +738,7 @@ const ProfileModal = ({ size }: any) => {
               {/* @ts-ignore */}
               <DialogFooter
                 className={`flex justify-end p-0 pb-3 ${
-                  size === "xxl" ? "px-4 mt-2" : "px-12 mt-4"
+                  size === "xxl" ? "px-4 mt-4" : "px-12 mt-4"
                 }`}
               >
                 <button
@@ -753,6 +756,7 @@ const ProfileModal = ({ size }: any) => {
         </Formik>
       </div>
     </Dialog>
+    </>
   );
 };
 

@@ -8,7 +8,7 @@ const AboutMe = () => {
 
   const dispatch = useAppDispatch();
   return (
-    <div className="profile-card bg-white rounded-lg mt-3 p-[16px] sm:p-[20px] lg:px-12 py-6">
+    <div className="profile-card bg-white shadow-sm sm:shadow-default rounded-xl sm:rounded-lg mt-3 p-[16px] sm:p-[20px] lg:px-12 py-6">
       <div className="grid grid-cols-12">
         <div className="col-span-12 flex justify-between">
           <div className="flex gap-3 items-center">

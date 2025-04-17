@@ -55,11 +55,9 @@ export default function EnquiryForm() {
                 formData.append('company_name', values.company_name.toString());
                 formData.append('comment', values.feedback.toString());
                 formData.append('form_type', 'Contact Us');
-                formData.append('csrf_kaampe_token', 'b3821c0d386ffd4b4ce2efdeebdf856b');
-                formData.append('recaptcha_response', '');
                 formData.append('enquiry_type', values.type.toString());
 
-                const response = await axios.post("https://meuat.kaam.com/Web/store", formData, {
+                const response = await api.post("/Auth/submitEnquiryForm", formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     },

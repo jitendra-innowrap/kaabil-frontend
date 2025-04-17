@@ -8,7 +8,7 @@ const About = () => {
   const dispatch = useAppDispatch();
 
   return (
-    <div className="profile-card bg-white rounded-lg">
+    <div className="profile-card bg-white shadow-sm sm:shadow-default rounded-xl sm:rounded-lg">
       <div className="grid grid-cols-12 sm:pt-6 py-4 p-[16px] sm:p-[20px] lg:px-12">
         <div className="col-span-10">
           <div className="flex gap-3 items-center">

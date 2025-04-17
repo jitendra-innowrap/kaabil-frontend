@@ -25,7 +25,7 @@ export default function AddEducation({size, closePopup, handleBack}: any) {
 
     // Initialize formik values with user's existing education
     useEffect(() => {
-        if (user.users_education && user.users_education.length > 0) {
+        if (user.users_education && user.users_education.length > 0 && user.users_education[0] !=="0") {
             formik.setFieldValue("education_id", user.users_education[0]);
         }
     }, [user.users_education]);
@@ -144,6 +144,12 @@ export default function AddEducation({size, closePopup, handleBack}: any) {
                     <h4 className="text-[14px] mb-[8px] sm:text-[18px] font-medium sm:mb-1">
                         What is your highest level of education?
                     </h4>
+                    {/* ✅ Validation Error */}
+                    {formik.errors.education_id && formik.touched.education_id && (
+                            <p className="text-red text-sm mb-1">
+                                {formik.errors.education_id}
+                            </p>
+                        )}
                     <div className={`flex flex-col gap-2 sm:gap-[10px] ${styles.selected_option_list}`}>
                         {qualificationList?.map((education) => (
                             <label
@@ -183,12 +189,6 @@ export default function AddEducation({size, closePopup, handleBack}: any) {
                                 </div>
                             </label>
                         ))}
-                        {/* ✅ Validation Error */}
-                        {formik.errors.education_id && formik.touched.education_id && (
-                            <p className="text-red text-sm mt-1">
-                                {formik.errors.education_id}
-                            </p>
-                        )}
                     </div>
                 </div>
 

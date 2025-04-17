@@ -28,7 +28,7 @@ const Resume = () => {
               body { margin: 0; padding: 0; overflow: hidden; }
               iframe { width: 100%; height: 100vh; border: none; }
               .toolbar {
-                padding: 10px;
+                padding: 0px 15px;
                 background: #f5f5f5;
                 display: flex;
                 justify-content: space-between;
@@ -51,9 +51,15 @@ const Resume = () => {
                 Download
               </button>
             </div>
+            <div style="
+                height: calc(100vh - 50px);
+                margin: auto;
+                display: flex;
+                align-items: center;
+            ">
             ${
               ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(extension)
-                ? `<img src="${fileUrl}" style="max-width: 100%; max-height: calc(100vh - 50px); display: block; margin: 0 auto;" />`
+                ? `<img src="${fileUrl}" style="max-width: 100%; max-height: calc(100vh - 150px); display: block; margin: 0 auto;" />`
                 : ['mp4', 'webm', 'ogg', 'mov', 'avi'].includes(extension)
                 ? `<video controls autoplay style="width: 100%; height: calc(100vh - 50px);">
                      <source src="${fileUrl}" type="video/${extension === 'mov' ? 'mp4' : extension}">
@@ -65,6 +71,7 @@ const Resume = () => {
                       : `https://docs.google.com/viewer?url=${encodeURIComponent(fileUrl)}&embedded=true`
                   }" style="width: 100%; height: calc(100vh - 50px);"></iframe>`
             }
+            </div>
           </body>
         </html>
       `);

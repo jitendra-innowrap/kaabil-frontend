@@ -45,7 +45,6 @@ export default function FilterSidebar() {
     <Sticky
         enabled={true}
         top={headerHeight + 10} // Stick to top on scroll up
-        bottom={20}
         bottomBoundary={"#sidebar"} // Stick to bottom on scroll down
       >
     <div className=" top-16 3xl:top-[104px] p-4 md:p-6 rounded-[20px] hidden lg:flex bg-white flex-col lg:w-fit items-start">

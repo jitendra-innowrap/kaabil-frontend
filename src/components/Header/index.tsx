@@ -11,7 +11,7 @@ import { useAppSelector } from '@/redux/hooks'
 
 export default function Header() {
 const {isLoggedIn} = useAppSelector((state) => state.user);
-    
+
   return (
     <header className='sticky top-0 bg-white z-[101]'>
         <div className='relative'>
@@ -77,7 +77,7 @@ const {isLoggedIn} = useAppSelector((state) => state.user);
                                         <BiChevronDown className='font-medium 3xl:text-2xl text-black'/>
                                     </Link>
                                 </li> */}
-                                
+
                                 {!isLoggedIn && <li className='flex mr-1 3xl:mr-3'>
                                     <Link href={"https://meuat.kaam.com/recruiter/login"} className='text-Grey hover:text-black font-medium hover:font-semibold text-xs 3xl:text-base relative after:w-full after:h-[3px] 3xl:after:h-1 after:rounded-[4px] hover:after:bg-red after:absolute after:bottom-[-8px] 3xl:after:bottom-[-12px] after:left-0'>
                                     Recruiter Login

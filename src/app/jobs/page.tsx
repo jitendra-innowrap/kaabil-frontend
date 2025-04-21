@@ -32,12 +32,12 @@ export default function Home() {
   const [topCompanies, setTopCompanies] = useState<jobcardtype[]>([]);
   const slides = topCompanies.map((job, index) => (
       <CompanyCard key={index} {...job} />
-  )); 
+  ));
   useEffect(() => {
     const fetchHomedata = async () => {
       try {
         const { deviceId, secret, salt } = getSessionData();
-        
+
         // Ensure session data is available
         if (!deviceId || !secret || !salt) {
           // console.log("Session data not available, retrying...");
@@ -85,14 +85,17 @@ export default function Home() {
       </Suspense>
       </div>
       <section className="container job-listings">
-        <div className="mt-5 lg:mt-10 2xl:mt-14 pb-5 md:pb-8 xl:pb-14 2xl:pb-16 flex flex-col lg:flex-row  lg:gap-4 xl:gap-4 3xl:gap-7">
+        <div className="mt-5 lg:mt-10 2xl:mt-14 mb-5 md:mb-8 xl:mb-14 2xl:pb-16 flex flex-col lg:flex-row  lg:gap-4 xl:gap-4 3xl:gap-7" id="sidebar">
             <Suspense fallback={<></>}>
-                <FilterSidebar/>
+            <div className="filters-sidebar lg:min-w-[260px] 3xl:min-w-[320px] h-fit ">
+            <FilterSidebar/>
+            </div>
+
             </Suspense>
             <Suspense fallback={<></>}>
               <JobList />
             </Suspense>
-            <div className="lg: lg:-top-1 3xl:top-6 h-fit">
+            <div className="lg: lg:-top-1 3xl:top-6 h-fit sticky top-[75px]">
               <div className="nudges-bar hidden lg:flex flex-shrink-0 flex-col gap-4 md:gap-6 max-w-[400px] mx-auto lg:w-[280px] 2xl:w-[341px]">
                 {/* {!isLoggedIn && <FindCareer/>} */}
                 <JobsNearYouNudge/>
@@ -115,7 +118,7 @@ export default function Home() {
       {!isLoggedIn && <section className="bg-white py-5 xl:py-6">
           <div className="w-full flex flex-col items-center my-5 md:my-8 xl:my-14 2xl:my-16  mx-auto">
           <h2 className='text-black text-center text-2xl md:text-3xl xl:text-4xl 2xl:text-[40px] 2xl:leading-[64px] mb-5 xl:mb-8 font-medium'>Top companies <span className="font-kalam text-red font-semibold">hiring</span> now</h2>
-              <div className="container no-pad mobile-p-r-0">                        
+              <div className="container no-pad mobile-p-r-0">
                   <div className="block">
                       <GallerySlider
                       slides={slides}

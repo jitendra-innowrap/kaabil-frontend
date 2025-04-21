@@ -184,7 +184,7 @@ export default function AddExperience({ size, closePopup, handleBack }: any) {
               onClick={closePopup}
             />
             <div
-              className={`flex sm:justify-center items-center pt-[74px] sm:pt-[30px] mb-[27px] sm:mb-0`}
+              className={`flex sm:justify-center items-center pt-[74px] sm:pt-[10px] mb-[10px] sm:mb-0`}
             >
               <h2
                 className={`text-[#231F20] font-semibold  ${
@@ -282,7 +282,7 @@ export default function AddExperience({ size, closePopup, handleBack }: any) {
               )}
             </div>
           {/* @ts-ignore */}
-          <div className="p-0 pb-6 mt-[44px] flex justify-center">
+          <div className="p-0 mt-[28px] flex justify-center">
             <div className="flex w-full items-end">
               <div className={`whitespace-nowrap ${styles.page_show}`}>
                 <span className="text-red">{progress - 4}</span> - 6

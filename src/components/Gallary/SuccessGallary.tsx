@@ -56,34 +56,35 @@ const SuccessGallary: React.FC<{ galleryItems: SuccessCard[] }> = ({
     <div>
       {/* Gallery Slider */}
       <div className="block">
-        <GallerySlider
-          slides={[...successSlides]}
-          spaceBetween={25}
-          loop={true}
-          autoplay={true}
-          autoplayDuration={3000}
-          freeMode={false}
-          slidesPerView={2}
-          breakpoints={{
+      <GallerySlider
+        slides={successSlides}
+        spaceBetween={20}
+        showNavigation
+        loop={true}
+        autoplay={true}
+        arrowOut={false}
+        autoplayDuration={3000}
+        freeMode={false}
+        arrowColor="white"
+        slidesPerView={1.4}
+        breakpoints={{
             320: {
-              slidesPerView: 1.5,
+                slidesPerView: 1.5,
             },
-            600: {
-              slidesPerView: 3,
+            480:{
+                slidesPerView: 1.5,
             },
             768: {
-              slidesPerView: 4,
+              slidesPerView: 2.5,
             },
             1024: {
+              slidesPerView: 4,
+            },
+            1200: {
               slidesPerView: 5,
             },
-            1280: {
+            1500: {
               slidesPerView: 5,
-              spaceBetween: 20,
-            },
-            1920: {
-              slidesPerView: 5,
-              spaceBetween: 24,
             },
           }}
         />

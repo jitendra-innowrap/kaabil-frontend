@@ -6,13 +6,13 @@ import { motion } from 'framer-motion';
 export default function PlayStoreAppAd() {
   
     const leftVariant = {
-      hidden: { opacity: 0, x: -50 },
-      visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: 'easeOut' } },
+      hidden: { opacity: 0, y: -50 },
+      visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
     }
     
     const rightVariant = {
-      hidden: { opacity: 0, x: 50 },
-      visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: 'easeOut' } },
+      hidden: { opacity: 0, y: 50 },
+      visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
     }
   return (
       <section className=" md:py-6 xl:py-8 2xl:py-10 3xl:py-14 container bg-[#E41C3B] sm:bg-[transparent] small">
@@ -41,7 +41,7 @@ export default function PlayStoreAppAd() {
                 variants={leftVariant}
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: true, amount: 0.4 }} className="absolute left-1/2 -translate-x-1/2 md:translate-x-0 md:top-[-65px] xl:translate-x-10 2xl:translate-x-0 3xl:translate-x-8 shrink-0 md:left-[8%] top-[200px] lg:top-[-50px] md:bottom-0 block h-[300px] md:h-[120%] w-[300px] md:w-[328px] flex-1 xl:w-[327.6px] 2xl:w-[460px] 2xl:top-[-90px]">
+                viewport={{ once: true, amount: 0.4 }} className="absolute left-1/2 footer-ad-banner-image !-translate-x-1/2 !translate-y-12 md:!translate-y-0 md:!translate-x-0 md:top-[-65px] xl:!translate-x-10 2xl:!translate-x-0 3xl:!translate-x-8 shrink-0 md:left-[8%] top-[200px] lg:top-[-50px] md:bottom-0 block h-[300px] md:h-[120%] w-[300px] md:w-[328px] flex-1 xl:w-[327.6px] 2xl:w-[460px] 2xl:top-[-90px]">
             <Image
             src={"/new-assets/images/footer-mobile-update3.png"}
             width={1716}

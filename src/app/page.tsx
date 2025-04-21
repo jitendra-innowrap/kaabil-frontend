@@ -382,7 +382,7 @@ export default function Home() {
         visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
     }
     return (
-        <main>
+        <main className="overflow-hidden">
             <section className=''>
                 <Link href={'/jobs'} className='block w-full'>
                     <Image src='/new-assets/home/banner.png' quality={100} alt="" width={3840} height={1000}
@@ -393,13 +393,13 @@ export default function Home() {
                     />
                 </Link>
                 <div className="bg-[#F5F5F5]">
-                    <div className="container search-section px-5 pt-8 md:px-14 md:pt-12 xl:px-24 xl:pt-14 2xl:px-20">
+                    <div className="container search-section px-5 flex flex-col items-center pt-8 md:px-14 md:pt-12 xl:px-24 xl:pt-14 2xl:px-20">
                     <motion.h2
                         variants={sentence}
                         initial="hidden"
                         whileInView="visible"
                         viewport={{ once: true }}
-                        className='text-black text-center text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[64px] mb-5 xl:mb-8 font-medium'
+                        className='text-black text-center mx-auto inline-flex flex-wrap justify-center text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[64px] mb-5 xl:mb-8 font-medium'
                     >
                         {heading.split("").map((char, index) => (
                             <motion.span key={`char-${index}`} variants={letter}>

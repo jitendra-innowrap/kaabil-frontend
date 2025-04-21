@@ -18,7 +18,7 @@ export default function HeaderSearch() {
 
 
     }
-    if (pathname && (pathname.includes("/company/profile/") || pathname.includes("/jobs/detail/"))) {
+    if (pathname && (pathname.includes("/company/profile/") || pathname.includes("/articles") || pathname.includes("/jobs/detail/"))) {
       return (
         <div>
             <div className={`search-clicker ${isSearch?"open":""} cursor-pointer xl:-translate-x-14 items-center justify-center gap-2 flex border border-[##A7A7A7]  relative w-fit rounded-lg py-1 px-2 xl:py-2 xl:px-3`} onClick={handleSearch}>

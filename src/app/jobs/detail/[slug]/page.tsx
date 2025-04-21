@@ -324,8 +324,8 @@ export default function Home() {
   };
   return (
     <main className="bg-white">
-      {/* Add to stick sm:sticky sm:top-[52px] lg:top-[56px] 3xl:top-[90px] z-10 */}
-      <section className="bg-[#FDEAC9] py-6 xl:py-8">
+      {/* Add to stick  */}
+      <section className="bg-[#FDEAC9] py-6 xl:py-8 sm:sticky sm:top-[52px] lg:top-[56px] 3xl:top-[90px] z-10">
         <div className="container relative z-[1]">
           <div className="flex justify-between flex-wrap xl:flex-nowrap flex-col sm:flex-row sm:items-end gap-5 xl:gap-7 2xl:gap-8">
             <div className="flex justify-between flex-row gap-3 2xl:gap-5 3xl:gap-8 lg:max-w-[calc(100%_-_300px)]">
@@ -725,7 +725,7 @@ export default function Home() {
                   </div>
                 </div>
                 <Link
-                  href={`/company/profile/${jobDetails?.company_master_id}`}
+                  href={`/company/profile/${jobDetails?.company_master_id}`} scroll={false}
                   className="!bg-black !text-white h-fit whitespace-nowrap !text-[10px] 2xl:!text-sm 3xl:!text-base btn"
                 >
                   Explore More

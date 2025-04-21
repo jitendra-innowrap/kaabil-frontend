@@ -68,7 +68,28 @@ const EducationModal = ({ size }: any) => {
   useEffect(() => {
     dispatch(fetchEducationDetail());
   }, []);
+  const [dialogHeight, setDialogHeight] = useState('calc(100dvh - 225px)');
 
+  useEffect(() => {
+    const calculateHeight = () => {
+      const vh = window.innerHeight;
+      let height;
+      
+      if (window.innerWidth < 768) {
+        height = vh - 225; // Mobile calculation
+      } else if (window.innerWidth < 1024) {
+        height = vh * 0.7; // 70vh equivalent
+      } else {
+        height = vh * 0.8; // 80vh equivalent
+      }
+      
+      setDialogHeight(`${height}px`);
+    };
+
+    calculateHeight();
+    window.addEventListener('resize', calculateHeight);
+    return () => window.removeEventListener('resize', calculateHeight);
+  }, []);
   useEffect(() => {
     const education = qualificationList.find((education: any) => education?.name === profileData?.education_name)
     getFieldStudy(education)
@@ -218,6 +239,7 @@ const EducationModal = ({ size }: any) => {
                 className={`p-0 max-h-[calc(100vh_-_225px)] md:max-h-[70vh] lg:max-h-[80vh] overflow-y-auto custom-scroll ${
                   size === "xxl" ? "mt-4" : "mt-8"
                 }`}
+                style={{ height: dialogHeight }}
               >
                 <div
                   className={`${

@@ -9,7 +9,7 @@ import { motion } from 'framer-motion';
 
 export default function IndustryCard({ icon, title, jobUrl, color }: industryCard) {
   return (
-    <Link className="block w-full h-full" href={jobUrl}>
+    <Link className="block w-full h-full hover:scale-[1.03] transition-all duration-200" href={jobUrl}>
       <div style={{ background: `${color}` }} className={`w-full h-full flex flex-col justify-between bg-white rounded-2xl p-4 2xl:p-6 text-center`}>
         <div className="block">
           <Image

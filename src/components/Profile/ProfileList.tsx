@@ -40,7 +40,7 @@ const ProfileList = () => {
       </div>
       <h1 className='hidden sm:block text-[#231F20] text-xl 3xl:text-2xl font-medium'>My jobs</h1>
       <div className="grid grid-cols-12 sm:gap-4 lg:gap-9 mb-8">
-        <div className="sm:hidden col-span-12 sm:col-span-8 flex flex-wrap gap-4 md:gap-12 bg-white pt-3 px-4 sm:justify-between order-1 sticky top-[52px] z-10">
+        <div className="sm:hidden col-span-12 sm:col-span-8 flex flex-wrap gap-2 sm:gap-4 md:gap-12 bg-white pt-3 px-4 sm:justify-between order-1 sticky top-[52px] z-10">
           {ProfileTabs?.map((tab) => (
             <h2
               key={tab}

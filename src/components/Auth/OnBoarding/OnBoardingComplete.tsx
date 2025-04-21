@@ -148,11 +148,11 @@ export default function OnBoardingComplete({ size, closePopup }: any) {
           }`}
         >
           <div className="p-4 flex-row rounded-lg border-[1.6px] border-[#E3ECFB] shadow-tertiary justify-start flex gap-2 sm:gap-4">
-            <div className="flex flex-col justify-center items-center">
+            <div className="flex flex-col flex-shrink-0 justify-center items-center">
               <Image
                 src={photo_url || "/new-assets/icons/avatar.svg"}
                 alt="profile-photo"
-                className="w-[60px] h-[60px] sm:w-[100px] sm:h-[100px] rounded-full object-cover mx-auto block"
+                className="w-[60px] h-[60px] sm:w-[100px] sm:h-[100px] rounded-full flex-shrink-0 object-cover mx-auto block"
                 width={150}
                 height={150}
               />
@@ -165,7 +165,7 @@ export default function OnBoardingComplete({ size, closePopup }: any) {
               />
               <div
                 onClick={handleUploadClick}
-                className="!rounded-full mt-[8px] py-2 !px-2 text-[10px] lg:text-[10px]  lg:text-center bg-red text-white"
+                className="!rounded-full mt-[8px] py-2 !px-2 text-[10px] lg:text-[10px] whitespace-nowrap text-center bg-red text-white"
               >
                 Upload Photo
               </div>
@@ -204,15 +204,17 @@ export default function OnBoardingComplete({ size, closePopup }: any) {
               <h6 className="text-[12px] sm:text-sm text-[#4D4D4F]">
                 Selected job roles:
               </h6>
-              {role_names?.map((role, i) => (
-                <h6
-                  key={i}
-                  className="text-[12px] sm:text-sm font-medium mb-2 inline mr-2"
-                >
-                  <GoDotFill className="inline-block size-3" />{" "}
-                  {role}
-                </h6>
-              ))}
+              <div className="flex flex-wrap gap-1 mb-2">
+                {role_names?.map((role, i) => (
+                  <h6
+                    key={i}
+                    className="text-[12px] sm:text-sm font-medium inline mr-2"
+                  >
+                    <GoDotFill className="inline-block size-3" />{" "}
+                    {role}
+                  </h6>
+                ))}
+              </div>
               <div className="flex gap-1 text-[#4D4D4F] text-[12px] sm:text-sm mt-2">
                 Skills{" "}
                 <span className="size-5 bg-[#F9D1D7] rounded-full text-center">

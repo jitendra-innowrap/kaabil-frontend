@@ -147,7 +147,7 @@ export default function SignInButton({ closeSideMenu }: prop) {
         </button>
       ) : (
         <div className="flex items-center gap-3 2xl:gap-6 3xl:gap-7">
-          <Notification />
+          {/* <Notification /> */}
           <div
             ref={dropdownRef}
             className="relative group/menu flex items-center cursor-pointer mobile-profile-option"

@@ -21,24 +21,10 @@ import FilterMobilePannel from "@/components/Filter/FilterMobile";
 import CompanyCardLoader from "@/components/Cards/CompanyCardLoader";
 import { motion } from 'framer-motion';
 
-const sentence = {
-    hidden: { opacity: 1 },
-    visible: {
-        opacity: 1,
-        transition: {
-            staggerChildren: 0.05,
-        },
-    },
-};
-
-const letter = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 },
-};
-
+import SuccessGallary from "@/components/Gallary/SuccessGallary";
 export default function Home() {
     const [homeData, setHomeData] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);    
     const [JobTypes, setJobTypes] = useState([
         {
             icon: "/new-assets/job-types/full-time.png",
@@ -107,6 +93,7 @@ export default function Home() {
 
         fetchHomedata();
       }, []);
+
     const jobsList = [
         {
          icon: "/new-assets/company-icons/image (1).png",
@@ -150,23 +137,151 @@ export default function Home() {
         },
     ]
     const successList = [
-        {name: "", role:"", image:"/new-assets/success-slider/slide1.png", video:""},
-        {name: "", role:"", image:"/new-assets/success-slider/slide2.png", video:"true"},
-        {name: "", role:"", image:"/new-assets/success-slider/slide3.png", video:"true"},
-        {name: "", role:"", image:"/new-assets/success-slider/slide4.png", video:""},
-        {name: "", role:"", image:"/new-assets/success-slider/slide5.png", video:""},
-        {name: "", role:"", image:"/new-assets/success-slider/slide1.png", video:""},
-        {name: "", role:"", image:"/new-assets/success-slider/slide2.png", video:"true"},
-        {name: "", role:"", image:"/new-assets/success-slider/slide3.png", video:"true"},
-        {name: "", role:"", image:"/new-assets/success-slider/slide4.png", video:""},
-        {name: "", role:"", image:"/new-assets/success-slider/slide5.png", video:""},
+        {
+            id: '1',
+            profile_photo: '/new-assets/success-slider/slide1.png',
+            media_type: '2',
+            media_url: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
+            media_thumbnail: '/new-assets/success-slider/slide1.png',
+            video_title: 'testimonial video',
+            is_cover_media: 'true',
+            status: '1',
+            created_date: '',
+            created_by: '',
+            share_url: '',
+            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem",
+            name: 'rekha mehta',
+            role: 'commis chef',       
+        },
+        {
+            id: '1',
+            profile_photo: '/new-assets/success-slider/slide1.png',
+            media_type: '1',
+            media_url: 'string',
+            media_thumbnail: '/new-assets/success-slider/slide1.png',
+            video_title: 'testimonial video',
+            is_cover_media: 'true',
+            status: '1',
+            created_date: '',
+            created_by: '',
+            share_url: '',
+            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem",
+            name: 'rekha mehta',
+            role: 'commis chef',       
+        },
+        {
+            id: '1',
+            profile_photo: '/new-assets/success-slider/slide1.png',
+            media_type: '2',
+            media_url: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
+            media_thumbnail: '/new-assets/success-slider/slide1.png',
+            video_title: 'testimonial video',
+            is_cover_media: 'true',
+            status: '1',
+            created_date: '',
+            created_by: '',
+            share_url: '',
+            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem",
+            name: 'rekha mehta',
+            role: 'commis chef',       
+        },
+        {
+            id: '1',
+            profile_photo: '/new-assets/success-slider/slide1.png',
+            media_type: '1',
+            media_url: 'string',
+            media_thumbnail: '/new-assets/success-slider/slide1.png',
+            video_title: 'testimonial video',
+            is_cover_media: 'true',
+            status: '1',
+            created_date: '',
+            created_by: '',
+            share_url: '',
+            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem",
+            name: 'rekha mehta',
+            role: 'commis chef',       
+        },
+        {
+            id: '1',
+            profile_photo: '/new-assets/success-slider/slide1.png',
+            media_type: '2',
+            media_url: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
+            media_thumbnail: '/new-assets/success-slider/slide1.png',
+            video_title: 'testimonial video',
+            is_cover_media: 'true',
+            status: '1',
+            created_date: '',
+            created_by: '',
+            share_url: '',
+            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem",
+            name: 'rekha mehta',
+            role: 'commis chef',       
+        },
+        {
+            id: '1',
+            profile_photo: '/new-assets/success-slider/slide1.png',
+            media_type: '1',
+            media_url: 'string',
+            media_thumbnail: '/new-assets/success-slider/slide1.png',
+            video_title: 'testimonial video',
+            is_cover_media: 'true',
+            status: '1',
+            created_date: '',
+            created_by: '',
+            share_url: '',
+            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem",
+            name: 'rekha mehta',
+            role: 'commis chef',       
+        },
+        {
+            id: '1',
+            profile_photo: '/new-assets/success-slider/slide1.png',
+            media_type: '1',
+            media_url: 'string',
+            media_thumbnail: '/new-assets/success-slider/slide1.png',
+            video_title: 'testimonial video',
+            is_cover_media: 'true',
+            status: '1',
+            created_date: '',
+            created_by: '',
+            share_url: '',
+            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem",
+            name: 'rekha mehta',
+            role: 'commis chef',       
+        },
+        {
+            id: '1',
+            profile_photo: '/new-assets/success-slider/slide1.png',
+            media_type: '1',
+            media_url: 'string',
+            media_thumbnail: '/new-assets/success-slider/slide1.png',
+            video_title: 'testimonial video',
+            is_cover_media: 'true',
+            status: '1',
+            created_date: '',
+            created_by: '',
+            share_url: '',
+            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem",
+            name: 'rekha mehta',
+            role: 'commis chef',       
+        },
+        {
+            id: '1',
+            profile_photo: '/new-assets/success-slider/slide1.png',
+            media_type: '1',
+            media_url: 'string',
+            media_thumbnail: '/new-assets/success-slider/slide1.png',
+            video_title: 'testimonial video',
+            is_cover_media: 'true',
+            status: '1',
+            created_date: '',
+            created_by: '',
+            share_url: '',
+            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem",
+            name: 'rekha mehta',
+            role: 'commis chef',       
+        },
     ]
-
-    const successSlides = successList.map((success, index) => (
-        <div className={`success-story-card ${index % 2 === 0 ? 'even' : 'odd'}`}>
-          <SuccessCard key={index} {...success} />
-        </div>
-      ));
 
     const nudges = [
         <ResumeBuilder/>,
@@ -190,69 +305,6 @@ export default function Home() {
     const articleSlides = jobsList.map((job, index) => (
         <ArticleCard key={index} {...job} />
     ));
-
-    const industries = [
-        {
-            icon: "/new-assets/industeries/icon-1a.png",
-            title: "Sales and marketing",
-            jobUrl: "/",
-            color: "#FDEAC9"
-        },
-        {
-            icon: "/new-assets/industeries/icon-2a.png",
-            title: "IT and technology",
-            jobUrl: "/",
-            color: "#DDF4E9"
-        },
-        {
-            icon: "/new-assets/industeries/icon-3a.png",
-            title: "Hospitality and travel",
-            jobUrl: "/",
-            color: "#F9D1D7"
-        },
-        {
-            icon: "/new-assets/industeries/icon-4a.png",
-            title: "Banking and finance",
-            jobUrl: "/",
-            color: "#E6E7E8"
-        },
-        {
-            icon: "/new-assets/industeries/icon-5a.png",
-            title: "Education and training",
-            jobUrl: "/",
-            color: "#FDEAC9"
-        },
-    {
-        icon: "/new-assets/industeries/icon-1a.png",
-        title: "Sales and marketing",
-        jobUrl: "/",
-        color: "#FDEAC9"
-    },
-    {
-        icon: "/new-assets/industeries/icon-2a.png",
-        title: "IT and technology",
-        jobUrl: "/",
-        color: "#DDF4E9"
-    },
-    {
-        icon: "/new-assets/industeries/icon-3a.png",
-        title: "Hospitality and travel",
-        jobUrl: "/",
-        color: "#F9D1D7"
-    },
-    {
-        icon: "/new-assets/industeries/icon-4a.png",
-        title: "Banking and finance",
-        jobUrl: "/",
-        color: "#E6E7E8"
-    },
-    {
-        icon: "/new-assets/industeries/icon-5a.png",
-        title: "Education and training",
-        jobUrl: "/",
-        color: "#FDEAC9"
-    },
-]
 
     const inputSlides = topIndustries?.map((job, index) => (
         <IndustryCard key={index} {...job} />
@@ -301,9 +353,36 @@ export default function Home() {
     ));
 
     const heading = "Find your dream job with"
-
+    const kaabilText = "Kaabil!";
+    const sentence = {
+        hidden: { opacity: 1 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.05,
+            },
+        },
+    };
+    
+    const letter = {
+        hidden: { opacity: 0, y: 20 },
+        visible: { opacity: 1, y: 0 },
+    };
+    const leftVariant = {
+        hidden: { opacity: 0, x: -50 },
+        visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: 'easeOut' } },
+      }
+      
+    const rightVariant = {
+    hidden: { opacity: 0, x: 50 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: 'easeOut' } },
+    }
+    const topVariant = {
+        hidden: { opacity: 0, y: 50 },
+        visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
+    }
     return (
-        <main>
+        <main className="overflow-hidden">
             <section className=''>
                 <Link href={'/jobs'} className='block w-full'>
                     <Image src='/new-assets/home/banner.png' quality={100} alt="" width={3840} height={1000}
@@ -314,15 +393,33 @@ export default function Home() {
                     />
                 </Link>
                 <div className="bg-[#F5F5F5]">
-                    <div className="container search-section px-5 pt-8 md:px-14 md:pt-12 xl:px-24 xl:pt-14 2xl:px-20">
-                        <motion.h2 variants={sentence}
-                            initial="hidden"
-                            whileInView="visible"
-                            viewport={{ once: true }} className='text-black text-center text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[64px] mb-5 xl:mb-8 font-medium'>{heading.split("").map((char, index) => (
-                                <motion.span key={index} variants={letter}>
+                    <div className="container search-section px-5 flex flex-col items-center pt-8 md:px-14 md:pt-12 xl:px-24 xl:pt-14 2xl:px-20">
+                    <motion.h2
+                        variants={sentence}
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true }}
+                        className='text-black text-center mx-auto inline-flex flex-wrap justify-center text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[64px] mb-5 xl:mb-8 font-medium'
+                    >
+                        {heading.split("").map((char, index) => (
+                            <motion.span key={`char-${index}`} variants={letter}>
+                                {char === " " ? "\u00A0" : char}
+                            </motion.span>
+                        ))}
+
+                        {/* Animate the "Kaabil!" text with letter-wise animation */}
+                        <motion.span
+                            className="font-kalam font-bold text-red ml-[6px]"
+                            variants={sentence}
+                        >
+                            {kaabilText.split("").map((char, index) => (
+                                <motion.span key={`kaabil-${index}`} variants={letter}>
                                     {char === " " ? "\u00A0" : char}
                                 </motion.span>
-                            ))} <span className="font-kalam font-bold text-red">Kaabil!</span></motion.h2>
+                            ))}
+                        </motion.span>
+                    </motion.h2>
+
                         <div className="hidden lg:block">
                             <SearchSection />
                         </div>
@@ -500,7 +597,11 @@ export default function Home() {
                         boxShadow: "inset 1px 9px 20px -15px #7F54541F"
                     }}>
                 <div className="container gap-5 xl:gap-10 2xl:gap-14 flex flex-col md:flex-row-reverse items-center py-5 md:py-8 xl:py-14 2xl:py-16  mx-auto">
-                    <div className="section-heading mb-5 xl:mb-8 flex-1">
+                    <motion.div
+                        variants={rightVariant}
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, amount: 0.4 }} className="section-heading mb-5 xl:mb-8 flex-1">
                         <h2 className='text-black text-start text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[64px] font-medium mb-2'>Why choose <span className="font-kalam font-bold text-red">Kaabil?</span></h2>
                         <p className="font-normal xl:text-sm 2xl:text-lg 2xl:leading-[29px]"><span className="font-semibold">Kaabil, in partnership with Mahindra Rise,</span> empowers women jobseekers, especially first-timers, by connecting them to diverse opportunities, local jobs, and skill development resources.</p>
                         <div className="my-5 xl:my-7 2xl:my-8 space-y-3 md:space-y-5 2xl:space-y-6">
@@ -550,65 +651,54 @@ export default function Home() {
                         <div className={'text-center md:text-left mx-auto md:mx-0 flex justify-center sm:block '}>
                             <Link href={'/about-us'} className='btn flex items-center justify-center text-center text-xs 2xl:text-base w-[170px] 2xl:w-[247px] 2xl:h-[50px] mt-6 xl:mt-7 3xl:mt-[36px]'>Read More</Link>
                         </div>
-                    </div>
-                    <div className="flex-1 order-1">
+                    </motion.div>
+                    <motion.div
+                        variants={leftVariant}
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, amount: 0.4 }} className="flex-1 order-1">
                         <Image src={`/new-assets/banners/why-choose-home.png`} width={704} height={735} alt="" className="w-full h-auto" />
-                    </div>
+                    </motion.div>
                 </div>
             </section>
-            {/* <section className="bg-red">
+            <section className="bg-red">
                 <div className="w-full flex flex-col items-center py-5 md:py-8 xl:py-14 2xl:py-[50px] mx-auto">
-                    <div className="section-heading mb-5">
+                    <motion.div
+                    variants={topVariant}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, amount: 0.4 }} className="section-heading mb-5">
                         <h2 className='text-white text-center text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[46px] font-medium mb-2'>Meet the women who’ve found <br />
                         <span className="font-kalam font-bold">career success  </span>with Kaabil.</h2>
-                    </div>
-                    <div className="container big !px-5">
+                    </motion.div>
+                    <motion.div
+                        variants={topVariant}
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, amount: 0.4 }} className="container big !px-5">
                         <div className="block">
-                            <GallerySlider
-                            slides={successSlides}
-                            spaceBetween={20}
-                            showNavigation
-                            loop={true}
-                            autoplay={true}
-                            arrowOut={false}
-                            autoplayDuration={3000}
-                            freeMode={false}
-                            arrowColor="white"
-                            slidesPerView={1.4}
-                            breakpoints={{
-                                320: {
-                                    slidesPerView: 1.5,
-                                },
-                                480:{
-                                    slidesPerView: 1.5,
-                                },
-                                768: {
-                                  slidesPerView: 2.5,
-                                },
-                                1024: {
-                                  slidesPerView: 4,
-                                },
-                                1200: {
-                                  slidesPerView: 5,
-                                },
-                                1500: {
-                                  slidesPerView: 5,
-                                },
-                              }}
-                            />
+                            <SuccessGallary galleryItems={successList} />
                         </div>
-                    </div>
+                    </motion.div>
                     <button className="btn-border 2xl:w-[218px] 2xl:h-[50px] text-xs 2xl:text-base mt-0 md:mt-8 2xl:mt-10">View All Stories</button>
                 </div>
-            </section> */}
+            </section>
             <section className="bg-[#F8F8F8]">
                 <div className="w-full flex flex-col py-5 md:py-8 xl:py-14 2xl:py-[68px] mb-3 mx-auto">
                     <div className="container no-pad">
-                        <div className="section-heading md:ml-[70px]">
+                        <motion.div
+                            variants={topVariant}
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true, amount: 0.4 }} className="section-heading md:ml-[70px]">
                             <h2 className='text-black text-start text-2xl md:text-3xl 2xl:text-[48px] 2xl:leading-[54px]  font-normal mb-2'>Articles</h2>
                             <p className=" text-base text-[14px] xl:text-lg 2xl:text-2xl">Register  to receive weekly articles, tips and more from our team</p>
-                        </div>
-                        <div className="block">
+                        </motion.div>
+                        <motion.div
+                            variants={topVariant}
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true, amount: 0.4 }} className="block">
                             <GallerySlider
                             slides={articleSlides}
                             spaceBetween={25}
@@ -636,7 +726,8 @@ export default function Home() {
                                 },
                               }}
                             />
-                        </div>
+                            
+                        </motion.div>
                     </div>
                     <Link href={'/articles'} className="btn text-center mx-auto mt-4 md:mt-8 text-xs 2xl:text-base 2xl:mt-8 lg:min-w-[150px] 2xl:min-w-[200px]">View All</Link>
                 </div>

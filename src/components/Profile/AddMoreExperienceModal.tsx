@@ -35,7 +35,28 @@ const AddMoreExperienceModal = ({ size }: any) => {
   const [addMore, setAddMore] = useState(false);
   const [experienceList, setExperienceList] = useState<any[]>([]);
   const [currentEditState, setCurrentEditState] = useState<any>(null);
+  const [dialogHeight, setDialogHeight] = useState('calc(100dvh - 225px)');
 
+  useEffect(() => {
+    const calculateHeight = () => {
+      const vh = window.innerHeight;
+      let height;
+      
+      if (window.innerWidth < 768) {
+        height = vh - 225; // Mobile calculation
+      } else if (window.innerWidth < 1024) {
+        height = vh * 0.7; // 70vh equivalent
+      } else {
+        height = vh * 0.8; // 80vh equivalent
+      }
+      
+      setDialogHeight(`${height}px`);
+    };
+
+    calculateHeight();
+    window.addEventListener('resize', calculateHeight);
+    return () => window.removeEventListener('resize', calculateHeight);
+  }, []);
   useEffect(() => {
     console.log(profileData, "Step 3");
     if (profileData?.user_experiences) {
@@ -63,7 +84,26 @@ const AddMoreExperienceModal = ({ size }: any) => {
       setExperienceList(transformedExperiences);
     }
   }, [profileData]);
+  const [windowHeight, setWindowHeight] = useState('100dvh');
 
+  useEffect(() => {
+    const handleResize = () => {
+      // Use window.innerHeight for more reliable measurement
+      setWindowHeight(`${window.innerHeight}px`);
+    };
+
+    // Set initial height
+    handleResize();
+
+    // Add event listeners
+    window.addEventListener('resize', handleResize);
+    window.addEventListener('orientationchange', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('orientationchange', handleResize);
+    };
+  }, []);
   const dispatch = useDispatch();
   const [designationSuggestionsSearch, setDesignationSuggestionsSearch] =
     useState<any[]>();
@@ -336,9 +376,10 @@ const AddMoreExperienceModal = ({ size }: any) => {
           <Form>
             {/* @ts-ignore */}
             <DialogBody
-              className={`p-0 h-[calc(100vh_-_225px)] md:max-h-[70vh] lg:max-h-[80vh] overflow-y-auto custom-scroll ${
+              className={`p-0 h-[calc(100dvh_-_225px)] md:max-h-[70dvh] lg:max-h-[80dvh] overflow-y-auto custom-scroll ${
                 size === "xxl" ? "mt-4" : "mt-8"
               }`}
+              style={{ height: dialogHeight }}
             >
               <div
                 className={`${

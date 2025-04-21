@@ -8,9 +8,11 @@ import CompanyGallerycard from "../Cards/CompanyGallerycard";
 import Popup from "reactjs-popup";
 import { FaChevronLeft, FaChevronRight, FaTimes } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
+import SuccessCard from "../Cards/SuccessCard";
+import Image from "next/image";
 
 // Main Gallery Component
-const CompanyGallery: React.FC<{ galleryItems: (CompanyImage | CompanyVideo)[] }> = ({
+const SuccessGallary: React.FC<{ galleryItems: SuccessCard[] }> = ({
   galleryItems,
 }) => {
   const [open, setOpen] = useState(false);
@@ -41,14 +43,11 @@ const CompanyGallery: React.FC<{ galleryItems: (CompanyImage | CompanyVideo)[] }
     setActiveIndex((prev) => (prev === galleryItems.length - 1 ? 0 : prev + 1));
   };
 
-  // Map gallery items to slides
-  const gallerySlides = galleryItems.map((item, index) => (
-    <CompanyGallerycard
-      key={item.id}
-      item={item}
-      onClick={() => handleSlideClick(index)}
-    />
-  ));
+  const successSlides = galleryItems.map((success, index) => (
+      <div className={`success-story-card cursor-pointer ${index % 2 === 0 ? 'even' : 'odd'}`} onClick={() => handleSlideClick(index)}>
+        <SuccessCard key={index} {...success} />
+      </div>
+    ));
 
   // Get current active item
   const activeItem = galleryItems[activeIndex];
@@ -57,34 +56,35 @@ const CompanyGallery: React.FC<{ galleryItems: (CompanyImage | CompanyVideo)[] }
     <div>
       {/* Gallery Slider */}
       <div className="block">
-        <GallerySlider
-          slides={[...gallerySlides]}
-          spaceBetween={25}
-          loop={true}
-          autoplay={true}
-          autoplayDuration={3000}
-          freeMode={false}
-          slidesPerView={2}
-          breakpoints={{
+      <GallerySlider
+        slides={successSlides}
+        spaceBetween={20}
+        showNavigation
+        loop={true}
+        autoplay={true}
+        arrowOut={false}
+        autoplayDuration={3000}
+        freeMode={false}
+        arrowColor="white"
+        slidesPerView={1.4}
+        breakpoints={{
             320: {
-              slidesPerView: 1.5,
+                slidesPerView: 1.5,
             },
-            600: {
-              slidesPerView: 3,
+            480:{
+                slidesPerView: 1.5,
             },
             768: {
-              slidesPerView: 4,
+              slidesPerView: 2.5,
             },
             1024: {
+              slidesPerView: 4,
+            },
+            1200: {
               slidesPerView: 5,
             },
-            1280: {
+            1500: {
               slidesPerView: 5,
-              spaceBetween: 20,
-            },
-            1920: {
-              slidesPerView: 5,
-              spaceBetween: 24,
             },
           }}
         />
@@ -139,16 +139,39 @@ const CompanyGallery: React.FC<{ galleryItems: (CompanyImage | CompanyVideo)[] }
                 controls
                 autoPlay
                 playsInline
-                className="max-w-full max-h-[80vh] rounded-md"
+                className="max-h-[80vh] w-[600px] max-w-[60vw]  rounded-md"
               >
                 Your browser does not support the video tag.
               </video>
             ) : (
-              <img
-                src={activeItem?.media_url}
-                alt=""
-                className="max-w-full max-h-[80vh] object-contain rounded-md"
-              />
+              <div
+                    className="bg-white w-[600px] max-w-[60vw] impact-testimonial rounded-2xl xl:rounde-[20px] 3xl:rounded-3xl p-4 md:p-5 xl:p-7 3xl:p-10"
+                  >
+                    {/* User Details */}
+                    <div className="flex flex-col md:flex-row md:items-center mb-3 md:mb-4 xl:mb-5 3xl:mb-6">
+                      <div className="">
+                        <Image
+                          src="/new-assets/images/about/testimonial-profile.png"
+                          alt="Shashikala Bandaru"
+                          width={80}
+                          height={80}
+                          className="rounded-full object-cover size-20 xl:size-16 3xl:size-20"
+                        />
+                      </div>
+                      <div className="md:ml-4 mt-[10px] md:mt-0">
+                        <h3 className="font-semibold xl:text-lg 3xl:text-xl text-black truncate">Shashikala Bandaru</h3>
+                        <p className="text-sm xl:text-base text-gray-600 truncate">Process Associate, TCS</p>
+                      </div>
+                    </div>
+              
+                    {/* Testimonial Content */}
+                    <p className="impact-desc text-sm xl:text-base leading-relaxed text-gray-700 md:line-clamp-6">
+                      Overcoming adversity, Shashikala rose above her challenges, transforming from a stone grinder to a
+                      successful Software Tester at Tata Consultancy Services Ltd. With the support of the Pride School
+                      Programme, she turned her dreams into reality, proving that resilience and determination can create
+                      a brighter future.
+                    </p>
+                  </div>
             )}
           </div>
 
@@ -162,7 +185,7 @@ const CompanyGallery: React.FC<{ galleryItems: (CompanyImage | CompanyVideo)[] }
           </button>
 
           {/* Counter */}
-          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 px-3 py-1 text-white bg-black bg-opacity-50 rounded-full text-sm">
+          <div className="absolute bottom-4 left-1/2 whitespace-nowrap transform -translate-x-1/2 px-3 py-1 text-white bg-black bg-opacity-50 rounded-full text-sm">
             {activeIndex + 1} / {galleryItems.length}
           </div>
         </div>
@@ -171,4 +194,4 @@ const CompanyGallery: React.FC<{ galleryItems: (CompanyImage | CompanyVideo)[] }
   );
 };
 
-export default CompanyGallery;
+export default SuccessGallary;

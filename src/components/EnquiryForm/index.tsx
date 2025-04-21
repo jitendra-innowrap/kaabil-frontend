@@ -28,7 +28,6 @@ export default function EnquiryForm() {
               .required("Mobile number is required"),
         type: Yup.number().required("Please select an option"),
         feedback: Yup.string().required("Feedback is required"),
-        company_name: Yup.string().required("Company name is required"),
     });
 
     const formikForm = useFormik({
@@ -38,7 +37,6 @@ export default function EnquiryForm() {
             number: "",
             feedback: "",
             name: "",
-            company_name: "",
             csrf_kaampe_token: "b3821c0d386ffd4b4ce2efdeebdf856b",
             form_type: "Contact Us",
             recaptcha_response: "",
@@ -52,7 +50,6 @@ export default function EnquiryForm() {
                 formData.append('name', values.name.toString());
                 formData.append('email', values.email.toString());
                 formData.append('phone', values.number.toString());
-                formData.append('company_name', values.company_name.toString());
                 formData.append('comment', values.feedback.toString());
                 formData.append('form_type', 'Contact Us');
                 formData.append('enquiry_type', values.type.toString());
@@ -276,34 +273,6 @@ export default function EnquiryForm() {
                         {formikForm.errors.number && formikForm.touched.number && (
                             <p className="text-red text-[11px] form-error sm:text-sm mt-1">
                                 {formikForm.errors.number}
-                            </p>
-                        )}
-                    </div>
-
-                    <div className="mt-4">
-                        <label 
-                            htmlFor="company_name"
-                            className={`input-label text-[#231F20] mb-[8px] sm:mb-[10px] text-[14px] sm:text-lg md:text-xl 2xl:text-[16px] block`}
-                        >
-                            Company name
-                        </label>
-                        <input
-                            type="text"
-                            id="company_name"
-                            name="company_name"
-                            placeholder="Enter your company name"
-                            value={formikForm.values.company_name}
-                            onChange={formikForm.handleChange}
-                            onBlur={formikForm.handleBlur}
-                            className={`border p-2 w-full rounded-lg ${
-                                formikForm.errors.company_name && formikForm.touched.company_name
-                                    ? "border-red"
-                                    : "border-[#C8C9CB1A]"
-                            } ${formikForm.values.company_name ? "font-semibold" : "font-normal"}`}
-                        />
-                        {formikForm.errors.company_name && formikForm.touched.company_name && (
-                            <p className="text-red text-[11px] form-error sm:text-sm mt-1">
-                                {formikForm.errors.company_name}
                             </p>
                         )}
                     </div>

@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { IoClose } from "react-icons/io5";
@@ -32,7 +32,28 @@ const ResumeModal = ({ size }: any) => {
   const closePopup = () => {
     dispatch(setResumeModal(false));
   };
+  const [dialogHeight, setDialogHeight] = useState('calc(100dvh - 225px)');
 
+  useEffect(() => {
+    const calculateHeight = () => {
+      const vh = window.innerHeight;
+      let height;
+      
+      if (window.innerWidth < 768) {
+        height = vh - 225; // Mobile calculation
+      } else if (window.innerWidth < 1024) {
+        height = vh * 0.7; // 70vh equivalent
+      } else {
+        height = vh * 0.8; // 80vh equivalent
+      }
+      
+      setDialogHeight(`${height}px`);
+    };
+
+    calculateHeight();
+    window.addEventListener('resize', calculateHeight);
+    return () => window.removeEventListener('resize', calculateHeight);
+  }, []);
   return (
     <>
     {resumeModal && size ==="xxl" && <div className="overlay h-screen w-screen fixed z-[1000] bg-[#000000E5] opacity-70 inset-0"></div>}
@@ -122,6 +143,7 @@ const ResumeModal = ({ size }: any) => {
                 className={`p-0  h-[calc(100vh_-_225px)] md:max-h-[70vh] lg:max-h-[80vh] overflow-y-auto custom-scroll ${
                   size === "xxl" ? "mt-4" : "mt-8"
                 }`}
+                style={{ maxHeight: dialogHeight }}
               >
                 <div className={`${size === "xxl" ? "px-4" : "px-12"}`}>
                   <div>

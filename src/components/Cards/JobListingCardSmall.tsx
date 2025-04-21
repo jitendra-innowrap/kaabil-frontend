@@ -15,6 +15,7 @@ import { clearSessionData } from '../utils/deviceId'
 import { openLoginDialog } from '@/redux/loginDialogSlice'
 import Popup from 'reactjs-popup'
 import ScreeningQuesModal from '../ScreeningQuestionsModal'
+import { motion } from 'framer-motion';
 
 export default function JobListingCardSmall({detail, isCompanyJob=false}:{detail:CompanyJob, isCompanyJob?:boolean}) {
   const [openJobQuestions, setOpenJobQuestions] = useState(false);
@@ -112,7 +113,14 @@ export default function JobListingCardSmall({detail, isCompanyJob=false}:{detail
   return (
     <>
     <Link href={`/jobs/detail/${detail?.id}`} passHref legacyBehavior>
-      <div className='job-card h-full flex flex-col justify-between small w-full border shadow-sm border-lightGrey rounded-2xl bg-white p-4 3xl:p-6'>
+      <motion.div
+        custom={1}
+        initial="hidden"
+        animate="visible"
+        whileHover={{
+          scale: 1.03,
+          boxShadow: '0px 10px 20px rgba(0,0,0,0.1)',
+        }} className='job-card h-full flex flex-col justify-between small w-full border shadow-sm border-lightGrey rounded-2xl bg-white p-4 3xl:p-6'>
         <div className="">
           <div className="flex gap-3 3xl:gap-4 justify-between">
             <div className="flex gap-[10px] 3xl:gap-4">
@@ -201,7 +209,7 @@ export default function JobListingCardSmall({detail, isCompanyJob=false}:{detail
             {isApplied?"Applied":"Quick Apply"}</button>
           </div>
         </div>
-      </div>
+      </motion.div>
     </Link>
     <Popup
       open={openJobQuestions}

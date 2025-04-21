@@ -18,9 +18,12 @@ import { getSessionData } from "@/components/utils/deviceId";
 import { useRouter } from 'next/navigation';
 import Link from "next/link";
 import FilterMobilePannel from "@/components/Filter/FilterMobile";
+import SuccessGallary from "@/components/Gallary/SuccessGallary";
 export default function Home() {
     const [homeData, setHomeData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [successGallary, setSuccessGallary] = useState<SuccessCard[]>([]);
+    
     const [JobTypes, setJobTypes] = useState([
         {
             icon: "/new-assets/job-types/full-time.png",
@@ -132,23 +135,151 @@ export default function Home() {
         },
     ]
     const successList = [
-        {name: "", role:"", image:"/new-assets/success-slider/slide1.png", video:""},
-        {name: "", role:"", image:"/new-assets/success-slider/slide2.png", video:"true"},
-        {name: "", role:"", image:"/new-assets/success-slider/slide3.png", video:"true"},
-        {name: "", role:"", image:"/new-assets/success-slider/slide4.png", video:""},
-        {name: "", role:"", image:"/new-assets/success-slider/slide5.png", video:""},
-        {name: "", role:"", image:"/new-assets/success-slider/slide1.png", video:""},
-        {name: "", role:"", image:"/new-assets/success-slider/slide2.png", video:"true"},
-        {name: "", role:"", image:"/new-assets/success-slider/slide3.png", video:"true"},
-        {name: "", role:"", image:"/new-assets/success-slider/slide4.png", video:""},
-        {name: "", role:"", image:"/new-assets/success-slider/slide5.png", video:""},
+        {
+            id: '1',
+            profile_photo: '/new-assets/success-slider/slide1.png',
+            media_type: '2',
+            media_url: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
+            media_thumbnail: '/new-assets/success-slider/slide1.png',
+            video_title: 'testimonial video',
+            is_cover_media: 'true',
+            status: '1',
+            created_date: '',
+            created_by: '',
+            share_url: '',
+            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem",
+            name: 'rekha mehta',
+            role: 'commis chef',       
+        },
+        {
+            id: '1',
+            profile_photo: '/new-assets/success-slider/slide1.png',
+            media_type: '1',
+            media_url: 'string',
+            media_thumbnail: '/new-assets/success-slider/slide1.png',
+            video_title: 'testimonial video',
+            is_cover_media: 'true',
+            status: '1',
+            created_date: '',
+            created_by: '',
+            share_url: '',
+            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem",
+            name: 'rekha mehta',
+            role: 'commis chef',       
+        },
+        {
+            id: '1',
+            profile_photo: '/new-assets/success-slider/slide1.png',
+            media_type: '2',
+            media_url: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
+            media_thumbnail: '/new-assets/success-slider/slide1.png',
+            video_title: 'testimonial video',
+            is_cover_media: 'true',
+            status: '1',
+            created_date: '',
+            created_by: '',
+            share_url: '',
+            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem",
+            name: 'rekha mehta',
+            role: 'commis chef',       
+        },
+        {
+            id: '1',
+            profile_photo: '/new-assets/success-slider/slide1.png',
+            media_type: '1',
+            media_url: 'string',
+            media_thumbnail: '/new-assets/success-slider/slide1.png',
+            video_title: 'testimonial video',
+            is_cover_media: 'true',
+            status: '1',
+            created_date: '',
+            created_by: '',
+            share_url: '',
+            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem",
+            name: 'rekha mehta',
+            role: 'commis chef',       
+        },
+        {
+            id: '1',
+            profile_photo: '/new-assets/success-slider/slide1.png',
+            media_type: '2',
+            media_url: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
+            media_thumbnail: '/new-assets/success-slider/slide1.png',
+            video_title: 'testimonial video',
+            is_cover_media: 'true',
+            status: '1',
+            created_date: '',
+            created_by: '',
+            share_url: '',
+            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem",
+            name: 'rekha mehta',
+            role: 'commis chef',       
+        },
+        {
+            id: '1',
+            profile_photo: '/new-assets/success-slider/slide1.png',
+            media_type: '1',
+            media_url: 'string',
+            media_thumbnail: '/new-assets/success-slider/slide1.png',
+            video_title: 'testimonial video',
+            is_cover_media: 'true',
+            status: '1',
+            created_date: '',
+            created_by: '',
+            share_url: '',
+            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem",
+            name: 'rekha mehta',
+            role: 'commis chef',       
+        },
+        {
+            id: '1',
+            profile_photo: '/new-assets/success-slider/slide1.png',
+            media_type: '1',
+            media_url: 'string',
+            media_thumbnail: '/new-assets/success-slider/slide1.png',
+            video_title: 'testimonial video',
+            is_cover_media: 'true',
+            status: '1',
+            created_date: '',
+            created_by: '',
+            share_url: '',
+            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem",
+            name: 'rekha mehta',
+            role: 'commis chef',       
+        },
+        {
+            id: '1',
+            profile_photo: '/new-assets/success-slider/slide1.png',
+            media_type: '1',
+            media_url: 'string',
+            media_thumbnail: '/new-assets/success-slider/slide1.png',
+            video_title: 'testimonial video',
+            is_cover_media: 'true',
+            status: '1',
+            created_date: '',
+            created_by: '',
+            share_url: '',
+            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem",
+            name: 'rekha mehta',
+            role: 'commis chef',       
+        },
+        {
+            id: '1',
+            profile_photo: '/new-assets/success-slider/slide1.png',
+            media_type: '1',
+            media_url: 'string',
+            media_thumbnail: '/new-assets/success-slider/slide1.png',
+            video_title: 'testimonial video',
+            is_cover_media: 'true',
+            status: '1',
+            created_date: '',
+            created_by: '',
+            share_url: '',
+            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem",
+            name: 'rekha mehta',
+            role: 'commis chef',       
+        },
     ]
-
-    const successSlides = successList.map((success, index) => (
-        <div className={`success-story-card ${index % 2 === 0 ? 'even' : 'odd'}`}>
-          <SuccessCard key={index} {...success} />
-        </div>
-      ));
 
     const nudges = [
         <ResumeBuilder/>,
@@ -520,7 +651,7 @@ export default function Home() {
                     </div>
                 </div>
             </section>
-            {/* <section className="bg-red">
+            <section className="bg-red">
                 <div className="w-full flex flex-col items-center py-5 md:py-8 xl:py-14 2xl:py-[50px] mx-auto">
                     <div className="section-heading mb-5">
                         <h2 className='text-white text-center text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[46px] font-medium mb-2'>Meet the women who’ve found <br />
@@ -528,43 +659,12 @@ export default function Home() {
                     </div>
                     <div className="container big !px-5">
                         <div className="block">
-                            <GallerySlider
-                            slides={successSlides}
-                            spaceBetween={20}
-                            showNavigation
-                            loop={true}
-                            autoplay={true}
-                            arrowOut={false}
-                            autoplayDuration={3000}
-                            freeMode={false}
-                            arrowColor="white"
-                            slidesPerView={1.4}
-                            breakpoints={{
-                                320: {
-                                    slidesPerView: 1.5,
-                                },
-                                480:{
-                                    slidesPerView: 1.5,
-                                },
-                                768: {
-                                  slidesPerView: 2.5,
-                                },
-                                1024: {
-                                  slidesPerView: 4,
-                                },
-                                1200: {
-                                  slidesPerView: 5,
-                                },
-                                1500: {
-                                  slidesPerView: 5,
-                                },
-                              }}
-                            />
+                            <SuccessGallary galleryItems={successList} />
                         </div>
                     </div>
                     <button className="btn-border 2xl:w-[218px] 2xl:h-[50px] text-xs 2xl:text-base mt-0 md:mt-8 2xl:mt-10">View All Stories</button>
                 </div>
-            </section> */}
+            </section>
             <section className="bg-[#F8F8F8]">
                 <div className="w-full flex flex-col py-5 md:py-8 xl:py-14 2xl:py-[68px] mb-3 mx-auto">
                     <div className="container no-pad">
@@ -600,6 +700,7 @@ export default function Home() {
                                 },
                               }}
                             />
+                            
                         </div>
                     </div>
                     <Link href={'/articles'} className="btn text-center mx-auto mt-4 md:mt-8 text-xs 2xl:text-base 2xl:mt-8 lg:min-w-[150px] 2xl:min-w-[200px]">View All</Link>

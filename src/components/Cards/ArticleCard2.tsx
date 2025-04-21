@@ -3,6 +3,16 @@ import Link from 'next/link'
 import React from 'react'
 
 export default function ArticleCard2() {
+  const articleData={
+    slug:"mental-health-support",
+    image:"/new-assets/images/article1.png",
+    title: "Mental health support- not a one-off area of focus",
+    desc: "Mental health is an essential pillar of our overall well-being, yet it has historically been overshadowed by physical health. It’s only in recent years that",
+    authorProfile: "/new-assets/images/articles/author-profile.png",
+    authorName: "Praveen Kumari Singh",
+    publishDate: "Oct 20th 2024"
+
+  }
   return (
     <Link href={'/articles/new'} className='!P-[5px] block rounded-xl shadow-lg bg-white cursor-pointer group'>
         <div className="block p-[5px]">

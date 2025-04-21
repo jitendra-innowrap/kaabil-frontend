@@ -725,7 +725,7 @@ export default function Home() {
                   </div>
                 </div>
                 <Link
-                  href={`/company/profile/${jobDetails?.company_master_id}`}
+                  href={`/company/profile/${jobDetails?.company_master_id}`} scroll={false}
                   className="!bg-black !text-white h-fit whitespace-nowrap !text-[10px] 2xl:!text-sm 3xl:!text-base btn"
                 >
                   Explore More

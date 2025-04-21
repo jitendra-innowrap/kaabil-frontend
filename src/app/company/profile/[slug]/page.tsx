@@ -244,7 +244,8 @@ if(isLoading){
           <div className="my-5 md:my-8 3xl:my-10">
             <Tabs tabTitles={tabTitles}/>
           </div>
-          {(CompanyDetails?.company_description || companyGallary.length>0) &&<div id="about" className="my-5 md:my-8 xl:my-10 py-5 md:py-8 xl:py-14 2xl:py-16 rounded-xl shadow-default">
+          {(CompanyDetails?.company_description || companyGallary.length>0) &&
+          <div id="about" className="my-5 md:my-8 xl:my-10 py-5 md:py-8 xl:py-14 2xl:py-16 rounded-xl shadow-default">
             <div className="px-5 md:px-8 xl:px-14 2xl:px-16">
               {CompanyDetails?.company_description && <h2 className="text-sm 2xl:text-lg 3xl:text-xl font-semibold mb-2 md:mb-4 3xl:mb-6">About {CompanyDetails?.company_name}</h2>}
               {CompanyDetails?.company_description && 
@@ -260,7 +261,8 @@ if(isLoading){
               {companyGallary.length>0 && <CompanyGallery galleryItems={companyGallary} />}
             </div>
           </div>}
-          {jobsSlides.length>0 && <div id="jobs" className="my-5 md:my-8 xl:my-10 py-5 md:py-8 xl:py-14 2xl:py-16 rounded-xl shadow-default">
+          {jobsSlides.length>0 && 
+          <div id="jobs" className="my-5 md:my-8 xl:my-10 py-5 md:py-8 xl:py-14 2xl:py-16 rounded-xl shadow-default">
             <div className="px-5 md:px-8 xl:px-14 2xl:px-16">
               <h2 className="text-sm 2xl:text-lg 3xl:text-xl font-semibold ">{CompanyDetails?.job_count} Jobs in {CompanyDetails?.company_name}</h2>
             </div>

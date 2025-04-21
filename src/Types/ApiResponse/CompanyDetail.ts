@@ -66,6 +66,22 @@ interface CompanyDetailResponse {
     created_by: string;
     share_url: string;
   }
+  interface SuccessCard {
+    id: string;
+    profile_photo: string;
+    media_type: string;
+    media_url: string;
+    media_thumbnail: string;
+    video_title: string;
+    is_cover_media: string;
+    status: string;
+    created_date: string;
+    created_by: string;
+    share_url: string;
+    description: string;
+    name: string;
+    role: string
+  }
   // Props for the CompanyGalleryCard component
 interface CompanyGalleryCardProps {
   item: CompanyImage | CompanyVideo;

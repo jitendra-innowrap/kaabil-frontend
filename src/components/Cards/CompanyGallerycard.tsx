@@ -1,10 +1,18 @@
 import Image from 'next/image'
 import React from 'react'
 import { BiPlay } from 'react-icons/bi'
+import { motion } from 'framer-motion';
 
 export default function CompanyGallerycard({ item, onClick }:CompanyGalleryCardProps) {
   return (
-    <div className={`gallery-card w-full cursor-pointer`} onClick={onClick}>
+    <motion.div
+    custom={1}
+    initial="hidden"
+    animate="visible"
+    whileHover={{
+      scale: 1.03,
+      boxShadow: '0px 5px 5px rgba(0,0,0,0.1)',
+    }} className={`gallery-card w-full cursor-pointer rounded-xl 2xl:rounded-2xl`} onClick={onClick}>
         <div className="relative w-full h-40 xl:h-44 2xl:h-52 3xl:h-60">
           <Image
           src={item?.media_type=="2"?item?.media_thumbnail:item?.media_url}
@@ -22,6 +30,6 @@ export default function CompanyGallerycard({ item, onClick }:CompanyGalleryCardP
         {/* <h3 className='w-full text-black text-[10px] 2xl:text-sm mt-3 2xl:mt-5 3xl:mt-6'>
             Lorem ipsum dolor sit amet consectetur adipisicing.
         </h3> */}
-    </div>
+    </motion.div>
   )
 }

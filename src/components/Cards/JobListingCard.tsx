@@ -20,6 +20,7 @@ import { VscHeart, VscHeartFilled } from 'react-icons/vsc'
 import { openLoginDialog } from '@/redux/loginDialogSlice'
 import Popup from 'reactjs-popup'
 import ScreeningQuesModal from '../ScreeningQuestionsModal'
+import { motion } from 'framer-motion';
 
 export default function JobListingCard(prop:any) {
   const [openJobQuestions, setOpenJobQuestions] = useState(false);
@@ -144,7 +145,14 @@ export default function JobListingCard(prop:any) {
   return (
     <>
     <Link href={`/jobs/detail/${prop?.id}`} passHref legacyBehavior>
-      <div className='job-card h-full flex flex-col justify-between w-full border shadow-sm border-lightGrey rounded-2xl bg-white lg:p-4 3xl:p-6'>
+      <motion.div
+        custom={1}
+        initial="hidden"
+        animate="visible"
+        whileHover={{
+          scale: 1.01,
+          boxShadow: '0px 10px 20px rgba(0,0,0,0.1)',
+        }} className='job-card h-full flex flex-col justify-between w-full border shadow-sm border-lightGrey rounded-2xl bg-white lg:p-4 3xl:p-6'>
         <div className="flex gap-3 3xl:gap-4 justify-between">
             <div className="flex gap-4 lg:gap-[10px] 3xl:gap-4">
               <CompanyLogo name={prop?.company_name} logo={prop?.company_logo} index={prop?.id || 0} />
@@ -224,7 +232,7 @@ export default function JobListingCard(prop:any) {
             }{isApplied?"Applied":"quick Apply"}</button>
           </div>
         </div>
-      </div>
+      </motion.div>
     </Link>
     <Popup
       open={openJobQuestions}

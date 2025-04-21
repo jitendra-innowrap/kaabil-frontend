@@ -3,13 +3,21 @@ import { useAppSelector } from '@/redux/hooks';
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import { motion } from 'framer-motion';
 import ProfilePhoto from './ProfilePhoto';
 export interface jobcardtype{icon:string, title:string, companyId?:string, jobUrl:string}
 export default function CompanyCard({icon, title, companyId}:jobcardtype) {
   const {token} = useAppSelector((state) => state.auth);
 
   return (
-    <div className="company-card shadow-sm rounded-2xl overflow-hidden">
+    <motion.div
+      custom={1}
+      initial="hidden"
+      animate="visible"
+      // variants={cardVariants}
+      whileHover={{
+        scale: 1.03,
+      }} className="company-card shadow-sm rounded-2xl overflow-hidden">
       <div className="w-full h-[100%] flex flex-col justify-between bg-white p-3 lg:p-4 xl:p-3 2xl:p-[22px] text-center">
         <div className="block">
             <ProfilePhoto  index={1} logo={icon} styles="size-[60px] lg:size-[60px] rounded-md 2xl:rounded-lg border 2xl:size-[90px] cursor-pointer mx-auto img lg:text-[28px] 3xl:text-4xl"  name={title} />
@@ -19,6 +27,6 @@ export default function CompanyCard({icon, title, companyId}:jobcardtype) {
             View Jobs
         </Link>
     </div>
-    </div>
+    </motion.div>
   )
 }

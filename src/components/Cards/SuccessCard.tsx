@@ -1,10 +1,19 @@
 import Image from 'next/image'
 import React from 'react'
 import { BiPlay } from 'react-icons/bi'
+import { motion } from 'framer-motion';
 
 export default function SuccessCard({name, role, media_thumbnail, media_type, media_url}: SuccessCard) {
   return (
-    <div className="relative rounded-2xl 2xl:rounded-3xl">
+    <motion.div
+      custom={1}
+      initial="hidden"
+      animate="visible"
+      // variants={cardVariants}
+      whileHover={{
+        scale: 1.03,
+        boxShadow: '0px 10px 20px rgba(0,0,0,0.1)',
+      }} className="relative rounded-2xl 2xl:rounded-3xl">
             <Image
                 className="w-full rounded-2xl h-auto"
                 src={media_thumbnail ||"/"}
@@ -20,6 +29,6 @@ export default function SuccessCard({name, role, media_thumbnail, media_type, me
             {media_type=='2' && <div className="absolute cursor-pointer bottom-2 right-2 size-9 2xl:size-11 bg-white rounded-full grid place-items-center">
             <BiPlay className='translate-x-[1px]'/>
           </div>}
-        </div>
+        </motion.div>
   )
 }

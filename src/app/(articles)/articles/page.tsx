@@ -2,7 +2,7 @@
 import Breadcrumb from '@/components/Breadcrumb'
 import ArticleCard from '@/components/Cards/ArticleCard'
 import ArticleCard2 from '@/components/Cards/ArticleCard2'
-import { showToast } from '@/components/utils'
+import { formatArticleDate, showToast } from '@/components/utils'
 import { getSessionData } from '@/components/utils/deviceId'
 import api from '@/Services/Apiservice'
 import Image from 'next/image'
@@ -46,8 +46,12 @@ export default function ArticlesPage() {
             const responseData = response.data as ArticleResponse;
             if (responseData.code === 1) {
                 if (pageNum === 1) {
-                    setCoverArticle(responseData?.result?.articles?.[0]);
-                    setArticles(responseData?.result?.articles || []);
+                    // Set the first article as cover and the rest as regular articles
+                    const allArticles = responseData?.result?.articles || [];
+                    const [coverArticle, ...remainingArticles] = allArticles;
+
+                    setCoverArticle(coverArticle);
+                    setArticles(remainingArticles);
                 } else {
                     setArticles(prev => [...prev, ...(responseData?.result?.articles || [])]);
                 }
@@ -127,7 +131,7 @@ export default function ArticlesPage() {
                                                 By {coverArticle.name}
                                             </div>
                                             <div className="publish-date text-white text-[10px] 3xl:text-xs leading-[100%] mt-1">
-                                                {coverArticle.posted_date}
+                                                {formatArticleDate(coverArticle.posted_date)}
                                             </div>
                                         </div>
                                     </div>

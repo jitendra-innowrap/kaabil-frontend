@@ -29,6 +29,63 @@ export const showToast = (
   }
 };
 
+/**
+ * Formats a date string from 'YY-MM-DD' or 'YYYY-MM-DD' format to 'Month Day Year' format
+ * @param inputDate - Date string in format '25-03-16' (YY-MM-DD) or '2025-03-16' (YYYY-MM-DD)
+ * @returns Formatted date string like 'Mar 16th 2025'
+ * @throws {Error} If input format is invalid
+ */
+export const formatArticleDate = (inputDate: string): string => {
+  // Validate input format
+  if (!/^(\d{2}|\d{4})-\d{2}-\d{2}$/.test(inputDate)) {
+    throw new Error('Invalid date format. Expected YY-MM-DD or YYYY-MM-DD');
+  }
+
+  const parts = inputDate.split('-');
+  if (parts.length !== 3) {
+    throw new Error('Invalid date format. Expected YY-MM-DD or YYYY-MM-DD');
+  }
+
+  // Parse components with type safety
+  const yearPart = parseInt(parts[0], 10);
+  const month = parseInt(parts[1], 10);
+  const day = parseInt(parts[2], 10);
+
+  // Validate date components
+  if (isNaN(yearPart) || isNaN(month) || isNaN(day)) {
+    throw new Error('Invalid date components');
+  }
+
+  if (month < 1 || month > 12) {
+    throw new Error('Month must be between 1 and 12');
+  }
+
+  if (day < 1 || day > 31) {
+    throw new Error('Day must be between 1 and 31');
+  }
+
+  // Handle year (support both 2-digit and 4-digit years)
+  const fullYear = yearPart < 100 ? 2000 + yearPart : yearPart;
+
+  // Month names
+  const monthNames: string[] = [
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+  ];
+
+  // Get ordinal suffix for day
+  const getOrdinalSuffix = (d: number): string => {
+    if (d > 3 && d < 21) return 'th';
+    switch (d % 10) {
+      case 1: return 'st';
+      case 2: return 'nd';
+      case 3: return 'rd';
+      default: return 'th';
+    }
+  };
+
+  return `${monthNames[month - 1]} ${day}${getOrdinalSuffix(day)} ${fullYear}`;
+};
 export const formatSalary = (salary: number) => {
   const numStr = salary.toString();
 

@@ -1,10 +1,13 @@
 "use client"
-
 import GallerySlider from "@/components/JobDetail/Slider/GallarySlider"
 import Image from "next/image"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { motion } from 'framer-motion';
 import AnimatedNumber from "@/components/utils/AnimationNumber";
+import api from "@/Services/Apiservice";
+import { getSessionData } from "@/components/utils/deviceId";
+import { notFound } from "next/navigation";
+import { showToast } from "@/components/utils";
 
 const slideVariants = {
   initial: { opacity: 0, y: 20 },
@@ -55,54 +58,85 @@ const cardVariantsTwo = {
 }
 
 export default function AboutUs() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [testimonialsList, setTestimonials] = useState<SuccessCard[]>([]);
+  const fetchTestimonials = async () => {
+          try {
+              setIsLoading(true);
+              
+              let payload = {
+                  page: "",
+              };
+              
+              const { deviceId, secret, salt } = getSessionData();
+              if (!deviceId || !secret || !salt) {
+                  setTimeout(() => fetchTestimonials(), 1000);
+                  return;
+              }
   
-  const TextimonialCard=()=> {
+              const formData = new FormData();
+              Object.entries(payload).forEach(([key, value]) => {
+                  formData.append(key, value as string);
+              });
+  
+              const response = await api.get("Auth/aboutUsTestimonials");
+  
+              const responseData = response.data as any;
+              if (responseData.code === 1) {
+                  setTestimonials(responseData?.result?.testimonials as SuccessCard[])
+              }
+          } catch (error: any) {
+              if (error?.status == 404) {
+                  notFound();
+              }
+              console.log(error);
+              showToast(error?.message || "Failed to load testimonials", true);
+          } finally {
+              setIsLoading(false);
+          }
+      };
+  
+      useEffect(() => {
+          fetchTestimonials();
+      }, []);
+  
+  const TextimonialCard=({cover_photo, description, designation_company,id, name,user_photo}:SuccessCard)=> {
     return (
         <motion.div
             variants={slideVariants}
             initial="initial"
             whileInView="animate"
             viewport={{ once: true, amount: 0.6 }}
-      className="bg-white impact-testimonial rounded-2xl xl:rounde-[20px] 3xl:rounded-3xl p-4 md:p-5 xl:p-7 3xl:p-10"
+      className="bg-white impact-testimonial xl:min-w-[356px] rounded-2xl xl:rounde-[20px] 3xl:rounded-3xl p-4 md:p-5 xl:p-7 3xl:p-10"
     >
       {/* User Details */}
       <div className="flex flex-col md:flex-row md:items-center mb-3 md:mb-4 xl:mb-5 3xl:mb-6">
         <div className="">
           <Image
-            src="/new-assets/images/about/testimonial-profile.png"
-            alt="Shashikala Bandaru"
+            src={user_photo}
+            alt={name}
             width={80}
             height={80}
             className="rounded-full object-cover size-20 xl:size-16 3xl:size-20"
           />
         </div>
         <div className="md:ml-4 mt-[10px] md:mt-0">
-          <h3 className="font-semibold xl:text-lg 3xl:text-xl text-black truncate">Shashikala Bandaru</h3>
-          <p className="text-sm xl:text-base text-gray-600 truncate">Process Associate, TCS</p>
+          <h3 className="font-semibold xl:text-lg 3xl:text-xl text-black truncate">{name}</h3>
+          <p className="text-sm xl:text-base text-gray-600 truncate">{designation_company}</p>
         </div>
       </div>
 
       {/* Testimonial Content */}
       <p className="impact-desc text-sm xl:text-base leading-relaxed text-gray-700 md:line-clamp-6">
-        Overcoming adversity, Shashikala rose above her challenges, transforming from a stone grinder to a
-        successful Software Tester at Tata Consultancy Services Ltd. With the support of the Pride School
-        Programme, she turned her dreams into reality, proving that resilience and determination can create
-        a brighter future.
+        {description}
       </p>
         </motion.div>
     )
   }
   
-  const testimonials = [
-    <TextimonialCard/>,
-    <TextimonialCard/>,
-    <TextimonialCard/>,
-    <TextimonialCard/>,
-    <TextimonialCard/>,
-    <TextimonialCard/>,
-    <TextimonialCard/>,
-    <TextimonialCard/>,
-  ];
+  const testimonials = testimonialsList?.map((testimonial, index) => (
+      <TextimonialCard key={`${testimonial.id}-${index}`} {...testimonial} />
+  ));
   return (
     <main className={"max-w-[100vw] overflow-x-hidden"}>
       {/* Hero Section */}
@@ -445,7 +479,7 @@ export default function AboutUs() {
                             slidesPerView: 1.8,
                         },
                         1280: {
-                            slidesPerView: 3.2,
+                            slidesPerView: 3.3,
                         },
                         1400:{
                             slidesPerView: 2.95,

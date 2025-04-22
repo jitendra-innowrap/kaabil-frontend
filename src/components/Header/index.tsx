@@ -1,6 +1,6 @@
 'use client'
 import Image from 'next/image'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { SlGlobe } from 'react-icons/sl'
 import BurgerMenu from './BurgerMenu'
 import Link from 'next/link'
@@ -11,7 +11,19 @@ import { useAppSelector } from '@/redux/hooks'
 
 export default function Header() {
 const {isLoggedIn} = useAppSelector((state) => state.user);
-
+const [isMobile, setIsMobile] = useState(false);
+useEffect(() => {
+    const updateSize = () => {
+        if (window.innerWidth < 1024) {
+            setIsMobile(true);
+        } else {
+            setIsMobile(false);
+        }
+    };
+    updateSize();
+    window.addEventListener("resize", updateSize); // Listen for screen changes
+    return () => window.removeEventListener("resize", updateSize);
+}, []);
   return (
     <header className='sticky top-0 bg-white z-[101]'>
         <div className='relative'>
@@ -31,7 +43,7 @@ const {isLoggedIn} = useAppSelector((state) => state.user);
                                 />
                         </Link>
                     </div>
-                    <div className="hidden lg:flex h-full w-full flex-col w-[-webkit-fill-available]">
+                    {!isMobile?<div className={`hidden lg:flex h-full w-full flex-col w-[-webkit-fill-available]`}>
                         <div className="flex h-full justify-between items-center">
                             <ul className="flex py-4 gap-3 xl:gap-4 3xl:gap-[30px]">
                                 <li className='flex'>
@@ -98,12 +110,12 @@ const {isLoggedIn} = useAppSelector((state) => state.user);
                                 </li>
                             </ul>
                         </div>
-                    </div>
+                    </div>:
                     <div className="lg:hidden">
-                    <ul className='flex gap-[10px] items-center'>
-                        <SignInButton/>
-                    </ul>
-                    </div>
+                        <ul className='flex gap-[10px] items-center'>
+                            <SignInButton/>
+                        </ul>
+                    </div>}
                 </div>
             </div>
         </div>

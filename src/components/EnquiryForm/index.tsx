@@ -286,6 +286,7 @@ export default function EnquiryForm() {
                         </label>
                         <textarea
                             id="feedback"
+                            
                             name="feedback"
                             placeholder="Enter your feedback"
                             value={formikForm.values.feedback}

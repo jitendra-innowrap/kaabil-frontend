@@ -18,7 +18,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound, useParams, useRouter } from "next/navigation";
 import { json, text } from "node:stream/consumers";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { CiCalendar, CiHeart } from "react-icons/ci";
 import { FaCheck, FaFacebook, FaLinkedinIn } from "react-icons/fa";
@@ -40,6 +40,7 @@ import ScreeningQuesModal from "@/components/ScreeningQuestionsModal";
 import ShareButtons from "@/components/SocialShare";
 import appConfig from "@/config/app.config";
 import { branchIo, setOpenShare } from "@/redux/jobsFilterSlice";
+import { motion } from "framer-motion";
 
 export default function Home() {
   const { slug } = useParams();
@@ -60,6 +61,26 @@ export default function Home() {
   );
   const [similarJobs, setSimilarJobs] = useState<CompanyJob[]>([]);
   const router = useRouter();
+  const [scrollClass, setScrollClass] = useState(false);
+  const scrollRef = useRef(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const current = window.scrollY;
+      const isScrollingUp = current < scrollRef.current;
+      scrollRef.current = current;
+      if(isScrollingUp || current > 100){
+        setScrollClass(true)
+      }
+      if (isScrollingUp || current ===0) {
+        setScrollClass(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
 
   const closeScreeningModal = () => {
     setOpenJobQuestions(false);
@@ -325,7 +346,8 @@ export default function Home() {
   return (
     <main className="bg-white">
       {/* Add to stick  */}
-      <section className="bg-[#FDEAC9] py-6 xl:py-8 sm:sticky sm:top-[52px] lg:top-[56px] 3xl:top-[90px] z-10">
+      <section
+      className={`bg-[#FDEAC9] py-6 xl:py-8 sm:sticky sm:top-[52px] lg:top-[56px] 3xl:top-[90px] z-10`}>
         <div className="container relative z-[1]">
           <div className="flex justify-between flex-wrap xl:flex-nowrap flex-col sm:flex-row sm:items-end gap-5 xl:gap-7 2xl:gap-8">
             <div className="flex justify-between flex-row gap-3 2xl:gap-5 3xl:gap-8 lg:max-w-[calc(100%_-_300px)]">
@@ -344,104 +366,118 @@ export default function Home() {
                 <p className="text-[#231F20] text-xs 2xl:text-sm 3xl:text-base mt-1">
                   {jobDetails?.company_name}
                 </p>
-                <div className="flex items-center flex-wrap xl:flex-nowrap mt-4 2xl:mt-6 gap-4 3xl:gap-6">
-                  {/* Option 1 */}
-                  <div className="flex gap-2 3xl:gap-3">
-                    <Image
-                      src="/new-assets/icons/briefcase-red.svg"
-                      width={80}
-                      height={80}
-                      alt="Briefcase icon"
-                      className="size-4 3xl:size-6"
-                    />
-                    <div className="text-[#231F20] flex items-center">
-                      <strong className="block text-xs 2xl:text-sm font-normal xl:whitespace-nowrap">
-                        {showExperience(
-                          jobDetails?.min_exp || "0",
-                          jobDetails?.max_exp || "0",
-                          "years"
-                        )}
-                      </strong>
-                    </div>
-                  </div>
-
-                  {/* Option 2 */}
-                  <div className="flex gap-2 3xl:gap-3">
-                    <Image
-                      src="/new-assets/icons/clock-red.svg"
-                      width={80}
-                      height={80}
-                      alt="Clock icon"
-                      className="size-4 3xl:size-6"
-                    />
-                    <div className="text-[#231F20] flex items-center">
-                      <strong className="block text-xs 2xl:text-sm font-normal xl:whitespace-nowrap">
-                        {jobDetails?.job_type}
-                      </strong>
-                    </div>
-                  </div>
-
-                  {/* Option 3 */}
-                  <div className="flex gap-2 3xl:gap-3">
-                    <Image
-                      src="/new-assets/icons/wallet-red.svg"
-                      width={80}
-                      height={80}
-                      alt="Wallet icon"
-                      className="size-4 3xl:size-6"
-                    />
-                    <div className="text-[#231F20] flex items-center">
-                      {jobDetails?.is_industry_standard == "1" ||
-                      ((jobDetails?.min_salary === null ||
-                        jobDetails?.min_salary === "" ||
-                        jobDetails?.min_salary === "0") &&
-                        (jobDetails?.max_salary === null ||
-                          jobDetails?.max_salary === "" ||
-                          jobDetails?.max_salary === "0")) ? (
+                {true && 
+                <motion.div
+                initial={{ y: 0, opacity: 1 }}
+                animate={{
+                  y: !scrollClass ? 0 : -10,
+                  height: !scrollClass? 'auto': '0px',
+                  opacity: !scrollClass ? 1 : 0,
+                }}
+                transition={{
+                  type: "ease",
+                  damping: 20,
+                  stiffness: 300
+                }} className={`job-header-options transition-all duration-300 overflow-hidden`}>
+                  <div className="flex items-center flex-wrap xl:flex-nowrap mt-4 2xl:mt-6 gap-4 3xl:gap-6">
+                    {/* Option 1 */}
+                    <div className="flex gap-2 3xl:gap-3">
+                      <Image
+                        src="/new-assets/icons/briefcase-red.svg"
+                        width={80}
+                        height={80}
+                        alt="Briefcase icon"
+                        className="size-4 3xl:size-6"
+                      />
+                      <div className="text-[#231F20] flex items-center">
                         <strong className="block text-xs 2xl:text-sm font-normal xl:whitespace-nowrap">
-                          As per Industry standards
-                        </strong>
-                      ) : (
-                        <strong className="block text-xs 2xl:text-sm font-normal xl:whitespace-nowrap">
-                          {showSalaryJobDetails(
-                            jobDetails?.is_industry_standard || "0",
-                            jobDetails?.salary_range_unit || "0",
-                            jobDetails?.min_salary || "0",
-                            jobDetails?.max_salary || "0"
+                          {showExperience(
+                            jobDetails?.min_exp || "0",
+                            jobDetails?.max_exp || "0",
+                            "years"
                           )}
-                          {` ${
-                            jobDetails?.salary_range_unit == "1"
-                              ? ` month`
-                              : ` year`
-                          }`}
                         </strong>
-                      )}
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Option 4 */}
-                  <div className="flex gap-2 3xl:gap-3">
-                    <Image
-                      src="/new-assets/icons/location-pin-red.svg"
-                      width={80}
-                      height={80}
-                      alt="Map pin icon"
-                      className="size-4 3xl:size-6"
-                    />
-                    <div className="text-[#231F20] flex items-center">
-                      <strong className="block text-xs 2xl:text-sm font-normal max-w-[300px] xl:max-w-[180px] 2xl:max-w-[200px] 3xl:max-w-[260px] line-clamp-1 xl:whitespace-nowrap truncate">
-                        {jobDetails?.jobs_location?.[0]?.job_location ||
-                          "Remote"}
-                      </strong>
+                    {/* Option 2 */}
+                    <div className="flex gap-2 3xl:gap-3">
+                      <Image
+                        src="/new-assets/icons/clock-red.svg"
+                        width={80}
+                        height={80}
+                        alt="Clock icon"
+                        className="size-4 3xl:size-6"
+                      />
+                      <div className="text-[#231F20] flex items-center">
+                        <strong className="block text-xs 2xl:text-sm font-normal xl:whitespace-nowrap">
+                          {jobDetails?.job_type}
+                        </strong>
+                      </div>
                     </div>
+
+                    {/* Option 3 */}
+                    <div className="flex gap-2 3xl:gap-3">
+                      <Image
+                        src="/new-assets/icons/wallet-red.svg"
+                        width={80}
+                        height={80}
+                        alt="Wallet icon"
+                        className="size-4 3xl:size-6"
+                      />
+                      <div className="text-[#231F20] flex items-center">
+                        {jobDetails?.is_industry_standard == "1" ||
+                        ((jobDetails?.min_salary === null ||
+                          jobDetails?.min_salary === "" ||
+                          jobDetails?.min_salary === "0") &&
+                          (jobDetails?.max_salary === null ||
+                            jobDetails?.max_salary === "" ||
+                            jobDetails?.max_salary === "0")) ? (
+                          <strong className="block text-xs 2xl:text-sm font-normal xl:whitespace-nowrap">
+                            As per Industry standards
+                          </strong>
+                        ) : (
+                          <strong className="block text-xs 2xl:text-sm font-normal xl:whitespace-nowrap">
+                            {showSalaryJobDetails(
+                              jobDetails?.is_industry_standard || "0",
+                              jobDetails?.salary_range_unit || "0",
+                              jobDetails?.min_salary || "0",
+                              jobDetails?.max_salary || "0"
+                            )}
+                            {` ${
+                              jobDetails?.salary_range_unit == "1"
+                                ? ` month`
+                                : ` year`
+                            }`}
+                          </strong>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Option 4 */}
+                    <div className="flex gap-2 3xl:gap-3">
+                      <Image
+                        src="/new-assets/icons/location-pin-red.svg"
+                        width={80}
+                        height={80}
+                        alt="Map pin icon"
+                        className="size-4 3xl:size-6"
+                      />
+                      <div className="text-[#231F20] flex items-center">
+                        <strong className="block text-xs 2xl:text-sm font-normal max-w-[300px] xl:max-w-[180px] 2xl:max-w-[200px] 3xl:max-w-[260px] line-clamp-1 xl:whitespace-nowrap truncate">
+                          {jobDetails?.jobs_location?.[0]?.job_location ||
+                            "Remote"}
+                        </strong>
+                      </div>
+                    </div>
+                    {skillMatchCount > 0 && (
+                      <span className="label green flex font-medium 3xl:font-medium !lowercase items-center xl:whitespace-nowrap">
+                        {skillMatchCount} {skillMatchCount==1?"skill":"skills"} match{" "}
+                        <FaCheck className="ml-1 3xl:ml-2 text-[8px] 3xl:text-xs font-light" />{" "}
+                      </span>
+                    )}
                   </div>
-                  {skillMatchCount > 0 && (
-                    <span className="label green flex font-medium 3xl:font-medium !lowercase items-center xl:whitespace-nowrap">
-                      {skillMatchCount} {skillMatchCount==1?"skill":"skills"} match{" "}
-                      <FaCheck className="ml-1 3xl:ml-2 text-[8px] 3xl:text-xs font-light" />{" "}
-                    </span>
-                  )}
-                </div>
+                </motion.div>}
               </div>
             </div>
             {token ? (

@@ -1,18 +1,9 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import { formatArticleDate } from '../utils'
 
 export default function ArticleCard2(props: ArticleCard) {
-  const articleData={
-    slug:"mental-health-support",
-    image:"/new-assets/images/article1.png",
-    title: "Mental health support- not a one-off area of focus",
-    desc: "Mental health is an essential pillar of our overall well-being, yet it has historically been overshadowed by physical health. It’s only in recent years that",
-    authorProfile: "/new-assets/images/articles/author-profile.png",
-    authorName: "Praveen Kumari Singh",
-    publishDate: "Oct 20th 2024"
-
-  }
   return (
     <Link href={`/articles/${props?.id}`} className='!P-[5px] block h-full rounded-xl shadow-lg relative bg-white cursor-pointer group'>
         <div className="block p-[5px]">
@@ -45,7 +36,7 @@ export default function ArticleCard2(props: ArticleCard) {
                 </div>
                 <div className="author-info flex flex-wrap">
                     <div className="author-name text-black font-medium whitespace-nowrap truncate text-[10px] 2xl:text-sm">By {props?.name || 'Anonymus User'} |</div>
-                    <span className='font-light ml-1 text-[#898989] whitespace-nowrap text-[10px] 2xl:text-sm'>{props?.posted_date}</span> 
+                    <span className='font-light ml-1 text-[#898989] whitespace-nowrap text-[10px] 2xl:text-sm'>{formatArticleDate(props?.posted_date)}</span> 
                 </div>
               </div>
                 <Link href={`/articles/${props.id}`} className='underline ml-auto font-medium text-[10px] 2xl:text-sm'>Read more</Link>

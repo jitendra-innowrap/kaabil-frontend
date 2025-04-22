@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import { formatArticleDate } from '../utils'
 
 export default function ArticleCard({ cover_photo, id, name, posted_date, short_description, title, user_photo}:ArticleCard) {
   return (
@@ -24,7 +25,7 @@ export default function ArticleCard({ cover_photo, id, name, posted_date, short_
                 <p className='font-light text-[#626262] text-xs 2xl:text-base line-clamp-5 mb-6 md:mb-4 xl:mb-5'>{short_description}</p>
               </div>
               <div className="flex justify-between article-footer absolute w-full bottom-3 left-0 px-3 md:px-4 2xl:px-5">
-                  <span className='font-light text-[#898989] text-[10px] 2xl:text-sm'>{posted_date}</span> 
+                  <span className='font-light text-[#898989] text-[10px] 2xl:text-sm'>{formatArticleDate(posted_date)}</span> 
                   <Link href={`/articles/${id}`} className='underline font-medium text-[10px] 2xl:text-sm'>Read more</Link>
               </div>
             </div>

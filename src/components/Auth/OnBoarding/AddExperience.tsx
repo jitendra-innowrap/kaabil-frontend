@@ -156,8 +156,7 @@ export default function AddExperience({ size, closePopup, handleBack }: any) {
     },
   });
 
-  const handleExperienceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(e.target.value);
+  const handleExperienceChange = (value:number) => {
     formik.setFieldValue("is_fresher", value);
   };
 
@@ -221,6 +220,7 @@ export default function AddExperience({ size, closePopup, handleBack }: any) {
                       ? "border-red bg-[#FDF1F3]"
                       : "border-[#C8C9CB1A]"
                   }`}
+                  onClick={()=>handleExperienceChange(2)}
                 >
                   <input
                     type="radio"
@@ -228,7 +228,6 @@ export default function AddExperience({ size, closePopup, handleBack }: any) {
                     name="is_fresher"
                     className="cursor-pointer inline-block !m-0 !w-4 !h-4"
                     value={2}
-                    onChange={handleExperienceChange}
                     checked={formik.values.is_fresher === 2}
                   />
                   <div className="!mb-0 gap-2 inline-block cursor-pointer text-[11px] sm:text-[14px]">
@@ -242,6 +241,7 @@ export default function AddExperience({ size, closePopup, handleBack }: any) {
                       ? "border-red bg-[#FDF1F3]"
                       : "border-[#C8C9CB1A]"
                   }`}
+                  onClick={()=>handleExperienceChange(1)}
                 >
                   <input
                     type="radio"
@@ -249,7 +249,6 @@ export default function AddExperience({ size, closePopup, handleBack }: any) {
                     name="is_fresher"
                     className="cursor-pointer inline-block !m-0 !w-4 !h-4"
                     value={1}
-                    onChange={handleExperienceChange}
                     checked={formik.values.is_fresher === 1}
                   />
                   <div className="!mb-0 gap-2 inline-block cursor-pointer text-[11px] sm:text-[14px]">

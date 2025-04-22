@@ -538,7 +538,7 @@ export default function Home() {
                             <SuccessGallary galleryItems={testimonial} />
                         </div>
                     </motion.div>
-                    <button className="btn-border 2xl:w-[218px] 2xl:h-[50px] text-xs 2xl:text-base mt-0 md:mt-8 2xl:mt-10">View All Stories</button>
+                    {/* <button className="btn-border 2xl:w-[218px] 2xl:h-[50px] text-xs 2xl:text-base mt-0 md:mt-8 2xl:mt-10">View All Stories</button> */}
                 </div>
             </section>
             <section className="bg-[#F8F8F8]">

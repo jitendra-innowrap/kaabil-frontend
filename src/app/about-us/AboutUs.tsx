@@ -8,6 +8,7 @@ import api from "@/Services/Apiservice";
 import { getSessionData } from "@/components/utils/deviceId";
 import { notFound } from "next/navigation";
 import { showToast } from "@/components/utils";
+import TestimonialCardLoader from "@/components/Cards/TestimonialCardLoader";
 
 const slideVariants = {
   initial: { opacity: 0, y: 20 },
@@ -134,7 +135,13 @@ export default function AboutUs() {
     )
   }
   
-  const testimonials = testimonialsList?.map((testimonial, index) => (
+  const testimonials =  isLoading
+  ? Array.from({ length: 5 }).map((_, i) => (
+      <div key={`loader-${i}`}>
+        <TestimonialCardLoader />
+      </div>
+    )):
+    testimonialsList?.map((testimonial, index) => (
       <TextimonialCard key={`${testimonial.id}-${index}`} {...testimonial} />
   ));
   return (
@@ -463,6 +470,7 @@ export default function AboutUs() {
           {/* Right Section: Testimonials */}
           <div className="w-[calc(100%_+_200px)] impact-slides-container pl-2 md:pl-0">
             {/* User Details */}
+            
             <GallerySlider
                     slides={testimonials}
                     spaceBetween={24}

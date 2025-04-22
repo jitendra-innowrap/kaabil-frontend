@@ -48,12 +48,16 @@ const NotificationCard = ({
   handleClose: () => void;
 }) => {
   const router = useRouter();
-  
+  const {token, name, id, photo_url} = useSelector((state: RootState) => state.user);
   const handleRead = async () => {
     if(notification?.read_status==="0") await onRead(notification.id, );
     if (notification?.routsId === "3" && notification?.job_id) {
       handleClose();
       router.push(`/jobs/detail/${notification?.job_id}`);
+    }
+    if (notification?.routsId === "2" && notification?.job_id) {
+      handleClose();
+      router.push(`https://meuat.kaam.com/jobseeker/inbox?admin_id=17&token=${token}&user_id=${id}&user_name=${name}&user_photo_url=${photo_url}`);
     }
   };
 

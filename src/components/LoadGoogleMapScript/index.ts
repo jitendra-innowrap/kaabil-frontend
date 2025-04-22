@@ -9,28 +9,8 @@ import { setHelpVideoData, setNudgesVisibility, setUserDesignation, setUserName,
 
 export default function LoadGoogleMapsScript() {
   const dispatch = useDispatch();
-  const {token} = useAppSelector((state) => state.auth);
   const {profileData} = useAppSelector((state) => state.profile);
   const {id, isLoggedIn, isProfileUpdate} = useAppSelector((state) => state.user);
-
-  // useEffect(() => {
-  //   // Load Google Maps script
-  //   const script = document.createElement('script');
-  //   script.src = `https://maps.googleapis.com/maps/api/js?key=${google_map_api_key}&libraries=places`;
-  //   script.async = true;
-  //   script.onload = () => {
-  //     // Initialize the autocomplete service
-  //     const autocompleteService = new window.google.maps.places.AutocompleteService();
-  //     dispatch(setAutocompleteService(autocompleteService)); // Store in Redux
-  //     dispatch(setScriptLoaded(true)); // Mark script as loaded
-  //   };
-  //   document.body.appendChild(script);
-
-  //   // Cleanup
-  //   return () => {
-  //     document.body.removeChild(script);
-  //   };
-  // }, [dispatch]);
 
   useEffect(() => {
     const fetchUserSkills = async () => {

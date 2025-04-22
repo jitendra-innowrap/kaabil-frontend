@@ -53,7 +53,8 @@ messaging.onBackgroundMessage((payload) => {
       console.error('Payload is undefined');
       return;
     }
-
+    
+    console.error('Payload:', payload);
     const notificationTitle = payload.notification?.title || 
                              payload.data?.company_name || 
                              'New Notification';
@@ -79,3 +80,22 @@ messaging.onBackgroundMessage((payload) => {
     console.error('Error in background message handler:', error);
   }
 });
+
+// chat notification data 
+
+      // attachment_type: '0',
+      // user_type: '',
+      // attachment: '',
+      // insert_id: '1190',
+      // from_id: '499',
+      // company_name: 'Capgemini',
+      // text: 'share cv',
+      // to_id: '17',
+      // type: '2',
+      // title: 'jyoti has sent you a message.',
+      // channel: '5z26Q9Id7zYlAhRD6gdU3g==',
+      // company_logo: '',
+      // created_date: '15:07 pm',
+      // company_location: 'Mumbai',
+      // from_user_name: 'jyoti',
+      // from_photo_url: ''

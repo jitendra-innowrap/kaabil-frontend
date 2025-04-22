@@ -14,6 +14,7 @@ import {
 import styles from "../SignIn/signIn.module.css";
 import { IoClose } from "react-icons/io5";
 import whatsAppIcon from "../../../../public/new-assets/icons/whatsapp-icon.svg";
+import { showToast } from "@/components/utils";
 
 interface prop {
   closePopup: () => void;
@@ -66,11 +67,25 @@ export default function OnBoardingComplete({ size, closePopup }: any) {
   };
 
 
-
+  // Add this validation function
+  const validateImageSize = (file: File) => {
+    const maxSize = 1 * 1024 * 1024; // 5MB in bytes
+    if (file.size > maxSize) {
+      return "Image size should not exceed 1MB";
+    }
+    return null;
+  };
   const handleUploadPhoto = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
 
     if (file) {
+      const validationError = validateImageSize(file);
+      if (validationError) {
+        showToast(validationError, true);
+        // Clear the file input
+        e.target.value = '';
+        return;
+      }
       // Ensure file is not undefined
       try {
         const formData = new FormData();
@@ -152,7 +167,7 @@ export default function OnBoardingComplete({ size, closePopup }: any) {
               <Image
                 src={photo_url || "/new-assets/icons/avatar.svg"}
                 alt="profile-photo"
-                className="w-[60px] h-[60px] sm:w-[100px] sm:h-[100px] rounded-full flex-shrink-0 object-cover mx-auto block"
+                className="w-[60px] h-[60px] sm:w-[100px] sm:h-[100px] rounded-full border flex-shrink-0 object-cover mx-auto block"
                 width={150}
                 height={150}
               />

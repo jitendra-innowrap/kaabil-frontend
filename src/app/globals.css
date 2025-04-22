@@ -21,7 +21,7 @@ html {
 }
 body {
   max-width: 100vw;
-  background-color: #ffffff;
+  background-color: #f9f9f9;
   overscroll-behavior: none !important;
   overscroll-behavior-y: contain !important;
 }
@@ -787,6 +787,7 @@ label {
     outline: none !important;
   }
 }
+
 @media (min-width: 1024px) {
   button,
   .btn,
@@ -960,6 +961,10 @@ label {
     /* max-height: calc(100vh - 400px); */
     transform: none !important;
     scale: 0.6;
+  }
+  
+  .featured-articles {
+    margin-inline: -40px;
   }
 }
 @media (width >=1280px) {
@@ -1403,6 +1408,10 @@ label {
   }
   .popup-content.enquiry-content{
     max-width: 430px;
+  }
+  
+  .featured-articles {
+    margin-inline: -75px;
   }
 }
 

@@ -42,6 +42,8 @@ export default function Home() {
             jobUrl: "/"
            },
     ])
+    const [articles, setArticles] = useState<ArticleCard[]>([]);
+    const [testimonial, setTestimonial] = useState<SuccessCard[]>([]);
     const [topCompanies, setTopCompanies] = useState<jobcardtype[]>([]);
     const [topIndustries, setTopIndustries] = useState<industryCard[]>([]);
     const router = useRouter();
@@ -76,6 +78,8 @@ export default function Home() {
               companyId: `${comp?.id}`,
               jobUrl: `/`
             })));
+            setArticles(response?.data?.result?.articles)
+            setTestimonial(response?.data?.result?.testimonials)
             const colors = ["#FDEAC9", "#DDF4E9", "#F9D1D7", "#E6E7E8"]; // Define the colors array
             setTopIndustries(response?.data?.result?.top_industries?.map((ind: any, i: number) => ({
               icon: ind?.industry_icon || "/new-assets/icons/company_icon_placeholder.png",
@@ -136,152 +140,6 @@ export default function Home() {
          jobUrl: "/"
         },
     ]
-    const successList = [
-        {
-            id: '1',
-            profile_photo: '/new-assets/success-slider/slide1.png',
-            media_type: '2',
-            media_url: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
-            media_thumbnail: '/new-assets/success-slider/slide1.png',
-            video_title: 'testimonial video',
-            is_cover_media: 'true',
-            status: '1',
-            created_date: '',
-            created_by: '',
-            share_url: '',
-            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem",
-            name: 'rekha mehta',
-            role: 'commis chef',       
-        },
-        {
-            id: '1',
-            profile_photo: '/new-assets/success-slider/slide1.png',
-            media_type: '1',
-            media_url: 'string',
-            media_thumbnail: '/new-assets/success-slider/slide1.png',
-            video_title: 'testimonial video',
-            is_cover_media: 'true',
-            status: '1',
-            created_date: '',
-            created_by: '',
-            share_url: '',
-            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem",
-            name: 'rekha mehta',
-            role: 'commis chef',       
-        },
-        {
-            id: '1',
-            profile_photo: '/new-assets/success-slider/slide1.png',
-            media_type: '2',
-            media_url: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
-            media_thumbnail: '/new-assets/success-slider/slide1.png',
-            video_title: 'testimonial video',
-            is_cover_media: 'true',
-            status: '1',
-            created_date: '',
-            created_by: '',
-            share_url: '',
-            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem",
-            name: 'rekha mehta',
-            role: 'commis chef',       
-        },
-        {
-            id: '1',
-            profile_photo: '/new-assets/success-slider/slide1.png',
-            media_type: '1',
-            media_url: 'string',
-            media_thumbnail: '/new-assets/success-slider/slide1.png',
-            video_title: 'testimonial video',
-            is_cover_media: 'true',
-            status: '1',
-            created_date: '',
-            created_by: '',
-            share_url: '',
-            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem",
-            name: 'rekha mehta',
-            role: 'commis chef',       
-        },
-        {
-            id: '1',
-            profile_photo: '/new-assets/success-slider/slide1.png',
-            media_type: '2',
-            media_url: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
-            media_thumbnail: '/new-assets/success-slider/slide1.png',
-            video_title: 'testimonial video',
-            is_cover_media: 'true',
-            status: '1',
-            created_date: '',
-            created_by: '',
-            share_url: '',
-            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem",
-            name: 'rekha mehta',
-            role: 'commis chef',       
-        },
-        {
-            id: '1',
-            profile_photo: '/new-assets/success-slider/slide1.png',
-            media_type: '1',
-            media_url: 'string',
-            media_thumbnail: '/new-assets/success-slider/slide1.png',
-            video_title: 'testimonial video',
-            is_cover_media: 'true',
-            status: '1',
-            created_date: '',
-            created_by: '',
-            share_url: '',
-            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem",
-            name: 'rekha mehta',
-            role: 'commis chef',       
-        },
-        {
-            id: '1',
-            profile_photo: '/new-assets/success-slider/slide1.png',
-            media_type: '1',
-            media_url: 'string',
-            media_thumbnail: '/new-assets/success-slider/slide1.png',
-            video_title: 'testimonial video',
-            is_cover_media: 'true',
-            status: '1',
-            created_date: '',
-            created_by: '',
-            share_url: '',
-            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem",
-            name: 'rekha mehta',
-            role: 'commis chef',       
-        },
-        {
-            id: '1',
-            profile_photo: '/new-assets/success-slider/slide1.png',
-            media_type: '1',
-            media_url: 'string',
-            media_thumbnail: '/new-assets/success-slider/slide1.png',
-            video_title: 'testimonial video',
-            is_cover_media: 'true',
-            status: '1',
-            created_date: '',
-            created_by: '',
-            share_url: '',
-            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem",
-            name: 'rekha mehta',
-            role: 'commis chef',       
-        },
-        {
-            id: '1',
-            profile_photo: '/new-assets/success-slider/slide1.png',
-            media_type: '1',
-            media_url: 'string',
-            media_thumbnail: '/new-assets/success-slider/slide1.png',
-            video_title: 'testimonial video',
-            is_cover_media: 'true',
-            status: '1',
-            created_date: '',
-            created_by: '',
-            share_url: '',
-            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem",
-            name: 'rekha mehta',
-            role: 'commis chef',       
-        },
-    ]
 
     const nudges = [
         <ResumeBuilder/>,
@@ -302,8 +160,8 @@ export default function Home() {
         </div>
       ));
 
-    const articleSlides = jobsList.map((job, index) => (
-        <ArticleCard key={index} {...job} />
+    const articleSlides = articles.map((article, index) => (
+        <ArticleCard key={index} {...article} />
     ));
 
     const inputSlides = topIndustries?.map((job, index) => (
@@ -399,7 +257,7 @@ export default function Home() {
                         initial="hidden"
                         whileInView="visible"
                         viewport={{ once: true }}
-                        className='text-black text-center mx-auto inline-flex flex-wrap justify-center text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[64px] mb-5 xl:mb-8 font-medium'
+                        className='text-black text-center mx-auto inline-flex flex-wrap justify-center items-center text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[64px] mb-5 xl:mb-8 font-medium'
                     >
                         {heading.split("").map((char, index) => (
                             <motion.span key={`char-${index}`} variants={letter}>
@@ -408,8 +266,8 @@ export default function Home() {
                         ))}
 
                         {/* Animate the "Kaabil!" text with letter-wise animation */}
-                        <motion.span
-                            className="font-kalam font-bold text-red ml-[6px]"
+                        <motion.p
+                            className="font-kalam font-bold text-red ml-[6px] translate-y-[2px]"
                             variants={sentence}
                         >
                             {kaabilText.split("").map((char, index) => (
@@ -417,7 +275,7 @@ export default function Home() {
                                     {char === " " ? "\u00A0" : char}
                                 </motion.span>
                             ))}
-                        </motion.span>
+                        </motion.p>
                     </motion.h2>
 
                         <div className="hidden lg:block">
@@ -677,7 +535,7 @@ export default function Home() {
                         whileInView="visible"
                         viewport={{ once: true, amount: 0.4 }} className="container big !px-5">
                         <div className="block">
-                            <SuccessGallary galleryItems={successList} />
+                            <SuccessGallary galleryItems={testimonial} />
                         </div>
                     </motion.div>
                     <button className="btn-border 2xl:w-[218px] 2xl:h-[50px] text-xs 2xl:text-base mt-0 md:mt-8 2xl:mt-10">View All Stories</button>
@@ -704,7 +562,7 @@ export default function Home() {
                             spaceBetween={25}
                             showNavigation
                             loop={true}
-                            autoplay={true}
+                            autoplay={false}
                             autoplayDuration={3000}
                             freeMode={false}
                             slidesPerView={1}

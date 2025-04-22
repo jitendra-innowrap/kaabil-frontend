@@ -69,7 +69,7 @@ export default function page() {
         <ArticleCard2 key={index} {...job} />
     ))
     return (
-        <main className=''>
+        <main className='bg-white'>
             <div className="image-wrapper h-[400px] md:h-[600px] max-h-[60vh] 3xl:h-[807px] w-full relative">
                 <Image
                     src={'/new-assets/images/articles/article-1.webp'}
@@ -112,34 +112,36 @@ export default function page() {
             <section className='section-shadow'>
                 <div className="container py-11 md:py-12 xl:py-14 3xl:py-[67px]">
                     <h2 className='text-[22px] leading-[24px] md:text-2xl xl:text-3xl 3xl:text-[34px] font-medium mb-4 md:mb-6 xl:mb-8 3xl:mb-10'>Featured articles</h2>                       
-                    <GallerySlider
-                    slides={slides as any}
-                    spaceBetween={25}
-                    showNavigation
-                    loop={true}
-                    autoplay={true}
-                    autoplayDuration={3000}
-                    freeMode={false}
-                    arrowOut
-                    slidesPerView={1}
-                    breakpoints={{
-                        320: {
-                            slidesPerView: 1.3,
-                        },
-                        768: {
-                            slidesPerView: 1.5,
-                        },
-                        1024: {
-                            slidesPerView: 2,
-                        },
-                        1200: {
-                            slidesPerView: 3,
-                        },
-                        1500: {
-                            slidesPerView: 3,
-                        },
-                        }}
-                    />
+                    <div className="featured-articles">
+                        <GallerySlider
+                        slides={slides as any}
+                        spaceBetween={25}
+                        showNavigation
+                        loop={true}
+                        autoplay={true}
+                        autoplayDuration={3000}
+                        freeMode={false}
+                        arrowOut
+                        slidesPerView={1}
+                        breakpoints={{
+                            320: {
+                                slidesPerView: 1.3,
+                            },
+                            768: {
+                                slidesPerView: 1.5,
+                            },
+                            1024: {
+                                slidesPerView: 2,
+                            },
+                            1200: {
+                                slidesPerView: 3,
+                            },
+                            1500: {
+                                slidesPerView: 3,
+                            },
+                            }}
+                        />
+                    </div>
                 </div>
             </section>
         </main>

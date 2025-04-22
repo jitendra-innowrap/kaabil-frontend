@@ -73,7 +73,14 @@ const ProfileModal = ({ size }: any) => {
   const closePopup = () => {
     dispatch(setProfileModal(false));
   };
-
+  // Add this validation function
+  const validateImageSize = (file: File) => {
+    const maxSize = 1 * 1024 * 1024; // 5MB in bytes
+    if (file.size > maxSize) {
+      return "Image size should not exceed 1MB";
+    }
+    return null;
+  };
   console.log(profileData?.user_job_roles, "Need To Check Skills and roles");
   const [dialogHeight, setDialogHeight] = useState('calc(100dvh - 225px)');
 
@@ -297,15 +304,22 @@ const ProfileModal = ({ size }: any) => {
                           accept=".jpg,.jpeg,.png"
                           className="hidden"
                           onChange={(e) => {
-                            const file: any = e.target.files?.[0];
+                            const file = e.target.files?.[0];
                             if (file) {
+                              const validationError = validateImageSize(file);
+                              if (validationError) {
+                                toast.error(validationError, {
+                                  position: "bottom-right",
+                                });
+                                // Clear the file input
+                                e.target.value = '';
+                                return;
+                              }
+                              
                               setFieldValue("photo_url", file);
                               const reader = new FileReader();
                               reader.onload = (event) => {
-                                setFieldValue(
-                                  "photo_img",
-                                  event.target?.result
-                                );
+                                setFieldValue("photo_img", event.target?.result);
                               };
                               reader.readAsDataURL(file);
                             }

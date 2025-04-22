@@ -14,7 +14,7 @@ export default function ArticleCard2(props: ArticleCard) {
 
   }
   return (
-    <Link href={`/articles/${props?.id}`} className='!P-[5px] block rounded-xl shadow-lg bg-white cursor-pointer group'>
+    <Link href={`/articles/${props?.id}`} className='!P-[5px] block h-full rounded-xl shadow-lg relative bg-white cursor-pointer group'>
         <div className="block p-[5px]">
         <div className="overflow-hidden rounded-lg">
           <Image
@@ -28,9 +28,12 @@ export default function ArticleCard2(props: ArticleCard) {
         </div>
         </div>   
         <div className="block p-3 md:p-4 2xl:p-5">
-            <h3 className='font-medium text-black text-[16px] md:text-base 2xl:text-2xl mb-2 lg:mb-4 xl:mb-5 2xl:mb-6 line-clamp-3'>{props?.title}</h3>
-            <p className='font-light text-[#626262] text-xs 2xl:text-base line-clamp-5  mb-4 xl:mb-5'>{props?.short_description}</p>
-            <div className="flex justify-between gap-2 sm:gap-1 flex-wrap">
+          <div className="article-content">
+            <div className="article-info">
+              <h3 className='font-medium text-black text-[16px] md:text-base 2xl:text-2xl mb-2 lg:mb-4 xl:mb-5 2xl:mb-6 line-clamp-3'>{props?.title}</h3>
+              <p className='font-light text-[#626262] text-xs 2xl:text-base line-clamp-5 mb-16 sm:mb-6 xl:mb-10'>{props?.short_description}</p>
+            </div>
+            <div className="article-footer absolute w-full bottom-3 left-0 px-3 md:px-4 2xl:px-5 flex justify-between gap-2 sm:gap-1 flex-wrap">
               <div className="flex items-center gap-1">
                 <div className="author-image relative size-6 rounded-full border">
                     <Image
@@ -40,13 +43,14 @@ export default function ArticleCard2(props: ArticleCard) {
                         alt='By Dummy Name '
                     />
                 </div>
-                <div className="author-info">
-                    <div className="author-name text-black font-medium  text-[10px] 2xl:text-sm">By {props?.name || 'Anonymus User'} |</div>
+                <div className="author-info flex flex-wrap">
+                    <div className="author-name text-black font-medium whitespace-nowrap truncate text-[10px] 2xl:text-sm">By {props?.name || 'Anonymus User'} |</div>
+                    <span className='font-light ml-1 text-[#898989] whitespace-nowrap text-[10px] 2xl:text-sm'>{props?.posted_date}</span> 
                 </div>
-                <span className='font-light text-[#898989] text-[10px] 2xl:text-sm'>{props?.posted_date}</span> 
               </div>
-                <Link href={`/articles/new`} className='underline ml-auto font-medium text-[10px] 2xl:text-sm'>Read more</Link>
+                <Link href={`/articles/${props.id}`} className='underline ml-auto font-medium text-[10px] 2xl:text-sm'>Read more</Link>
             </div>
+          </div>
         </div>
 
     </Link>

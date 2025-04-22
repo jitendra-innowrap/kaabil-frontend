@@ -133,9 +133,9 @@ const SuccessGallary: React.FC<{ galleryItems: SuccessCard[] }> = ({
 
           {/* Media content */}
           <div className="flex items-center justify-center w-full h-full">
-            {activeItem?.media_type === "2" ? (
+            {activeItem?.video_url? (
               <video
-                src={activeItem?.media_url}
+                src={activeItem?.video_url}
                 controls
                 autoPlay
                 playsInline
@@ -151,25 +151,22 @@ const SuccessGallary: React.FC<{ galleryItems: SuccessCard[] }> = ({
                     <div className="flex flex-col md:flex-row md:items-center mb-3 md:mb-4 xl:mb-5 3xl:mb-6">
                       <div className="">
                         <Image
-                          src="/new-assets/images/about/testimonial-profile.png"
-                          alt="Shashikala Bandaru"
+                          src={activeItem?.user_photo}
+                          alt={activeItem?.name}
                           width={80}
                           height={80}
                           className="rounded-full object-cover size-20 xl:size-16 3xl:size-20"
                         />
                       </div>
                       <div className="md:ml-4 mt-[10px] md:mt-0">
-                        <h3 className="font-semibold xl:text-lg 3xl:text-xl text-black truncate">Shashikala Bandaru</h3>
-                        <p className="text-sm xl:text-base text-gray-600 truncate">Process Associate, TCS</p>
+                        <h3 className="font-semibold xl:text-lg 3xl:text-xl text-black truncate">{activeItem?.name}</h3>
+                        <p className="text-sm xl:text-base text-gray-600 truncate">{activeItem?.designation_company}</p>
                       </div>
                     </div>
               
                     {/* Testimonial Content */}
                     <p className="impact-desc text-sm xl:text-base leading-relaxed text-gray-700 md:line-clamp-6">
-                      Overcoming adversity, Shashikala rose above her challenges, transforming from a stone grinder to a
-                      successful Software Tester at Tata Consultancy Services Ltd. With the support of the Pride School
-                      Programme, she turned her dreams into reality, proving that resilience and determination can create
-                      a brighter future.
+                      {activeItem?.description}
                     </p>
                   </div>
             )}

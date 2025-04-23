@@ -123,13 +123,13 @@ const SuccessGallary: React.FC<{ galleryItems: SuccessCard[] }> = ({
           </button>
 
           {/* Previous button */}
-          <button
+          {/* <button
             onClick={goToPrevious}
             className="fixed left-0 z-10 p-0 size-7 xl:size-10 2xl:size-11 3xl:size-[50px] grid place-items-center text-white bg-black rounded-full translate-x-1/2 hover:bg-black"
             aria-label="Previous"
           >
             <FaChevronLeft size={15} />
-          </button>
+          </button> */}
 
           {/* Media content */}
           <div className="flex items-center justify-center w-full h-full">
@@ -173,18 +173,18 @@ const SuccessGallary: React.FC<{ galleryItems: SuccessCard[] }> = ({
           </div>
 
           {/* Next button */}
-          <button
+          {/* <button
             onClick={goToNext}
             className="fixed right-0 z-10 p-0 size-7 xl:size-10 2xl:size-11 3xl:size-[50px] grid place-items-center text-white bg-black rounded-full -translate-x-1/2 hover:bg-black"
             aria-label="Next"
           >
             <FaChevronRight size={15} />
-          </button>
+          </button> */}
 
           {/* Counter */}
-          <div className="absolute bottom-4 translate-y-16 left-1/2 whitespace-nowrap transform -translate-x-1/2 px-3 py-1 text-white bg-black bg-opacity-50 rounded-full text-sm">
+          {/* <div className="absolute bottom-4 translate-y-16 left-1/2 whitespace-nowrap transform -translate-x-1/2 px-3 py-1 text-white bg-black bg-opacity-50 rounded-full text-sm">
             {activeIndex + 1} / {galleryItems.length}
-          </div>
+          </div> */}
         </div>
       </Popup>
     </div>

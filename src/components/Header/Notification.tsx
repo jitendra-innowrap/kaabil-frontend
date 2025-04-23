@@ -30,6 +30,18 @@ interface Notification {
   status: string;
   text: string;
   user_id: string;
+  attachment: string;
+  attachment_type: string;
+  channel: string;
+  company_location: string;
+  from_id: string;
+  from_photo_url: string;
+  from_user_name: string;
+  insert_id: string;
+  to_id: string;
+  user_type: string;
+  title: string;
+  type: string;
 }
 
 // Initialize Firebase
@@ -57,7 +69,7 @@ const NotificationCard = ({
     }
     if (notification?.routsId === "2" && notification?.job_id) {
       handleClose();
-      router.push(`https://meuat.kaam.com/jobseeker/inbox?admin_id=17&token=${token}&user_id=${id}&user_name=${name}&user_photo_url=${photo_url}`);
+      router.push(`https://meuat.kaam.com/jobseeker/inbox?admin_id=${notification.to_id}&token=${token}&user_id=${notification.from_id}&user_name=${notification.from_user_name}&user_photo_url=${notification.from_photo_url}&profile_img=${notification?.photo_url}`);
     }
   };
 
@@ -137,10 +149,9 @@ useEffect(() => {
             if (token) {
               await updateFCMToken(token);
               // console.log('FCM token registered🍃🍃🍃', token);
-  
-              // Set up message listener
+              
               unsubscribe = onMessage(messaging, (payload) => {
-                // console.log('New message received:', payload);
+                console.log('New message received:', payload);
                 handleNewNotification();
               });
             }

@@ -2104,6 +2104,9 @@ label {
     height: 16px !important;
     width: 16px !important;
   }
+  .success-content.popup-content{
+    width: auto !important;
+  }
 }
 
 /* MultiSelect Class Name */

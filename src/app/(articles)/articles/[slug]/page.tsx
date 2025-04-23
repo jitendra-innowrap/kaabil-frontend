@@ -12,6 +12,7 @@ import api from '@/Services/Apiservice'
 import { useRouter } from 'next/navigation'
 import ArticleCard2 from '@/components/Cards/ArticleCard2'
 import GallerySlider from '@/components/JobDetail/Slider/GallarySlider'
+import { formatArticleDate } from '@/components/utils'
 
 export default function page() {
     const { slug } = useParams() || '1';
@@ -81,7 +82,7 @@ export default function page() {
                     background: 'linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.66) 70.73%)'
                 }} className="image-overlay absolute z-[1] bottom-0 left-0 h-[400px] md:h-[600px] flex items-end max-h-[60vh] 3xl:h-[807px] w-full">
                     <div className="author-tag mb-[22px] md:mb-6 xl:mb-7 2xl:mb-8 3xl:mb-[34px] container bottom-[22px] xl:bottom-6  3xl:bottom-7 3xl:left-7 xl:left-6 left-10">
-                        <h1 className='text-[26px] text-white leading-[33px] lg:text-3xl xl:text-4xl 3xl:text-[50px] 3xl:leading-[65px] font-medium max-w-[1000px] uppercase'>{article?.title || ""}</h1>
+                        <h1 className='text-[26px] text-white leading-[33px] lg:text-3xl xl:text-4xl 3xl:text-[50px] 3xl:leading-[65px] font-medium xl:max-w-[800px] 3xl:max-w-[1000px] uppercase'>{article?.title || ""}</h1>
                         <div className="flex items-center gap-3 mt-4">
                             <div className="author-image relative size-9 md:size-10 xl:size-11 3xl:size-[46px] rounded-full border">
                                 <Image
@@ -92,15 +93,15 @@ export default function page() {
                                 />
                             </div>
                             <div className="author-info">
-                                <div className="author-name capitalize text-white font-medium text-sm 3xl:text-base leading-[100%]">By {article?.name || ""}</div>
-                                <div className="publish-date text-white text-[10px] 3xl:text-xs leading-[100%] mt-1">{article?.posted_date}</div>
+                                <div className="author-name capitalize text-white font-medium text-sm 3xl:text-base leading-[100%]">By {article?.name || "Anonymus User"}</div>
+                                <div className="publish-date text-white text-[10px] 3xl:text-xs leading-[100%] mt-1">{article?.posted_date && formatArticleDate(article?.posted_date)}</div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <section className='container py-11 md:py-12 xl:py-14 3xl:py-[67px]'>
+            <section className='container py-[18px] sm:py-11 md:py-12 xl:py-14 3xl:py-[67px]'>
                 <div className="relative">
                     <ShareButton/>
                     <div className="content w-[95%] md:w-full" >

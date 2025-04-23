@@ -25,7 +25,7 @@ export default function ArticleCard2(props: ArticleCard) {
               <p className='font-light text-[#626262] text-xs 2xl:text-base line-clamp-5 mb-16 sm:mb-6 xl:mb-10'>{props?.short_description}</p>
             </div>
             <div className="article-footer absolute w-full bottom-3 left-0 px-3 md:px-4 2xl:px-5 flex justify-between gap-2 sm:gap-1 flex-wrap">
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-1 w-full sm:w-fit">
                 <div className="author-image relative size-6 rounded-full border">
                     <Image
                         src={props?.user_photo}

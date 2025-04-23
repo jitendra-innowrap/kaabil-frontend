@@ -92,17 +92,17 @@ export default function ArticlesPage() {
     return (
         <main className='bg-white'>
             <div className='container no-mobile-container'>
-                <div className='mobile-container'>
-                    <div className="pt-5 3xl:pt-6 mb-7 3xl:mb-8">
+                <div className=''>
+                    <div className="mobile-container pt-5 3xl:pt-6 mb-7 3xl:mb-8">
                         <Breadcrumb root='Home' category='Articles' />
                     </div>
                     {coverArticle && (
                         <>
-                            <section className=''>
-                                <h1 className='text-[26px] leading-[33px] lg:text-3xl xl:text-4xl 3xl:text-[50px] 3xl:leading-[65px] font-medium text-black'>
+                            <section className='mobile-container'>
+                                <h1 className='text-[26px] leading-[33px] lg:text-3xl xl:text-[40px] xl:leading-[48px] 3xl:text-[50px] 3xl:leading-[65px] font-medium text-black'>
                                     {coverArticle.title}
                                 </h1>
-                                <p className='text-sm lg:text-base xl:text-xl 3xl:text-[22px] 3xl:leading-[36px] tracking-[-2%] mt-2 mb-4 md:mb-6 xl:mb-7'>
+                                <p className='text-sm lg:text-base 3xl:text-[22px] 3xl:leading-[36px] tracking-[-2%] mt-2 mb-4 md:mb-6 xl:mb-7'>
                                     {coverArticle.short_description}
                                 </p>
                             </section>
@@ -117,7 +117,7 @@ export default function ArticlesPage() {
                                 <div style={{
                                     background: 'linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.58) 89.42%)'
                                 }} className="image-overlay lg:rounded-3xl absolute z-[1] bottom-0 left-0 h-[400px] md:h-[600px] xl:h-[500px] 3xl:h-[807px] w-full">
-                                    <div className="author-tag gap-3 absolute bottom-[22px] xl:bottom-6 3xl:bottom-7 3xl:left-7 xl:left-6 left-10 flex items-center">
+                                    <div className="author-tag gap-3 absolute bottom-[22px] left-5 xl:bottom-6 3xl:bottom-7 3xl:left-7 xl:left-6 flex items-center">
                                         <div className="author-image relative size-9 md:size-10 xl:size-11 3xl:size-[46px] rounded-full border">
                                             <Image
                                                 src={coverArticle.user_photo || ""}

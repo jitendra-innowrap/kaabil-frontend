@@ -62,15 +62,15 @@ export default function Home() {
   const [similarJobs, setSimilarJobs] = useState<CompanyJob[]>([]);
   const router = useRouter();
   const [scrollClass, setScrollClass] = useState(false);
-  const scrollRef = useRef(0);
+  const scrollRef = useRef(10);
 
   useEffect(() => {
     const handleScroll = () => {
       const current = window.scrollY;
       const isScrollingUp = current < scrollRef.current;
       scrollRef.current = current;
-      if(isScrollingUp || current > 100){
-        setScrollClass(true)
+      if(isScrollingUp || current > 0){
+        setScrollClass(false)
       }
       if (isScrollingUp || current ===0) {
         setScrollClass(false);
@@ -347,7 +347,7 @@ export default function Home() {
     <main className="bg-white">
       {/* Add to stick  */}
       <section
-      className={`bg-[#FDEAC9] py-6 xl:py-8 sm:sticky sm:top-[52px] lg:top-[56px] 3xl:top-[90px] z-10`}>
+      className={`bg-[#FDEAC9] py-6 xl:py-8 sm:sticky z-[11] sm:top-[52px] lg:top-[56px] 3xl:top-[90px]`}>
         <div className="container relative z-[1]">
           <div className="flex justify-between flex-wrap xl:flex-nowrap flex-col sm:flex-row sm:items-end gap-5 xl:gap-7 2xl:gap-8">
             <div className="flex justify-between flex-row gap-3 2xl:gap-5 3xl:gap-8 lg:max-w-[calc(100%_-_300px)]">

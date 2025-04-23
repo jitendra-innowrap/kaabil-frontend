@@ -97,7 +97,7 @@ const SuccessGallary: React.FC<{ galleryItems: SuccessCard[] }> = ({
         onClose={closePopup}
         modal
         closeOnDocumentClick
-        className="company-gallery-popup"
+        className="company-gallery-popup success"
         overlayStyle={{
           background: "rgba(0, 0, 0, 0.8)",
           zIndex: 1000,
@@ -182,7 +182,7 @@ const SuccessGallary: React.FC<{ galleryItems: SuccessCard[] }> = ({
           </button>
 
           {/* Counter */}
-          <div className="absolute bottom-4 left-1/2 whitespace-nowrap transform -translate-x-1/2 px-3 py-1 text-white bg-black bg-opacity-50 rounded-full text-sm">
+          <div className="absolute bottom-4 translate-y-16 left-1/2 whitespace-nowrap transform -translate-x-1/2 px-3 py-1 text-white bg-black bg-opacity-50 rounded-full text-sm">
             {activeIndex + 1} / {galleryItems.length}
           </div>
         </div>

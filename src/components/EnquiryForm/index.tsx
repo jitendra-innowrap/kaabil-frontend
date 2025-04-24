@@ -8,7 +8,6 @@ import Popup from 'reactjs-popup'
 import * as Yup from "yup";
 import toast from "react-hot-toast";
 import api from '@/Services/Apiservice';
-import axios from 'axios';
 
 export default function EnquiryForm() {
     const { isEnquiryOpen } = useAppSelector((state) => state.user);
@@ -21,13 +20,24 @@ export default function EnquiryForm() {
     }
 
     const validationSchemaForm = Yup.object().shape({
-        name: Yup.string().required("Name is required"),
+        name: Yup.string()
+              .trim()
+              .matches(/^[a-zA-Z\s]+$/, "Only alphabets and spaces are allowed")
+              .min(2, "Name must be at least 2 characters")
+              .max(50, "Name must be at most 50 characters")
+              .required("Name is required"),
         email: Yup.string().email("Invalid email").required("Email is required"),
         number: Yup.string()
               .matches(/^[6-9]\d{9}$/, "Invalid mobile number")
               .required("Mobile number is required"),
         type: Yup.number().required("Please select an option"),
         feedback: Yup.string().required("Feedback is required"),
+        foundation_name: Yup.string().when('type', (typeValue: any, schema) => {
+            const type = Array.isArray(typeValue) ? typeValue[0] : typeValue;
+            return type === 2
+                ? schema.required("Foundation name is required")
+                : schema.notRequired();
+        }),
     });
 
     const formikForm = useFormik({
@@ -37,6 +47,7 @@ export default function EnquiryForm() {
             number: "",
             feedback: "",
             name: "",
+            foundation_name: "",
             csrf_kaampe_token: "b3821c0d386ffd4b4ce2efdeebdf856b",
             form_type: "Contact Us",
             recaptcha_response: "",
@@ -47,11 +58,12 @@ export default function EnquiryForm() {
                 setIsSubmitting(true);
                 
                 const formData = new FormData();
-                formData.append('name', values.name.toString());
-                formData.append('email', values.email.toString());
-                formData.append('phone', values.number.toString());
-                formData.append('comment', values.feedback.toString());
+                formData.append('name', values.name);
+                formData.append('email', values.email);
+                formData.append('phone', values.number);
+                formData.append('comment', values.feedback);
                 formData.append('form_type', 'Contact Us');
+                formData.append('company_name', values.foundation_name);
                 formData.append('enquiry_type', values.type.toString());
 
                 const response = await api.post("/Auth/submitEnquiryForm", formData, {
@@ -214,6 +226,37 @@ export default function EnquiryForm() {
                         )}
                     </div>
 
+                    {/* NGO/Foundation Name Field (Conditional) */}
+                    {formikForm.values.type == 2 && (
+                        <div className="mt-4">
+                            <label 
+                                htmlFor="foundation_name"
+                                className={`input-label text-[#231F20] mb-[8px] sm:mb-[10px] text-[14px] sm:text-lg md:text-xl 2xl:text-[16px] block`}
+                            >
+                                NGO/Foundation Name
+                            </label>
+                            <input
+                                type="text"
+                                id="foundation_name"
+                                name="foundation_name"
+                                placeholder="Enter NGO/Foundation Name"
+                                value={formikForm.values.foundation_name}
+                                onChange={formikForm.handleChange}
+                                onBlur={formikForm.handleBlur}
+                                className={`border p-2 w-full rounded-lg ${
+                                    formikForm.errors.foundation_name && formikForm.touched.foundation_name
+                                        ? "border-red"
+                                        : "border-[#C8C9CB1A]"
+                                } ${formikForm.values.foundation_name ? "font-semibold" : "font-normal"}`}
+                            />
+                            {formikForm.errors.foundation_name && formikForm.touched.foundation_name && (
+                                <p className="text-red text-[11px] form-error sm:text-sm mt-1">
+                                    {formikForm.errors.foundation_name}
+                                </p>
+                            )}
+                        </div>
+                    )}
+
                     <div className="mt-4">
                         <label 
                             htmlFor="email"
@@ -286,7 +329,6 @@ export default function EnquiryForm() {
                         </label>
                         <textarea
                             id="feedback"
-                            
                             name="feedback"
                             placeholder="Enter your feedback"
                             value={formikForm.values.feedback}

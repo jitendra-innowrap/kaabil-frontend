@@ -30,7 +30,7 @@ export default function EnterName({ size, closePopup }: any) {
     name: Yup.string()
       .trim()
       .matches(/^[a-zA-Z\s]+$/, "Only alphabets and spaces are allowed")
-      .min(3, "Name must be at least 3 characters")
+      .min(2, "Name must be at least 2 characters")
       .max(50, "Name must be at most 50 characters")
       .required("Full name is required"),
   });

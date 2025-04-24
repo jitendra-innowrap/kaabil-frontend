@@ -42,6 +42,7 @@ interface Notification {
   user_type: string;
   title: string;
   type: string;
+  value: string;
 }
 
 // Initialize Firebase
@@ -62,14 +63,41 @@ const NotificationCard = ({
   const router = useRouter();
   const {token, name, id, photo_url} = useSelector((state: RootState) => state.user);
   const handleRead = async () => {
-    if(notification?.read_status==="0") await onRead(notification.id, );
-    if (notification?.routsId === "3" && notification?.job_id) {
-      handleClose();
-      router.push(`/jobs/detail/${notification?.job_id}`);
-    }
-    if (notification?.routsId === "2" && notification?.job_id) {
-      handleClose();
-      router.push(`https://meuat.kaam.com/jobseeker/inbox?admin_id=${notification.to_id}&token=${token}&user_id=${notification.from_id}&user_name=${notification.from_user_name}&user_photo_url=${notification.from_photo_url}&profile_img=${notification?.photo_url}`);
+    try {
+      // Mark as read if unread
+      if (notification?.read_status === "0") {
+        await onRead(notification.id);
+      }
+  
+      // Parse the value JSON string if it exists
+      const notificationValue = notification?.value 
+        ? JSON.parse(notification.value) 
+        : {};
+  
+      // Handle different notification types
+      if (notification?.routsId === "3" && notification?.job_id) {
+        handleClose();
+        router.push(`/jobs/detail/${notification.job_id}`);
+      } 
+      else if (notification?.routsId === "2") {
+        handleClose();
+        
+        // Construct URL with parsed values
+        const url = new URL('https://meuat.kaam.com/jobseeker/inbox');
+        url.searchParams.append('admin_id', notificationValue.to_id || '');
+        url.searchParams.append('token', token);
+        url.searchParams.append('user_id', notificationValue.from_id || '');
+        url.searchParams.append('user_name', notificationValue.from_user_name || '');
+        url.searchParams.append('user_photo_url', notificationValue.from_photo_url || '');
+        url.searchParams.append('profile_img', photo_url || '');
+  
+        // Open in new tab
+        window.open(url.toString(), '_blank', 'noopener,noreferrer');
+      }
+    } catch (error) {
+      console.error('Error handling notification click:', error);
+      // Fallback behavior if something goes wrong
+      router.push('/');
     }
   };
 

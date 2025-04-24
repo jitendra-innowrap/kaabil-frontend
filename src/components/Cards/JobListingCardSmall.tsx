@@ -155,7 +155,7 @@ export default function JobListingCardSmall({detail, isCompanyJob=false}:{detail
             </div>
             {
               (detail?.is_industry_standard=="1" || ((detail?.min_salary === null || detail?.min_salary === "" || detail?.min_salary === "0")) && ((detail?.max_salary === null || detail?.max_salary === "" || detail?.max_salary === "0")))?
-              <p className='flex flex-nowrap lg:w-[80px] 3xl:w-[110px] justify-end'>
+              <p className='flex flex-nowrap lg:w-[80px] xl:w-[110px] 3xl:w-[110px] justify-end items-center'>
                 <Image width={15} height={15} src={'/new-assets/icons/rupee.svg'} className='mr-1 2xl:mr-1 size-[10px] 2xl:size-[12px]' alt='rupee icon' />
                 <span className={`text-[9px] 3xl:text-xs text-[#545581] truncate  ${detail?.is_industry_standard !='1'?'whitespace-nowrap':''}`}>{`${showSalarySimilarJob(detail?.is_industry_standard || "0", detail?.salary_range_unit ||"0",detail?.min_salary ||"0",detail?.max_salary ||"0")} `} </span>
               </p>

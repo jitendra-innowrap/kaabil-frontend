@@ -45,7 +45,7 @@ export default function ProfileCard({ closeSideMenu }: prop) {
             <div className="flex items-center gap-2 w-full">
               <div className="w-full h-[6px] 2xl:h-2 rounded-lg bg-[#CCCCCC]">
                 <div
-                  className="rounded-lg h-full bg-red"
+                  className={`rounded-lg h-full ${user?.profilePercentage==100?"bg-[#019e43]":" bg-red"}`}
                   style={{ width: `${user?.profilePercentage || 0}%` }}
                 ></div>
               </div>{" "}

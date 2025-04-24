@@ -112,7 +112,7 @@ export default function page() {
 
             <section className='section-shadow'>
                 <div className="container py-11 md:py-12 xl:py-14 3xl:py-[67px]">
-                    <h2 className='text-[22px] leading-[24px] md:text-2xl xl:text-3xl 3xl:text-[34px] font-medium mb-4 md:mb-6 xl:mb-8 3xl:mb-10'>Featured articles</h2>                       
+                    <h2 className='text-[22px] leading-[24px] md:text-2xl xl:text-3xl 3xl:text-[34px] font-medium mb-4 md:mb-6 xl:mb-8 3xl:mb-10'>Related articles </h2>                       
                     <div className="featured-articles">
                         <GallerySlider
                         slides={slides as any}

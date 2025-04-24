@@ -24,11 +24,18 @@ export default function FilterMobilePannel() {
     const dispatch = useDispatch();
     const router = useRouter();
     const [removeOptionsSearch, SetremoveOptionsSearch] = useState(false);
+    const pathname = usePathname();
+
     // Handle Clear All button click
     const handleClearAll = () => {
         // Remove all search parameters and navigate to the base URL
         SetremoveOptionsSearch(!removeOptionsSearch)
-        router.replace('/jobs', { scroll: false }); // Replace '/jobs' with your base route
+        setSearch("")
+        if(pathname=='/jobs'){
+          router.replace(`/jobs`, { scroll: false });
+        }else{
+            router.replace(`/`, { scroll: false });
+        }
     };
       const overlayRef = useRef<HTMLDivElement>(null);
     const filterButtonRef = useRef<HTMLDivElement>(null);
@@ -75,7 +82,6 @@ export default function FilterMobilePannel() {
     };
     }, [open]);
 
-    const pathname = usePathname();
 
     const handleSearch = (e: any) => {
         e.preventDefault();

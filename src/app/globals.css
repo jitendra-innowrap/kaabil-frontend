@@ -399,6 +399,9 @@ a.btn.disabled:hover {
   border-radius: 8px;
   height: 56px;
 }
+.css-1limbg7-option{
+  background-color: #FDF1F3 !important;
+}
 
 .popup-content .css-1dyz3mf {
   height: 56px;

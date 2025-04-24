@@ -267,7 +267,7 @@ export default function Home() {
 
                         {/* Animate the "Kaabil!" text with letter-wise animation */}
                         <motion.p
-                            className="font-kalam font-bold text-red ml-[6px] translate-y-[2px]"
+                            className="font-kalam font-bold text-red ml-[6px] translate-y-[2px] md:translate-y-[3px] xl:translate-y-[2.7px] 2xl:translate-y-1"
                             variants={sentence}
                         >
                             {kaabilText.split("").map((char, index) => (

@@ -12,7 +12,7 @@ import api from '@/Services/Apiservice'
 import { useRouter } from 'next/navigation'
 import ArticleCard2 from '@/components/Cards/ArticleCard2'
 import GallerySlider from '@/components/JobDetail/Slider/GallarySlider'
-import { formatArticleDate } from '@/components/utils'
+import { formatArticleDate, formatArticleDate2 } from '@/components/utils'
 
 export default function page() {
     const { slug } = useParams() || '1';
@@ -94,7 +94,7 @@ export default function page() {
                             </div>
                             <div className="author-info">
                                 <div className="author-name capitalize text-white font-medium text-sm 3xl:text-base leading-[100%]">By {article?.name || "Anonymus User"}</div>
-                                <div className="publish-date text-white text-[10px] 3xl:text-xs leading-[100%] mt-1">{article?.posted_date && formatArticleDate(article?.posted_date)}</div>
+                                <div className="publish-date text-white text-[10px] 3xl:text-xs leading-[100%] mt-1">{article?.posted_date && formatArticleDate2(article?.posted_date)}</div>
                             </div>
                         </div>
                     </div>

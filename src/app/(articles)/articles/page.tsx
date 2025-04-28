@@ -2,7 +2,7 @@
 import Breadcrumb from '@/components/Breadcrumb'
 import ArticleCard from '@/components/Cards/ArticleCard'
 import ArticleCard2 from '@/components/Cards/ArticleCard2'
-import { formatArticleDate, showToast } from '@/components/utils'
+import { formatArticleDate, formatArticleDate2, showToast } from '@/components/utils'
 import { getSessionData } from '@/components/utils/deviceId'
 import api from '@/Services/Apiservice'
 import Image from 'next/image'
@@ -131,7 +131,7 @@ export default function ArticlesPage() {
                                                 By {coverArticle.name}
                                             </div>
                                             <div className="publish-date text-white text-[10px] 3xl:text-xs leading-[100%] mt-1">
-                                                {formatArticleDate(coverArticle.posted_date)}
+                                                {formatArticleDate2(coverArticle.posted_date)}
                                             </div>
                                         </div>
                                     </div>

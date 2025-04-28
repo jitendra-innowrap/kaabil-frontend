@@ -64,6 +64,8 @@ const handleFetchLocation = async () => {
                             <Link href={'/'} className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Home</Link>
                             <Link href={'/about-us'} className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>About Us</Link>
                             <Link href={'/companies'} className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Companies</Link>
+                            <Link href={'/frequently-asked-questions'} className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>FAQ</Link>
+
                             {/* <Link href={'/'} className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Career Advisor</Link>
                             <Link href={'/'} className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Mock Interviews</Link>
                             <Link href={'/'} className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Skill Center</Link>
@@ -138,6 +140,7 @@ const handleFetchLocation = async () => {
                             <Link href={'/'} className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Home</Link>
                             <Link href={'/about-us'} className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>About Us</Link>
                             <Link href={'/companies'} className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Companies</Link>
+                            <Link href={'/frequently-asked-questions'} className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>FAQ</Link>
                             {/* <Link href={'/'} className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Career Advisor</Link>
                             <Link href={'/'} className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Mock Interviews</Link>
                             <Link href={'/'} className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Skill Center</Link>

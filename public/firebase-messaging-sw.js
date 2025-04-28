@@ -17,34 +17,74 @@ const messaging = firebase.messaging();
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
   
-  let url = '/'; // Default URL to open
-  
-  // Check if it's a job detail notification (type 3)
-  if (event.notification.data && event.notification.data.type === "3" && event.notification.data.job_id) {
-    url = `/jobs/detail/${event.notification.data.job_id}`;
-  }
+  // Handle chat notification (type 2) - different origin
+  if (event.notification.data && event.notification.data.type === "2") {
+    const chatUrl = new URL('https://meuat.kaam.com/jobseeker/inbox');
+    chatUrl.searchParams.append('admin_id', event.notification.data.to_id || '');
+    chatUrl.searchParams.append('token', event.notification.data.to_token || event.notification.data.to_user_token || '');
+    chatUrl.searchParams.append('user_id', event.notification.data.from_id || '');
+    chatUrl.searchParams.append('user_name', event.notification.data.from_user_name || '');
+    chatUrl.searchParams.append('user_photo_url', event.notification.data.from_photo_url || '');
+    chatUrl.searchParams.append('profile_img', event.notification.data.to_photo_url || event.notification.data.to_user_photo_url || '');
 
-  event.waitUntil(
-    self.clients.matchAll({
-      type: 'window',
-      includeUncontrolled: true
-    }).then((clientList) => {
-      // Check if there's already a tab open with our domain
-      for (const client of clientList) {
-        if (client.url.includes(self.location.origin) && 'focus' in client) {
-          // If we found a matching tab, navigate it to the correct URL and focus
-          return client.navigate(url).then(focusedClient => {
-            if (focusedClient) {
-              return focusedClient.focus();
+    event.waitUntil(
+      // Focus existing chat window if available
+      self.clients.matchAll({
+        type: 'window',
+        includeUncontrolled: true
+      }).then((clientList) => {
+        // Find any existing chat window (matching the chat origin)
+        const chatClient = clientList.find(client => 
+          client.url.startsWith('https://meuat.kaam.com/')
+        );
+
+        if (chatClient) {
+          // Focus existing chat window
+          return chatClient.focus().then(() => {
+            // Optionally navigate to specific chat if needed
+            if (!chatClient.url.includes('/jobseeker/inbox')) {
+              return chatClient.navigate(chatUrl.toString());
             }
           });
         }
-      }
-      
-      // If no matching tab found, open a new one
-      return self.clients.openWindow(url);
-    })
-  );
+        
+        // Open new chat window if none exists
+        return self.clients.openWindow(chatUrl.toString());
+      })
+    );
+  }
+  // Handle other notification types (same origin)
+  else {
+    let url = '/'; // Default URL
+    
+    // Handle job detail notification (type 3)
+    if (event.notification.data && event.notification.data.type === "3" && event.notification.data.job_id) {
+      url = `/jobs/detail/${event.notification.data.job_id}`;
+    }
+
+    event.waitUntil(
+      self.clients.matchAll({
+        type: 'window',
+        includeUncontrolled: true
+      }).then((clientList) => {
+        // Check for existing app tabs (same origin)
+        const appClient = clientList.find(client => 
+          client.url.includes(self.location.origin)
+        );
+
+        if (appClient) {
+          return appClient.focus().then(() => {
+            if (url !== '/' && !appClient.url.includes(url)) {
+              return appClient.navigate(url);
+            }
+          });
+        }
+        
+        // Open new tab in app origin
+        return self.clients.openWindow(new URL(url, self.location.origin).toString());
+      })
+    );
+  }
 });
 
 messaging.onBackgroundMessage((payload) => {

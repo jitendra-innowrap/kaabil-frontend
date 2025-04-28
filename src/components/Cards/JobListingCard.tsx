@@ -142,6 +142,30 @@ export default function JobListingCard(prop:any) {
           console.error('Error fetching jobs:', error);
         }
   }
+  const [matchText, setMatchText] = useState("Match");
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    // Handler to call on window resize
+    const handleResize = () => {
+      if (window.innerWidth > 768) {
+        setMatchText("Profile Match");
+        setIsMobile(false);
+      } else {
+        setIsMobile(true);
+        setMatchText("Match");
+      }
+    };
+    
+    // Set initial value
+    handleResize();
+    
+    // Add event listener
+    window.addEventListener('resize', handleResize);
+    
+    // Clean up
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  
   return (
     <>
     <Link href={`/jobs/detail/${prop?.id}`} passHref legacyBehavior>
@@ -157,11 +181,11 @@ export default function JobListingCard(prop:any) {
             <div className="flex gap-4 lg:gap-[10px] 3xl:gap-4">
               <CompanyLogo name={prop?.company_name} logo={prop?.company_logo} index={prop?.id || 0} />
               <div className="">
-                <h3 className='text-xs 3xl:text-sm text-[#070828]'>{prop?.company_name}</h3>
+                <h3 className={`company-name text-xs 3xl:text-sm truncate text-[#070828] ${isMobile && prop?.profile_matched_percentage>50? 'max-w-[calc(100vw_-_235px)]':'w-fit'}`}>{prop?.company_name}</h3>
                 <p className='text-[8px] mt-1 3xl:text-xs text-[#B9B9B9]'>{timeAgo(prop?.job_posted_date)}</p>
               </div>
             {prop?.profile_matched_percentage>50 &&<div className="job-profile-match whitespace-nowrap label small lightgreen">
-            {prop?.profile_matched_percentage}% Profile Match
+            {`${prop?.profile_matched_percentage}% `} {matchText}
             </div>}
           </div>
           <span tabIndex={0} onClick={(e) => {
@@ -188,7 +212,7 @@ export default function JobListingCard(prop:any) {
             <Image width={12} height={12} src={'/new-assets/icons/job-case.svg'} className='text-[#545581] size-3 2xl:size-5' alt='rupee icon' />
             <span className='ml-2 text-[10px] 2xl:text-sm text-[#545581] truncate'>{showExperience(prop?.min_exp ||"0", prop?.max_exp || "0", "yrs experience")}</span>
           </div>
-          <div className='ml-5 text-[10px] 2xl:text-sm text-[#545581] flex items-center'>
+          <div className='ml-5 text-[10px] 2xl:text-sm text-[#545581] flex flex-nowrap whitespace-nowrap items-center'>
             
               <Image width={15} height={15} src={'/new-assets/icons/rupee.svg'} className='mr-1 2xl:mr-2 size-[11px] 2xl:size-[15px]' alt='rupee icon' />
             {

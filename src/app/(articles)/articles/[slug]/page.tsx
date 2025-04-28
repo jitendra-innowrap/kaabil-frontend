@@ -73,7 +73,7 @@ export default function page() {
         <main className='bg-white'>
             <div className="image-wrapper h-[400px] md:h-[600px] max-h-[60vh] 3xl:h-[807px] w-full relative">
                 <Image
-                    src={'/new-assets/images/articles/article-1.webp'}
+                    src={article?.cover_photo || ""}
                     fill
                     className='object-cover '
                     alt='Jobs: Unlocking Women’s Economic Potential and Boosting Economies '

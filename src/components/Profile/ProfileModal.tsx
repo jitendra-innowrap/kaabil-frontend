@@ -358,18 +358,19 @@ const ProfileModal = ({ size }: any) => {
                   </div>
                   {/* Field  Three */}
                   <div>
-                    <label className="block text-lg font-semibold text-[#231F20] mb-2">
-                      Date of Birth
-                    </label>
                     <div
                       className="relative w-full cursor-pointer"
                       onClick={() => inputRef.current?.showPicker()}
                     >
+                      {values?.date_of_birth == "0000-00-00" && <label className="cursor-pointer flex items-center absolute w-2/3 h-[30px] top-2 md:top-3 pl-[10px] md:pl-3 left-1 bg-white text-base md:text-lg text-[#231F20] mb-2">
+                        D.O.B
+                      </label>}
                       <input
                         ref={inputRef}
                         type="date"
                         id="date_of_birth"
                         name="date_of_birth"
+                        aria-placeholder="dob"
                         value={values.date_of_birth}
                         onChange={(e) =>
                           setFieldValue("date_of_birth", e.target.value)

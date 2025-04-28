@@ -19,6 +19,7 @@ import { useRouter } from "next/navigation";
 import LogoutDialog from "../Auth/LogoutDialog";
 import Notification from "./Notification";
 import { RiArrowDropDownFill } from "react-icons/ri";
+import { MdOutlineChat } from "react-icons/md";
 
 interface prop {
   closeSideMenu?: () => void;
@@ -28,6 +29,7 @@ export default function SignInButton({ closeSideMenu }: prop) {
   const dispatch = useDispatch();
 
   const user = useAppSelector((state) => state.user);
+  const authUser = useAppSelector((state) => state.auth);
   const isOpen = useAppSelector((state) => state.loginDialog.isOpen);
   const progress = useAppSelector((state) => state.progress.value);
   const isUser = useAppSelector((state) => state.auth.token);
@@ -65,6 +67,10 @@ export default function SignInButton({ closeSideMenu }: prop) {
   };
   const gotoMyProfile = () => {
     router.push("/my-profile");
+  };
+  const gotoMyInbox = () => {
+    let chatUrl = `https://meuat.kaam.com/jobseeker/inbox?admin_id=${authUser?.id}&token=${authUser?.token}&profile_img=${authUser?.photo_url}`
+    window.open(chatUrl, '_blank', 'noopener,noreferrer');
   };
 
   const handleOverlayClick = (e: MouseEvent) => {
@@ -198,6 +204,27 @@ export default function SignInButton({ closeSideMenu }: prop) {
                     alt="Profile"
                   />
                   View Profile
+                </div>
+                <div
+                  onClick={() => handleOptionClick(gotoMyInbox)}
+                  className="flex items-center group/link gap-3 3xl:gap-4 text-Grey hover:text-black py-3 2xl:py-4 font-medium hover:font-semibold text-xs 2xl:text-base px-5 cursor-pointer"
+                >
+                  {/* <Image
+                    className="size-4 3xl:size-5 block group-hover/link:hidden"
+                    src="/new-assets/icons/user.svg"
+                    width={20}
+                    height={20}
+                    alt="Profile"
+                  />
+                  <Image
+                    className="size-4 3xl:size-5 hidden group-hover/link:block"
+                    src="/new-assets/icons/user-black.svg"
+                    width={20}
+                    height={20}
+                    alt="Profile"
+                  /> */}
+                  <MdOutlineChat className="size-4 3xl:size-5 block text-[#4D4D4F] group-hover/link:text-black"/>
+                  My Inbox
                 </div>
                 <div
                   onClick={() => handleOptionClick(gotoMyjob)}

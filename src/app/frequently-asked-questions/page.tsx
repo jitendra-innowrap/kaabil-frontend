@@ -196,9 +196,9 @@ export default function Faq() {
                                                                 <BiChevronDown className="hidden text-slate-500 font-bold text-xl" />
                                                             )}
                                                         </AccordionHeader>
-                                                        {activeAccordion === faq.question && (
+                                                        { (
                                                             <AccordionBody>
-                                                                <div className="max-w-[calc(100%_-50px)] pt-4">
+                                                                <div className="max-w-[calc(100%_-50px)] pt-1">
                                                                     {faq.answer}
                                                                 </div>
                                                             </AccordionBody>

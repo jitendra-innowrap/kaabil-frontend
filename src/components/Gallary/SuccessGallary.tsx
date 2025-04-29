@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
@@ -18,7 +18,16 @@ const SuccessGallary: React.FC<{ galleryItems: SuccessCard[] }> = ({
   const [open, setOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const popupRef = useRef<any>(null);
-
+  useEffect(() => {
+      if (open) {
+        document.body.classList.add("no-scroll");
+      } else {
+        document.body.classList.remove("no-scroll");
+      }
+      return () => {
+        document.body.classList.remove("no-scroll");
+      };
+    }, [open]);
   // Handle click on a gallery item
   const handleSlideClick = (index: number) => {
     setActiveIndex(index);
@@ -61,7 +70,6 @@ const SuccessGallary: React.FC<{ galleryItems: SuccessCard[] }> = ({
         spaceBetween={20}
         showNavigation
         loop={true}
-        autoplay={true}
         arrowOut={false}
         autoplayDuration={3000}
         freeMode={false}
@@ -116,7 +124,7 @@ const SuccessGallary: React.FC<{ galleryItems: SuccessCard[] }> = ({
           {/* Close button */}
           <button
             onClick={closePopup}
-            className="absolute top-0 left-full -translate-x-[5px] translate-y-[5px] z-10 size-7 xl:size-10 2xl:size-11 3xl:size-[50px] grid place-items-center p-0 text-white bg-[#231F20] rounded-md hover:bg-black"
+            className="absolute top-0 left-full -translate-x-[5px] translate-y-[5px] z-10 size-7 xl:size-8 2xl:size-10 3xl:size-[50px] grid place-items-center p-0 text-white bg-[#231F20] rounded-md hover:bg-black"
             aria-label="Close gallery"
           >
             <IoMdClose size={20} />
@@ -139,7 +147,7 @@ const SuccessGallary: React.FC<{ galleryItems: SuccessCard[] }> = ({
                 controls
                 autoPlay
                 playsInline
-                className="max-h-[80vh] w-[600px] max-w-[60vw]  rounded-md"
+                className="max-h-[80vh] w-[600px] max-w-[60vw]  rounded-2xl xl:rounde-[20px] 3xl:rounded-3xl"
               >
                 Your browser does not support the video tag.
               </video>
@@ -165,7 +173,7 @@ const SuccessGallary: React.FC<{ galleryItems: SuccessCard[] }> = ({
                     </div>
               
                     {/* Testimonial Content */}
-                    <p className="impact-desc text-sm xl:text-base leading-relaxed text-gray-700 md:line-clamp-6">
+                    <p className="impact-desc text-sm xl:text-base leading-relaxed text-[#4D4D4F] max-h-[300px] custom-scroll overflow-auto">
                       {activeItem?.description}
                     </p>
                   </div>

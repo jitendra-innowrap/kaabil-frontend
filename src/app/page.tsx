@@ -527,7 +527,7 @@ export default function Home() {
                     whileInView="visible"
                     viewport={{ once: true, amount: 0.4 }} className="section-heading mb-5">
                         <h2 className='text-white text-center text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[46px] font-medium mb-2'>Meet the women who’ve found <br />
-                        <span className="font-kalam font-bold">career success  </span>with Kaabil.</h2>
+                        <span className="font-kalam font-bold text-[25px] md:text-[31px] 2xl:text-[42px]">career success  </span>with Kaabil.</h2>
                     </motion.div>
                     <motion.div
                         variants={topVariant}
@@ -541,8 +541,8 @@ export default function Home() {
                     {/* <button className="btn-border 2xl:w-[218px] 2xl:h-[50px] text-xs 2xl:text-base mt-0 md:mt-8 2xl:mt-10">View All Stories</button> */}
                 </div>
             </section>
-            <section className="bg-[#F8F8F8]">
-                <div className="w-full flex flex-col py-5 md:py-8 xl:py-14 2xl:py-[68px] mb-3 mx-auto">
+            <section className={`bg-[#F8F8F8] ${articleSlides.length<0?"":"pt-6 md:pt-14 xl:pt-10 2xl:pt-16" }`}>
+                {articleSlides.length<0 &&<div className="w-full flex flex-col py-5 md:py-8 xl:py-14 2xl:py-[68px] mb-3 mx-auto">
                     <div className="container no-pad">
                         <motion.div
                             variants={topVariant}
@@ -588,7 +588,7 @@ export default function Home() {
                         </motion.div>
                     </div>
                     <Link href={'/articles'} className="btn text-center mx-auto mt-4 md:mt-8 text-xs 2xl:text-base 2xl:mt-8 lg:min-w-[150px] 2xl:min-w-[200px]">View All</Link>
-                </div>
+                </div>}
                 <PlayStoreAppAd />
             </section>
         </main>

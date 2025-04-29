@@ -104,9 +104,7 @@ export default function page() {
             <section className='container py-[18px] sm:py-11 md:py-12 xl:py-14 3xl:py-[67px]'>
                 <div className="relative">
                     <ShareButton/>
-                    <div className="content w-[95%] md:w-full" >
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum minus natus facilis similique. Beatae repellendus ipsa, facilis vero nesciunt rem pariatur quam, inventore ea ratione alias facere eos nemo voluptatibus aut officiis ex non debitis voluptates quibusdam cum qui veritatis. Explicabo recusandae aliquam quaerat quos dolor ipsum vitae aperiam facilis voluptatibus provident vel placeat temporibus magni error, ducimus odit eaque aliquid voluptas tempore eius ipsam. Qui magni commodi temporibus obcaecati, praesentium excepturi quas magnam totam aut iste dolore doloribus, aliquam beatae culpa mollitia voluptate at possimus nostrum corrupti iure, repellat error? Provident magnam quasi autem facilis necessitatibus ad nostrum a illum tempore dignissimos harum neque, modi, ut nam esse quibusdam, molestiae doloremque ducimus ab? Vitae, ullam quam? Tenetur facilis nemo ea nam minima vel ab provident dolorum inventore deserunt, error quos aperiam at. Sint vitae dicta, laudantium, minus distinctio molestias ab molestiae laboriosam quod placeat voluptates corporis nisi, nobis rem blanditiis. Eveniet esse quod doloribus laudantium explicabo totam necessitatibus commodi, blanditiis debitis quidem, itaque illo facere, similique eius voluptates aperiam porro cum pariatur possimus dolorum quasi corporis labore deserunt voluptas. Reiciendis, sequi ut cum repellat, laboriosam corporis facere perferendis quasi amet incidunt eum eos cumque consequuntur nisi tenetur tempore atque?
-                    </div>
+                    <div className="content w-[95%] md:w-full" dangerouslySetInnerHTML={{ __html: article?.description }} />
                 </div>
             </section>
 

@@ -102,7 +102,7 @@ export default function ArticlesPage() {
                                 <h1 className='text-[26px] leading-[33px] lg:text-3xl xl:text-[40px] xl:leading-[48px] 3xl:text-[50px] 3xl:leading-[65px] font-medium text-black'>
                                     {coverArticle.title}
                                 </h1>
-                                <p className='text-sm lg:text-base 3xl:text-[22px] 3xl:leading-[36px] tracking-[-2%] mt-2 mb-4 md:mb-6 xl:mb-7'>
+                                <p className='text-sm lg:text-base 3xl:text-[22px] 3xl:leading-[36px] tracking-[-2%] mt-2 mb-4 md:mb-6 xl:mb-7 line-clamp-2'>
                                     {coverArticle.short_description}
                                 </p>
                             </section>

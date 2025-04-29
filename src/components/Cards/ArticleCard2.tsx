@@ -5,14 +5,14 @@ import { formatArticleDate } from '../utils'
 
 export default function ArticleCard2(props: ArticleCard) {
   return (
-    <Link href={`/articles/${props?.id}`} className='!P-[5px] block h-full rounded-xl shadow-lg relative bg-white cursor-pointer group'>
+    <Link href={`/articles/${props?.id}`} className='!P-[5px] block h-full rounded-xl shadow-lg relative bg-white cursor-pointer group article-card'>
         <div className="block p-[5px]">
         <div className="overflow-hidden rounded-lg">
           <Image
           src={props?.cover_photo}
           width={447}
           height={273}
-          className='mx-auto w-full group-hover:scale-110 transition-all duration-300'
+          className='mx-auto w-full group-hover:scale-110 transition-all duration-300 h-[170px] md:h-[232px] lg:h-[154px] xl:h-[175px] 2xl:h-[210px] 3xl:h-[251px]'
           alt="company-icons"
           quality={100}
           />

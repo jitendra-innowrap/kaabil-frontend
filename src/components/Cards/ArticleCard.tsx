@@ -5,14 +5,14 @@ import { formatArticleDate } from '../utils'
 
 export default function ArticleCard({ cover_photo, id, name, posted_date, short_description, title, user_photo}:ArticleCard) {
   return (
-    <Link href={`/articles/${id}`} className='!P-[5px] block text-black rounded-xl shadow-lg h-full bg-white cursor-pointer group relative'>
+    <Link href={`/articles/${id}`} className='!P-[5px] block text-black rounded-xl shadow-lg h-full bg-white cursor-pointer group relative article-card'>
         <div className="block p-[5px]">
         <div className="overflow-hidden rounded-lg">
           <Image
           src={cover_photo}
           width={447}
           height={273}
-          className='mx-auto group-hover:scale-110 transition-all duration-300'
+          className='mx-auto group-hover:scale-110 transition-all duration-300 h-[170px] md:h-[232px] lg:h-[154px] xl:h-[175px] 2xl:h-[210px] 3xl:h-[251px] object-cover'
           alt={title}
           quality={100}
           />

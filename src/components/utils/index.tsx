@@ -78,7 +78,7 @@ export const formatArticleDate = (inputDate: string): string => {
     }
   };
 
-  return `${monthNames[month - 1]} ${day} ${fullYear}`;
+  return `${monthNames[month - 1]} ${day}${getOrdinalSuffix(day)} ${fullYear}`;
 };
 export const formatArticleDate2 = (inputDate: string): string => {
   // Validate input format

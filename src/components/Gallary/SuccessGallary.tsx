@@ -12,20 +12,21 @@ import SuccessCard from "../Cards/SuccessCard";
 import Image from "next/image";
 
 // Main Gallery Component
-const SuccessGallary: React.FC<{ galleryItems: SuccessCard[] }> = ({
+const SuccessGallary: React.FC<{ galleryItems: any[] }> = ({
   galleryItems,
 }) => {
   const [open, setOpen] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(0);
+  
+    const [activeIndex, setActiveIndex] = useState(0);
   const popupRef = useRef<any>(null);
   useEffect(() => {
       if (open) {
-        document.body.classList.add("no-scroll");
+        document.body.classList.add("overflow-hidden");
       } else {
-        document.body.classList.remove("no-scroll");
+        document.body.classList.remove("overflow-hidden");
       }
       return () => {
-        document.body.classList.remove("no-scroll");
+        document.body.classList.remove("overflow-hidden");
       };
     }, [open]);
   // Handle click on a gallery item
@@ -61,19 +62,24 @@ const SuccessGallary: React.FC<{ galleryItems: SuccessCard[] }> = ({
   // Get current active item
   const activeItem = galleryItems[activeIndex];
 
+  
+
   return (
     <div>
       {/* Gallery Slider */}
       <div className="block">
       <GallerySlider
-        slides={successSlides}
+        slides={[
+          ...successSlides
+        ]}
         spaceBetween={20}
         showNavigation
         loop={true}
         arrowOut={false}
         autoplayDuration={3000}
-        freeMode={false}
+        freeMode={true}
         arrowColor="white"
+        autoplay={true}
         slidesPerView={1.4}
         breakpoints={{
             320: {
@@ -147,7 +153,7 @@ const SuccessGallary: React.FC<{ galleryItems: SuccessCard[] }> = ({
                 controls
                 autoPlay
                 playsInline
-                className="max-h-[80vh] w-[600px] max-w-[60vw]  rounded-2xl xl:rounde-[20px] 3xl:rounded-3xl"
+                className="max-h-[80vh] w-[600px] bg-black max-w-[60vw]  rounded-2xl xl:rounde-[20px] 3xl:rounded-3xl"
               >
                 Your browser does not support the video tag.
               </video>
@@ -195,6 +201,7 @@ const SuccessGallary: React.FC<{ galleryItems: SuccessCard[] }> = ({
           </div> */}
         </div>
       </Popup>
+
     </div>
   );
 };

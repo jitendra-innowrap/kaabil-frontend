@@ -35,7 +35,7 @@ const GallerySlider: React.FC<GallerySliderProps> = ({
   customArrowRight,
   showNavigation = false,
   arrowOut = true,
-  freeMode = false,
+  freeMode = true,
   arrowFloat = false,
   speed,
   
@@ -88,8 +88,8 @@ useEffect(() => {
         autoplay={autoplayConfig}
         spaceBetween={spaceBetween}
         slidesPerView={slidesPerView}
-        freeMode={freeMode}
-        speed={speed}
+        freeMode={true}
+        speed={1000}
         onSwiper={(swiper) => {
           swiperRef.current = swiper;
           updateNavigationState(swiper); // Initialize the state

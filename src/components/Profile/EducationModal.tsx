@@ -497,7 +497,7 @@ const EducationModal = ({ size }: any) => {
                           )
                         )
                       ) : (
-                        <div>-</div>
+                        <></>
                       )}
                     </div>
                     <div className="flex gap-4 mt-2 pb-2">

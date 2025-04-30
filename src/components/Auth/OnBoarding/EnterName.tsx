@@ -73,6 +73,7 @@ export default function EnterName({ size, closePopup }: any) {
             })
           );
           dispatch(setUserSkills(response?.data?.result?.[0]?.skills));
+          dispatch(setUserLocation(response?.data?.result?.[0]?.user_willing_to_relocate.map((loc:any)=> loc.id)))
           dispatch(
             setUserLocation(
               response?.data?.result?.[0]?.user_willing_to_relocate?.map(
@@ -174,7 +175,7 @@ export default function EnterName({ size, closePopup }: any) {
             />
             <div>
               {formik.errors.name && formik.touched.name && (
-                  <p className="text-red-500 text-[11px] sm:text-sm">{formik.errors.name}</p>
+                  <p className="text-red text-[11px] sm:text-sm">{formik.errors.name}</p>
               )}
             </div>
           </div>

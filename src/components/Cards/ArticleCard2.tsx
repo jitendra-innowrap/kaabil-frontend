@@ -25,18 +25,18 @@ export default function ArticleCard2(props: ArticleCard) {
               <p className='font-light text-[#626262] text-xs 2xl:text-base line-clamp-5 mb-16 sm:mb-6 xl:mb-10'>{props?.short_description}</p>
             </div>
             <div className="article-footer absolute w-full bottom-3 left-0 px-3 md:px-4 2xl:px-5 flex justify-between gap-2 sm:gap-1 flex-wrap">
-              <div className="flex items-center gap-1 w-full sm:w-fit">
-                <div className="author-image relative size-6 rounded-full border">
+              <div className={`flex items-center gap-1 ${props?.name?'w-full':''} sm:w-fit`}>
+                {props?.name && <div className="author-image relative size-6 rounded-full border">
                     <Image
                         src={props?.user_photo}
                         fill
                         className='rounded-full'
                         alt='By Dummy Name '
                     />
-                </div>
+                </div>}
                 <div className="author-info flex flex-wrap">
-                    <div className="author-name text-black font-medium whitespace-nowrap truncate text-[10px] 2xl:text-sm">By {props?.name || 'Anonymus User'} |</div>
-                    <span className='font-light ml-1 text-[#898989] whitespace-nowrap text-[10px] 2xl:text-sm'>{formatArticleDate(props?.posted_date)}</span> 
+                    {props?.name && <div className="author-name  text-black font-medium flex flex-nowrap whitespace-nowrap text-[10px] 2xl:text-sm"><span className='lg:max-w-[90px] xl:max-w-[120px] 2xl:max-w-[100px] 3xl:max-w-[180px] truncate block pr-[4px]'>{`By ${props?.name} `}</span>|</div>}
+                    <span className='font-light ml-1 text-[#898989] whitespace-nowrap text-[10px] 2xl:text-sm'>{formatArticleDate(props?.posted_date, ',')}</span> 
                 </div>
               </div>
                 <Link href={`/articles/${props.id}`} className='underline ml-auto font-medium text-[10px] 2xl:text-sm'>Read more</Link>

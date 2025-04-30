@@ -54,6 +54,8 @@ export default function AddLocation({ size, closePopup, handleBack }: any) {
           ...loc,
         })) || [];
       setLocationList(locations);
+      setSelectedLocation(locationList.filter(loc => location_id?.includes(loc.value))
+    )
     } catch (error) {
       console.error("Error fetching locations:", error);
     }

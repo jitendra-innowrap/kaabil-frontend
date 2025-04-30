@@ -40,13 +40,13 @@ export default function AddMoreExperience({
         if (newExperience) {
             const formSubmissionSuccess = await formikForm.submitForm();
             if (!formSubmissionSuccess) {
-            setIsSubmitting(false);
-            return;
+                setIsSubmitting(false);
+                return;
             }
         }
         try {
+            console.log('click')
             setIsSubmitting(true);
-            if (is_fresher === 1) {
                 const payload = {
                     is_fresher: is_fresher,
                     total_experiences: experiences.length,
@@ -75,7 +75,6 @@ export default function AddMoreExperience({
                         position: "bottom-right",
                     });
                 }
-            }
         } catch (error: any) {
             console.error("Error submitting experience:", error);
             toast.error(error?.message || "Something went wrong!", {
@@ -223,112 +222,114 @@ export default function AddMoreExperience({
                 onSubmit={handleSubmit}
                 className={`${size === "md" ? "block mt-6" : "mt-2"}`}
             >
-                <div
-                    className={`pb-2 cursor-pointer ${styles.selected_option_list} ${
-                        size === "md" ? "max-w-[528px] mx-auto" : "px-0"
-                    }`}
-                >
-                    <h4 className="text-[14px] mb-[8px] sm:text-[18px] font-medium sm:mb-1">
-                        Please add all your experience
-                    </h4>
-                    {/* <pre>{JSON.stringify(experiences)}</pre> */}
-                    {/* Dynamic list of all experience added by the user */}
-                    {experiences.map((exp, i) => (
-                        <>
-                            {isEditing == i ? (
-                                <div className="mt-3 relative">
-                                    <AddExperienceForm
-                                        ref={setFormikFormRef}
-                                        formik={formikForm}
-                                        isEditing
-                                    />
-                                    {isEditing == i && (
-                                        <div className="flex justify-end absolute bottom-11 right-0 translate-y-4 w-fit">
-                                            <button
-                                                type="button"
-                                                className={`${styles.onboarding_dialog_btn} w-20 mr-3 sm:mr-6 sm:text-[12px] text-[14px]`}
-                                                onClick={() => {
-                                                    formikForm.handleSubmit();
-                                                }}
-                                            >
-                                                Save
-                                            </button>
-                                        </div>
-                                    )}
-                                </div>
-                            ) : (
-                                <div
-                                    key={i}
-                                    className="my-4 p-4 rounded-lg shadow-sm 3xl:shadow-default justify-between flex gap-4"
-                                >
-                                    <div className="">
-                                        <h5 className="text-[16px] font-medium text-black mb-2">
-                                            {exp?.designation_name}
-                                        </h5>
-                                        <h6 className="text-[#7E7E7E] text-[14px] sm:text-sm mb-2">
-                                            {exp?.company_name}{" "}
-                                            <GoDotFill className="inline-block size-2"/>{" "}
-                                            {exp?.job_type_name}
-                                        </h6>
-                                        <h6 className="text-[#7E7E7E] text-[14px] sm:text-sm mb-2">
-                                            {formatMonthYear(exp?.job_start_date)} -{" "}
-                                            {exp?.is_current_company == "1"
-                                                ? "Present"
-                                                : formatMonthYear(exp?.job_end_date)}{" "}
-                                            <GoDotFill className="inline-block size-2"/>{" "}
-                                            {formatJobDuration(
-                                                exp?.job_start_date,
-                                                exp?.job_end_date
-                                            )}
-                                        </h6>
-                                    </div>
-                                    <div
-                                        className="flex items-center h-fit cursor-pointer"
-                                        onClick={() => handleEditExperience(i)}
-                                    >
-                                        <Image
-                                            src={"/new-assets/icons/pencil.png"}
-                                            alt="edit-pencil"
-                                            aria-label="edit icon"
-                                            className="w-3 h-3 mr-1"
-                                            width={90}
-                                            height={90}
+                <div className={`${styles.selected_option_list}`}>
+                    <div
+                        className={`pb-2 cursor-pointer ${
+                            size === "md" ? "max-w-[528px] mx-auto" : "px-0"
+                        }`}
+                    >
+                        <h4 className="text-[14px] mb-[8px] sm:text-[18px] font-medium sm:mb-1">
+                            Please add all your experience
+                        </h4>
+                        {/* <pre>{JSON.stringify(experiences)}</pre> */}
+                        {/* Dynamic list of all experience added by the user */}
+                        {experiences.map((exp, i) => (
+                            <>
+                                {isEditing == i ? (
+                                    <div className="mt-3 relative">
+                                        <AddExperienceForm
+                                            ref={setFormikFormRef}
+                                            formik={formikForm}
+                                            isEditing
                                         />
-                                        <span className="text-red text-sm font-semibold">
-                          Edit
-                        </span>
+                                        {isEditing == i && (
+                                            <div className="flex justify-end absolute bottom-11 right-0 translate-y-4 w-fit">
+                                                <button
+                                                    type="button"
+                                                    className={`${styles.onboarding_dialog_btn} w-20 mr-3 sm:mr-6 sm:text-[12px] text-[14px]`}
+                                                    onClick={() => {
+                                                        formikForm.handleSubmit();
+                                                    }}
+                                                >
+                                                    Save
+                                                </button>
+                                            </div>
+                                        )}
                                     </div>
-                                </div>
-                            )}
-                        </>
-                    ))}
+                                ) : (
+                                    <div
+                                        key={i}
+                                        className="my-4 p-4 rounded-lg shadow-sm 3xl:shadow-default justify-between flex gap-4"
+                                    >
+                                        <div className="">
+                                            <h5 className="text-[16px] font-medium text-black mb-2">
+                                                {exp?.designation_name}
+                                            </h5>
+                                            <h6 className="text-[#7E7E7E] text-[14px] sm:text-sm mb-2">
+                                                {exp?.company_name}{" "}
+                                                <GoDotFill className="inline-block size-2"/>{" "}
+                                                {exp?.job_type_name}
+                                            </h6>
+                                            <h6 className="text-[#7E7E7E] text-[14px] sm:text-sm mb-2">
+                                                {formatMonthYear(exp?.job_start_date)} -{" "}
+                                                {exp?.is_current_company == "1"
+                                                    ? "Present"
+                                                    : formatMonthYear(exp?.job_end_date)}{" "}
+                                                <GoDotFill className="inline-block size-2"/>{" "}
+                                                {formatJobDuration(
+                                                    exp?.job_start_date,
+                                                    exp?.job_end_date
+                                                )}
+                                            </h6>
+                                        </div>
+                                        <div
+                                            className="flex items-center h-fit cursor-pointer"
+                                            onClick={() => handleEditExperience(i)}
+                                        >
+                                            <Image
+                                                src={"/new-assets/icons/pencil.png"}
+                                                alt="edit-pencil"
+                                                aria-label="edit icon"
+                                                className="w-3 h-3 mr-1"
+                                                width={90}
+                                                height={90}
+                                            />
+                                            <span className="text-red text-sm font-semibold">
+                            Edit
+                            </span>
+                                        </div>
+                                    </div>
+                                )}
+                            </>
+                        ))}
 
-                    {newExperience && (
-                        <>
-                        <div
-                            className="flex font-semibold my-3 justify-between">
-                                <p>Please add experience</p> 
-                                <p className="text-red cursor-pointer" onClick={()=>setNewExperience(false)}>cancel</p>
+                        {newExperience && (
+                            <>
+                            <div
+                                className="flex font-semibold my-3 justify-between">
+                                    <p>Please add experience</p> 
+                                    <p className="text-red cursor-pointer" onClick={()=>setNewExperience(false)}>cancel</p>
+                                </div>
+                            <AddExperienceForm ref={setFormikFormRef} formik={formikForm}/>
+                            </>
+                        )}
+                        {
+                            <div
+                                className="flex text-red font-semibold mt-7 cursor-pointer"
+                                onClick={() => {
+                                    if (!newExperience) {
+                                        formikForm.resetForm();
+                                        setNewExperience(true);
+                                        setIsEditing(null); // Reset edit mode
+                                    } else {
+                                        formikForm.handleSubmit();
+                                    }
+                                }}
+                            >
+                                + add more experience
                             </div>
-                        <AddExperienceForm ref={setFormikFormRef} formik={formikForm}/>
-                        </>
-                    )}
-                    {
-                        <div
-                            className="flex text-red font-semibold mt-7 cursor-pointer"
-                            onClick={() => {
-                                if (!newExperience) {
-                                    formikForm.resetForm();
-                                    setNewExperience(true);
-                                    setIsEditing(null); // Reset edit mode
-                                } else {
-                                    formikForm.handleSubmit();
-                                }
-                            }}
-                        >
-                            + add more experience
-                        </div>
-                    }
+                        }
+                    </div>
                 </div>
 
                 {/* @ts-ignore */}

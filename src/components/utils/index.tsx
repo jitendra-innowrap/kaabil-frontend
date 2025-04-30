@@ -29,7 +29,7 @@ export const showToast = (
   }
 };
 
-export const formatArticleDate = (inputDate: string): string => {
+export const formatArticleDate = (inputDate: string, separater?:string): string => {
   // Validate input format
   if (!/^(\d{2}|\d{4})-\d{2}-\d{2}$/.test(inputDate)) {
     throw new Error('Invalid date format. Expected YY-MM-DD or YYYY-MM-DD');
@@ -61,11 +61,11 @@ export const formatArticleDate = (inputDate: string): string => {
   // Handle year (support both 2-digit and 4-digit years)
   const fullYear = yearPart < 100 ? 2000 + yearPart : yearPart;
 
-  // Month names
-  const monthNames: string[] = [
-    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-  ];
+  const monthNames = separater
+  ? ['January', 'February', 'March', 'April', 'May', 'June', 
+     'July', 'August', 'September', 'October', 'November', 'December']
+  : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
+     'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
   // Get ordinal suffix for day
   const getOrdinalSuffix = (d: number): string => {
@@ -77,8 +77,12 @@ export const formatArticleDate = (inputDate: string): string => {
       default: return 'th';
     }
   };
+  const formattedDay = separater 
+  ? day.toString().padStart(2, '0') 
+  : day.toString();
 
-  return `${monthNames[month - 1]} ${day}${getOrdinalSuffix(day)} ${fullYear}`;
+
+  return `${monthNames[month - 1]} ${formattedDay}${separater?separater:getOrdinalSuffix(day)} ${fullYear}`;
 };
 export const formatArticleDate2 = (inputDate: string): string => {
   // Validate input format
@@ -114,22 +118,13 @@ export const formatArticleDate2 = (inputDate: string): string => {
 
   // Month names
   const monthNames: string[] = [
-    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    'January', 'February', 'March', 'April', 'May', 'June', 
+     'July', 'August', 'September', 'October', 'November', 'December'
   ];
 
-  // Get ordinal suffix for day
-  const getOrdinalSuffix = (d: number): string => {
-    if (d > 3 && d < 21) return 'th';
-    switch (d % 10) {
-      case 1: return 'st';
-      case 2: return 'nd';
-      case 3: return 'rd';
-      default: return 'th';
-    }
-  };
+  const formattedDay = day.toString().padStart(2, '0') ;
 
-  return `${day} ${monthNames[month - 1]} ${fullYear}`;
+  return `${formattedDay} ${monthNames[month - 1]} ${fullYear}`;
 };
 export const formatSalary = (salary: number) => {
   const numStr = salary.toString();

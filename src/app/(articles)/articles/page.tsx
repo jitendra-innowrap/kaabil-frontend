@@ -6,6 +6,7 @@ import { formatArticleDate, formatArticleDate2, showToast } from '@/components/u
 import { getSessionData } from '@/components/utils/deviceId'
 import api from '@/Services/Apiservice'
 import Image from 'next/image'
+import Link from 'next/link'
 import { notFound, useParams } from 'next/navigation'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
@@ -107,7 +108,7 @@ export default function ArticlesPage() {
                                 </p>
                             </section>
 
-                            <div className="image-wrapper lg:rounded-3xl h-[400px] md:h-[600px] xl:h-[500px] 3xl:h-[807px] w-full relative">
+                            <Link href={`/articles/${coverArticle?.id}`} className="image-wrapper lg:rounded-3xl h-[400px] md:h-[600px] xl:h-[500px] 3xl:h-[807px] w-full relative">
                                 <Image
                                     src={coverArticle.cover_photo || ""}
                                     fill
@@ -136,7 +137,7 @@ export default function ArticlesPage() {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </Link>
                         </>
                     )}
                 </div>

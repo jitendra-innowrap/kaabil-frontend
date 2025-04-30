@@ -136,59 +136,61 @@ export default function AddEducation({size, closePopup, handleBack}: any) {
                 onSubmit={formik.handleSubmit}
                 className={`${size === "md" ? "block mt-6" : "mt-2"}`}
             >
-                <div
-                    className={`cursor-pointer ${
-                        size === "md" ? "max-w-[528px] mx-auto mb-[60px]" : "px-0"
-                    }`}
-                >
-                    <h4 className="text-[14px] mb-[8px] sm:text-[18px] font-medium sm:mb-1">
-                        What is your highest level of education?
-                    </h4>
-                    {/* ✅ Validation Error */}
-                    {formik.errors.education_id && formik.touched.education_id && (
-                            <p className="text-red text-sm mb-1">
-                                {formik.errors.education_id}
-                            </p>
-                        )}
-                    <div className={`flex flex-col gap-2 sm:gap-[10px] ${styles.selected_option_list}`}>
-                        {qualificationList?.map((education) => (
-                            <label
-                                htmlFor={education.id}
-                                key={education.id}
-                                onClick={() =>
-                                    formik.setFieldValue("education_id", education.id)
-                                }
-                                className={`${styles.form_group}  !mb-0 rounded-lg px-3 sm:px-5  border shadow-sm items-center block ${
-                                    education.id === formik.values.education_id
-                                        ? "border-red bg-[#FDF1F3]"
-                                        : "border-[#C8C9CB1A]"
-                                }`}
-                            >
-                                <div className="flex items-center  gap-3 sm:gap-4">
-                                    <input
-                                        type="radio"
-                                        id={education.id}
-                                        checked={education.id === formik.values.education_id}
-                                        name="experience"
-                                        className={`cursor-pointer edu-checkbox inline-block !m-0 sm:!w-4 sm:!h-4 ${
-                                            education.id === formik.values.education_id
-                                                ? "selected"
-                                                : ""
-                                        }`}
-                                        value={education?.id}
-                                    />
-                                    <div
-                                        className={`!mb-0 gap-2 radio inline-block cursor-pointer text-[12px] sm:text-[14px] ${
-                                            education.id === formik.values.education_id
-                                                ? "selected"
-                                                : ""
-                                        }`}
-                                    >
-                                        {education.name}
+                <div className={`${styles.formscrollitemlg}`}>
+                    <div
+                        className={`${
+                            size === "md" ? "max-w-[528px] mx-auto mb-[60px] md:mb-0" : "px-0"
+                        }`}
+                    >
+                        <h4 className="text-[14px] mb-[8px] sm:text-[18px] font-medium sm:mb-1">
+                            What is your highest level of education?
+                        </h4>
+                        {/* ✅ Validation Error */}
+                        {formik.errors.education_id && formik.touched.education_id && (
+                                <p className="text-red text-sm mb-1">
+                                    {formik.errors.education_id}
+                                </p>
+                            )}
+                        <div className={`flex flex-col gap-2 sm:gap-[10px]`}>
+                            {qualificationList?.map((education) => (
+                                <label
+                                    htmlFor={education.id}
+                                    key={education.id}
+                                    onClick={() =>
+                                        formik.setFieldValue("education_id", education.id)
+                                    }
+                                    className={`${styles.form_group}  !mb-0 rounded-lg px-3 sm:px-5  border shadow-sm items-center block ${
+                                        education.id === formik.values.education_id
+                                            ? "border-red bg-[#FDF1F3]"
+                                            : "border-[#C8C9CB1A]"
+                                    }`}
+                                >
+                                    <div className="flex items-center  gap-3 sm:gap-4">
+                                        <input
+                                            type="radio"
+                                            id={education.id}
+                                            checked={education.id === formik.values.education_id}
+                                            name="experience"
+                                            className={`cursor-pointer edu-checkbox inline-block !m-0 sm:!w-4 sm:!h-4 ${
+                                                education.id === formik.values.education_id
+                                                    ? "selected"
+                                                    : ""
+                                            }`}
+                                            value={education?.id}
+                                        />
+                                        <div
+                                            className={`!mb-0 gap-2 radio inline-block cursor-pointer text-[12px] sm:text-[14px] ${
+                                                education.id === formik.values.education_id
+                                                    ? "selected"
+                                                    : ""
+                                            }`}
+                                        >
+                                            {education.name}
+                                        </div>
                                     </div>
-                                </div>
-                            </label>
-                        ))}
+                                </label>
+                            ))}
+                        </div>
                     </div>
                 </div>
 

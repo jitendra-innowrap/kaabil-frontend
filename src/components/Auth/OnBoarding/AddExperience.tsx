@@ -204,8 +204,9 @@ export default function AddExperience({ size, closePopup, handleBack }: any) {
           onSubmit={formik.handleSubmit}
           className={`${size === "md" ? "block mt-6" : "mt-2"}`}
         >
+          <div className={`${styles.selected_option_list}`}>
             <div
-              className={`pb-2 cursor-pointer ${styles.selected_option_list} ${
+              className={`pb-2 cursor-pointer ${
                 size === "md" ? "max-w-[548px] mx-auto px-3" : "px-0"
               }`}
             >
@@ -280,6 +281,7 @@ export default function AddExperience({ size, closePopup, handleBack }: any) {
                 </div>
               )}
             </div>
+          </div>
           {/* @ts-ignore */}
           <div className="p-0 mt-[28px] flex justify-center">
             <div className="flex w-full items-end">

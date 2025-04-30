@@ -371,89 +371,91 @@ export default function JobsNearYou() {
                 <div className="hidden lg:block pt-5 3xl:pt-6 mb-7 3xl:mb-8">
                     <Breadcrumb root='Home' category='Jobs near me' />
                 </div>
-                <h2 className="hidden lg:block font-medium text-base leading-7s xl:text-lg 3xl:text-2xl 3xl:leading-7 mb-1 xl:mb-5 3xl:mb-[22px]">
+                <h2 className="hidden lg:block font-medium text-base leading-7s xl:text-lg 3xl:text-2xl 3xl:leading-7">
                     Jobs near me
                 </h2>
-                <div className="mobile-container">
-                    <div className="flex relative near-me-search flex-row gap-3 lg:gap-0 mx-auto rounded-xl 3xl:rounded-[16px] lg:shadow-default bg-white h-[50px] lg:h-[55px] 3xl:h-[68px] items-center mb-1 xl:mb-6 3xl:mb-[26px]">
-                        <svg className='lg:hidden absolute left-3 top-4' width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M8.25 14.25C11.5637 14.25 14.25 11.5637 14.25 8.25C14.25 4.93629 11.5637 2.25 8.25 2.25C4.93629 2.25 2.25 4.93629 2.25 8.25C2.25 11.5637 4.93629 14.25 8.25 14.25Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M15.7503 15.7508L12.4878 12.4883" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-
-                        {showAutoCompleteOptions && <div className="absolute bottom-0 w-full" ref={searchOptionRef}>
-                            {isLoading && <div className="absolute z-10 w-full mt-1 bg-white border shadow-default rounded-xl 2xl:rounded-[16px] h-10">
-                                <div className="flex justify-center items-center h-full">
-                            <div className="flex animate-spin h-7 w-7 rounded-full border-l-0 border-b-0 border-red border-[3px]"></div>
-                        </div>
-                                </div>}                            
-                            {searchOptions.length > 0 && (
-                            <ul className="absolute z-10 w-full mt-1 bg-white border shadow-default rounded-xl 2xl:rounded-[16px] max-h-60 overflow-auto">
-                                {searchOptions?.map((option) => (
-                                    <li
-                                    key={option.place_id}
-                                    className="p-2 hover:bg-gray-100 cursor-pointer text-xs lg:text-xs"
-                                    onClick={() => handleLocationSelect(option)}                                    >
-                                    {option.description}
-                                    </li>
-                                ))}
-                                </ul>
-                            )}
-                        </div>}
-                        <input
-                            type="text"
-                            id="searchbar_input"
-                            placeholder="Enter location"
-                            value={inputValue}
-                            onFocus={()=> setShowAutoCompleteOptions(true)}
-                            onChange={onSearchChange}
-                            className="placeholder:truncate w-full h-full rounded-xl text-sm 2xl:text-base 3xl:text-lg lg:font-semibold placeholder:text-gray-400 pl-9 px-4 py-2 lg:px-6 3xl:pl-[31px] lg:py-4"
-                        />
-                        <button
-                            type='submit'
-                            className="h-full w-[65px] 2xl:w-[74px] hidden lg:grid !p-0 place-items-center absolute top-0 right-0 rounded-e-xl 3xl:rounded-e-2xl rounded-s-none"
-                        >
-                            <Image className="lg:w-4 xl:w-5 2xl:w-6 -translate-x-1" src="/new-assets/icons/search-icon.svg" width="24" height="24" alt="Search" />
-                        </button>
-                        <div className="lg:hidden size-6 flex justify-center flex-shrink-0 items-center" onClick={()=>setIsMapopen(!isMapopen)}>
-                            {isMapopen?<svg className='lg:hidden' width="15" height="14" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M3.27127 6.98986C3.27127 7.93474 2.54657 8.72275 1.63564 8.72275C0.724707 8.72275 0.0184738 7.93469 0.0184738 6.98986C0.0184738 6.04498 0.743181 5.25698 1.65411 5.25698C2.56509 5.25698 3.27127 6.04503 3.27127 6.98986ZM13.8664 5.78882H6.24539C5.61319 5.78882 5.11175 6.32073 5.11175 6.98986C5.11175 7.65965 5.61381 8.1909 6.24539 8.1909H13.8664C14.4986 8.1909 15 7.65899 15 6.98986C15 6.32008 14.4979 5.78882 13.8664 5.78882ZM1.63564 0C0.743165 0 0 0.767795 0 1.73288C0 2.69797 0.724707 3.46577 1.63564 3.46577C2.54657 3.46577 3.27127 2.69797 3.27127 1.73288C3.27127 0.767795 2.54657 0 1.63564 0ZM13.8664 0.511651H6.24539C5.61319 0.511651 5.11175 1.04356 5.11175 1.71269C5.11175 2.38248 5.61381 2.91373 6.24539 2.91373H13.8664C14.4986 2.91373 15 2.38182 15 1.71269C15 1.04356 14.4979 0.511651 13.8664 0.511651ZM1.63564 10.5342C0.743165 10.5342 0 11.302 0 12.2671C0 13.2322 0.724707 14 1.63564 14C2.54661 13.9993 3.27127 13.2315 3.27127 12.2671C3.27127 11.302 2.54657 10.5342 1.63564 10.5342ZM13.8664 11.0459H6.24539C5.61319 11.0459 5.11175 11.5778 5.11175 12.2469C5.11175 12.9167 5.61381 13.448 6.24539 13.448H13.8664C14.4986 13.448 15 12.9161 15 12.2469C15 11.5778 14.4979 11.0459 13.8664 11.0459Z" fill="black"/>
-                            </svg>:
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M2.29004 7.77998V17.51C2.29004 19.41 3.64004 20.19 5.28004 19.25L7.63004 17.91C8.14004 17.62 8.99004 17.59 9.52004 17.86L14.77 20.49C15.3 20.75 16.15 20.73 16.66 20.44L20.99 17.96C21.54 17.64 22 16.86 22 16.22V6.48998C22 4.58998 20.65 3.80998 19.01 4.74998L16.66 6.08998C16.15 6.37998 15.3 6.40998 14.77 6.13998L9.52004 3.51998C8.99004 3.25998 8.14004 3.27998 7.63004 3.56998L3.30004 6.04998C2.74004 6.36998 2.29004 7.14998 2.29004 7.77998Z" stroke="#231F20" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M8.56006 4V17" stroke="#231F20" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M15.73 6.62012V20.0001" stroke="#231F20" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <div className="bg-[#f9f9f9] sticky top-[72.5px] lg:top-[56.6px] 2xl:top-[59px] 3xl:top-[91px] pt-1 xl:pt-5 3xl:pt-[22px]">
+                    <div className="mobile-container">
+                        <div className="flex relative near-me-search flex-row gap-3 lg:gap-0 mx-auto rounded-xl 3xl:rounded-[16px] lg:shadow-default bg-white h-[50px] lg:h-[55px] 3xl:h-[68px] items-center mb-1 xl:mb-6 3xl:mb-[26px]">
+                            <svg className='lg:hidden absolute left-3 top-4' width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8.25 14.25C11.5637 14.25 14.25 11.5637 14.25 8.25C14.25 4.93629 11.5637 2.25 8.25 2.25C4.93629 2.25 2.25 4.93629 2.25 8.25C2.25 11.5637 4.93629 14.25 8.25 14.25Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M15.7503 15.7508L12.4878 12.4883" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
-                            }
+
+                            {showAutoCompleteOptions && <div className="absolute bottom-0 w-full" ref={searchOptionRef}>
+                                {isLoading && <div className="absolute z-10 w-full mt-1 bg-white border shadow-default rounded-xl 2xl:rounded-[16px] h-10">
+                                    <div className="flex justify-center items-center h-full">
+                                <div className="flex animate-spin h-7 w-7 rounded-full border-l-0 border-b-0 border-red border-[3px]"></div>
+                            </div>
+                                    </div>}                            
+                                {searchOptions.length > 0 && (
+                                <ul className="absolute z-10 w-full mt-1 bg-white border shadow-default rounded-xl 2xl:rounded-[16px] max-h-60 overflow-auto">
+                                    {searchOptions?.map((option) => (
+                                        <li
+                                        key={option.place_id}
+                                        className="p-2 hover:bg-gray-100 cursor-pointer text-xs lg:text-xs"
+                                        onClick={() => handleLocationSelect(option)}                                    >
+                                        {option.description}
+                                        </li>
+                                    ))}
+                                    </ul>
+                                )}
+                            </div>}
+                            <input
+                                type="text"
+                                id="searchbar_input"
+                                placeholder="Enter location"
+                                value={inputValue}
+                                onFocus={()=> setShowAutoCompleteOptions(true)}
+                                onChange={onSearchChange}
+                                className="placeholder:truncate w-full h-full rounded-xl text-sm 2xl:text-base 3xl:text-lg lg:font-semibold placeholder:text-gray-400 pl-9 px-4 py-2 lg:px-6 3xl:pl-[31px] lg:py-4"
+                            />
+                            <button
+                                type='submit'
+                                className="h-full w-[65px] 2xl:w-[74px] hidden lg:grid !p-0 place-items-center absolute top-0 right-0 rounded-e-xl 3xl:rounded-e-2xl rounded-s-none"
+                            >
+                                <Image className="lg:w-4 xl:w-5 2xl:w-6 -translate-x-1" src="/new-assets/icons/search-icon.svg" width="24" height="24" alt="Search" />
+                            </button>
+                            <div className="lg:hidden size-6 flex justify-center flex-shrink-0 items-center" onClick={()=>setIsMapopen(!isMapopen)}>
+                                {isMapopen?<svg className='lg:hidden' width="15" height="14" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M3.27127 6.98986C3.27127 7.93474 2.54657 8.72275 1.63564 8.72275C0.724707 8.72275 0.0184738 7.93469 0.0184738 6.98986C0.0184738 6.04498 0.743181 5.25698 1.65411 5.25698C2.56509 5.25698 3.27127 6.04503 3.27127 6.98986ZM13.8664 5.78882H6.24539C5.61319 5.78882 5.11175 6.32073 5.11175 6.98986C5.11175 7.65965 5.61381 8.1909 6.24539 8.1909H13.8664C14.4986 8.1909 15 7.65899 15 6.98986C15 6.32008 14.4979 5.78882 13.8664 5.78882ZM1.63564 0C0.743165 0 0 0.767795 0 1.73288C0 2.69797 0.724707 3.46577 1.63564 3.46577C2.54657 3.46577 3.27127 2.69797 3.27127 1.73288C3.27127 0.767795 2.54657 0 1.63564 0ZM13.8664 0.511651H6.24539C5.61319 0.511651 5.11175 1.04356 5.11175 1.71269C5.11175 2.38248 5.61381 2.91373 6.24539 2.91373H13.8664C14.4986 2.91373 15 2.38182 15 1.71269C15 1.04356 14.4979 0.511651 13.8664 0.511651ZM1.63564 10.5342C0.743165 10.5342 0 11.302 0 12.2671C0 13.2322 0.724707 14 1.63564 14C2.54661 13.9993 3.27127 13.2315 3.27127 12.2671C3.27127 11.302 2.54657 10.5342 1.63564 10.5342ZM13.8664 11.0459H6.24539C5.61319 11.0459 5.11175 11.5778 5.11175 12.2469C5.11175 12.9167 5.61381 13.448 6.24539 13.448H13.8664C14.4986 13.448 15 12.9161 15 12.2469C15 11.5778 14.4979 11.0459 13.8664 11.0459Z" fill="black"/>
+                                </svg>:
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M2.29004 7.77998V17.51C2.29004 19.41 3.64004 20.19 5.28004 19.25L7.63004 17.91C8.14004 17.62 8.99004 17.59 9.52004 17.86L14.77 20.49C15.3 20.75 16.15 20.73 16.66 20.44L20.99 17.96C21.54 17.64 22 16.86 22 16.22V6.48998C22 4.58998 20.65 3.80998 19.01 4.74998L16.66 6.08998C16.15 6.37998 15.3 6.40998 14.77 6.13998L9.52004 3.51998C8.99004 3.25998 8.14004 3.27998 7.63004 3.56998L3.30004 6.04998C2.74004 6.36998 2.29004 7.14998 2.29004 7.77998Z" stroke="#231F20" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M8.56006 4V17" stroke="#231F20" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M15.73 6.62012V20.0001" stroke="#231F20" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                }
+                            </div>
                         </div>
                     </div>
+                    <div className={`w-screen block lg:hidden ${isMapopen?"h-[350px]":"h-0"} transition-all duration-200`}>
+                        <CustomGoogleMap
+                            radius={parseInt(selectedradius?.value || '20')}
+                            lat={selectedLocation?.lat || currentLocation?.city_latitude || ""} 
+                            lng={selectedLocation?.lng || currentLocation?.city_longitude || ""}
+                            jobLocations={jobLocations || []}
+                            onMarkerClick={handleMarkerClick}
+                            selectedJobId={selectedJobId}
+                        />
+                    </div>
+                    {!isMapopen && <div className='mobile-container'>
+                        <p className='lg:hidden text-sm mb-[10px]'>Radius (in Kms)</p>
+                    <div ref={scrollRef}
+                        onMouseDown={handleMouseDown}
+                        onMouseLeave={handleMouseLeave}
+                        onMouseUp={handleMouseUp}
+                        onMouseMove={handleMouseMove} 
+                        className="flex w-full select-none overflow-auto distance-radius-list gap-2 lg:gap-3 3xl:gap-[14px]">
+                        {radiusList?.length>0 ? <></> : <div className={`distance-label invisible cursor-pointer w-[50px] lg:w-[100px] flex-shrink-0 text-[11px] leading-[100%] h-[30px] lg:h-[34px] border rounded-md grid place-items-center selected bg-[#231F20] border-black text-white`}>loading...</div>}
+                        {
+                            radiusList?.map((radius:radius)=>(
+                                <div onClick={()=>handleRadius(radius)} className={`distance-label cursor-pointer w-[50px] lg:w-[100px] flex-shrink-0 text-[11px] leading-[100%] h-[30px] lg:h-[34px] border rounded-md grid place-items-center ${selectedradius?.id==radius.id?"selected bg-[#231F20] border-black text-white":"bg-white text-black hover:border-gray-400"}`}>{radius.name}</div>
+                            ))
+                        }
+                    </div>
+                    </div>}
                 </div>
-                <div className={`w-screen block lg:hidden ${isMapopen?"h-[350px]":"h-0"} transition-all duration-200`}>
-                    <CustomGoogleMap
-                        radius={parseInt(selectedradius?.value || '20')}
-                        lat={selectedLocation?.lat || currentLocation?.city_latitude || ""} 
-                        lng={selectedLocation?.lng || currentLocation?.city_longitude || ""}
-                        jobLocations={jobLocations || []}
-                        onMarkerClick={handleMarkerClick}
-                        selectedJobId={selectedJobId}
-                    />
-                </div>
-                {!isMapopen && <div className='mobile-container'>
-                    <p className='lg:hidden text-sm mb-[10px]'>Radius (in Kms)</p>
-                <div ref={scrollRef}
-                    onMouseDown={handleMouseDown}
-                    onMouseLeave={handleMouseLeave}
-                    onMouseUp={handleMouseUp}
-                    onMouseMove={handleMouseMove} 
-                    className="flex w-full select-none overflow-auto distance-radius-list gap-2 lg:gap-3 3xl:gap-[14px]">
-                    {radiusList?.length>0 ? <></> : <div className={`distance-label invisible cursor-pointer w-[50px] lg:w-[100px] flex-shrink-0 text-[11px] leading-[100%] h-[30px] lg:h-[34px] border rounded-md grid place-items-center selected bg-[#231F20] border-black text-white`}>loading...</div>}
-                    {
-                        radiusList?.map((radius:radius)=>(
-                            <div onClick={()=>handleRadius(radius)} className={`distance-label cursor-pointer w-[50px] lg:w-[100px] flex-shrink-0 text-[11px] leading-[100%] h-[30px] lg:h-[34px] border rounded-md grid place-items-center ${selectedradius?.id==radius.id?"selected bg-[#231F20] border-black text-white":"bg-white text-black hover:border-gray-400"}`}>{radius.name}</div>
-                        ))
-                    }
-                </div>
-                </div>}
                 <div className={`mobile-container ${isMapopen ? "near-me-jobs-pannel border -translate-y-5 bg-[#F9F9F9]" : ""}`}>
                     {!jobs ? (
                         <div className="flex justify-center items-center h-[305px]">

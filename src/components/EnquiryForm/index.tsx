@@ -108,10 +108,10 @@ export default function EnquiryForm() {
                 overflow: "hidden",
             }}
         >
-            <div className="p-4 md:p-6">
-                <div className="relative w-full">
+            <div className="py-4 md:py-6">
+                <div className="relative w-full px-4 md:px-6">
                     <IoClose
-                        className="absolute close-btn -top-1 right-0 cursor-pointer size-6 3xl:size-8"
+                        className="absolute close-btn -top-1 right-4 md:right-6 cursor-pointer size-6 3xl:size-8"
                         onClick={handleClose}
                     />
                     <div className={`flex justify-center items-center mb-[27px] sm:mb-0`}>
@@ -121,234 +121,244 @@ export default function EnquiryForm() {
                     </div>
                 </div>
                 <form onSubmit={formikForm.handleSubmit}>
-                    <label
-                        htmlFor="type"
-                        className={`text-[#231F20] mb-[8px]  3xl:mb-4 sm:text-lg md:text-xl 2xl:text-[16px] block input-label`}
-                    >
-                        Are you a
-                    </label>
-                    <div className=" mt-2 mb-4 grid grid-cols-2 sm:flex flex-row gap-4 sm:gap-2 2xl:gap-4">
+                    <div className="form-inputs-wrapper px-4 md:px-6 max-h-[calc(100vh_-_220px)] lg:max-h-[calc(100vh_-_180px)] overflow-auto slim-scroll">
                         <label
-                            htmlFor="jobseeker"
-                            className={`col-span-1 !flex flex-1 py-2 xl:py-0 3xl:py-4 !mb-0 gap-1 3xl:gap-4 rounded-lg px-3 3xl:px-5 border cursor-pointer shadow-sm items-center ${
-                                formikForm.values.type == 0
-                                    ? "border-red bg-[#FDF1F3] text-red"
-                                    : "border-[#C8C9CB1A]"
-                            }`}
+                            htmlFor="type"
+                            className={`text-[#231F20] mb-[8px]  3xl:mb-4 sm:text-lg md:text-xl 2xl:text-[16px] block input-label`}
                         >
-                            <input
-                                type="radio"
-                                id="jobseeker"
-                                name="type"
-                                className="cursor-pointer inline-block !m-0 !w-3 !sm:w-4 !h-4"
-                                value={0}
-                                onChange={formikForm.handleChange}
-                                checked={formikForm.values.type == 0}
-                            />
-                            <div className="!mb-0 radio-label gap-2 inline-block cursor-pointer text-[11px] sm:text-[14px]">
-                                Jobseeker
-                            </div>
+                            Are you a
                         </label>
-                        <label
-                            htmlFor="recruiter"
-                            className={`col-span-1 !flex flex-1 py-2 xl:py-0 3xl:py-4 !mb-0 gap-1 3xl:gap-4 rounded-lg px-3 3xl:px-5 border cursor-pointer shadow-sm items-center ${
-                                formikForm.values.type == 1
-                                    ? "border-red text-red bg-[#FDF1F3]"
-                                    : "border-[#C8C9CB1A]"
-                            }`}
-                        >
-                            <input
-                                type="radio"
-                                id="recruiter"
-                                name="type"
-                                className="cursor-pointer inline-block !m-0 !w-3 !sm:w-4 !h-4"
-                                value={1}
-                                onChange={formikForm.handleChange}
-                                checked={formikForm.values.type == 1}
-                            />
-                            <div className="!mb-0 radio-label gap-2 inline-block cursor-pointer text-[11px] sm:text-[14px]">
-                                Recruiter
-                            </div>
-                        </label>
-                        <label
-                            htmlFor="ngo"
-                            className={`col-span-1 !flex flex-1 py-2 xl:py-0 3xl:py-4 !mb-0 gap-1 3xl:gap-4 rounded-lg px-3 3xl:px-5 border cursor-pointer shadow-sm items-center ${
-                                formikForm.values.type == 2
-                                    ? "border-red text-red bg-[#FDF1F3]"
-                                    : "border-[#C8C9CB1A]"
-                            }`}
-                        >
-                            <input
-                                type="radio"
-                                id="ngo"
-                                name="type"
-                                className="cursor-pointer inline-block !m-0 !w-3 !sm:w-4 !h-4"
-                                value={2}
-                                onChange={formikForm.handleChange}
-                                checked={formikForm.values.type == 2}
-                            />
-                            <div className="!mb-0 radio-label gap-2 inline-block cursor-pointer text-[11px] sm:text-[14px]">
-                                NGO/Foundation
-                            </div>
-                        </label>
-                    </div>
-                    {formikForm.errors.type && formikForm.touched.type && (
-                        <p className="text-red text-[11px] form-error sm:text-sm mt-1">
-                            {formikForm.errors.type}
-                        </p>
-                    )}
-
-                    <div className="mt-4">
-                        <label 
-                            htmlFor="name"
-                            className={`input-label text-[#231F20] mb-[8px] sm:mb-[10px] text-[14px] sm:text-lg md:text-xl 2xl:text-[16px] block`}
-                        >
-                            Your name
-                        </label>
-                        <input
-                            type="text"
-                            id="name"
-                            name="name"
-                            placeholder="Enter your name"
-                            value={formikForm.values.name}
-                            onChange={formikForm.handleChange}
-                            onBlur={formikForm.handleBlur}
-                            className={`border p-2 w-full rounded-lg ${
-                                formikForm.errors.name && formikForm.touched.name
-                                    ? "border-red"
-                                    : "border-[#C8C9CB1A]"
-                            } ${formikForm.values.name ? "font-semibold" : "font-normal"}`}
-                        />
-                        {formikForm.errors.name && formikForm.touched.name && (
+                        <div className=" mt-2 mb-4 grid grid-cols-2 sm:flex flex-row gap-4 sm:gap-2 2xl:gap-4">
+                            <label
+                                htmlFor="jobseeker"
+                                className={`col-span-1 !flex flex-1 py-2 xl:py-0 3xl:py-4 !mb-0 gap-1 3xl:gap-4 rounded-lg px-3 3xl:px-5 border cursor-pointer shadow-sm items-center ${
+                                    formikForm.values.type == 0
+                                        ? "border-red bg-[#FDF1F3] text-red"
+                                        : "border-[#C8C9CB1A]"
+                                }`}
+                            >
+                                <input
+                                    type="radio"
+                                    id="jobseeker"
+                                    name="type"
+                                    className="cursor-pointer inline-block !m-0 !w-3 !sm:w-4 !h-4"
+                                    value={0}
+                                    onChange={formikForm.handleChange}
+                                    checked={formikForm.values.type == 0}
+                                />
+                                <div className="!mb-0 radio-label gap-2 inline-block cursor-pointer text-[11px] sm:text-[14px]">
+                                    Jobseeker
+                                </div>
+                            </label>
+                            <label
+                                htmlFor="recruiter"
+                                className={`col-span-1 !flex flex-1 py-2 xl:py-0 3xl:py-4 !mb-0 gap-1 3xl:gap-4 rounded-lg px-3 3xl:px-5 border cursor-pointer shadow-sm items-center ${
+                                    formikForm.values.type == 1
+                                        ? "border-red text-red bg-[#FDF1F3]"
+                                        : "border-[#C8C9CB1A]"
+                                }`}
+                            >
+                                <input
+                                    type="radio"
+                                    id="recruiter"
+                                    name="type"
+                                    className="cursor-pointer inline-block !m-0 !w-3 !sm:w-4 !h-4"
+                                    value={1}
+                                    onChange={formikForm.handleChange}
+                                    checked={formikForm.values.type == 1}
+                                />
+                                <div className="!mb-0 radio-label gap-2 inline-block cursor-pointer text-[11px] sm:text-[14px]">
+                                    Recruiter
+                                </div>
+                            </label>
+                            <label
+                                htmlFor="ngo"
+                                className={`col-span-1 !flex flex-1 py-2 xl:py-0 3xl:py-4 !mb-0 gap-1 3xl:gap-4 rounded-lg px-3 3xl:px-5 border cursor-pointer shadow-sm items-center ${
+                                    formikForm.values.type == 2
+                                        ? "border-red text-red bg-[#FDF1F3]"
+                                        : "border-[#C8C9CB1A]"
+                                }`}
+                            >
+                                <input
+                                    type="radio"
+                                    id="ngo"
+                                    name="type"
+                                    className="cursor-pointer inline-block !m-0 !w-3 !sm:w-4 !h-4"
+                                    value={2}
+                                    onChange={formikForm.handleChange}
+                                    checked={formikForm.values.type == 2}
+                                />
+                                <div className="!mb-0 radio-label gap-2 inline-block cursor-pointer text-[11px] sm:text-[14px]">
+                                    NGO/Foundation
+                                </div>
+                            </label>
+                        </div>
+                        {formikForm.errors.type && formikForm.touched.type && (
                             <p className="text-red text-[11px] form-error sm:text-sm mt-1">
-                                {formikForm.errors.name}
+                                {formikForm.errors.type}
                             </p>
                         )}
-                    </div>
 
-                    {/* NGO/Foundation Name Field (Conditional) */}
-                    {formikForm.values.type == 2 && (
                         <div className="mt-4">
                             <label 
-                                htmlFor="foundation_name"
+                                htmlFor="name"
                                 className={`input-label text-[#231F20] mb-[8px] sm:mb-[10px] text-[14px] sm:text-lg md:text-xl 2xl:text-[16px] block`}
                             >
-                                NGO/Foundation Name
+                                Your name
                             </label>
                             <input
                                 type="text"
-                                id="foundation_name"
-                                name="foundation_name"
-                                placeholder="Enter NGO/Foundation Name"
-                                value={formikForm.values.foundation_name}
-                                onChange={formikForm.handleChange}
+                                id="name"
+                                name="name"
+                                placeholder="Enter your name"
+                                value={formikForm.values.name}
+                                onChange={(e) => {
+                                    // Only allow letters and spaces
+                                    const filteredValue = e.target.value.replace(/[^a-zA-Z\s]/g, '');
+                                    formikForm.setFieldValue('name', filteredValue);
+                                  }}
                                 onBlur={formikForm.handleBlur}
                                 className={`border p-2 w-full rounded-lg ${
-                                    formikForm.errors.foundation_name && formikForm.touched.foundation_name
+                                    formikForm.errors.name && formikForm.touched.name
                                         ? "border-red"
                                         : "border-[#C8C9CB1A]"
-                                } ${formikForm.values.foundation_name ? "font-semibold" : "font-normal"}`}
+                                } ${formikForm.values.name ? "font-semibold" : "font-normal"}`}
                             />
-                            {formikForm.errors.foundation_name && formikForm.touched.foundation_name && (
+                            {formikForm.errors.name && formikForm.touched.name && (
                                 <p className="text-red text-[11px] form-error sm:text-sm mt-1">
-                                    {formikForm.errors.foundation_name}
+                                    {formikForm.errors.name}
                                 </p>
                             )}
                         </div>
-                    )}
 
-                    <div className="mt-4">
-                        <label 
-                            htmlFor="email"
-                            className={`input-label text-[#231F20] mb-[8px] sm:mb-[10px] text-[14px] sm:text-lg md:text-xl 2xl:text-[16px] block`}
-                        >
-                            Your email
-                        </label>
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            placeholder="Enter your email"
-                            value={formikForm.values.email}
-                            onChange={formikForm.handleChange}
-                            onBlur={formikForm.handleBlur}
-                            className={`border p-2 w-full rounded-lg ${
-                                formikForm.errors.email && formikForm.touched.email
-                                    ? "border-red"
-                                    : "border-[#C8C9CB1A]"
-                            } ${formikForm.values.email ? "font-semibold" : "font-normal"}`}
-                        />
-                        {formikForm.errors.email && formikForm.touched.email && (
-                            <p className="text-red text-[11px] form-error sm:text-sm mt-1">
-                                {formikForm.errors.email}
-                            </p>
+                        {/* NGO/Foundation Name Field (Conditional) */}
+                        {formikForm.values.type == 2 && (
+                            <div className="mt-4">
+                                <label 
+                                    htmlFor="foundation_name"
+                                    className={`input-label text-[#231F20] mb-[8px] sm:mb-[10px] text-[14px] sm:text-lg md:text-xl 2xl:text-[16px] block`}
+                                >
+                                    NGO/Foundation Name
+                                </label>
+                                <input
+                                    type="text"
+                                    id="foundation_name"
+                                    name="foundation_name"
+                                    placeholder="Enter NGO/Foundation Name"
+                                    value={formikForm.values.foundation_name}
+                                    onChange={(e) => {
+                                        // Only allow letters and spaces
+                                        const filteredValue = e.target.value.replace(/[^a-zA-Z\s]/g, '');
+                                        formikForm.setFieldValue('foundation_name', filteredValue);
+                                      }}
+                                    
+                                    onBlur={formikForm.handleBlur}
+                                    className={`border p-2 w-full rounded-lg ${
+                                        formikForm.errors.foundation_name && formikForm.touched.foundation_name
+                                            ? "border-red"
+                                            : "border-[#C8C9CB1A]"
+                                    } ${formikForm.values.foundation_name ? "font-semibold" : "font-normal"}`}
+                                />
+                                {formikForm.errors.foundation_name && formikForm.touched.foundation_name && (
+                                    <p className="text-red text-[11px] form-error sm:text-sm mt-1">
+                                        {formikForm.errors.foundation_name}
+                                    </p>
+                                )}
+                            </div>
                         )}
-                    </div>
 
-                    <div className="mt-4">
-                        <label 
-                            htmlFor="number"
-                            className={`input-label text-[#231F20] mb-[8px] sm:mb-[10px] text-[14px] sm:text-lg md:text-xl 2xl:text-[16px] block`}
-                        >
-                            Your phone number
-                        </label>
-                        <input
-                            type="tel"
-                            id="number"
-                            name="number"
-                            placeholder="Enter your phone number"
-                            value={formikForm.values.number}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                            const numericValue = e.target.value.replace(/\D+/g, "");
-                            if (numericValue.length <= 10) {
-                                formikForm.setFieldValue("number", numericValue);
-                            } else {
-                                formikForm.setFieldValue("number", numericValue.slice(0, 10));
-                            }
-                            }}
-                            onBlur={formikForm.handleBlur}
-                            className={`border p-2 w-full rounded-lg ${
-                                formikForm.errors.number && formikForm.touched.number
-                                    ? "border-red"
-                                    : "border-[#C8C9CB1A]"
-                            } ${formikForm.values.number ? "font-semibold" : "font-normal"}`}
-                        />
-                        {formikForm.errors.number && formikForm.touched.number && (
-                            <p className="text-red text-[11px] form-error sm:text-sm mt-1">
-                                {formikForm.errors.number}
-                            </p>
-                        )}
-                    </div>
+                        <div className="mt-4">
+                            <label 
+                                htmlFor="email"
+                                className={`input-label text-[#231F20] mb-[8px] sm:mb-[10px] text-[14px] sm:text-lg md:text-xl 2xl:text-[16px] block`}
+                            >
+                                Your email
+                            </label>
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="Enter your email"
+                                value={formikForm.values.email}
+                                onChange={formikForm.handleChange}
+                                onBlur={formikForm.handleBlur}
+                                className={`border p-2 w-full rounded-lg ${
+                                    formikForm.errors.email && formikForm.touched.email
+                                        ? "border-red"
+                                        : "border-[#C8C9CB1A]"
+                                } ${formikForm.values.email ? "font-semibold" : "font-normal"}`}
+                            />
+                            {formikForm.errors.email && formikForm.touched.email && (
+                                <p className="text-red text-[11px] form-error sm:text-sm mt-1">
+                                    {formikForm.errors.email}
+                                </p>
+                            )}
+                        </div>
 
-                    <div className="mt-4">
-                        <label 
-                            htmlFor="feedback"
-                            className={`input-label text-[#231F20] mb-[8px] sm:mb-[10px] text-[14px] sm:text-lg md:text-xl 2xl:text-[16px] block`}
-                        >
-                            Your feedback
-                        </label>
-                        <textarea
-                            id="feedback"
-                            name="feedback"
-                            placeholder="Enter your feedback"
-                            value={formikForm.values.feedback}
-                            onChange={formikForm.handleChange}
-                            onBlur={formikForm.handleBlur}
-                            rows={4}
-                            className={`border p-2 w-full rounded-lg outline-none ${
-                                formikForm.errors.feedback && formikForm.touched.feedback
-                                    ? "border-red"
-                                    : "border-[#C8C9CB1A]"
-                            } ${formikForm.values.feedback ? "font-semibold" : "font-normal"}`}
-                        />
-                        {formikForm.errors.feedback && formikForm.touched.feedback && (
-                            <p className="text-red text-[11px] form-error sm:text-sm -mt-1">
-                                {formikForm.errors.feedback}
-                            </p>
-                        )}
-                    </div>
+                        <div className="mt-4">
+                            <label 
+                                htmlFor="number"
+                                className={`input-label text-[#231F20] mb-[8px] sm:mb-[10px] text-[14px] sm:text-lg md:text-xl 2xl:text-[16px] block`}
+                            >
+                                Your phone number
+                            </label>
+                            <input
+                                type="tel"
+                                id="number"
+                                name="number"
+                                placeholder="Enter your phone number"
+                                value={formikForm.values.number}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                const numericValue = e.target.value.replace(/\D+/g, "");
+                                if (numericValue.length <= 10) {
+                                    formikForm.setFieldValue("number", numericValue);
+                                } else {
+                                    formikForm.setFieldValue("number", numericValue.slice(0, 10));
+                                }
+                                }}
+                                onBlur={formikForm.handleBlur}
+                                className={`border p-2 w-full rounded-lg ${
+                                    formikForm.errors.number && formikForm.touched.number
+                                        ? "border-red"
+                                        : "border-[#C8C9CB1A]"
+                                } ${formikForm.values.number ? "font-semibold" : "font-normal"}`}
+                            />
+                            {formikForm.errors.number && formikForm.touched.number && (
+                                <p className="text-red text-[11px] form-error sm:text-sm mt-1">
+                                    {formikForm.errors.number}
+                                </p>
+                            )}
+                        </div>
 
-                    <div className="flex w-full justify-end mt-2">
+                        <div className="mt-4">
+                            <label 
+                                htmlFor="feedback"
+                                className={`input-label text-[#231F20] mb-[8px] sm:mb-[10px] text-[14px] sm:text-lg md:text-xl 2xl:text-[16px] block`}
+                            >
+                                Your feedback
+                            </label>
+                            <textarea
+                                id="feedback"
+                                name="feedback"
+                                placeholder="Enter your feedback"
+                                value={formikForm.values.feedback}
+                                onChange={formikForm.handleChange}
+                                onBlur={formikForm.handleBlur}
+                                rows={4}
+                                className={`border p-2 w-full rounded-lg outline-none ${
+                                    formikForm.errors.feedback && formikForm.touched.feedback
+                                        ? "border-red"
+                                        : "border-[#C8C9CB1A]"
+                                } ${formikForm.values.feedback ? "font-semibold" : "font-normal"}`}
+                            />
+                            {formikForm.errors.feedback && formikForm.touched.feedback && (
+                                <p className="text-red text-[11px] form-error sm:text-sm -mt-1">
+                                    {formikForm.errors.feedback}
+                                </p>
+                            )}
+                        </div>
+                    </div>
+                    <div className="flex w-full justify-end mt-2 px-4 md:px-6">
                         <button 
                             type="submit" 
                             className={`px-6 py-2 !mt-0 bg-red text-white rounded-lg hover:bg-red-600 transition-colors ${

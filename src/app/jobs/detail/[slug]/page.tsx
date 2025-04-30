@@ -61,25 +61,28 @@ export default function Home() {
   );
   const [similarJobs, setSimilarJobs] = useState<CompanyJob[]>([]);
   const router = useRouter();
-  const [scrollClass, setScrollClass] = useState(false);
-  const scrollRef = useRef(10);
+  const [isVisible, setIsVisible] = useState(false)
+  const lastScrollYRef = useRef(0)
 
   useEffect(() => {
     const handleScroll = () => {
-      const current = window.scrollY;
-      const isScrollingUp = current < scrollRef.current;
-      scrollRef.current = current;
-      if(isScrollingUp || current > 0){
-        setScrollClass(false)
+      const current = window.scrollY
+      
+      // Show when scrolled down past 100px
+      if (current > 100 && current > lastScrollYRef.current) {
+        setIsVisible(true)
       }
-      if (isScrollingUp || current ===0) {
-        setScrollClass(false);
+      // Hide when scrolling up past 50px or at top
+      else if (current < 50 || current < lastScrollYRef.current) {
+        setIsVisible(false)
       }
-    };
+      
+      lastScrollYRef.current = current
+    }
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
 
   const closeScreeningModal = () => {
@@ -347,7 +350,88 @@ export default function Home() {
     <main className="bg-white">
       {/* Add to stick  */}
       <section
-      className={`bg-[#FDEAC9] py-6 xl:py-8 sm:sticky z-[11] sm:top-[52px] lg:top-[56px] 3xl:top-[90px]`}>
+      className={`bg-[#FDEAC9] py-6 xl:py-8 transition-all duration-500 fixed w-full z-[100] ${isVisible?"translate-y-0":"-translate-y-full"}`}>
+        <div className="container relative z-[1]">
+          <div className="flex justify-between flex-wrap xl:flex-nowrap flex-col sm:flex-row sm:items-end gap-5 xl:gap-7 2xl:gap-8">
+            <div className="flex justify-between flex-row gap-3 2xl:gap-5 3xl:gap-8 lg:max-w-[calc(100%_-_300px)]">
+              <CompanyLogo
+                index={1}
+                logo={jobDetails?.logo}
+                styles="flex-shrink-0 border border-[#07082833] size-12 2xl:size-16 rounded-full"
+                name={jobDetails?.company_name}
+              />
+              <div className="block">
+                <div className="flex justify-between lg:justify-start gap-5 xl:gap-7 2xl:gap-8 items-center">
+                  <h1 className="font-medium text-[#231F20] text-xl 2xl:text-3xl">
+                    {jobDetails?.job_title}
+                  </h1>
+                </div>
+                <p className="text-[#231F20] text-xs 2xl:text-sm 3xl:text-base mt-1">
+                  {jobDetails?.company_name}
+                </p>
+              </div>
+            </div>
+            {token ? (
+              <div className="hidden sm:flex gap-2 3xl:gap-3 justify-end items-center h-fit">
+                <div
+                  onClick={handleShare}
+                  className="bg-white cursor-pointer flex-shrink-0 grid place-items-center rounded-full size-8 3xl:size-[50px]"
+                >
+                  <img
+                    src="/new-assets/icons/share.svg"
+                    className="text-[#4D4D4F] size-[14px] 3xl:size-[17px]"
+                  />
+                </div>
+                <button
+                  onClick={() => handleSave(jobDetails?.id || "")}
+                  className="text-[#231F20] btn-border h-[35px] 3xl:h-[50px] !text-xs 3xl:!text-sm flex items-center gap-2 !border-black"
+                >
+                  save{" "}
+                  {!isFavorited ? (
+                    <VscHeart
+                      className={`text-black 3xl:size-5 cursor-pointer`}
+                    />
+                  ) : (
+                    <VscHeartFilled
+                      className={`text-red 3xl:size-5 cursor-pointer`}
+                    />
+                  )}
+                </button>
+                <button
+                  onClick={() => handleApply(jobDetails?.id || "")}
+                  className={`whitespace-nowrap h-[35px] 3xl:h-[50px] w-[130px] 3xl:w-[176px] !text-xs 3xl:!text-sm ${
+                    isApplied ? "opacity-60 disabled cursor-default" : ""
+                  }`}
+                >
+                  {isApplied ? "Job Applied" : "apply now"}
+                </button>
+              </div>
+            ) : (
+              <div className="hidden sm:flex gap-3 md:gap-4 justify-end items-center h-fit">
+                <div
+                  onClick={handleShare}
+                  className="bg-white cursor-pointer flex-shrink-0 grid place-items-center rounded-full size-8 3xl:size-[50px]"
+                >
+                  <img
+                    src="/new-assets/icons/share.svg"
+                    className="text-[#4D4D4F] size-[14px] 3xl:size-[17px]"
+                  />
+                </div>
+                <button
+                  onClick={handleSignIn}
+                  className={`whitespace-nowrap flex items-center h-[35px] 3xl:h-[50px] !text-xs 3xl:!text-sm ${
+                    isApplied ? "!bg-[#f2f2f2] text-black cursor-default" : ""
+                  }`}
+                >
+                  Sign in to apply for this Job
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+      <section
+      className={`bg-[#FDEAC9] py-6 xl:py-8`}>
         <div className="container relative z-[1]">
           <div className="flex justify-between flex-wrap xl:flex-nowrap flex-col sm:flex-row sm:items-end gap-5 xl:gap-7 2xl:gap-8">
             <div className="flex justify-between flex-row gap-3 2xl:gap-5 3xl:gap-8 lg:max-w-[calc(100%_-_300px)]">
@@ -367,18 +451,7 @@ export default function Home() {
                   {jobDetails?.company_name}
                 </p>
                 {true && 
-                <motion.div
-                initial={{ y: 0, opacity: 1 }}
-                animate={{
-                  y: !scrollClass ? 0 : -10,
-                  height: !scrollClass? 'auto': '0px',
-                  opacity: !scrollClass ? 1 : 0,
-                }}
-                transition={{
-                  type: "ease",
-                  damping: 20,
-                  stiffness: 300
-                }} className={`job-header-options transition-all duration-300 overflow-hidden`}>
+                <div className={`job-header-options transition-all duration-300 overflow-hidden`}>
                   <div className="flex items-center flex-wrap xl:flex-nowrap mt-4 2xl:mt-6 gap-4 3xl:gap-6">
                     {/* Option 1 */}
                     <div className="flex gap-2 3xl:gap-3">
@@ -477,7 +550,7 @@ export default function Home() {
                       </span>
                     )}
                   </div>
-                </motion.div>}
+                </div>}
               </div>
             </div>
             {token ? (
@@ -541,117 +614,121 @@ export default function Home() {
       </section>
       <section className="container mt-5 md:mt-8 xl:mt-10 mb-6 md:mb-10 xl:mb-14 2xl:mb-16 bg-[#ffffff]">
         <div className="flex flex-col lg:flex-row gap-4 md:gap-6 2xl:gap-10">
-          <div className="h-fit job-detail-sidebar flex-shrink-0 p-3 md:p-4 lg:p-5 3xl:p-8 rounded-xl w-full shadow-default">
-            <h2 className="text-sm 2xl:text-lg 3xl:text-xl font-semibold mb-2 md:mb-4 3xl:mb-5">
-              About this role
-            </h2>
-            {/* <div className="bg-[#F8F8F8] font-medium text-black p-3 md:p-4 rounded-xl mb-2 md:mb-4 xl:mb-5">{jobDetails?.candidates_applied_for_job} Applied</div>               */}
-            <div className="flex items-center">
-              <Image
-                src="/new-assets/icons/calendar.svg"
-                className="size-4 2xl:size-6 mr-1 2xl:mr-2 flex-shrink-0 inline-block"
-                width={150}
-                height={150}
-                alt="idea icon"
-              />
-              <span className="whitespace-nowrap text-xs 2xl:text-sm 3xl:text-base">
-                Job Posted On
-              </span>
-              <span className="justify-self-end w-full text-end text-xs 2xl:text-sm 3xl:text-base">
-                {formatDate(jobDetails?.job_posted_date)}
-              </span>
-            </div>
-            {/* <hr className="border-[#D6DDEB] my-4 md:my-5 xl:my-6" />
-              <h2 className="text-lg 2xl:text-xl font-semibold mb-2 md:mb-4 xl:mb-5">Industry</h2>
+          <div className="relative">
+            <div className="h-fit lg:sticky top-[180px]  2xl:top-[210px] 3xl:top-[240px] job-detail-sidebar flex-shrink-0 p-3 md:p-4 lg:p-5 3xl:p-8 rounded-xl w-full shadow-default">
+              <h2 className="text-sm 2xl:text-lg 3xl:text-xl font-semibold mb-2 md:mb-4 3xl:mb-5">
+                About this role
+              </h2>
+              {/* <div className="bg-[#F8F8F8] font-medium text-black p-3 md:p-4 rounded-xl mb-2 md:mb-4 xl:mb-5">{jobDetails?.candidates_applied_for_job} Applied</div>               */}
+              <div className="flex items-center">
+                <Image
+                  src="/new-assets/icons/calendar.svg"
+                  className="size-4 2xl:size-6 mr-1 2xl:mr-2 flex-shrink-0 inline-block"
+                  width={150}
+                  height={150}
+                  alt="idea icon"
+                />
+                <span className="whitespace-nowrap text-xs 2xl:text-sm 3xl:text-base">
+                  Job Posted On
+                </span>
+                <span className="justify-self-end w-full text-end text-xs 2xl:text-sm 3xl:text-base">
+                  {formatDate(jobDetails?.job_posted_date)}
+                </span>
+              </div>
+              {/* <hr className="border-[#D6DDEB] my-4 md:my-5 xl:my-6" />
+                <h2 className="text-lg 2xl:text-xl font-semibold mb-2 md:mb-4 xl:mb-5">Industry</h2>
+                <div className="flex flex-wrap gap-1 md:gap-2">
+                  <div className="label grey">Marketing</div>
+                  <div className="label lightgreen">It Security</div>
+                  <div className="label lightgreen">It Rist Management</div>
+                </div> */}
+              <hr className="border-[#D6DDEB] my-4 2xl:my-5 3xl:my-6" />
+              <h2 className="text-sm 2xl:text-lg 3xl:text-xl font-semibold mb-2 md:mb-4 3xl:mb-5 flex items-center gap-2">
+                <Image
+                  src="/new-assets/icons/lightbulb.svg"
+                  className="size-[18px] 2xl:size-[26px] flex-shrink-0 inline-block"
+                  width={150}
+                  height={150}
+                  alt="idea icon"
+                />
+                Required Skills
+              </h2>
               <div className="flex flex-wrap gap-1 md:gap-2">
-                <div className="label grey">Marketing</div>
-                <div className="label lightgreen">It Security</div>
-                <div className="label lightgreen">It Rist Management</div>
-              </div> */}
-            <hr className="border-[#D6DDEB] my-4 2xl:my-5 3xl:my-6" />
-            <h2 className="text-sm 2xl:text-lg 3xl:text-xl font-semibold mb-2 md:mb-4 3xl:mb-5 flex items-center gap-2">
-              <Image
-                src="/new-assets/icons/lightbulb.svg"
-                className="size-[18px] 2xl:size-[26px] flex-shrink-0 inline-block"
-                width={150}
-                height={150}
-                alt="idea icon"
-              />
-              Required Skills
-            </h2>
-            <div className="flex flex-wrap gap-1 md:gap-2">
-              {jobDetails?.jobs_skills?.map((skill) => (
-                <div
-                  className={`label  ${
-                    userSkills?.some((uSkill) => uSkill?.id == skill?.id)
-                      ? "lightgreen"
-                      : "grey"
-                  }`}
-                >
-                  {skill?.name}
-                </div>
-              ))}
-            </div>
-            <hr className="border-[#D6DDEB] my-4 md:my-5 xl:my-6" />
-            <h2 className="text-sm 2xl:text-lg 3xl:text-xl font-semibold mb-2 md:mb-4 3xl:mb-5 flex items-center gap-2">
-              <Image
-                src="/new-assets/icons/graduation-hat.svg"
-                className="size-4 2xl:size-6 flex-shrink-0 inline-block"
-                width={150}
-                height={150}
-                alt="idea icon"
-              />
-              Education
-            </h2>
-            <div className="flex flex-wrap gap-1 md:gap-2">
-              {jobDetails?.education.split(",")?.map((education) => (
-                <div className="label grey lightgreen">{education}</div>
-              ))}
-            </div>
-            <hr className="border-[#D6DDEB] my-4 md:my-5 xl:my-6" />
-            {jobDetails?.jobs_location?.[0]?.job_location && (
-              <>
-                <h2 className="text-sm 2xl:text-lg 3xl:text-xl font-semibold mb-2 md:mb-4 3xl:mb-5 flex items-center gap-2">
-                  <Image
-                    src="/new-assets/icons/location-marker.svg"
-                    className="w-auto
-                h-5 2xl:h-6 flex-shrink-0 inline-block"
-                    width={150}
-                    height={150}
-                    alt="idea icon"
-                  />
-                  Location
-                </h2>
-                <p className="mb-2 text-xs 2xl:text-sm 3xl:text-base md:mb-2 3xl:mb-5">
-                  {jobDetails?.jobs_location?.[0]?.job_location}
-                </p>
-                <div className="w-full">
-                  <Map
-                    lat={jobDetails?.jobs_location?.[0]?.latitude || ""}
-                    lng={jobDetails?.jobs_location?.[0]?.longitude || ""}
-                  />
-                </div>
-                <hr className="border-[#D6DDEB] my-4 md:my-5 xl:my-6" />
-              </>
-            )}
-            <h2 className="text-sm 2xl:text-lg 3xl:text-xl font-semibold mb-2 md:mb-4 3xl:mb-5 flex items-center gap-2">
-              <Image
-                src="/new-assets/icons/perks-star.svg"
-                className="size-[18px] 3xl:size-[26px] flex-shrink-0 inline-block"
-                width={150}
-                height={150}
-                alt="idea icon"
-              />
-              Perks and Benefits
-            </h2>
-            <div className="flex flex-wrap gap-1 md:gap-2">
-              {jobDetails?.job_benefits?.map((benefit) => (
-                <div className="label grey lightgreen">{benefit?.name}</div>
-              ))}
+                {jobDetails?.jobs_skills?.map((skill) => (
+                  <div
+                    className={`label  ${
+                      userSkills?.some((uSkill) => uSkill?.id == skill?.id)
+                        ? "lightgreen"
+                        : "grey"
+                    }`}
+                  >
+                    {skill?.name}
+                  </div>
+                ))}
+              </div>
+              <hr className="border-[#D6DDEB] my-4 md:my-5 xl:my-6" />
+              <h2 className="text-sm 2xl:text-lg 3xl:text-xl font-semibold mb-2 md:mb-4 3xl:mb-5 flex items-center gap-2">
+                <Image
+                  src="/new-assets/icons/graduation-hat.svg"
+                  className="size-4 2xl:size-6 flex-shrink-0 inline-block"
+                  width={150}
+                  height={150}
+                  alt="idea icon"
+                />
+                Education
+              </h2>
+              <div className="flex flex-wrap gap-1 md:gap-2">
+                {jobDetails?.education.split(",")?.map((education) => (
+                  <div className="label grey lightgreen">{education}</div>
+                ))}
+              </div>
+              <hr className="border-[#D6DDEB] my-4 md:my-5 xl:my-6" />
+              {jobDetails?.jobs_location?.[0]?.job_location && (
+                <>
+                  <h2 className="text-sm 2xl:text-lg 3xl:text-xl font-semibold mb-2 md:mb-4 3xl:mb-5 flex items-center gap-2">
+                    <Image
+                      src="/new-assets/icons/location-marker.svg"
+                      className="w-auto
+                  h-5 2xl:h-6 flex-shrink-0 inline-block"
+                      width={150}
+                      height={150}
+                      alt="idea icon"
+                    />
+                    Location
+                  </h2>
+                  <p className="mb-2 text-xs 2xl:text-sm 3xl:text-base md:mb-2 3xl:mb-5">
+                    {jobDetails?.jobs_location?.[0]?.job_location}
+                  </p>
+                  <div className="w-full">
+                    <Map
+                      lat={jobDetails?.jobs_location?.[0]?.latitude || ""}
+                      lng={jobDetails?.jobs_location?.[0]?.longitude || ""}
+                    />
+                  </div>
+                  <hr className="border-[#D6DDEB] my-4 md:my-5 xl:my-6" />
+                </>
+              )}
+              <h2 className="text-sm 2xl:text-lg 3xl:text-xl font-semibold mb-2 md:mb-4 3xl:mb-5 flex items-center gap-2">
+                <Image
+                  src="/new-assets/icons/perks-star.svg"
+                  className="size-[18px] 3xl:size-[26px] flex-shrink-0 inline-block"
+                  width={150}
+                  height={150}
+                  alt="idea icon"
+                />
+                Perks and Benefits
+              </h2>
+              <div className="flex flex-wrap gap-1 md:gap-2">
+                {jobDetails?.job_benefits?.map((benefit) => (
+                  <div className="label grey lightgreen">{benefit?.name}</div>
+                ))}
+              </div>
             </div>
           </div>
           <div className="job-description">
-            <Tabs tabTitles={tabTitles} />
+            <div className="top-[180px]  2xl:top-[210px] 3xl:top-[240px] bg-[#ffffff]">
+              <Tabs tabTitles={tabTitles} />
+            </div>
             <div
               id="job-description"
               className="py-4 md:py-6 xl:py-8 2xl:py-10 rounded-xl shadow-default"

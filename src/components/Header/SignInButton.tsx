@@ -20,6 +20,7 @@ import LogoutDialog from "../Auth/LogoutDialog";
 import Notification from "./Notification";
 import { RiArrowDropDownFill } from "react-icons/ri";
 import { MdOutlineChat } from "react-icons/md";
+import { showToast } from "../utils";
 
 interface prop {
   closeSideMenu?: () => void;
@@ -69,8 +70,25 @@ export default function SignInButton({ closeSideMenu }: prop) {
     router.push("/my-profile");
   };
   const gotoMyInbox = () => {
-    let chatUrl = `https://meuat.kaam.com/jobseeker/inbox?admin_id=${authUser?.id}&token=${authUser?.token}&profile_img=${authUser?.photo_url}`
-    window.open(chatUrl, '_blank', 'noopener,noreferrer');
+    // First check notification permission status
+    if (window.Notification.permission === 'granted') {
+      // Permission already granted - proceed to inbox
+      const chatUrl = `https://meuat.kaam.com/jobseeker/inbox?admin_id=${authUser?.id}&token=${authUser?.token}&profile_img=${authUser?.photo_url}`;
+      window.open(chatUrl, '_blank', 'noopener,noreferrer');
+    } else if (window.Notification.permission !== 'denied') {
+      // Permission not yet decided - request permission first
+      window.Notification.requestPermission().then(permission => {
+        if (permission === 'granted') {
+          const chatUrl = `https://meuat.kaam.com/jobseeker/inbox?admin_id=${authUser?.id}&token=${authUser?.token}&profile_img=${authUser?.photo_url}`;
+          window.open(chatUrl, '_blank', 'noopener,noreferrer');
+        } else {
+          showToast('Kindly enable notifications in your web browser to receive real-time updates.', true);
+        }
+      });
+    } else {
+      // Permission was previously denied
+      showToast('Kindly enable notifications in your web browser to receive real-time updates.', true);
+    }
   };
 
   const handleOverlayClick = (e: MouseEvent) => {

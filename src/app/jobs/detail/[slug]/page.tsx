@@ -69,7 +69,7 @@ export default function Home() {
       const current = window.scrollY
       
       // Show when scrolled down past 100px
-      if (current > 100 && current > lastScrollYRef.current) {
+      if (current > 50 && current > lastScrollYRef.current) {
         setIsVisible(true)
       }
       // Hide when scrolling up past 50px or at top

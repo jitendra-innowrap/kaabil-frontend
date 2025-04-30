@@ -91,7 +91,7 @@ export default function Faq() {
     const [faqsData, setFaqsData] = useState<FAQCategory | null>(null);
     const [selectedCategory, setSelectedCategory] = useState<string>('Jobseekers');
     const [displayCount, setDisplayCount] = useState<number>(7);
-    const [activeAccordion, setActiveAccordion] = useState<string | null>(null);
+    const [activeAccordion, setActiveAccordion] = useState<number | null>(null);
     const [isloading, setIsloading] = useState(true);
     const fetchFAQs = async () => {
         try {
@@ -126,7 +126,7 @@ export default function Faq() {
         setDisplayCount(7);
         // Set first FAQ of new category as active
         if (faqsData && faqsData?.[category]?.length > 0) {
-            setActiveAccordion(faqsData[category][0].question);
+            setActiveAccordion(0);
         } else {
             setActiveAccordion(null);
         }
@@ -138,7 +138,7 @@ export default function Faq() {
         }
     };
 
-    const toggleAccordion = (question: string) => {
+    const toggleAccordion = (question: number) => {
         setActiveAccordion(activeAccordion === question ? null : question);
     };
 
@@ -149,7 +149,7 @@ export default function Faq() {
     return (
         <main className=''>
             <div className="container my-5 xl:my-14 3xl:my-16">
-                <section>
+                <section className='lg:mx-10 xl:px-14 2xl:px-16 3xl:px-[120px]'>
                     <h1 className='text-black text-center mx-auto flex flex-wrap justify-center items-center text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[64px] mb-5 xl:mb-8 3xl:mb-10 font-medium'>
                         Frequently Asked Questions
                     </h1>
@@ -177,38 +177,38 @@ export default function Faq() {
                             ) : (
                                 <>
                                     {currentFAQs.slice(0, displayCount).map((faq, index) => (
-                                        <Accordion 
+                                        <div 
                                             key={index} 
-                                            className='relative mb-4' 
-                                            transition={{ duration: '300ms', timingFunction: 'cubic-bezier(0, 0, 0.2, 1)' }}
+                                            onClick={() => toggleAccordion(index)}
+                                            className='relative mb-4 transition-all duration-300 cursor-pointer' 
+                                            style={{ animationDuration: '300ms', animationTimingFunction: 'cubic-bezier(0, 0, 0.2, 1)' }}
                                         >
-                                            <AccordionItem>
-                                                {() => (
-                                                    <div className={`border ${activeAccordion === faq.question ? "border-red border-[2px]" : ""} bg-white px-7 3xl:px-8 py-5 3xl:py-6 shadow-sm rounded-[20px]`}>
-                                                        <AccordionHeader 
-                                                            className="w-full px-0 !bg-transparent flex justify-between items-center text-black"
-                                                            onClick={() => toggleAccordion(faq.question)}
+                                            <div>
+                                                    <div className={`border ${activeAccordion === index ? "border-red border-[2px]" : ""} bg-white px-7 3xl:px-8 py-5 3xl:py-6 shadow-sm rounded-[20px]`}>
+                                                        <div 
+                                                            className="w-full py-[10px] px-0 !bg-transparent flex justify-between items-center text-black"
+                                                            
                                                         >
                                                             <span className="font-semibold text-sm 2xl:text-base">{faq.question}</span>
-                                                            {activeAccordion === faq.question ? (
+                                                            {activeAccordion === index ? (
                                                                 <BiChevronUp className="hidden text-slate-500 font-bold text-xl" />
                                                             ) : (
                                                                 <BiChevronDown className="hidden text-slate-500 font-bold text-xl" />
                                                             )}
-                                                        </AccordionHeader>
-                                                        { (
-                                                            <AccordionBody>
-                                                                <div className="max-w-[calc(100%_-50px)] pt-1">
+                                                        </div>
+                                                        { activeAccordion === index  && (
+                                                            <div className={`transition-all duration-300 ${activeAccordion === index?'h-fit':'h-0'}`}>
+                                                                {<div className="max-w-[calc(100%_-50px)] pt-1">
                                                                     {faq.answer}
-                                                                </div>
-                                                            </AccordionBody>
+                                                                </div>}
+                                                            </div>
                                                         )}
                                                         <div 
-                                                            className={`rounded-full absolute top-5 3xl:top-6 right-6 size-7 xl:size-10 3xl:size-[50px] grid place-items-center ${activeAccordion === faq.question ? "bg-red text-white" : "bg-transparent border text-black"}`}
-                                                            onClick={() => toggleAccordion(faq.question)}
+                                                            className={`rounded-full absolute top-5 3xl:top-6 right-6 size-7 xl:size-10 3xl:size-[50px] grid place-items-center ${activeAccordion === index ? "bg-red text-white" : "bg-transparent border text-black"}`}
+                                                            onClick={() => toggleAccordion(index)}
                                                         >
                                                             <svg 
-                                                                className={`${activeAccordion !== faq.question ? '-rotate-90' : ''} transition-all duration-300 scale-75 md:scale-90 xl:scale-100`} 
+                                                                className={`${activeAccordion !== index ? '-rotate-90' : ''} transition-all duration-300 scale-75 md:scale-90 xl:scale-100`} 
                                                                 width="14" 
                                                                 height="8" 
                                                                 viewBox="0 0 14 8" 
@@ -217,7 +217,7 @@ export default function Faq() {
                                                             >
                                                                 <path 
                                                                     d="M1.17716 1.07266L5.97128 5.86678C6.53745 6.43296 7.46392 6.43296 8.0301 5.86678L12.8242 1.07266" 
-                                                                    stroke={activeAccordion === faq.question ? "white" : "black"} 
+                                                                    stroke={activeAccordion === index ? "white" : "black"} 
                                                                     strokeWidth="1.5" 
                                                                     strokeMiterlimit="10" 
                                                                     strokeLinecap="round" 
@@ -226,9 +226,8 @@ export default function Faq() {
                                                             </svg>
                                                         </div>
                                                     </div>
-                                                )}
-                                            </AccordionItem>
-                                        </Accordion>
+                                            </div>
+                                        </div>
                                     ))}
                                     
                                     {showViewMore && (

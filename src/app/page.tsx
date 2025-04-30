@@ -541,8 +541,8 @@ export default function Home() {
                     {/* <button className="btn-border 2xl:w-[218px] 2xl:h-[50px] text-xs 2xl:text-base mt-0 md:mt-8 2xl:mt-10">View All Stories</button> */}
                 </div>
             </section>
-            <section className={`bg-[#F8F8F8] ${articleSlides.length<0?"":"pt-6 md:pt-14 xl:pt-10 2xl:pt-16" }`}>
-                {articleSlides.length<0 &&<div className="w-full flex flex-col py-5 md:py-8 xl:py-14 2xl:py-[68px] mb-3 mx-auto">
+            <section className={`bg-[#F8F8F8] ${articleSlides.length>0?"":"pt-6 md:pt-14 xl:pt-10 2xl:pt-16" }`}>
+                {articleSlides.length>0 &&<div className="w-full flex flex-col py-5 md:py-8 xl:py-14 2xl:py-[68px] mb-3 mx-auto">
                     <div className="container no-pad">
                         <motion.div
                             variants={topVariant}

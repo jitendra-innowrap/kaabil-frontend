@@ -159,7 +159,7 @@ const handleFetchLocation = async () => {
                             <strong className='uppercase font-semibold text-sm 3xl:text-sm mb-6 text-[#E3E3E3] block'>Resources</strong>
                             <ul className='flex flex-col gap-5'>
                                 {/* <Link href={'/'} className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Help Center</Link> */}
-                                <Link href={'/'} className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>FAQs</Link>
+                                <Link href={'/frequently-asked-questions'} className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>FAQs</Link>
                             </ul>
                         </div>
                     </div>

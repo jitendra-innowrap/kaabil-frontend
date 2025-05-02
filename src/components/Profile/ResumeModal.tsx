@@ -153,7 +153,7 @@ const ResumeModal = ({ size }: any) => {
                       }`}
                       htmlFor="fileInput"
                     >
-                      Resume
+                      Resume <span className="font-normal text-sm">(File format: PDF, Doc, Image , Video)</span>
                     </label>
                     <div
                       className={`relative flex items-center w-full border-resume bg-white rounded-lg ${

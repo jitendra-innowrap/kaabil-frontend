@@ -41,8 +41,10 @@ import ShareButtons from "@/components/SocialShare";
 import appConfig from "@/config/app.config";
 import { branchIo, setOpenShare } from "@/redux/jobsFilterSlice";
 import { motion } from "framer-motion";
+import { useAppSelector } from "@/redux/hooks";
 
 export default function Home() {
+  const isSearch = useAppSelector((state) => state.search.value);
   const { slug } = useParams();
   const { token, isLoggedIn } = useSelector((state: RootState) => state.user);
   const userSkills = useSelector((state: RootState) => state.user.skills);
@@ -63,6 +65,19 @@ export default function Home() {
   const router = useRouter();
   const [isVisible, setIsVisible] = useState(false)
   const lastScrollYRef = useRef(0)
+  const [shouldRenderSection, setShouldRenderSection] = useState(!isSearch);
+
+  // Add this effect to handle the delay
+  useEffect(() => {
+    if (!isSearch) {
+      const timer = setTimeout(() => {
+        setShouldRenderSection(true);
+      }, 500); // Match this with your search close duration
+      return () => clearTimeout(timer);
+    } else {
+      setShouldRenderSection(false);
+    }
+  }, [isSearch]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -349,7 +364,7 @@ export default function Home() {
   return (
     <main className="bg-white">
       {/* Add to stick  */}
-      <section
+      {shouldRenderSection && <section
       className={`bg-[#FDEAC9] py-6 xl:py-8 transition-all duration-500 fixed w-full z-[100] ${isVisible?"translate-y-0":"-translate-y-full"}`}>
         <div className="container relative z-[1]">
           <div className="flex justify-between flex-wrap xl:flex-nowrap flex-col sm:flex-row sm:items-end gap-5 xl:gap-7 2xl:gap-8">
@@ -429,7 +444,7 @@ export default function Home() {
             )}
           </div>
         </div>
-      </section>
+      </section>}
       <section
       className={`bg-[#FDEAC9] py-6 xl:py-8`}>
         <div className="container relative z-[1]">

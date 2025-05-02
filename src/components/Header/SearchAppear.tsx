@@ -7,6 +7,19 @@ import { IoClose } from 'react-icons/io5';
 
 export default function SearchAppear() {
     const isSearch = useAppSelector((state) => state.search.value);
+    useEffect(() => {
+        const handleScroll = () => {
+          const current = window.scrollY
+          
+          // Show when scrolled down past 100px
+          if (current > 5) {
+            dispatch(closeSearch());
+          }
+        }
+    
+        window.addEventListener('scroll', handleScroll, { passive: true })
+        return () => window.removeEventListener('scroll', handleScroll)
+      }, [])
     const dispatch = useAppDispatch();
     const searchRef = useRef<HTMLDivElement>(null); // Ref for the search bar container
     const [isClosing, setIsClosing] = useState(false); // Track if the search bar is being closed

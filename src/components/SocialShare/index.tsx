@@ -115,13 +115,14 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ jobDetails }: any) => {
               size === "xxl" ? "justify-start" : "justify-center"
             } mb-5`}
           >
-            <FacebookShareButton
-              url={`${title}\n${fullUrl}`}
-              title={``}
+            <a 
+              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(fullUrl)}&quote=${encodeURIComponent(title)}`}
+              target="_blank"
+              rel="noopener noreferrer"
               className="hover:opacity-90 transition-transform transform hover:scale-105"
             >
               <FacebookIcon size={size === "md" ? 40 : 30} round />
-            </FacebookShareButton>
+            </a>
 
             <TwitterShareButton
               url={`${title}\n${fullUrl}`}
@@ -141,8 +142,8 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ jobDetails }: any) => {
             </WhatsappShareButton>
 
             <LinkedinShareButton
-              url={`${title}\n${fullUrl}`}
-              title={``}
+              url={fullUrl}
+              title={title}
               className="hover:opacity-90 transition-transform transform hover:scale-105"
             >
               <LinkedinIcon size={size === "md" ? 40 : 30} round />

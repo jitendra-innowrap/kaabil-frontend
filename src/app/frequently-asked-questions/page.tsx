@@ -103,7 +103,7 @@ export default function Faq() {
                 setFaqsData(responseData.result);
                 // Set first FAQ as active by default
                 if (responseData.result?.Jobseekers?.length > 0) {
-                    setActiveAccordion(responseData.result.Jobseekers[0].question);
+                    setActiveAccordion(0);
                 }
             }
         } catch (error: any) {
@@ -160,12 +160,12 @@ export default function Faq() {
                         </div>
                         :
                         <>
-                            <div className="flex justify-center mb-5 xl:mb-8 3xl:mb-10 gap-2">
+                            <div className="flex flex-col md:flex-row justify-center mb-5 xl:mb-8 3xl:mb-10 gap-2">
                                 {categories.map((category) => (
                                     <div
                                         key={category}
                                         onClick={() => handleCategoryChange(category)}
-                                        className={`cursor-pointer hover:scale-95 transition-all duration-100 ${selectedCategory === category ? "bg-black text-white border border-black" : "text-black border border-[#B8B8B8]"} px-3 py-1 xl:px-6 xl:py-2 3xl:px-8 3xl:py-[9px] text-xs 3xl:text-sm rounded-md 3xl:rounded-lg capitalize`}
+                                        className={`cursor-pointer w-fit mx-auto md:mx-0 hover:scale-95 transition-all duration-100 ${selectedCategory === category ? "bg-black text-white border border-black" : "text-black border border-[#B8B8B8]"} px-3 py-1 xl:px-6 xl:py-2 3xl:px-8 3xl:py-[9px] text-xs 3xl:text-sm rounded-md 3xl:rounded-lg capitalize`}
                                     >
                                         {category.replace(/_/g, ' ')}
                                     </div>
@@ -184,12 +184,12 @@ export default function Faq() {
                                             style={{ animationDuration: '300ms', animationTimingFunction: 'cubic-bezier(0, 0, 0.2, 1)' }}
                                         >
                                             <div>
-                                                    <div className={`border ${activeAccordion === index ? "border-red border-[2px]" : ""} bg-white px-7 3xl:px-8 py-5 3xl:py-6 shadow-sm rounded-[20px]`}>
+                                                    <div className={`border ${activeAccordion === index ? "border-red border-[2px]" : ""} bg-white px-4 md:px-7 3xl:px-8 py-2 md:py-5 3xl:py-6 shadow-sm rounded-[20px]`}>
                                                         <div 
                                                             className="w-full py-[10px] px-0 !bg-transparent flex justify-between items-center text-black"
                                                             
                                                         >
-                                                            <span className="font-semibold text-sm 2xl:text-base">{faq.question}</span>
+                                                            <span className="font-semibold text-sm 2xl:text-base max-w-[calc(100%_-_30px)] md:max-w-[calc(100%_-_40px)]">{faq.question}</span>
                                                             {activeAccordion === index ? (
                                                                 <BiChevronUp className="hidden text-slate-500 font-bold text-xl" />
                                                             ) : (
@@ -204,7 +204,7 @@ export default function Faq() {
                                                             </div>
                                                         )}
                                                         <div 
-                                                            className={`rounded-full absolute top-5 3xl:top-6 right-6 size-7 xl:size-10 3xl:size-[50px] grid place-items-center ${activeAccordion === index ? "bg-red text-white" : "bg-transparent border text-black"}`}
+                                                            className={`rounded-full absolute top-5 3xl:top-6 right-4 md:right-6 size-7 xl:size-10 3xl:size-[50px] grid place-items-center ${activeAccordion === index ? "bg-red text-white" : "bg-transparent border text-black"}`}
                                                             onClick={() => toggleAccordion(index)}
                                                         >
                                                             <svg 

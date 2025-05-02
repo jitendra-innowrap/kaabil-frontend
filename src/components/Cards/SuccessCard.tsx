@@ -14,6 +14,7 @@ export default function SuccessCard({video_url, cover_photo, designation_company
         scale: 1.03,
         boxShadow: '0px 10px 20px rgba(0,0,0,0.1)',
       }} className="relative rounded-2xl 2xl:rounded-3xl">
+        <div className="w-full absolute h-1/2 bottom-0 left-0 rounded-2xl 2xl:rounded-3xl" style={{background: 'linear-gradient(180deg, rgba(0, 0, 0, 0) 37.24%, rgba(0, 0, 0, 0.75) 100%)'}}></div>
             <Image
                 className="w-full rounded-2xl object-cover h-[300px] sm:h-[478px] md:h-[550px] lg:h-[296px] xl:h-[390px] 2xl:h-[485px] 3xl:h-[518px]"
                 src={cover_photo ||"/"}

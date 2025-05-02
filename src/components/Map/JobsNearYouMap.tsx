@@ -95,7 +95,61 @@ const CustomGoogleMap: React.FC<CustomGoogleMapProps> = ({
       mapInstance.current.panTo(center);
     }
   
-    // ... rest of your existing control creation code ...
+    
+    // Create control container
+    const controlContainer = document.createElement('div');
+    controlContainer.style.cssText = `
+      position: absolute;
+      right: 10px;
+      bottom: 30px;
+      margin: 5px 0;
+      padding: 0;
+      border: none;
+      border-radius: 2px;
+      cursor: pointer;
+      display: flex;
+      gap: 6px;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-size: 20px;
+    `;
+
+    // Add zoom in button 
+    const zoomInButton = createControlButton(
+      `<image src="/new-assets/icons/map/zoom-in.svg" class="zoom-in-map">`,
+      'Zoom in',
+      () => mapInstance.current?.setZoom(mapInstance.current.getZoom()! + 1)
+    );
+
+    // Add zoom out button
+    const zoomOutButton = createControlButton(
+      `<image src="/new-assets/icons/map/zoom-out.svg" class="zoom-out-map">`,
+      'Zoom out',
+      () => mapInstance.current?.setZoom(mapInstance.current.getZoom()! - 1)
+    );
+
+    // Add recenter button
+    const recenterButton = createControlButton(
+      `<image src="/new-assets/icons/map/recenter.svg" class="recenter-map">`,
+      'Recenter',
+      () => {
+        if (currentLocationMarker.current) {
+          mapInstance.current?.panTo(currentLocationMarker.current.getPosition()!);
+          mapInstance.current?.setZoom(18);
+        }
+      }
+    );
+
+    controlContainer.appendChild(zoomInButton);
+    controlContainer.appendChild(zoomOutButton);
+    controlContainer.appendChild(recenterButton);
+
+    // Add controls to the map
+    mapRef.current.appendChild(controlContainer);
+    
+    // Now you can assign directly
+    controlsRef.current = controlContainer; 
   
     // Clear existing job markers (keep current location marker)
     markers.current.forEach(marker => marker.setMap(null));

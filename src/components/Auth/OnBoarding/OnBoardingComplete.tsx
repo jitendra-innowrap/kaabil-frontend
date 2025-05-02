@@ -13,7 +13,6 @@ import {
 } from "@/redux/userSlice";
 import styles from "../SignIn/signIn.module.css";
 import { IoClose } from "react-icons/io5";
-import whatsAppIcon from "../../../../public/new-assets/icons/whatsapp-icon.svg";
 import { showToast } from "@/components/utils";
 
 interface prop {
@@ -251,18 +250,17 @@ export default function OnBoardingComplete({ size, closePopup }: any) {
               }}
             />
             <label
-              className="!mb-0 inline-block text-[12px]"
+              className="!mb-0 inline-block text-[12px] max-w-[80%]"
               htmlFor="whatsapp_consent"
             >
               I consent to share my number with the recruiter for connecting
               with me via
-              <Image
-                src={whatsAppIcon}
+              <img
+                src={'/new-assets/icons/whatsapp-icon.svg'}
                 alt="whatsapp-icon"
-                className="w-[70px] h-[16px] inline ml-2"
+                className="w-[89px] h-[20px] inline ml-2"
                 width={100}
                 height={30}
-                quality="100"
               />
             </label>
           </div>

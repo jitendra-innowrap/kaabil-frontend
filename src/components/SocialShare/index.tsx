@@ -115,14 +115,14 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ jobDetails }: any) => {
               size === "xxl" ? "justify-start" : "justify-center"
             } mb-5`}
           >
-            <a 
-              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(fullUrl)}&quote=${encodeURIComponent(title)}`}
-              target="_blank"
-              rel="noopener noreferrer"
+            <FacebookShareButton
+              url={fullUrl}  // Only pass the URL here
+              title={title}  // Use 'quote' instead of 'title' for Facebook
+              // hashtag="#KaabilJobs"
               className="hover:opacity-90 transition-transform transform hover:scale-105"
             >
               <FacebookIcon size={size === "md" ? 40 : 30} round />
-            </a>
+            </FacebookShareButton>
 
             <TwitterShareButton
               url={`${title}\n${fullUrl}`}

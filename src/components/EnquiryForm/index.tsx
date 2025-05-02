@@ -8,6 +8,7 @@ import Popup from 'reactjs-popup'
 import * as Yup from "yup";
 import toast from "react-hot-toast";
 import api from '@/Services/Apiservice';
+import { Radio } from '@material-tailwind/react';
 
 export default function EnquiryForm() {
     const { isEnquiryOpen } = useAppSelector((state) => state.user);
@@ -128,10 +129,10 @@ export default function EnquiryForm() {
                         >
                             Are you a
                         </label>
-                        <div className=" mt-2 mb-4 grid grid-cols-2 sm:flex flex-row gap-4 sm:gap-2 2xl:gap-4">
+                        <div className=" mt-2 mb-4 grid sm:grid-cols-2 sm:flex flex-row gap-4 sm:gap-2 2xl:gap-4">
                             <label
                                 htmlFor="jobseeker"
-                                className={`col-span-1 !flex flex-1 py-2 xl:py-0 3xl:py-4 !mb-0 gap-1 3xl:gap-4 rounded-lg px-3 3xl:px-5 border cursor-pointer shadow-sm items-center ${
+                                className={`col-span-1 !flex flex-1 py-2 xl:py-2 3xl:py-4 !mb-0 gap-1 3xl:gap-4 rounded-lg px-3 3xl:px-5 border cursor-pointer shadow-sm items-center ${
                                     formikForm.values.type == 0
                                         ? "border-red bg-[#FDF1F3] text-red"
                                         : "border-[#C8C9CB1A]"
@@ -141,11 +142,15 @@ export default function EnquiryForm() {
                                     type="radio"
                                     id="jobseeker"
                                     name="type"
-                                    className="cursor-pointer inline-block !m-0 !w-3 !sm:w-4 !h-4"
+                                    // className="cursor-pointer appearance-none w-3 h-3 sm:w-4 sm:h-4 border border-gray-300 rounded-full checked:bg-blue-500 checked:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
                                     value={0}
+                                    className='hidden'
                                     onChange={formikForm.handleChange}
                                     checked={formikForm.values.type == 0}
                                 />
+                                <div className={`flex size-3 sm:size-3 rounded-full border justify-center transition-all duration-100 items-center ${formikForm.values.type == 0?'border-[#e41c3b] border-[1.5px] text-white':'text-transparent border-[#6C757D]'}`}>
+                                    {formikForm.values.type == 0 && <span className='size-[60%] flex flex-shrink-0 mx-auto bg-red rounded-full'></span>}
+                                </div>
                                 <div className="!mb-0 radio-label gap-2 inline-block cursor-pointer text-[11px] sm:text-[14px]">
                                     Jobseeker
                                 </div>
@@ -162,11 +167,15 @@ export default function EnquiryForm() {
                                     type="radio"
                                     id="recruiter"
                                     name="type"
-                                    className="cursor-pointer inline-block !m-0 !w-3 !sm:w-4 !h-4"
+                                    // className="cursor-pointer inline-block !m-0 !w-3 !sm:w-4 !h-4"
+                                    className='hidden'
                                     value={1}
                                     onChange={formikForm.handleChange}
                                     checked={formikForm.values.type == 1}
                                 />
+                                <div className={`flex size-3 sm:size-3 rounded-full border justify-center transition-all duration-100 items-center ${formikForm.values.type == 1?'border-[#e41c3b] border-[1.5px] text-white':'text-transparent border-[#6C757D]'}`}>
+                                    {formikForm.values.type == 1 && <span className='size-[60%] flex flex-shrink-0 mx-auto bg-red rounded-full'></span>}
+                                </div>
                                 <div className="!mb-0 radio-label gap-2 inline-block cursor-pointer text-[11px] sm:text-[14px]">
                                     Recruiter
                                 </div>
@@ -183,11 +192,15 @@ export default function EnquiryForm() {
                                     type="radio"
                                     id="ngo"
                                     name="type"
-                                    className="cursor-pointer inline-block !m-0 !w-3 !sm:w-4 !h-4"
+                                    // className="cursor-pointer inline-block !m-0 !w-3 !sm:w-4 !h-4"
+                                    className='hidden'
                                     value={2}
                                     onChange={formikForm.handleChange}
                                     checked={formikForm.values.type == 2}
                                 />
+                                <div className={`flex size-3 sm:size-3 rounded-full border justify-center transition-all duration-100 items-center ${formikForm.values.type == 2?'border-[#e41c3b] border-[1.5px] text-white':'text-transparent border-[#6C757D]'}`}>
+                                    {formikForm.values.type == 2 && <span className='size-[60%] flex flex-shrink-0 mx-auto bg-red rounded-full'></span>}
+                                </div>
                                 <div className="!mb-0 radio-label gap-2 inline-block cursor-pointer text-[11px] sm:text-[14px]">
                                     NGO/Foundation
                                 </div>

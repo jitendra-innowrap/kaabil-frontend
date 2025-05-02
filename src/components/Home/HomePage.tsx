@@ -22,9 +22,7 @@ import CompanyCardLoader from "@/components/Cards/CompanyCardLoader";
 import { motion } from 'framer-motion';
 
 import SuccessGallary from "@/components/Gallary/SuccessGallary";
-export default function Homepage({data}:{data:any}) {
-    const [homeData, setHomeData] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);    
+export default function Homepage({data}:{data:any}) {   
     const [JobTypes, setJobTypes] = useState([
         {
             icon: "/new-assets/job-types/full-time.png",
@@ -51,12 +49,10 @@ export default function Homepage({data}:{data:any}) {
     useEffect(() => {
         // Process the server data directly
         processData(data)
-        setIsLoading(false)
 
     }, []);
 
     const processData = (data: any) => {
-    setHomeData(data)
     setJobTypes(data?.job_types?.map((typ: any, i: number) => ({
         icon: typ?.id == 1 ? "/new-assets/job-types/full-time.png" :
             typ?.id == 2 ? "/new-assets/job-types/part-time.png" :

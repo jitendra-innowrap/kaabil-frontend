@@ -227,20 +227,6 @@ export default function SignInButton({ closeSideMenu }: prop) {
                   onClick={() => handleOptionClick(gotoMyInbox)}
                   className="flex items-center group/link gap-3 3xl:gap-4 text-Grey hover:text-black py-3 2xl:py-4 font-medium hover:font-semibold text-xs 2xl:text-base px-5 cursor-pointer"
                 >
-                  {/* <Image
-                    className="size-4 3xl:size-5 block group-hover/link:hidden"
-                    src="/new-assets/icons/user.svg"
-                    width={20}
-                    height={20}
-                    alt="Profile"
-                  />
-                  <Image
-                    className="size-4 3xl:size-5 hidden group-hover/link:block"
-                    src="/new-assets/icons/user-black.svg"
-                    width={20}
-                    height={20}
-                    alt="Profile"
-                  /> */}
                   <MdOutlineChat className="size-4 3xl:size-5 block text-[#4D4D4F] group-hover/link:text-black"/>
                   My Inbox
                 </div>

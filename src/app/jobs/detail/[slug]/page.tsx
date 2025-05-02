@@ -88,7 +88,7 @@ export default function Home() {
         setIsVisible(true)
       }
       // Hide when scrolling up past 50px or at top
-      else if (current < 50 || current < lastScrollYRef.current) {
+      else if (current < 50) {
         setIsVisible(false)
       }
       

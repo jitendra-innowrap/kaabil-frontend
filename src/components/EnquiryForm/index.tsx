@@ -132,7 +132,7 @@ export default function EnquiryForm() {
                         <div className=" mt-2 mb-4 grid sm:grid-cols-2 sm:flex flex-row gap-4 sm:gap-2 2xl:gap-4">
                             <label
                                 htmlFor="jobseeker"
-                                className={`col-span-1 !flex flex-1 py-2 xl:py-2 3xl:py-4 !mb-0 gap-1 3xl:gap-4 rounded-lg px-3 3xl:px-5 border cursor-pointer shadow-sm items-center ${
+                                className={`col-span-1 !flex flex-1 py-3 xl:py-2 3xl:py-4 !mb-0 gap-1 3xl:gap-4 rounded-lg px-3 3xl:px-5 border cursor-pointer shadow-sm items-center ${
                                     formikForm.values.type == 0
                                         ? "border-red bg-[#FDF1F3] text-red"
                                         : "border-[#C8C9CB1A]"
@@ -157,7 +157,7 @@ export default function EnquiryForm() {
                             </label>
                             <label
                                 htmlFor="recruiter"
-                                className={`col-span-1 !flex flex-1 py-2 xl:py-0 3xl:py-4 !mb-0 gap-1 3xl:gap-4 rounded-lg px-3 3xl:px-5 border cursor-pointer shadow-sm items-center ${
+                                className={`col-span-1 !flex flex-1 py-3 xl:py-2 3xl:py-4 !mb-0 gap-1 3xl:gap-4 rounded-lg px-3 3xl:px-5 border cursor-pointer shadow-sm items-center ${
                                     formikForm.values.type == 1
                                         ? "border-red text-red bg-[#FDF1F3]"
                                         : "border-[#C8C9CB1A]"
@@ -182,7 +182,7 @@ export default function EnquiryForm() {
                             </label>
                             <label
                                 htmlFor="ngo"
-                                className={`col-span-1 !flex flex-1 py-2 xl:py-0 3xl:py-4 !mb-0 gap-1 3xl:gap-4 rounded-lg px-3 3xl:px-5 border cursor-pointer shadow-sm items-center ${
+                                className={`col-span-1 !flex flex-1 py-3 xl:py-2 3xl:py-4 !mb-0 gap-1 3xl:gap-4 rounded-lg px-3 3xl:px-5 border cursor-pointer shadow-sm items-center ${
                                     formikForm.values.type == 2
                                         ? "border-red text-red bg-[#FDF1F3]"
                                         : "border-[#C8C9CB1A]"

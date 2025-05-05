@@ -15,7 +15,7 @@ import { clearSessionData } from "../utils/deviceId";
 import { AiOutlineClose } from "react-icons/ai";
 import { IoClose } from "react-icons/io5";
 import { closeLoginDialog, openLoginDialog } from "@/redux/loginDialogSlice";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import LogoutDialog from "../Auth/LogoutDialog";
 import Notification from "./Notification";
 import { RiArrowDropDownFill } from "react-icons/ri";
@@ -43,6 +43,17 @@ export default function SignInButton({ closeSideMenu }: prop) {
   const popupRef = useRef<any>(null);
   const logoutdialogRef = useRef<any>(null);
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const logoutConfirmed = searchParams?.get('logout-confirmation');
+    if (logoutConfirmed === 'true') {
+      logout();
+      // Clean the URL without reloading
+      router.replace(window.location.pathname);
+    }
+  }, [searchParams]);
+
   const closePopup = () => {
     dispatch(closeLoginDialog());
     setOpen(false);
@@ -70,25 +81,44 @@ export default function SignInButton({ closeSideMenu }: prop) {
   const gotoMyProfile = () => {
     router.push("/my-profile");
   };
+  
   const gotoMyInbox = () => {
-    // First check notification permission status
-    if (window.Notification.permission === 'granted') {
-      // Permission already granted - proceed to inbox
-      const chatUrl = `https://meuat.kaam.com/jobseeker/inbox?admin_id=${authUser?.id}&token=${authUser?.token}&profile_img=${user?.photo_url}`;
-      window.open(chatUrl, '_blank', 'noopener,noreferrer');
-    } else if (window.Notification.permission !== 'denied') {
-      // Permission not yet decided - request permission first
-      window.Notification.requestPermission().then(permission => {
-        if (permission === 'granted') {
-          const chatUrl = `https://meuat.kaam.com/jobseeker/inbox?admin_id=${authUser?.id}&token=${authUser?.token}&profile_img=${user?.photo_url}`;
-          window.open(chatUrl, '_blank', 'noopener,noreferrer');
-        } else {
-          showCustomToast();
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    const chatUrl = `https://meuat.kaam.com/jobseeker/inbox?admin_id=${authUser?.id}&token=${authUser?.token}&profile_img=${user?.photo_url}`;
+    if (isIOS) {
+       // Most reliable method across all devices
+      const a = document.createElement('a');
+      a.href = chatUrl;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+
+      // Fallback if window doesn't open
+      setTimeout(() => {
+        if (!window.closed) {
+          window.location.href = chatUrl;
         }
-      });
-    } else {
-      // Permission was previously denied
-      showCustomToast();
+      }, 500);
+    }else{
+      // First check notification permission status
+      if (window.Notification.permission === 'granted') {
+        // Permission already granted - proceed to inbox
+        window.open(chatUrl, '_blank', 'noopener,noreferrer');
+      } else if (window.Notification.permission !== 'denied') {
+        // Permission not yet decided - request permission first
+        window.Notification.requestPermission().then(permission => {
+          if (permission === 'granted') {
+            window.open(chatUrl, '_blank', 'noopener,noreferrer');
+          } else {
+            showCustomToast();
+          }
+        });
+      } else {
+        // Permission was previously denied
+        showCustomToast();
+      }
     }
   };
   const showCustomToast = () => {

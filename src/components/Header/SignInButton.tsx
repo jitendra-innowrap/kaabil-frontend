@@ -43,16 +43,17 @@ export default function SignInButton({ closeSideMenu }: prop) {
   const popupRef = useRef<any>(null);
   const logoutdialogRef = useRef<any>(null);
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   useEffect(() => {
-    const logoutConfirmed = searchParams?.get('logout-confirmation');
-    if (logoutConfirmed === 'true') {
+    if (typeof window === 'undefined') return;
+    // Get current URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const logoutConfirmed = urlParams.get('logout-confirmation');    if (logoutConfirmed === 'true') {
       logout();
       // Clean the URL without reloading
       router.replace(window.location.pathname);
     }
-  }, [searchParams]);
+  }, []);
 
   const closePopup = () => {
     dispatch(closeLoginDialog());
@@ -81,7 +82,7 @@ export default function SignInButton({ closeSideMenu }: prop) {
   const gotoMyProfile = () => {
     router.push("/my-profile");
   };
-  
+
   const gotoMyInbox = () => {
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
     const chatUrl = `https://meuat.kaam.com/jobseeker/inbox?admin_id=${authUser?.id}&token=${authUser?.token}&profile_img=${user?.photo_url}`;

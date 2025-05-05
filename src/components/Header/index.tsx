@@ -82,7 +82,7 @@ useEffect(() => {
                                 </li>
                             </ul>
                             <HeaderSearch/>
-                            <ul className='flex gap-[10px] items-center'>
+                            <div className='flex gap-[10px] items-center'>
                                 {/* <li className='relative group/menu text-Grey flex'>
                                     <Link href={"/"} className='relative text-black font-thin flex items-center text-xs 2xl:text-sm p-2 h-[32px] 2xl:h-[38px] border border-[#e3e3e3] rounded-lg'>
                                         <Image src={'/new-assets/icons/globe.svg'} width={19} height={19} className='mr-1' alt='globe icon'/> English
@@ -108,13 +108,13 @@ useEffect(() => {
                                     alt='kaabil logo'
                                     />
                                 </li>
-                            </ul>
+                            </div>
                         </div>
                     </div>:
                     <div className="lg:hidden">
-                        <ul className='flex gap-[10px] items-center'>
+                        <div className='flex gap-[10px] items-center'>
                             <SignInButton/>
-                        </ul>
+                        </div>
                     </div>}
                 </div>
             </div>

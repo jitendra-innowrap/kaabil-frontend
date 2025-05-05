@@ -111,7 +111,7 @@ function RangeAccordion() {
                 {({ open }: any) => (
                     <>
                         <AccordionHeader className="w-full flex justify-between items-center text-black py-4">
-                            <h5 className="font-semibold mb-4 xl:mb-5 text-base">{"Salary"} <span className='text-xs font-normal'>per year</span></h5>
+                            <div className="font-semibold mb-4 xl:mb-5 text-base">{"Salary"} <span className='text-xs font-normal'>per year</span></div>
                             {open ? (
                                 <BiChevronUp className="hidden text-slate-500 font-bold text-xl" />
                             ) : (

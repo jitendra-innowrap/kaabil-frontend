@@ -169,7 +169,7 @@ const handleFetchLocation = async () => {
                     <div className="block col-span-2 mt-11">
                         <strong className='uppercase font-semibold text-sm 3xl:text-sm mb-6 text-[#E3E3E3] block'>Contact US</strong>
                         <div>
-                            <li className='mb-4 3xl:mb-5 text-sm leading-[24px] cursor-pointer text-[#E3E3E3]'>K. C. Mahindra Education Trust Cecil Court, Near Regal Cinema, Mahakavi Bhushan Marg, Mumbai 400001.</li>
+                            <div className='mb-4 3xl:mb-5 text-sm leading-[24px] cursor-pointer text-[#E3E3E3]'>K. C. Mahindra Education Trust Cecil Court, Near Regal Cinema, Mahakavi Bhushan Marg, Mumbai 400001.</div>
                         </div>
                         <button onClick={handleOpenEnquiry} className='!bg-white !text-[#000000] text-[10px] 3xl:text-xs'>Enquire now</button>
                     </div>

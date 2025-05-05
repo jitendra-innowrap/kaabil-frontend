@@ -672,6 +672,22 @@ label {
     opacity: 0;
   }
 }
+
+.animate-enter {
+  animation: toast-enter 0.3s ease-out forwards;
+}
+.animate-leave {
+  animation: toast-leave 0.3s ease-in forwards;
+}
+@keyframes toast-enter {
+  from { transform: translate(-50%, -20px); opacity: 0; }
+  to { transform: translate(-50%, 0); opacity: 1; }
+}
+@keyframes toast-leave {
+  to { transform: translate(-50%, -20px); opacity: 0; }
+}
+
+
 /* Search bar container */
 .search-appear-animate {
   max-height: 0px; /* Adjust based on your content height */

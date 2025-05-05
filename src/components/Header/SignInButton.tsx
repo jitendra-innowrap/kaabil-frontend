@@ -21,6 +21,7 @@ import Notification from "./Notification";
 import { RiArrowDropDownFill } from "react-icons/ri";
 import { MdOutlineChat } from "react-icons/md";
 import { showToast } from "../utils";
+import toast from "react-hot-toast";
 
 interface prop {
   closeSideMenu?: () => void;
@@ -82,13 +83,38 @@ export default function SignInButton({ closeSideMenu }: prop) {
           const chatUrl = `https://meuat.kaam.com/jobseeker/inbox?admin_id=${authUser?.id}&token=${authUser?.token}&profile_img=${user?.photo_url}`;
           window.open(chatUrl, '_blank', 'noopener,noreferrer');
         } else {
-          showToast('Kindly enable notifications in your web browser to receive real-time updates.', true);
+          showCustomToast();
         }
       });
     } else {
       // Permission was previously denied
-      showToast('Kindly enable notifications in your web browser to receive real-time updates.', true);
+      showCustomToast();
     }
+  };
+  const showCustomToast = () => {
+    toast.custom((t) => (
+      <div
+        className={`flex fixed top-6 left-1/2 -translate-x-1/2 text-[#231F20] max-w-[547px] w-[80%] lg:w-[60%] border rounded-lg border-[#E3183780] justify-between bg-[#FFEAED] text-xs md:text-sm p-3 xl:px-4 ${
+          t.visible ? 'animate-enter' : 'animate-leave'
+        }`}
+        style={{
+          transform: t.visible ? 'translate(-50%, 0)' : 'translate(-50%, -20px)',
+          opacity: t.visible ? 1 : 0,
+          transition: 'all 0.3s ease',
+        }}
+      >
+        Kindly enable notifications in your web browser to receive real-time updates.
+        <IoClose 
+          size={16}
+          className="size-4 xl:size-5 3xl:size-6 cursor-pointer hover:opacity-70"
+          color="#231F20"
+          onClick={() => toast.dismiss(t.id)}
+        />
+      </div>
+    ), {
+      duration: 5000, // 5 seconds
+      position: 'top-center',
+    });
   };
 
   const handleOverlayClick = (e: MouseEvent) => {

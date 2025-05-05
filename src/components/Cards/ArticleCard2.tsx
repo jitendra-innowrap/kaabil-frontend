@@ -1,11 +1,11 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
-import { formatArticleDate } from '../utils'
+import { formatArticleDate, toSlug } from '../utils'
 
 export default function ArticleCard2(props: ArticleCard) {
   return (
-    <Link href={`/articles/${props?.id}`} className='!P-[5px] block h-full rounded-xl shadow-lg relative bg-white cursor-pointer group article-card'>
+    <Link href={`/articles/${props?.id}-${toSlug(props?.title)}`} className='!P-[5px] block h-full rounded-xl shadow-lg relative bg-white cursor-pointer group article-card'>
         <div className="block p-[5px] pb-0">
         <div className="overflow-hidden rounded-lg">
           <Image
@@ -39,7 +39,7 @@ export default function ArticleCard2(props: ArticleCard) {
                     <span className='font-light ml-1 text-[#898989] whitespace-nowrap text-[10px] 2xl:text-sm'>{formatArticleDate(props?.posted_date)}</span> 
                 </div>
               </div>
-                <Link href={`/articles/${props.id}`} className='underline ml-auto font-medium text-[10px] 2xl:text-sm'>Read more</Link>
+                <Link href={`/articles/${props.id}-${toSlug(props?.title)}`} className='underline ml-auto font-medium text-[10px] 2xl:text-sm'>Read more</Link>
             </div>
           </div>
         </div>

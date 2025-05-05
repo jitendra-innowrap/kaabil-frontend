@@ -225,10 +225,12 @@ export default function Homepage({data}:{data:any}) {
         <main className="overflow-hidden">
             <section className=''>
                 <Link href={'/jobs'} className='block w-full'>
-                    <Image src='/new-assets/home/banner.png' quality={100} alt="" width={3840} height={1000} priority
+                    <Image src='/new-assets/home/banner.png' quality={100} alt="Start your career today!
+9,000+ beginner-friendly jobs for women" width={3840} height={1000} priority
                     className="hidden sm:inline-block w-full h-auto home-banner"
                     />
-                    <Image src='/new-assets/banners/home-mobile-banner.png' quality={100} alt="" width={3840} height={1000} priority
+                    <Image src='/new-assets/banners/home-mobile-banner.png' quality={100} alt="Start your career today!
+9,000+ beginner-friendly jobs for women" width={720} height={540} priority
                     className="inline-block sm:hidden !w-full !h-auto home-banner"
                     />
                 </Link>
@@ -448,28 +450,28 @@ export default function Homepage({data}:{data:any}) {
                             <div className="flex gap-3 xl:gap-4 2xl:gap-6 items-center">
                                 <strong className="text-white flex-shrink-0 grid place-items-center bg-[#EE7487] rounded-full size-7 2xl:size-[45px]">1</strong>
                                 <div className="block">
-                                    <h5 className="font-semibold md:text-xs 2xl:text-xl">Jobs tailored for you:</h5>
+                                    <h3 className="font-semibold text-sm lg:text-xs 2xl:text-xl">Jobs tailored for you:</h3>
                                     <p className="md:text-xs 2xl:text-xl">Find roles that match your skills and career goals.</p>
                                 </div>
                             </div>
                             <div className="flex gap-3 xl:gap-4 2xl:gap-6 items-center">
                                 <strong className="text-white flex-shrink-0 grid place-items-center bg-[#EE7487] rounded-full size-7 2xl:size-[45px]">2</strong>
                                 <div className="block">
-                                    <h5 className="font-semibold md:text-xs 2xl:text-xl">Entry-level friendly:</h5>
+                                    <h3 className="font-semibold text-sm lg:text-xs 2xl:text-xl">Entry-level friendly:</h3>
                                     <p className="md:text-xs 2xl:text-xl">Perfect for young girls starting their careers.</p>
                                 </div>
                             </div>
                             <div className="flex gap-3 xl:gap-4 2xl:gap-6 items-center">
                                 <strong className="text-white flex-shrink-0 grid place-items-center bg-[#EE7487] rounded-full size-7 2xl:size-[45px]">3</strong>
                                 <div className="block">
-                                    <h5 className="font-semibold md:text-xs 2xl:text-xl">Upskill as you go:</h5>
+                                    <h3 className="font-semibold text-sm lg:text-xs 2xl:text-xl">Upskill as you go:</h3>
                                     <p className="md:text-xs 2xl:text-xl">Learn new skills while applying for jobs.</p>
                                 </div>
                             </div>
                             <div className="flex gap-3 xl:gap-4 2xl:gap-6 items-center">
                                 <strong className="text-white flex-shrink-0 grid place-items-center bg-[#EE7487] rounded-full size-7 2xl:size-[45px]">4</strong>
                                 <div className="block">
-                                    <h5 className="font-semibold md:text-xs 2xl:text-xl">Trusted by employers:</h5>
+                                    <h3 className="font-semibold text-sm lg:text-xs 2xl:text-xl">Trusted by employers:</h3>
                                     <p className="md:text-xs 2xl:text-xl">Connect with companies looking for fresh talent.</p>
                                 </div>
                             </div>

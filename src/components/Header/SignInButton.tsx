@@ -94,7 +94,7 @@ export default function SignInButton({ closeSideMenu }: prop) {
   const showCustomToast = () => {
     toast.custom((t) => (
       <div
-        className={`flex fixed top-6 left-1/2 -translate-x-1/2 text-[#231F20] max-w-[547px] w-[80%] lg:w-[60%] border rounded-lg border-[#E3183780] justify-between bg-[#FFEAED] text-xs md:text-sm p-3 xl:px-4 ${
+        className={`flex fixed top-6 left-1/2 -translate-x-1/2 text-[#231F20] max-w-[547px] w-[90%] lg:w-[60%] border rounded-lg border-[#E3183780] justify-between bg-[#FFEAED] text-xs md:text-sm p-3 xl:px-4 ${
           t.visible ? 'animate-enter' : 'animate-leave'
         }`}
         style={{
@@ -106,7 +106,7 @@ export default function SignInButton({ closeSideMenu }: prop) {
         Kindly enable notifications in your web browser to receive real-time updates.
         <IoClose 
           size={16}
-          className="size-4 xl:size-5 3xl:size-6 cursor-pointer hover:opacity-70"
+          className="size-5 3xl:size-6 cursor-pointer hover:opacity-70"
           color="#231F20"
           onClick={() => toast.dismiss(t.id)}
         />

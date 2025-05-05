@@ -10,9 +10,11 @@ import { fetchUserLocation } from '../utils'
 import { openEnquiryForm, setCurrentLocation } from '@/redux/userSlice'
 import Link from 'next/link'
 import EnquiryForm from '../EnquiryForm'
+import { usePathname } from 'next/navigation'
 
 export default function Footer() {
     const dispatch = useDispatch<AppDispatch>();
+    const pathname = usePathname();
 const handleFetchLocation = async () => {
     try {
       const location = await fetchUserLocation();
@@ -26,7 +28,9 @@ const handleFetchLocation = async () => {
   }
   useEffect(() => {
     dispatch(getDeviceToken());
-    handleFetchLocation();
+    if(pathname!=="/"){
+        handleFetchLocation();
+    }
   }, [dispatch]);
   return (
     <footer className='relative lg:z-[2] border-t-4 text-[#E3E3E3] border-[#000000] bg-[#000000]'>
@@ -44,23 +48,23 @@ const handleFetchLocation = async () => {
                     <strong className='font-semibold uppercase text-xs 3xl:text-sm mb-4 block 3xl:mb-5'>Connect with us</strong>
                     <div className="flex gap-2 3xl:gap-4">
                         <a href=" https://www.facebook.com/kaabilprogram" target="_blank" rel="noopener noreferrer">
-                            <Image width={24} height={24} alt='' src="/new-assets/icons/fb.svg" className='inline-block w-6 h-6 text-white' />
+                            <Image width={24} height={24} alt='facebook icon' src="/new-assets/icons/fb.svg" className='inline-block w-6 h-6 text-white' />
                         </a>
                         <a href="https://x.com/kaabilprogram?t=bw-ZHBJ3k86mRIsug2oiRA&s=15" target="_blank" rel="noopener noreferrer">
-                            <Image width={24} height={24} alt='' src="/new-assets/icons/x.svg" className='inline-block w-6 h-6 text-white ml-3' />
+                            <Image width={24} height={24} alt='x icon' src="/new-assets/icons/x.svg" className='inline-block w-6 h-6 text-white ml-3' />
                         </a>
                         <a href="https://www.linkedin.com/company/kaabilprogram/" target="_blank" rel="noopener noreferrer">
-                            <Image width={24} height={24} alt='' src="/new-assets/icons/linkedIn-Icon.svg" className='inline-block w-6 h-6 text-white ml-3' />
+                            <Image width={24} height={24} alt='linkedin icon' src="/new-assets/icons/linkedIn-Icon.svg" className='inline-block w-6 h-6 text-white ml-3' />
                         </a>
                         <a href="https://www.instagram.com/kaabilprogram/" target="_blank" rel="noopener noreferrer">
-                            <Image width={24} height={24} alt='' src="/new-assets/icons/insta.svg" className='inline-block w-6 h-6 text-white ml-3' />
+                            <Image width={24} height={24} alt='instagram icon' src="/new-assets/icons/insta.svg" className='inline-block w-6 h-6 text-white ml-3' />
                         </a>
                     </div>
 
                 </div>
                     <div className="block col">
                         <strong className='uppercase font-semibold text-xs 3xl:text-sm mb-4 3xl:mb-5 text-[#E3E3E3] block'>Quick links</strong>
-                        <ul>
+                        <div>
                             <Link href={'/'} className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Home</Link>
                             <Link href={'/about-us'} className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>About Us</Link>
                             <Link href={'/companies'} className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Companies</Link>
@@ -69,28 +73,28 @@ const handleFetchLocation = async () => {
                             <Link href={'/'} className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Skill Center</Link>
                             */}
                             <Link href={'/articles'} className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Articles</Link>
-                        </ul>
+                        </div>
                     </div>
                     <div className="block col">
                         <strong className='uppercase font-semibold text-xs 3xl:text-sm mb-4 3xl:mb-5 text-[#E3E3E3] block'>Legal</strong>
-                        <ul>
+                        <div>
                             <Link href={'/privacy-policy'} className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Privacy Policy</Link>
                             <Link href={'/'} className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Terms of Use</Link>
                             {/* <Link href={'/'} className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Cookie Policy</Link> */}
-                        </ul>
+                        </div>
                     </div>
                     <div className="block">
                         <strong className='uppercase font-semibold text-xs 3xl:text-sm mb-4 3xl:mb-5 text-[#E3E3E3] block'>Resources</strong>
-                        <ul>
+                        <div>
                             {/* <Link href={'/'} className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3]'>Help Center</Link> */}
                             <Link href={'/frequently-asked-questions'} className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>FAQs</Link>
-                        </ul>
+                        </div>
                     </div>
                     <div className="block col">
                         <strong className='uppercase font-semibold text-xs 3xl:text-sm mb-4 3xl:mb-5 text-[#E3E3E3] block'>Contact US</strong>
-                        <ul>
+                        <div>
                             <Link href={'/'} className='mb-4 3xl:mb-5 font-light text-xs 2x:text-sm cursor-pointer text-[#E3E3E3] w-[150px]'>K. C. Mahindra Education Trust Cecil Court, Near Regal Cinema, Mahakavi Bhushan Marg, Mumbai 400001.</Link>
-                        </ul>
+                        </div>
                         <button onClick={handleOpenEnquiry} className='!bg-white w-full !text-[#000000] text-[10px] 3xl:text-xs'>Enquire now</button>
 
                     </div>
@@ -99,8 +103,7 @@ const handleFetchLocation = async () => {
                 <div className="block col">
                     <img
                     src={"/new-assets/icons/black-mahindra.png"}
-                    width={182}
-                    height={83}
+                    width={182} height={51}
                     alt="company logo"
                     className="mb-5 md:mb-8 w-[122px] 3xl:w-[182px] xl:mb-12 3xl:mb-[52px]"
                     />
@@ -135,7 +138,7 @@ const handleFetchLocation = async () => {
                 
                     <div className="block col-span-1">
                         <strong className='uppercase font-semibold text-sm 3xl:text-sm mb-6 text-[#E3E3E3] block'>Quick Links</strong>
-                        <ul className='flex flex-col gap-5'>
+                        <div className='flex flex-col gap-5'>
                             <Link href={'/'} className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Home</Link>
                             <Link href={'/about-us'} className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>About Us</Link>
                             <Link href={'/companies'} className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Companies</Link>
@@ -144,30 +147,30 @@ const handleFetchLocation = async () => {
                             <Link href={'/'} className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Mock Interviews</Link>
                             */}
                             <Link href={'/articles'} className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Articles</Link> 
-                        </ul>
+                        </div>
                     </div>
                     <div className="col-span-1 flex flex-col justify-between">
                         <div className="">
                             <strong className='uppercase font-semibold text-sm 3xl:text-sm mb-6 text-[#E3E3E3] block'>Legal</strong>
-                            <ul className='flex flex-col gap-5'>
+                            <div className='flex flex-col gap-5'>
                                 <Link href={'/privacy-policy'} className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Privacy Policy</Link>
                                 <Link href={'/'} className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Terms of Use</Link>
                                 {/* <Link href={'/'} className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Cookie Policy</Link> */}
-                            </ul>
+                            </div>
                         </div>
                         <div className="mt-10">
                             <strong className='uppercase font-semibold text-sm 3xl:text-sm mb-6 text-[#E3E3E3] block'>Resources</strong>
-                            <ul className='flex flex-col gap-5'>
+                            <div className='flex flex-col gap-5'>
                                 {/* <Link href={'/'} className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>Help Center</Link> */}
                                 <Link href={'/frequently-asked-questions'} className='mb-4 3xl:mb-5 text-sm leading-[9px] cursor-pointer text-[#E3E3E3]'>FAQs</Link>
-                            </ul>
+                            </div>
                         </div>
                     </div>
                     <div className="block col-span-2 mt-11">
                         <strong className='uppercase font-semibold text-sm 3xl:text-sm mb-6 text-[#E3E3E3] block'>Contact US</strong>
-                        <ul>
+                        <div>
                             <li className='mb-4 3xl:mb-5 text-sm leading-[24px] cursor-pointer text-[#E3E3E3]'>K. C. Mahindra Education Trust Cecil Court, Near Regal Cinema, Mahakavi Bhushan Marg, Mumbai 400001.</li>
-                        </ul>
+                        </div>
                         <button onClick={handleOpenEnquiry} className='!bg-white !text-[#000000] text-[10px] 3xl:text-xs'>Enquire now</button>
                     </div>
                 {/* <div className="flex gap-[37px]">

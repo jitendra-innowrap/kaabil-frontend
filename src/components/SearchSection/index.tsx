@@ -120,7 +120,7 @@ function SearchSection() {
           components={{
             IndicatorSeparator: () => null,
             DropdownIndicator: () => (
-              <img className="mr-3 opacity-60 w-4 2xl:w-5 h-auto" src="/new-assets/icons/chevron-down.svg" alt="" />
+              <img className="mr-3 opacity-60 w-4 2xl:w-5 h-auto" width={20} height={20} src="/new-assets/icons/chevron-down.svg" alt="location dropdown" />
             ),
           }}
         />
@@ -138,7 +138,7 @@ function SearchSection() {
           components={{
             IndicatorSeparator: () => null,
             DropdownIndicator: () => (
-              <img className="mr-3 opacity-60 w-4 2xl:w-5 h-auto" src="/new-assets/icons/chevron-down.svg" alt="" />
+              <img className="mr-3 opacity-60 w-4 2xl:w-5 h-auto" width={20} height={20} src="/new-assets/icons/chevron-down.svg" alt="industry dropdown" />
             ),
           }}
         />

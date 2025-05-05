@@ -825,3 +825,17 @@ export const formatNotificationDate = (dateString: string): string => {
     year: "numeric",
   });
 };
+
+export function toSlug(title: string): string {
+  if (!title) return '';
+
+  return title
+    .toString() // Convert to string (in case of numbers)
+    .toLowerCase() // Convert to lowercase
+    .trim() // Remove whitespace from both ends
+    .replace(/\s+/g, '-') // Replace spaces with hyphens
+    .replace(/[^\w\-]+/g, '') // Remove all non-word chars except hyphens
+    .replace(/\-\-+/g, '-') // Replace multiple hyphens with single
+    .replace(/^-+/, '') // Trim hyphens from start
+    .replace(/-+$/, ''); // Trim hyphens from end
+}

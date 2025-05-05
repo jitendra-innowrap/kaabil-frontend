@@ -1,11 +1,11 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
-import { formatArticleDate } from '../utils'
+import { formatArticleDate, toSlug } from '../utils'
 
 export default function ArticleCard({ cover_photo, id, name, posted_date, short_description, title, user_photo}:ArticleCard) {
   return (
-    <Link href={`/articles/${id}`} className='!P-[5px] block text-black rounded-xl shadow-lg h-full bg-white cursor-pointer group relative article-card'>
+    <Link href={`/articles/${id}-${toSlug(title)}`} className='!P-[5px] block text-black rounded-xl shadow-lg h-full bg-white cursor-pointer group relative article-card'>
         <div className="block p-[5px]">
         <div className="overflow-hidden rounded-lg">
           <Image
@@ -26,7 +26,7 @@ export default function ArticleCard({ cover_photo, id, name, posted_date, short_
               </div>
               <div className="flex justify-between article-footer absolute w-full bottom-3 left-0 px-3 md:px-4 2xl:px-5">
                   <span className='font-light text-[#898989] text-[10px] 2xl:text-sm'>{formatArticleDate(posted_date)}</span> 
-                  <Link href={`/articles/${id}`} className='underline font-medium text-[10px] 2xl:text-sm'>Read more</Link>
+                  <Link href={`/articles/${id}-${toSlug(title)}`} className='underline font-medium text-[10px] 2xl:text-sm'>Read more</Link>
               </div>
             </div>
         </div>

@@ -22,9 +22,13 @@ export default function page() {
     const [isLoading, setIsLoading] = useState(true);
     useEffect(() => {
         async function fetchArticle() {
+            // Safely extract the ID from slug (which could be string or string[])
+            const slugString = Array.isArray(slug) ? slug[0] : slug || '';
+            const articleId = slugString.split('-')[0] || '0';
+            
             try {
             let payload = {
-                id: slug || '0',
+                id: articleId || '0',
             };
             const { deviceId, secret, salt } = getSessionData();
             // Ensure session data is available

@@ -2,7 +2,7 @@
 import Breadcrumb from '@/components/Breadcrumb'
 import ArticleCard from '@/components/Cards/ArticleCard'
 import ArticleCard2 from '@/components/Cards/ArticleCard2'
-import { formatArticleDate, formatArticleDate2, showToast } from '@/components/utils'
+import { formatArticleDate, formatArticleDate2, showToast, toSlug } from '@/components/utils'
 import { getSessionData } from '@/components/utils/deviceId'
 import api from '@/Services/Apiservice'
 import Image from 'next/image'
@@ -108,7 +108,7 @@ export default function ArticlesPage() {
                                 </p>
                             </section>
 
-                            <Link href={`/articles/${coverArticle?.id}`} className="image-wrapper lg:rounded-3xl h-[400px] md:h-[600px] xl:h-[500px] 3xl:h-[807px] w-full relative">
+                            <Link href={`/articles/${coverArticle?.id}-${toSlug(coverArticle?.title)}`} className="image-wrapper lg:rounded-3xl h-[400px] md:h-[600px] xl:h-[500px] 3xl:h-[807px] w-full relative">
                                 <Image
                                     src={coverArticle.cover_photo || ""}
                                     fill

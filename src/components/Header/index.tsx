@@ -90,15 +90,15 @@ useEffect(() => {
                                     </Link>
                                 </li> */}
 
-                                {!isLoggedIn && <li className='flex mr-1 3xl:mr-3'>
+                                {!isLoggedIn && <div className='flex mr-1 3xl:mr-3'>
                                     <Link href={"https://meuat.kaam.com/recruiter/login"} className='text-Grey hover:text-black font-medium hover:font-semibold text-xs 3xl:text-base relative after:w-full after:h-[3px] 3xl:after:h-1 after:rounded-[4px] hover:after:bg-red after:absolute after:bottom-[-8px] 3xl:after:bottom-[-12px] after:left-0'>
                                     Recruiter Login
                                     </Link>
-                                </li>}
-                                <li>
+                                </div>}
+                                <div>
                                     <SignInButton/>
-                                </li>
-                                <li>
+                                </div>
+                                <div>
                                 <Image
                                     height={100}
                                     width={412}
@@ -107,7 +107,7 @@ useEffect(() => {
                                     className='w-auto max-w-[113px] h-[22px] xl:h-[20px] 3xl:h-[31px]'
                                     alt='kaabil logo'
                                     />
-                                </li>
+                                </div>
                             </div>
                         </div>
                     </div>:

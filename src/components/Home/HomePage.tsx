@@ -1,8 +1,8 @@
 'use client'
 import Image from "next/image";
-import PlayStoreAppAd from "@/components/Banners/PlaystoreAppAd";
+import Link from "next/link";
 import SearchSection from "@/components/SearchSection";
-import GallerySlider from "@/components/JobDetail/Slider/GallarySlider";
+const GallerySlider = dynamic(() => import('@/components/JobDetail/Slider/GallarySlider'));
 import CompanyCard, { jobcardtype } from "@/components/Cards/CompanyCard";
 import JobtypeCard from "@/components/Cards/JobtypeCard";
 import IndustryCard, { industryCard } from "@/components/Cards/IndustryCard";
@@ -16,12 +16,14 @@ import { Suspense, useEffect, useState } from "react";
 import api from "@/Services/Apiservice";
 import { getSessionData } from "@/components/utils/deviceId";
 import { useRouter } from 'next/navigation';
-import Link from "next/link";
-import FilterMobilePannel from "@/components/Filter/FilterMobile";
+const PlayStoreAppAd = dynamic(() => import('@/components/Banners/PlaystoreAppAd'));
+const FilterMobilePannel = dynamic(() => import('@/components/Filter/FilterMobile'));
 import CompanyCardLoader from "@/components/Cards/CompanyCardLoader";
-import { motion } from 'framer-motion';
+import { motion as m } from 'framer-motion';
 
 import SuccessGallary from "@/components/Gallary/SuccessGallary";
+import dynamic from "next/dynamic";
+import Head from "next/head";
 export default function Homepage({data}:{data:any}) {   
     const [JobTypes, setJobTypes] = useState([
         {
@@ -223,20 +225,34 @@ export default function Homepage({data}:{data:any}) {
     }
     return (
         <main className="overflow-hidden">
+            <Head>
+            <link 
+                rel="preload" 
+                href="/new-assets/banners/home-mobile-banner.webp" 
+                as="image"
+                media="(max-width: 640px)"
+            />
+            <link 
+                rel="preload" 
+                href="/new-assets/home/banner.png" 
+                as="image"
+                media="(min-width: 641px)"
+            />
+            </Head>
             <section className=''>
                 <Link href={'/jobs'} className='block w-full'>
                     <Image src='/new-assets/home/banner.png' quality={100} alt="Start your career today!
-9,000+ beginner-friendly jobs for women" width={3840} height={1000} priority
+9,000+ beginner-friendly jobs for women" width={3840} height={1000} priority placeholder="blur" blurDataURL="LdJz}x3B6ixG}ZF_afR*FJw|oLWB"
                     className="hidden sm:inline-block w-full h-auto home-banner"
                     />
-                    <Image src='/new-assets/banners/home-mobile-banner.png' quality={100} alt="Start your career today!
-9,000+ beginner-friendly jobs for women" width={720} height={540} priority
+                    <Image src='/new-assets/banners/home-mobile-banner.webp' quality={100} alt="Start your career today!
+9,000+ beginner-friendly jobs for women" width={720} height={540} priority placeholder="blur" blurDataURL="LXJO0h2@OY-W}aKPXSt7ACxHt7so"
                     className="inline-block sm:hidden !w-full !h-auto home-banner"
                     />
                 </Link>
                 <div className="bg-[#F5F5F5]">
                     <div className="container search-section px-5 flex flex-col items-center pt-8 md:px-14 md:pt-12 xl:px-24 xl:pt-14 2xl:px-20">
-                    <motion.h2
+                    <m.h2
                         variants={sentence}
                         initial="hidden"
                         whileInView="visible"
@@ -244,23 +260,23 @@ export default function Homepage({data}:{data:any}) {
                         className='text-black text-center mx-auto inline-flex flex-wrap justify-center items-center text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[64px] mb-5 xl:mb-8 font-medium'
                     >
                         {heading.split("").map((char, index) => (
-                            <motion.span key={`char-${index}`} variants={letter}>
+                            <m.span key={`char-${index}`} variants={letter}>
                                 {char === " " ? "\u00A0" : char}
-                            </motion.span>
+                            </m.span>
                         ))}
 
                         {/* Animate the "Kaabil!" text with letter-wise animation */}
-                        <motion.p
+                        <m.p
                             className="font-kalam font-bold text-red ml-[6px] translate-y-[2px] md:translate-y-[3px] xl:translate-y-[2.7px] 2xl:translate-y-1"
                             variants={sentence}
                         >
                             {kaabilText.split("").map((char, index) => (
-                                <motion.span key={`kaabil-${index}`} variants={letter}>
+                                <m.span key={`kaabil-${index}`} variants={letter}>
                                     {char === " " ? "\u00A0" : char}
-                                </motion.span>
+                                </m.span>
                             ))}
-                        </motion.p>
-                    </motion.h2>
+                        </m.p>
+                    </m.h2>
 
                         <div className="hidden lg:block">
                             <SearchSection />
@@ -439,7 +455,7 @@ export default function Homepage({data}:{data:any}) {
                         boxShadow: "inset 1px 9px 20px -15px #7F54541F"
                     }}>
                 <div className="container gap-5 xl:gap-10 2xl:gap-14 flex flex-col md:flex-row-reverse items-center py-5 md:py-8 xl:py-14 2xl:py-16  mx-auto">
-                    <motion.div
+                    <m.div
                         variants={rightVariant}
                         initial="hidden"
                         whileInView="visible"
@@ -493,27 +509,27 @@ export default function Homepage({data}:{data:any}) {
                         <div className={'text-center md:text-left mx-auto md:mx-0 flex justify-center sm:block '}>
                             <Link href={'/about-us'} className='btn flex items-center justify-center text-center text-xs 2xl:text-base w-[170px] 2xl:w-[247px] 2xl:h-[50px] mt-6 xl:mt-7 3xl:mt-[36px]'>Read More</Link>
                         </div>
-                    </motion.div>
-                    <motion.div
+                    </m.div>
+                    <m.div
                         variants={leftVariant}
                         initial="hidden"
                         whileInView="visible"
                         viewport={{ once: true, amount: 0.4 }} className="flex-1 order-1">
                         <Image src={`/new-assets/banners/why-choose-home.png`} width={704} height={735} alt="" className="w-full h-auto" />
-                    </motion.div>
+                    </m.div>
                 </div>
             </section>
             <section className="bg-red">
                 <div className="w-full flex flex-col items-center py-5 md:py-8 xl:py-14 2xl:py-[50px] mx-auto">
-                    <motion.div
+                    <m.div
                     variants={topVariant}
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true, amount: 0.4 }} className="section-heading mb-5">
                         <h2 className='text-white text-center text-2xl md:text-3xl 2xl:text-[40px] 2xl:leading-[46px] font-medium mb-2'>Meet the women who’ve found <br />
                         <span className="font-kalam font-bold text-[25px] md:text-[31px] 2xl:text-[42px]">career success  </span>with Kaabil.</h2>
-                    </motion.div>
-                    <motion.div
+                    </m.div>
+                    <m.div
                         variants={topVariant}
                         initial="hidden"
                         whileInView="visible"
@@ -521,22 +537,22 @@ export default function Homepage({data}:{data:any}) {
                         <div className="block">
                             <SuccessGallary galleryItems={testimonial} />
                         </div>
-                    </motion.div>
+                    </m.div>
                     {/* <button className="btn-border 2xl:w-[218px] 2xl:h-[50px] text-xs 2xl:text-base mt-0 md:mt-8 2xl:mt-10">View All Stories</button> */}
                 </div>
             </section>
             <section className={`bg-[#F8F8F8] ${articleSlides.length>0?"":"pt-6 md:pt-14 xl:pt-10 2xl:pt-16" }`}>
                 {articleSlides.length>0 &&<div className="w-full flex flex-col py-5 md:py-8 xl:py-14 2xl:py-[68px] mb-3 mx-auto">
                     <div className="container no-pad">
-                        <motion.div
+                        <m.div
                             variants={topVariant}
                             initial="hidden"
                             whileInView="visible"
                             viewport={{ once: true, amount: 0.4 }} className="section-heading md:ml-[70px]">
                             <h2 className='text-black text-start text-2xl md:text-3xl 2xl:text-[48px] 2xl:leading-[54px]  font-normal mb-2'>Articles</h2>
                             <p className=" text-base text-[14px] xl:text-lg 2xl:text-2xl">Register  to receive weekly articles, tips and more from our team</p>
-                        </motion.div>
-                        <motion.div
+                        </m.div>
+                        <m.div
                             variants={topVariant}
                             initial="hidden"
                             whileInView="visible"
@@ -569,7 +585,7 @@ export default function Homepage({data}:{data:any}) {
                               }}
                             />
                             
-                        </motion.div>
+                        </m.div>
                     </div>
                     <Link href={'/articles'} className="btn text-center mx-auto mt-4 md:mt-8 text-xs 2xl:text-base 2xl:mt-8 lg:min-w-[150px] 2xl:min-w-[200px]">View All</Link>
                 </div>}

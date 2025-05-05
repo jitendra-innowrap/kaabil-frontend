@@ -1,0 +1,241 @@
+"use client";
+import React, { useEffect, useState } from "react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import { IoClose } from "react-icons/io5";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { setResumeModal, fetchProfile } from "@/redux/profileSlice";
+import {
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+} from "@material-tailwind/react";
+import toast from "react-hot-toast";
+import api from "@/Services/Apiservice";
+
+const ResumeModal = ({ size }: any) => {
+  const { token } = useAppSelector((state) => state.auth);
+  const { resumeModal } = useAppSelector((state) => state.profile);
+  const dispatch = useAppDispatch();
+
+  const initialValues = {
+    user_portfolio_attachment_type: "4", // Default to image type
+    user_portfolio_name: "",
+    user_portfolio: null,
+  };
+
+  const validationSchema = Yup.object().shape({
+    user_portfolio: Yup.mixed().required("Required"),
+  });
+
+  const closePopup = () => {
+    dispatch(setResumeModal(false));
+  };
+  const [dialogHeight, setDialogHeight] = useState('calc(100dvh - 225px)');
+
+  useEffect(() => {
+    const calculateHeight = () => {
+      const vh = window.innerHeight;
+      let height;
+      
+      if (window.innerWidth < 768) {
+        height = vh - 225; // Mobile calculation
+      } else if (window.innerWidth < 1024) {
+        height = vh * 0.7; // 70vh equivalent
+      } else {
+        height = vh * 0.8; // 80vh equivalent
+      }
+      
+      setDialogHeight(`${height}px`);
+    };
+
+    calculateHeight();
+    window.addEventListener('resize', calculateHeight);
+    return () => window.removeEventListener('resize', calculateHeight);
+  }, []);
+  return (
+    <>
+    {resumeModal && size ==="xxl" && <div className="overlay h-screen w-screen fixed z-[1000] bg-[#000000E5] opacity-70 inset-0"></div>}
+     {/* @ts-ignore */}
+    <Dialog
+      open={resumeModal}
+      handler={closePopup}
+      size={size}
+      className={`${
+        size === "xxl"
+          ? "top-14 mx-auto fixed bottom-0 rounded-2xl sm-dailog"
+          : "fixed top-10 -translate-x-1/2 custom-dialog"
+      }`}
+    >
+      <div>
+        {/* @ts-ignore */}
+        <DialogHeader>
+          <div className="relative w-full">
+            <IoClose
+              className="absolute top-0 right-0 cursor-pointer"
+              size={size === "md" ? 36 : 28}
+              onClick={closePopup}
+            />
+            <div
+              className={`flex items-center mt-6 ${
+                size === "xxl"
+                  ? "justify-start text-md"
+                  : "justify-center text-3xl"
+              }`}
+            >
+              <h2 className="text-center text-[#231F20] font-semibold">
+                Attach your <span className="text-red">resume</span>
+              </h2>
+            </div>
+          </div>
+        </DialogHeader>
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={async (values: any) => {
+            const formData = new FormData();
+            formData.append(
+              "user_portfolio_attachment_type",
+              JSON.stringify([values.user_portfolio_attachment_type])
+            );
+            formData.append(
+              "user_portfolio_name",
+              JSON.stringify([values.user_portfolio.name])
+            );
+            formData.append("user_portfolio[]", values.user_portfolio);
+
+            try {
+              const response: any = await api.post(
+                "/Auth/editJobSeekerPrpfile",
+                formData,
+                {
+                  headers: { "Content-Type": "multipart/form-data" },
+                }
+              );
+
+              response.data.code === 1
+                ? toast.success(response.data.msg, {
+                    position: "bottom-right",
+                  })
+                : toast.error(response.data.msg || "Failed To Update Profile", {
+                    position: "bottom-right",
+                  });
+            } catch (error: any) {
+              toast.error(error?.message || "Something went wrong!", {
+                position: "bottom-right",
+              });
+            } finally {
+              await dispatch(
+                fetchProfile({
+                  token: token,
+                  data: { latitude: 0, longitude: 0 },
+                })
+              );
+              closePopup();
+            }
+          }}
+        >
+          {({ setFieldValue, isSubmitting, values, dirty }) => (
+            <Form>
+              {/* @ts-ignore */}
+              <DialogBody
+                className={`p-0  h-[calc(100vh_-_225px)] md:max-h-[70vh] lg:max-h-[80vh] overflow-y-auto custom-scroll ${
+                  size === "xxl" ? "mt-4" : "mt-8"
+                }`}
+                style={{ maxHeight: dialogHeight }}
+              >
+                <div className={`${size === "xxl" ? "px-4" : "px-12"}`}>
+                  <div>
+                    <label
+                      className={`block font-semibold mb-1 text-[#231F20]  ${
+                        size === "xxl" ? "text-sm" : "text-xl"
+                      }`}
+                      htmlFor="fileInput"
+                    >
+                      Resume <span className="font-normal text-sm">(File format: PDF, Doc, Image , Video)</span>
+                    </label>
+                    <div
+                      className={`relative flex items-center w-full border-resume bg-white rounded-lg ${
+                        size === "xxl" ? "py-1" : "py-2"
+                      }`}
+                    >
+                      <input
+                        type="file"
+                        id="fileInput"
+                        accept=".pdf,.doc,.docx,image/*,video/*"
+                        className="absolute inset-0 opacity-0 w-full cursor-pointer"
+                        onChange={(
+                          event: React.ChangeEvent<HTMLInputElement>
+                        ) => {
+                          const file = event.target.files?.[0];
+                          if (file) {
+                            const fileType = file.type;
+
+                            // Determine the attachment type based on the file type
+                            let attachmentType = "";
+                            if (fileType.startsWith("image/")) {
+                              attachmentType = "4"; // Image
+                            } else if (fileType === "application/pdf") {
+                              attachmentType = "1"; // PDF
+                            } else if (fileType.startsWith("video/")) {
+                              attachmentType = "5"; // Video
+                            }
+                            setFieldValue("user_portfolio_name", file.name);
+                            setFieldValue("user_portfolio", file);
+                            setFieldValue(
+                              "user_portfolio_attachment_type",
+                              attachmentType
+                            ); // Set the attachment type
+                          }
+                        }}
+                      />
+                      <div className="flex-grow text-md text-[#4D4D4F] px-3">
+                        {values?.user_portfolio_name
+                          ? `Selected File: ${values.user_portfolio_name}`
+                          : "Resume"}
+                      </div>
+                      <img
+                        src="/new-assets/icons/attach_file.svg"
+                        alt="Attach File"
+                        className="w-9 h-9 pr-3"
+                      />
+                    </div>
+                    <div className="h-1">
+                      <ErrorMessage
+                        name="user_portfolio"
+                        component="div"
+                        className="text-red text-sm mt-1"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </DialogBody>
+              {/* @ts-ignore */}
+              <DialogFooter
+                className={`flex justify-end p-0 pb-3  mt-4 ${
+                  size === "xxl" ? "px-4 mt-2" : "px-12 mt-4"
+                }`}
+              >
+                <button
+                  type="submit"
+                  className={`px-28 bg-[#E31837] text-white rounded-xl ${
+                    isSubmitting || !dirty
+                      ? "opacity-50 cursor-not-allowed"
+                      : ""
+                  } ${size === "xxl" ? "py-3" : "py-4"} `}
+                  disabled={isSubmitting || !dirty}
+                >
+                  Save
+                </button>
+              </DialogFooter>
+            </Form>
+          )}
+        </Formik>
+      </div>
+    </Dialog>
+    </>
+  );
+};
+
+export default ResumeModal;

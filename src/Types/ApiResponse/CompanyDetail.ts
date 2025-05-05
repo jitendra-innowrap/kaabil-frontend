@@ -2,6 +2,7 @@ interface CompanyDetailResponse {
     code: number;
     result: Company[];
     job: (CompanyJob | CompanyJobCategory)[];
+    similar_company: (CompanyJob | CompanyJobCategory)[];
   }
   
   interface Company {
@@ -21,6 +22,7 @@ interface CompanyDetailResponse {
     share_url: string;
     applied_job_date: string;
     salary_range_unit: string;
+    industry_name:string;
     is_industry_standard: string;
     job_title: string;
     job_count: string;
@@ -64,6 +66,15 @@ interface CompanyDetailResponse {
     created_by: string;
     share_url: string;
   }
+  interface SuccessCard {
+    cover_photo:string;
+    description:string;
+    designation_company:string;
+    id:string;
+    name:string;
+    user_photo:string;
+    video_url:string;
+  }
   // Props for the CompanyGalleryCard component
 interface CompanyGalleryCardProps {
   item: CompanyImage | CompanyVideo;
@@ -87,6 +98,9 @@ interface CompanyGalleryCardProps {
   
   interface CompanyJob {
     id: string;
+    company_logo: string;
+    company_name: string;
+    job_posted_date: string;
     company_master_id: string;
     job_distance: string;
     job_location: string;

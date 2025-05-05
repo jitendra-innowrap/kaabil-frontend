@@ -1,6 +1,6 @@
 'use client'
 import { decrypt, encrypt } from '@/Services/Encryption';
-import { User, UserRole } from '@/Types/common';
+import { User, UserRole, Skill } from '@/Types/common';
 import { v4 as uuidv4 } from 'uuid'; // You might need to install this: npm install uuid
 
 const DEVICE_ID_KEY = 'deviceId';
@@ -9,6 +9,7 @@ const SECRET_KEY = 'secret';
 const AUTH_TOKEN_KEY = 'authToken';
 const AUTH_USER_KEY = 'authUser';
 const AUTH_USER_ROLE_KEY = 'desiredRole';
+const AUTH_USER_SKILL_KEY = 'skill';
 const PROGRESS_KEY = 'onboardingProgress';
 const encryptionKey = 'oifyuey3784ryiq'
 
@@ -105,6 +106,27 @@ export const getAuthUserDesiredRole = () => {
         } catch (error) {
         console.error("Failed to parse authUser:", error);
         return null;
+        }
+    }
+    return null;
+};
+
+export const storeAuthUserUserSkills = (userSkills: { user_skill: { id: string; name: string; skill_level_type: string }[] }) => {
+    if (typeof window === "undefined") return;
+    localStorage.setItem(AUTH_USER_SKILL_KEY, encrypt(JSON.stringify(userSkills), encryptionKey));
+};
+
+export const getAuthUserUserSkills = () => {
+    if (typeof window === "undefined") return null;
+    const storedUserSkillEncrypted = localStorage.getItem(AUTH_USER_SKILL_KEY);
+    if (storedUserSkillEncrypted) {
+        const userSkillString = decrypt(storedUserSkillEncrypted, encryptionKey) as string;
+        try {
+            const userSkills = JSON.parse(userSkillString) as { user_skill: { id: string; name: string; skill_level_type: string }[] };
+            return userSkills;
+        } catch (error) {
+            console.error("Failed to parse user skills:", error);
+            return null;
         }
     }
     return null;

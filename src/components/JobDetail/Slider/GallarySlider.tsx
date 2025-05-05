@@ -5,7 +5,7 @@ import { Swiper as SwiperType, SwiperOptions } from 'swiper/types';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/autoplay';
-import { Autoplay, Navigation, FreeMode } from 'swiper/modules';
+import { Autoplay, Navigation, FreeMode, Grid } from 'swiper/modules';
 import { IoChevronBackOutline, IoChevronForwardOutline } from 'react-icons/io5';
 
 interface GallerySliderProps extends SwiperOptions {
@@ -20,6 +20,7 @@ interface GallerySliderProps extends SwiperOptions {
   reverse?: boolean; // Reverse autoplay direction
   freeMode?: boolean; // Enable free mode
   arrowOut?: boolean; //
+  arrowFloat?: boolean;
   arrowColor?: string;
   arrowShadows?: boolean;
   slideComponent?: React.ComponentType<any>; // Custom slide component
@@ -34,13 +35,15 @@ const GallerySlider: React.FC<GallerySliderProps> = ({
   customArrowRight,
   showNavigation = false,
   arrowOut = true,
-  freeMode = false,
+  freeMode = true,
+  arrowFloat = false,
   speed,
+  
   spaceBetween = 25,
   slidesPerView = 'auto',
   reverse = false,
   arrowColor = '',
-  onHoverPause = false,
+  onHoverPause = true,
   arrowShadows = false,
   slideComponent: SlideComponent = null,
   ...restProps
@@ -78,15 +81,15 @@ useEffect(() => {
   }
 }, []);
   return (
-    <div className={`relative ${showNavigation && arrowOut?'px-6 sm:px-10 2xl:px-[60px]':'px-3'}`}>
+    <div className={`${arrowFloat?"":"relative"} slider-wrapper ${showNavigation && arrowOut?'md:px-6 sm:px-10 2xl:px-[60px]':'px-4'}`}>
       <Swiper
-        modules={[Autoplay, Navigation, FreeMode]}
+        modules={[Autoplay, Navigation, FreeMode, Grid]}
         loop={loop}
         autoplay={autoplayConfig}
         spaceBetween={spaceBetween}
         slidesPerView={slidesPerView}
-        freeMode={freeMode}
-        speed={speed}
+        freeMode={true}
+        speed={1000}
         onSwiper={(swiper) => {
           swiperRef.current = swiper;
           updateNavigationState(swiper); // Initialize the state
@@ -102,7 +105,7 @@ useEffect(() => {
         }
         {...restProps}
       >
-        {slides.map((slide, index) => (
+        {slides?.map((slide, index) => (
           <SwiperSlide key={index} style={{ width: 'fit-content', height: '100%' }}>
             {SlideComponent ? (
               <SlideComponent {...slide} />
@@ -118,7 +121,7 @@ useEffect(() => {
         <div
           ref={prevButtonRef}
           onClick={() => swiperRef.current?.slidePrev()}
-          className={`swiper-button-prev absolute left-0 !size-8 shadow-default rounded-full !w-fit  !text-lightGrey ${isBeginning ? 'no-disabled' : ''}`}
+          className={`swiper-button-prev absolute left-0 !size-8 rounded-full !w-fit ${arrowOut?"out-arrow":""}  !text-lightGrey ${isBeginning ? 'no-disabled' : ''}`}
         >
           {customArrowLeft? customArrowLeft : <div className={`swiper-btn ${arrowColor? `bg-white` : ""} ${arrowShadows? "shadow-sm" : ""}  rounded-full !size-8 grid shrink-0 place-items-center 2xl:!size-[50px]`}>
             <IoChevronBackOutline className={`!size-3 2xl:!size-5 font-bold text-xl ${arrowColor? '!text-black':''}`}/></div>}
@@ -128,7 +131,7 @@ useEffect(() => {
         <div
           onClick={() => swiperRef.current?.slideNext()}
           ref={nextButtonRef}
-          className={`swiper-button-next absolute right-0 !size-8 shadow-default rounded-full !w-fit !text-lightGrey ${isEnd ? 'no-disabled' : ''}`}
+          className={`swiper-button-next absolute right-0 !size-8 rounded-full !w-fit ${arrowOut?"out-arrow":""} !text-lightGrey ${isEnd ? 'no-disabled' : ''}`}
         >
           {customArrowRight? customArrowRight : <div className={`swiper-btn ${arrowColor?  `bg-white` : ""} ${arrowShadows? "shadow-sm" : ""}  rounded-full !size-8 grid shrink-0 place-items-center 2xl:!size-[50px]`}>
             <IoChevronForwardOutline className={`!size-3 2xl:!size-5 font-bold text-xl ${arrowColor? '!text-black':''}`}/></div>}

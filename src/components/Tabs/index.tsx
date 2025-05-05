@@ -40,13 +40,49 @@ export default function Tabs({ tabTitles }: TabsProps) {
     }
   };
 
-  // Handle tab click
-  const handleTabClick = (e: React.MouseEvent<HTMLAnchorElement>, slug: string) => {
-    e.preventDefault();
-    window.location.hash = slug;
-    setActiveHash(slug); // Update active hash state
-    updateSlider();
-  };
+  // Add this helper function to calculate total sticky header height
+const getStickyHeadersHeight = (): number => {
+  if (typeof window === 'undefined') return 0;
+  
+  const stickyElements = document.querySelectorAll('*[class*="sticky"]');
+  let totalHeight = 0;
+
+  stickyElements.forEach(el => {
+    // Only count elements that are actually sticking (visible in viewport)
+    const rect = el.getBoundingClientRect();
+    if (rect.top >= 0 && rect.bottom <= window.innerHeight) {
+      totalHeight += rect.height;
+    }
+  });
+
+  return totalHeight;
+};
+
+// Then modify your handleTabClick function:
+const handleTabClick = (e: React.MouseEvent<HTMLAnchorElement>, slug: string) => {
+  e.preventDefault();
+  
+  // Update hash and UI state
+  window.location.hash = slug;
+  setActiveHash(slug);
+  updateSlider();
+
+  // Scroll to section with offset
+  setTimeout(() => {
+    const targetId = slug.substring(1); // Remove #
+    const targetElement = document.getElementById(targetId);
+    
+    if (targetElement) {
+      const stickyOffset = getStickyHeadersHeight() + 20; // 20px extra margin
+      const targetPosition = targetElement.offsetTop - stickyOffset;
+      
+      window.scrollTo({
+        top: targetPosition,
+        behavior: 'smooth'
+      });
+    }
+  }, 10); // Small timeout ensures DOM is updated
+};
 
   // Initialize slider and event listeners
   useEffect(() => {
@@ -75,7 +111,7 @@ export default function Tabs({ tabTitles }: TabsProps) {
         return (
           <li
             key={slug}
-            className={`details-tab-item md:text-sm ${isActive ? 'font-bold text-red' : 'font-normal text-black hover:text-red'}`}
+            className={`details-tab-item text-[14px] md:text-sm ${isActive ? 'font-bold text-red' : 'font-normal text-black hover:text-red'}`}
           >
             <Link
               href={slug}

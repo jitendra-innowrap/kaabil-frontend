@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { default as ReactSelect, components, MultiValue, ActionMeta } from "react-select";
-import { FaMagnifyingGlass } from "react-icons/fa6";
+import React, { useEffect, useRef, useState } from "react";
+import { default as ReactSelect, components } from "react-select";
+import { FaMagnifyingGlass, FaChevronDown, FaChevronUp } from "react-icons/fa6";
 
 export interface OptionType {
   value: string;
@@ -15,6 +15,7 @@ interface MultiSelectProps {
   onChange: (selectedOptions: OptionType[]) => void;
   selectedValues: OptionType[];
   icon?: React.ReactNode;
+  onInputChange?: any;
 }
 
 const MultiSelect: React.FC<MultiSelectProps> = ({
@@ -24,58 +25,154 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
   onChange,
   selectedValues,
   icon,
+  onInputChange,
 }) => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [menuPlacement, setMenuPlacement] = useState<"auto" | "top" | "bottom">(
+    "auto"
+  );
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const viewportHeight = window.innerHeight;
+      const elementBottom =
+        containerRef.current?.getBoundingClientRect().bottom || 0;
+
+      // Adjust menu placement based on available space and keyboard presence
+      if (viewportHeight - elementBottom < 200) {
+        setMenuPlacement("top");
+      } else {
+        setMenuPlacement("bottom");
+      }
+    };
+
+    // Listen to resize events for handling keyboard open/close
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const handleChange = (selectedOption: OptionType) => {
     let updatedSelections = [...selectedValues];
 
     // Toggle selection
     if (updatedSelections.some((opt) => opt.value === selectedOption.value)) {
-      updatedSelections = updatedSelections.filter((opt) => opt.value !== selectedOption.value);
+      updatedSelections = updatedSelections.filter(
+        (opt) => opt.value !== selectedOption.value
+      );
     } else {
       if (!maxSelections || updatedSelections.length < maxSelections) {
         updatedSelections.push(selectedOption);
       }
     }
-
-    setTimeout(() => setMenuOpen(true), 0.01); // Keep menu open
     onChange(updatedSelections);
   };
 
-  // Custom option with checkbox
   const Option = (props: any) => {
-    const { data, innerRef, innerProps } = props;
+    const { data, innerRef, innerProps, isDisabled } = props;
     const isSelected = selectedValues.some((opt) => opt.value === data.value);
 
     return (
-      <components.Option {...props}>
-      <div ref={innerRef} {...innerProps} onClick={() => handleChange(data)}>
-        <div className="relative flex items-center gap-2">
-          <input type="checkbox" className="!w-4 !h-4" checked={isSelected} readOnly />
-          <label className="!mb-0">{data.label}</label>
+      <components.Option {...props} className="option-wrapper !py-0">
+        <div
+          ref={innerRef}
+          {...innerProps}
+          onClick={() => {
+            if (!isDisabled) handleChange(data);
+            setMenuOpen(false);
+          }}
+          className={`relative flex items-center py-2 gap-3 ${
+            isDisabled ? "opacity-90 cursor-not-allowed" : "cursor-pointer"
+          }`}
+        >
+          <input
+            type="checkbox"
+            className={`w-4 h-4 sm:!w-3 sm:!h-3 ${
+              isDisabled ? "opacity-60 cursor-not-allowed" : "cursor-pointer"
+            }`}
+            checked={isSelected}
+            readOnly
+          />
+          <label
+            className={`text-[12px] sm:text-[14px] lg:text-[10px] 2xl:text-[13px] 3xl:text-sm !mb-0 !p-0 ${
+              isSelected ? "text-[#E31837]" : ""
+            } ${isDisabled ? "text-[#231F20]" : ""} ${
+              isDisabled
+                ? "cursor-not-allowed text-[#BDBDBD]"
+                : "cursor-pointer"
+            }`}
+          >
+            {data.label}
+          </label>
         </div>
-      </div>
       </components.Option>
     );
   };
 
+  const DropdownIndicator = () => null;
+
+  const updatedOptions = options.map((opt) => ({
+    ...opt,
+    isDisabled:
+      maxSelections &&
+      selectedValues.length >= maxSelections &&
+      !selectedValues.some((sel) => sel.value === opt.value),
+  }));
+
   return (
-    <div className="relative w-full">
+    <div className="relative w-full" ref={containerRef}>
       <ReactSelect
-        options={options}
-        components={{ Option }}
-        closeMenuOnSelect={false}
+        options={updatedOptions}
+        components={{ Option, DropdownIndicator }}
+        closeMenuOnSelect={true}
         hideSelectedOptions={false}
         placeholder={placeholder}
-        value={null} // Ensure the input does not display selected values
-        onChange={() => {}} // Do nothing, since we handle selection manually
-        className="react-select"
-        menuIsOpen={menuOpen}
+        value={null}
+        onChange={() => {}}
+        className="react-select2"
         onMenuOpen={() => setMenuOpen(true)}
         onMenuClose={() => setMenuOpen(false)}
+        menuPlacement={menuPlacement}
+        menuPortalTarget={document.body}
+        menuIsOpen={menuOpen}
+        styles={{
+          menu: (base) => ({
+            ...base,
+            maxHeight: "200px",
+            overflowY: "auto",
+            zIndex: 9999,
+          }),
+          menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+          option: (base, { isFocused, isSelected }) => ({
+            ...base,
+            border: isFocused ? "1px solid red" : "",
+            borderRadius: "5px",
+            color: isSelected ? "#E31837" : "#231F20",
+            cursor: "pointer",
+            padding: "8px 15px",
+          }),
+        }}
+        onInputChange={(inputValue) => {
+          if (onInputChange) {
+            onInputChange(inputValue);
+          }
+        }}
       />
-      {icon ? icon : <FaMagnifyingGlass className="absolute left-[15px] top-[20px] size-4 text-[#808080]" />}
+      <div
+        className="absolute right-[20px] top-[14px] sm:top-[21px] cursor-pointer"
+        onClick={() => setMenuOpen((prev) => !prev)}
+      >
+        {menuOpen ? (
+          <FaChevronUp className="size-4 text-[#333333]" />
+        ) : (
+          <FaChevronDown className="size-4 text-[#333333]" />
+        )}
+      </div>
+      {icon && <div className="absolute left-[0px] top-[0px]">{icon}</div>}
     </div>
   );
 };

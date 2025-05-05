@@ -91,3 +91,40 @@ For open source projects, say how it is licensed.
 
 ## Project status
 If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+
+
+# Branch.IO Integration Setup
+Overview
+This guide provides instructions for configuring Branch.IO with React JS for UAT (User Acceptance Testing) and production environments. The configuration switches between UAT and production servers based on the environment.
+
+*  Environment Variables
+You will need to configure the following environment variables in your .env file:
+
+1. For UAT (development/testing):
+
+=> NEXT_PUBLIC_UAT_SERVER=True
+=> NEXT_PUBLIC_UAT_BRANCH_KEY=key_test_bFaP8WiLlDfPHiYydcvrTpejDqeZKiqP
+=> NEXT_PUBLIC_UAT_BRANCH_IO_DESKTOP_URL=https://kaabiljobs.kaam.com/jobs/detail
+=> NEXT_PUBLIC_UAT_BRANCH_IO_ANDROID_URL=https://play.google.com/store/apps/details
+
+2. For Production (live):
+=> NEXT_PUBLIC_PROD_BRANCH_KEY=key_live_dtaOXYbGjriNHh6sgeECriblrsc7GkDv
+=> NEXT_PUBLIC_PROD_BRANCH_IO_DESKTOP_URL=https://kaabilprogram.org/jobs/detail
+=> NEXT_PUBLIC_PROD_BRANCH_IO_ANDROID_URL=https://play.google.com/store/apps/details
+
+* Configuration Steps
+1. Development/UAT Mode:
+ => In the .env file, ensure NEXT_PUBLIC_UAT_SERVER=True to point to the UAT server.
+ => Branch keys for UAT and URLs are used.
+
+2. Production Mode:
+ => When deploying to production, change NEXT_PUBLIC_UAT_SERVER to False.
+ => This will automatically use the production environment variables like NEXT_PUBLIC_PROD_BRANCH_KEY.
+
+
+* Instructions for Developers
+1. During Development:
+     => Set NEXT_PUBLIC_UAT_SERVER=True to use UAT keys and URLs.
+
+2. Before Production Deployment:
+     => Change NEXT_PUBLIC_UAT_SERVER=False to switch to the production environment. This ensures that production URLs and keys are used.

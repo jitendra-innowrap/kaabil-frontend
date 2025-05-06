@@ -11,6 +11,7 @@ import SearchSection from "@/components/SearchSection";
 import SearchAppear from "@/components/Header/SearchAppear";
 import { Toaster } from "react-hot-toast";
 import LoadGoogleMapsScript from "@/components/LoadGoogleMapScript";
+import { IOSZoomFix } from "@/components/utils/IosZoomFix";
 
 // Configure Poppins
 const poppins = Poppins({
@@ -33,13 +34,14 @@ export const metadata: Metadata = {
   description: "A Job portal by kaabil",
 };
 
-export const viewport: Viewport = {
-  width: 'device-width',
-  initialScale: 1,
-  maximumScale: 5,
-  userScalable: false,
-  // Also supported but less commonly used
-  // interactiveWidget: 'resizes-visual',
+export function generateViewport(): Viewport {
+  return {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 5,
+    // userScalable will be handled by CSS for iOS specifically
+    userScalable: true,
+  }
 }
 
 export default function RootLayout({
@@ -49,10 +51,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" style={{scrollBehavior:'smooth'}}>
-
+      <head>
+        {/* Regular viewport meta */}
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+      </head>
       <body
         className={`${kalam.variable} ${poppins.className} antialiased`}
       >
+        <IOSZoomFix/>
         <ReduxProvider>
         <LoadGoogleMapsScript/>
         <Header />

@@ -368,7 +368,7 @@ export default function Home() {
       className={`bg-[#FDEAC9] py-6 xl:py-8 transition-all duration-500 fixed w-full z-[100] ${isVisible?"translate-y-0":"-translate-y-full"}`}>
         <div className="container relative z-[1]">
           <div className="flex justify-between flex-wrap xl:flex-nowrap flex-col sm:flex-row sm:items-end gap-5 xl:gap-7 2xl:gap-8">
-            <div className="flex justify-between flex-row gap-3 2xl:gap-5 3xl:gap-8 lg:max-w-[calc(100%_-_300px)]">
+            <div className="flex sm:justify-between flex-row gap-3 2xl:gap-5 3xl:gap-8 lg:max-w-[calc(100%_-_300px)]">
               <CompanyLogo
                 index={1}
                 logo={jobDetails?.logo}

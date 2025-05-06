@@ -54,6 +54,7 @@ const initialState: AuthState = {
   isProfileUpdate: false,
   user_willing_to_relocate: [],
   email: user?.email || "",
+  isEmailVerified: user?.isEmailVerified || false,
   photo_url: user?.photo_url || "",
   id: user?.id || "",
   is_profile_verify: user?.is_profile_verify =="1"? "1":"0",
@@ -169,6 +170,10 @@ const userSlice = createSlice({
       setSaveMobileNumber: (state, action) => {
         state.savedMobileNumber = action.payload;
       },
+      setSaveEmail: (state, action) => {
+        state.email = action.payload;
+        state.isEmailVerified = true;
+      },
       setNudgesVisibility: (state, action) => {
         return { ...state, ...action.payload };
       },
@@ -193,6 +198,7 @@ export const {
   setUserProfilePercentage,
   setUserDesignation,
   setAuthToken,
+  setSaveEmail,
   setUserIsProfileVerified,
   setUserId,
   setIsFresher,

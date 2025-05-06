@@ -5,6 +5,7 @@ import React from "react";
 
 const About = () => {
   const { profileData } = useAppSelector((state) => state.profile);
+  const { email, isEmailVerified } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
 
   return (
@@ -82,6 +83,15 @@ const About = () => {
       </div>
       <div className="p-[16px] sm:p-[20px] lg:px-12 pb-8">
         <div className="grid grid-cols-12 gap-y-4">
+          {/* Email */}
+          <div className="col-span-4 flex items-center">
+            <h1 className="text-sm text-[#4D4D4F]">Email</h1>
+          </div>
+          <div className="col-span-8">
+            <h1 className="text-sm text-[#231F20] font-medium">
+              {isEmailVerified? email : "-"}
+            </h1>
+          </div>
           {/* Highest Education */}
           <div className="col-span-4 flex items-center">
             <h1 className="text-sm text-[#4D4D4F]">Highest Education</h1>

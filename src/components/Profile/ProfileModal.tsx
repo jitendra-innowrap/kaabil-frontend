@@ -29,7 +29,14 @@ import toast from "react-hot-toast";
 import { RefreshProfileData } from "@/redux/userSlice";
 import { RiMapPin2Line } from "react-icons/ri";
 import { FaRegCalendarAlt } from "react-icons/fa";
-
+import Popup from "reactjs-popup";
+import VerifyEmailModal from "./VerifyEmailModal";
+import verifiedAnimation from "@/../public/new-assets/icons/lottie/otp_verified.json"; // Import your Lottie JSON file
+import dynamic from "next/dynamic";
+const Lottie = dynamic(() => import('lottie-react'), { 
+  ssr: false,
+  loading: () => <div className="w-16 h-16 bg-gray-200 rounded-full" />
+});
 const ProfileModal = ({ size }: any) => {
   const {
     profileModal,
@@ -45,6 +52,7 @@ const ProfileModal = ({ size }: any) => {
   } = useAppSelector((state) => state.profile);
 
   const { token } = useAppSelector((state) => state.auth);
+  const { isEmailVerified, email } = useAppSelector((state) => state.user);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -83,7 +91,7 @@ const ProfileModal = ({ size }: any) => {
   };
   console.log(profileData?.user_job_roles, "Need To Check Skills and roles");
   const [dialogHeight, setDialogHeight] = useState('calc(100dvh - 225px)');
-
+  const [showEmailVerify, setShowEmailVerify] = useState(false)
   useEffect(() => {
     const calculateHeight = () => {
       const vh = window.innerHeight;
@@ -126,7 +134,9 @@ const ProfileModal = ({ size }: any) => {
       );
     }
   }, [dispatch, profileData]);
-  
+  const closeEmailVerify =()=>{
+    setShowEmailVerify(false);
+  }
   return (
     <>
     {profileModal && size ==="xxl" && <div className="overlay h-screen w-screen fixed z-[1000] bg-[#000000E5] opacity-70 inset-0"></div>}
@@ -200,6 +210,8 @@ const ProfileModal = ({ size }: any) => {
                   skill_level_type_id: "0",
                 })
               ) || [],
+            email: email || "",
+            is_email_verified: false,
           }}
           validationSchema={validationSchema}
           onSubmit={async (values) => {
@@ -213,6 +225,10 @@ const ProfileModal = ({ size }: any) => {
             const formData: any = new FormData();
             // Append payload key-value pairs to FormData
             Object.keys(payload)?.forEach((key: any) => {
+              if(key === "is_email_verified"){
+                // @ts-ignore
+                formData.append(key, isEmailVerified);
+              }
               if (
                 key === "user_willing_to_relocate" ||
                 key === "user_soft_skill" ||
@@ -396,6 +412,44 @@ const ProfileModal = ({ size }: any) => {
                         component="div"
                         className="text-red text-lg"
                       />
+                    </div>
+                  </div>
+                  {/* Email */}
+                  <div className="mt-3 ">
+                    <label className="block text-lg font-semibold text-[#231F20] mb-2">
+                      Email Address
+                    </label>
+                    <div className="flex gap-2 relative">
+                      <Field
+                        type="email"
+                        name="email"
+                        disabled={values.is_email_verified}
+                        className={`w-full border pl-4 rounded-lg bg-[#F2F3F3] ${
+                          size === "xxl" ? "py-2" : "py-3"
+                        } ${values.is_email_verified ? 'opacity-70' : ''}`}
+                        placeholder="Enter your email"
+                      />
+                      {!isEmailVerified && (
+                        <button
+                          type="button"
+                          disabled={!values.email}
+                          onClick={() => setShowEmailVerify(true)}
+                          className={`${!values.email?"bg-gray-300 hover:bg-gray-300":"bg-red"} text-white px-4 rounded-lg ${
+                            size === "xxl" ? "py-2" : "py-3"
+                          }`}
+                        >
+                          Verify
+                        </button>                        
+                      )}
+                      {isEmailVerified && (
+                        <div className="absolute right-3 top-[7px] sm:top-3 w-8 h-8">
+                          <Lottie
+                            animationData={verifiedAnimation}
+                            className="w-full h-full"
+                            loop={true}
+                          />
+                        </div>
+                      )}
                     </div>
                   </div>
 
@@ -788,6 +842,22 @@ const ProfileModal = ({ size }: any) => {
                   Save
                 </button>
               </DialogFooter>
+              <Popup
+                  // ref={logoutdialogRef}
+                  open={showEmailVerify}
+                  onClose={closeEmailVerify}
+                  modal
+                  lockScroll
+                  className="onboarding relative"
+                  overlayStyle={{
+                    background: "#4D4D4DC2",
+                    padding: "20px",
+                    overflow: "hidden",
+                    zIndex: '10000'
+                  }}
+                >
+                  <VerifyEmailModal email={values.email} onClose={closeEmailVerify} />
+                </Popup>
             </Form>
           )}
         </Formik>

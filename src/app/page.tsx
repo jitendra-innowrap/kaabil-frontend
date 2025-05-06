@@ -1,4 +1,5 @@
 import Homepage from '@/components/Home/HomePage'
+import HomepageStatic from '@/components/Home/HomeStatic'
 
 export default async function Page() {
   // Fetch data on the server
@@ -7,5 +8,5 @@ export default async function Page() {
   })
   const homeData = await response.json()
   // return <pre>{JSON.stringify(homeData, null, 2)}</pre>
-  return <Homepage data={homeData.result} />
+  return <HomepageStatic data={homeData.result} />
 }

@@ -9,8 +9,9 @@ import { useDispatch } from 'react-redux'
 import { fetchUserLocation } from '../utils'
 import { openEnquiryForm, setCurrentLocation } from '@/redux/userSlice'
 import Link from 'next/link'
-import EnquiryForm from '../EnquiryForm'
+const EnquiryForm = dynamic(() => import('@/components/EnquiryForm'));
 import { usePathname } from 'next/navigation'
+import dynamic from 'next/dynamic'
 
 export default function Footer() {
     const dispatch = useDispatch<AppDispatch>();

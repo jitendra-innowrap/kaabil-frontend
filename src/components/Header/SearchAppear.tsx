@@ -4,8 +4,12 @@ import SearchSection from '../SearchSection';
 import { useAppSelector, useAppDispatch } from '@/redux/hooks';
 import { closeSearch } from '@/redux/searchSlice';
 import { IoClose } from 'react-icons/io5';
+import { usePathname } from 'next/navigation';
 
 export default function SearchAppear() {
+    const pathname = usePathname();
+    // ✅ Early return if path is "/"
+    if (pathname === '/') return null;
     const isSearch = useAppSelector((state) => state.search.value);
     useEffect(() => {
         const handleScroll = () => {

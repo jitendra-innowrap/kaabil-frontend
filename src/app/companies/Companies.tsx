@@ -117,7 +117,7 @@ export default function Companies() {
       if(error?.status==404){
         notFound();
       }
-      console.log(error);
+      // console.log(error);
       setIsLoading(false);
       setCompaniesList([]);
     }
@@ -155,7 +155,7 @@ export default function Companies() {
       if(error?.status==404){
         notFound();
       }
-      console.log(error);
+      // console.log(error);
     }
     setIsLoading(false)
   };

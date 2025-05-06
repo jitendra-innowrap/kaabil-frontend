@@ -62,7 +62,7 @@ export default function ArticlesPage() {
             if (error?.status == 404) {
                 notFound();
             }
-            console.log(error);
+            // console.log(error);
             showToast(error?.message || "Failed to load articles", true);
         } finally {
             setIsLoading(false);

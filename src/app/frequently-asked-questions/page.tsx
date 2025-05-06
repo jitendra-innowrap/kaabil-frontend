@@ -110,7 +110,7 @@ export default function Faq() {
             if (error?.status == 404) {
                 notFound();
             }
-            console.log(error);
+            // console.log(error);
             showToast(error?.message || "Failed to load FAQs", true);
         } finally{
             setIsloading(false);

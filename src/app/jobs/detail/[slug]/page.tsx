@@ -186,7 +186,7 @@ export default function Home() {
         if (error?.status == 404) {
           notFound();
         }
-        console.log(error);
+        // console.log(error);
       }
       setIsLoading(false);
     }
@@ -274,7 +274,7 @@ export default function Home() {
           dispatch(setProgress(1));
           clearSessionData();
         }
-        console.log(response);
+        // console.log(response);
       } catch (error) {
         console.error("Error fetching jobs:", error);
       }
@@ -315,7 +315,7 @@ export default function Home() {
         dispatch(setProgress(1));
         clearSessionData();
       }
-      console.log(response);
+      // console.log(response);
     } catch (error) {
       console.error("Error fetching jobs:", error);
     }

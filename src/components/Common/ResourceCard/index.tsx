@@ -9,7 +9,6 @@ interface ResourceCardProps {
 }
 
 export default function ResourceCard({ id, imageUrl, title }: ResourceCardProps) {
-  console.log(title,'from card')
   return (
     <div key={id} className="block w-[203px] xl:w-[403px]">
       <div className="relative aspect-w-403 aspect-h-227 mb-5 xl:mb-6">

@@ -97,7 +97,6 @@ export default function NearestjobCard(prop:any) {
               dispatch(setProgress(1));
               clearSessionData();
             }
-            console.log(response);
           } catch (error) {
             console.error('Error fetching jobs:', error);
           }

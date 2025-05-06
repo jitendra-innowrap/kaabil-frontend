@@ -97,12 +97,10 @@ const ExperienceModal = ({ size }: any) => {
 
   const fetchDesignationSuggestions = async (query: string) => {
     if (query.length > 1) {
-      console.log(query, "insider query");
       // Filter from existing suggestions if query length is greater than 1
       const filteredSuggestions: any = designationSuggestionsSearch?.filter(
         (item) => item?.name?.toLowerCase()?.includes(query.toLowerCase())
       );
-      console.log(filteredSuggestions, "Verify Filter Suggestion");
       setDesignationSuggestions(filteredSuggestions);
     } else if (query === "") {
       // Call API when query is empty
@@ -110,7 +108,6 @@ const ExperienceModal = ({ size }: any) => {
         const response = await api.get("/MasterData/getDesignation", {
           params: { search: query },
         });
-        console.log(response, " ");
         setDesignationSuggestionsSearch(response?.data?.result);
         setDesignationSuggestions(response.data.result);
       } catch (error) {
@@ -176,7 +173,6 @@ const ExperienceModal = ({ size }: any) => {
   }, []);
 
   useEffect(() => {
-    console.log(profileData, "Step 3");
     if (profileData?.user_experiences) {
       console.log(profileData?.user_experiences, "Verify Experience List");
       const filteredExperiences = profileData.user_experiences.slice(1);

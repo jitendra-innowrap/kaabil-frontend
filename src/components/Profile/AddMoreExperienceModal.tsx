@@ -58,9 +58,7 @@ const AddMoreExperienceModal = ({ size }: any) => {
     return () => window.removeEventListener('resize', calculateHeight);
   }, []);
   useEffect(() => {
-    console.log(profileData, "Step 3");
     if (profileData?.user_experiences) {
-      console.log(profileData?.user_experiences, "Verify Experience List");
       const transformedExperiences = profileData.user_experiences.map(
         (experience: any) => ({
           designation_name: experience.designation,
@@ -157,12 +155,10 @@ const AddMoreExperienceModal = ({ size }: any) => {
 
   const fetchDesignationSuggestions = async (query: string) => {
     if (query.length > 1) {
-      console.log(query, "insider query");
       // Filter from existing suggestions if query length is greater than 1
       const filteredSuggestions: any = designationSuggestionsSearch?.filter(
         (item) => item?.name?.toLowerCase()?.includes(query.toLowerCase())
       );
-      console.log(filteredSuggestions, "Verify Filter Suggestion");
       setDesignationSuggestions(filteredSuggestions);
     } else if (query === "") {
       // Call API when query is empty
@@ -170,7 +166,6 @@ const AddMoreExperienceModal = ({ size }: any) => {
         const response = await api.get("/MasterData/getDesignation", {
           params: { search: query },
         });
-        console.log(response, " ");
         setDesignationSuggestionsSearch(response?.data?.result);
         setDesignationSuggestions(response.data.result);
       } catch (error) {
@@ -246,7 +241,7 @@ const AddMoreExperienceModal = ({ size }: any) => {
           setCurrentEditState(null);
         }
       } else {
-        console.log("Validation errors:", errors);
+        // console.log("Validation errors:", errors);
       }
     } else {
       setAddMore(true);
@@ -333,7 +328,6 @@ const AddMoreExperienceModal = ({ size }: any) => {
             updatedExperienceList = [values, ...experienceList];
           } else {
             updatedExperienceList = [...experienceList];
-            console.log(updatedExperienceList, "Default Experience List");
           }
           const formData = new FormData();
           formData.append("is_fresher", "1");
@@ -665,7 +659,6 @@ const AddMoreExperienceModal = ({ size }: any) => {
                           name="job_start_date"
                           value={values.job_start_date}
                           onChange={(e) => {
-                            console.log(e.target.value, "Check Value");
                             setFieldValue("job_start_date", e.target.value);
                           }}
                           placeholder="Start Date"
@@ -701,7 +694,6 @@ const AddMoreExperienceModal = ({ size }: any) => {
                             name="job_end_date"
                             value={values.job_end_date}
                             onChange={(e) => {
-                              console.log(e.target.value, "Check Value");
                               setFieldValue("job_end_date", e.target.value);
                             }}
                             placeholder="Start Date"

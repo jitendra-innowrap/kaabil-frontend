@@ -143,7 +143,7 @@ export default function MyJobs() {
       if (error?.status == 404) {
         notFound();
       }
-      console.log(error);
+      // console.log(error);
       setIsLoading(false);
       setJobs([]);
     }

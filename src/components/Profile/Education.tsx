@@ -7,7 +7,6 @@ import { lightBoxStyle } from "../utils";
 
 const Education = () => {
   const { profileData } = useAppSelector((state) => state.profile);
-  console.log(profileData?.user_certifications, "From Education");
   const dispatch = useAppDispatch();
   const [open, setOpen] = useState(false);
   const [slides, setSlides] = useState<{ src: string }[]>([]);

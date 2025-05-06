@@ -52,7 +52,6 @@ export default function EnterName({ size, closePopup }: any) {
             headers: { "Content-Type": "multipart/form-data" },
           }
         );
-        console.log("repsonse:", response);
         if (response?.data?.code === 1) {
           // ✅ Redux Updates
           dispatch(setProgress(5));

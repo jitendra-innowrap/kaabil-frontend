@@ -90,7 +90,7 @@ export default function AboutUs() {
               if (error?.status == 404) {
                   notFound();
               }
-              console.log(error);
+              // console.log(error);
               showToast(error?.message || "Failed to load testimonials", true);
           } finally {
               setIsLoading(false);

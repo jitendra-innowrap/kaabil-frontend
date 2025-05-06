@@ -45,7 +45,6 @@ export default function AddMoreExperience({
             }
         }
         try {
-            console.log('click')
             setIsSubmitting(true);
                 const payload = {
                     is_fresher: is_fresher,

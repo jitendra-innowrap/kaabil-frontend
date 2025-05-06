@@ -179,7 +179,6 @@ useEffect(() => {
               // console.log('FCM token registered🍃🍃🍃', token);
               
               unsubscribe = onMessage(messaging, (payload) => {
-                console.log('New message received:', payload);
                 handleNewNotification();
               });
             }

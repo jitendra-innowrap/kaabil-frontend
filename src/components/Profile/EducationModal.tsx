@@ -30,18 +30,13 @@ const EducationModal = ({ size }: any) => {
   const { educationModal, qualificationList, profileData, educationData } =
     useAppSelector((state) => state.profile);
 
-  console.log(educationData, "Please check Education Data");
   const [educationSearch, setEducationSearch] = useState(educationData);
   const [showEducation, setShowEducation] = useState(false);
 
   const { token } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
-  console.log(
-    profileData,
-    qualificationList,
-    "Check ProfileData More And More"
-  );
+
 
   const validationSchema = Yup.object().shape({
     education_id: Yup.string().required("Required"),
@@ -96,7 +91,6 @@ const EducationModal = ({ size }: any) => {
   }, [qualificationList]);
 
   const getFieldStudy = (education: any) => {
-    console.log(education, "Verify Education over here");
     if (education?.is_field_study_show !== "0") {
       dispatch(fieldStudy({ data: { education_master_id: education?.id } }));
     }
@@ -170,7 +164,6 @@ const EducationModal = ({ size }: any) => {
           }}
           validationSchema={validationSchema}
           onSubmit={async (values: any) => {
-            console.log(values, "From Submit Or Not");
             const formData = new FormData();
             const data: any = [
               {
@@ -515,7 +508,6 @@ const EducationModal = ({ size }: any) => {
                               setFieldValue("user_certification_title", [
                                 files[0]?.name,
                               ]);
-                              console.log(files, "File Name Was Present");
                               const newCertifications = files?.map(
                                 (file: any, index: any) => ({
                                   id: `new-${index}-${file.name}`, // Generate a temporary ID

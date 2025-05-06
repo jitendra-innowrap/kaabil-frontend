@@ -54,13 +54,6 @@ export default function RootLayout({
       <head>
         {/* Regular viewport meta */}
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
-        
-        {/* iOS-specific meta (will override the previous one on iOS) */}
-        <meta 
-          name="viewport" 
-          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" 
-          media="(-webkit-touch-callout: none)" 
-        />
       </head>
       <body
         className={`${kalam.variable} ${poppins.className} antialiased`}
